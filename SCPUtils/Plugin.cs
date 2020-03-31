@@ -35,15 +35,13 @@ namespace SCPUtils
         public bool autoKickOnSCPSuicide;
         public bool removeOverwatchRoundStart;
         public bool enableSCPSuicideAutoBan;
-        public bool multiplyBanDurationEachBan;
-        public bool enableDoNotTrackCheck;
+        public bool multiplyBanDurationEachBan;        
         public string autoRestartMessage;
         public string suicideWarnMessage;
         public string welcomeMessage;
         public string decontaminationMessage;
         public string suicideKickMessage;
-        public string autoBanMessage;
-        public string doNotTrackKickMessage;
+        public string autoBanMessage;        
         public uint welcomeMessageDuration;
         public uint decontaminationMessageDuration;
         public uint autoRestartTime;

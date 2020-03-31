@@ -37,9 +37,9 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 
 | Admin Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
-| scp_utils_info  | none  | All Staff | Show plugin info (All staff) |
-| scp_utils_player_info  | player  | scputils.playerinfo |Show player info (scputils.playerinfo perm) |
-| scp_utils_player_reset  | player  | scputils.playerreset |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
+| scputils_info  | none  | All Staff | Show plugin info (All staff) |
+| scputils_player_info  | player  | scputils.playerinfo |Show player info (scputils.playerinfo perm) |
+| scputils_player_reset  | player  | scputils.playerreset |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 
