@@ -21,8 +21,6 @@ namespace SCPUtils
         {
             this.functionsInstance = functionsInstance;
             this.pluginInstance = pluginInstance;
-
-            Log.Info("TEST OK");
         }
 
 
@@ -88,7 +86,7 @@ namespace SCPUtils
             lastTeslaEvent = DateTime.Now;
         }
 
-   
+
         public void OnPlayerLeave(PlayerLeaveEvent ev)
         {
             if (ev.Player.GetNickname() != "Dedicated Server")

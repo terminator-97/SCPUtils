@@ -10,8 +10,6 @@ namespace SCPUtils
         private readonly Functions functionsInstance;
         private readonly Utils pluginInstance;
 
-        //   public Commands(Functions functionsInstance) => this.functionsInstance = functionsInstance;
-
 
         public Commands(Functions functionsInstance, Utils pluginInstance)
         {

@@ -113,7 +113,7 @@ namespace SCPUtils
             Events.DecontaminationEvent += EventHandlers.OnDecontaminate;
             Events.Scp079TriggerTeslaEvent += EventHandlers.On079Tesla;
             Events.PlayerLeaveEvent += EventHandlers.OnPlayerLeave;
-            Events.PlayerSpawnEvent += EventHandlers.OnPlayerSpawn;        
+            Events.PlayerSpawnEvent += EventHandlers.OnPlayerSpawn;
 
         }
 

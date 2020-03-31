@@ -12,18 +12,14 @@ namespace SCPUtils
         public int i = 0;
         private readonly Utils pluginInstance;
         private readonly Commands commandsInstance;
-               
+
 
         public Functions(Utils pluginInstance, Commands commandsInstance)
         {
             this.commandsInstance = commandsInstance;
-            this.pluginInstance = pluginInstance;         
+            this.pluginInstance = pluginInstance;
         }
 
-        public void Test()
-        {
-            Log.Info(pluginInstance.autoRestartTime.ToString());
-        }
 
         public void StartFixer()
         {
