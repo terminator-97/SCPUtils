@@ -17,8 +17,8 @@ namespace SCPUtils
         //Generic
         public static bool IsStarted { get; set; }
         public static string Version = "1.0.0";
-        public static string Author = "Terminator_97#0507";
-        public static string Contributor = "iopietro#1717";
+      
+      
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
