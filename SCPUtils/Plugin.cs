@@ -71,7 +71,7 @@ namespace SCPUtils
             LoadCommands();
             CreateDatabase();
             OpenDatabase();
-            Log.Info($"{getName} {Version} created by: {Author} Contributor: {Contributor} Loaded");
+            Log.Info($"{getName} {Version} Loaded!");
         }
 
 
