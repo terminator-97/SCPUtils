@@ -41,7 +41,6 @@ Database will get created inside Exiled/SCPUtils folder.<br />
 | scp_utils_player_info  | player  | scputils.playerinfo |Show player info (scputils.playerinfo perm) |
 | scp_utils_player_reset  | player  | scputils.playerreset |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
 
-
 Thanks to iopietro for his advices<br />
 
 
