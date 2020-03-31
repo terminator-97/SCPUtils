@@ -2,7 +2,7 @@
 
 Welcome to SCPUtils, this plugin has many features such as welcome messages, decontamination messages, autorestart when only 1 player is present in game and  punishements for the ones that quit / suicide as SCP and many others features <br /><br />
 Database will get created inside Exiled/SCPUtils folder.<br /><br />
-**You should add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
+**You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
 **Required minimum Exiled version: 1.9.10**
 
 ### Configs:
@@ -40,6 +40,8 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scp_utils_info  | none  | All Staff | Show plugin info (All staff) |
 | scp_utils_player_info  | player  | scputils.playerinfo |Show player info (scputils.playerinfo perm) |
 | scp_utils_player_reset  | player  | scputils.playerreset |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
+
+Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 
 Thanks to iopietro for his advices<br />
 

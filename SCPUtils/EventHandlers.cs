@@ -58,6 +58,7 @@ namespace SCPUtils
 
             var databasePlayer = pluginInstance.Database.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
             pluginInstance.PlayerData.Add(ev.Player, databasePlayer);
+            pluginInstance.PlayerData[ev.Player].Name = ev.Player.GetNickname();
 
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage);
 

@@ -29,7 +29,7 @@ namespace SCPUtils
             switch (args[0].ToLower())
             {
 
-                case "scp_utils_help":
+                case "scputils_help":
                     {
                         ev.Allow = false;
                         ev.Sender.RAMessage($"SCPUtils info:\n" +

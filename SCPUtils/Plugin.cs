@@ -16,9 +16,9 @@ namespace SCPUtils
 
         //Generic
         public static bool IsStarted { get; set; }
-        public static string Version = "1.0.1";
-      
-      
+        public static string Version = "1.0.2";
+
+
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
@@ -36,12 +36,14 @@ namespace SCPUtils
         public bool removeOverwatchRoundStart;
         public bool enableSCPSuicideAutoBan;
         public bool multiplyBanDurationEachBan;
+        public bool enableDoNotTrackCheck;
         public string autoRestartMessage;
         public string suicideWarnMessage;
         public string welcomeMessage;
         public string decontaminationMessage;
         public string suicideKickMessage;
         public string autoBanMessage;
+        public string doNotTrackKickMessage;
         public uint welcomeMessageDuration;
         public uint decontaminationMessageDuration;
         public uint autoRestartTime;
@@ -51,6 +53,7 @@ namespace SCPUtils
         public int SCP079TeslaEventWait;
         public float autoBanThreshold;
         public float autoKickThreshold;
+
 
 
         //LiteDB
