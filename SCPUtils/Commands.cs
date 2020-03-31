@@ -54,7 +54,7 @@ namespace SCPUtils
                                     $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
                                     $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
                                     $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-                                    $"Total Suicides/Quit Percentage: [ {databasePlayer.SuicidePercentage}% ]\n");
+                                    $"Total Suicides/Quits Percentage: [ {databasePlayer.SuicidePercentage}% ]\n");
                             }
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
