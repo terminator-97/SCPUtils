@@ -16,7 +16,7 @@ namespace SCPUtils
 
         //Generic
         public static bool IsStarted { get; set; }
-        public static string Version = "1.0.0";
+        public static string Version = "1.0.1";
       
       
         public EventHandlers EventHandlers { get; private set; }
