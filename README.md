@@ -1,4 +1,4 @@
-**SCPUtils Plugin**
+**SCPUtils Plugin**<br />
 
 Welcome to SCPUtils, this plugin has many features such as welcome messages, decontamination messages, autorestart when only 1 player is present in game and  punishements for the ones that quit / suicide as SCP and many others features <br />
 Database will get created inside Exiled/SCPUtils folder.<br />

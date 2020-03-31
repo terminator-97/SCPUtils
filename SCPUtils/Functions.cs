@@ -17,8 +17,7 @@ namespace SCPUtils
         public Functions(Utils pluginInstance, Commands commandsInstance)
         {
             this.commandsInstance = commandsInstance;
-            this.pluginInstance = pluginInstance;
-            Log.Info("TEST OK");
+            this.pluginInstance = pluginInstance;         
         }
 
         public void Test()

@@ -88,13 +88,7 @@ namespace SCPUtils
             lastTeslaEvent = DateTime.Now;
         }
 
-        public void WaitForPlayers()
-        {
-            Log.Info("DON FRANCO TI UCCIDE!");
-            Log.Info(pluginInstance.welcomeEnabled.ToString());
-            functionsInstance.Test();
-        }
-
+   
         public void OnPlayerLeave(PlayerLeaveEvent ev)
         {
             if (ev.Player.GetNickname() != "Dedicated Server")
