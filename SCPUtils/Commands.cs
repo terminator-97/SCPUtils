@@ -23,14 +23,19 @@ namespace SCPUtils
         {
 
             string[] args = ev.Command.Split(' ');
-
+            var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+            if (commandSender == null)
+            {
+                ev.Sender.RAMessage("An error has occured while executing the command!", false);
+                return;
+            }
 
             switch (args[0].ToLower())
             {
-
+                
                 case "scputils_help":
                     {
-                        ev.Allow = false;
+                        ev.Allow = false;                        
                         ev.Sender.RAMessage($"SCPUtils info:\n" +
                         $"Avaible commands: scputils_help, scputils_player_info, scputils_player_reset", true);
                         break;
@@ -46,9 +51,9 @@ namespace SCPUtils
                             ev.Sender.RAMessage("Usage: scputils_player_info <player name/id>", false);
                             break;
                         }
-                        var commandsender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+                       
 
-                        if (commandsender.CheckPermission("scputils.playerreset") && commandsender != null)
+                        if (commandSender.CheckPermission("scputils.playerinfo"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             if (databasePlayer == null)
@@ -75,10 +80,9 @@ namespace SCPUtils
                         {
                             ev.Sender.RAMessage("Usage: scputils_player_reset <player name/id>", false);
                             break;
-                        }
-                        var commandsender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+                        }                        
 
-                        if (commandsender.CheckPermission("scputils.playerreset") && commandsender != null)
+                        if (commandSender.CheckPermission("scputils.playerreset"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             if (databasePlayer == null)

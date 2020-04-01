@@ -20,7 +20,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_remove_overwatch_round_start  | bool  | false | Enable / disable overwatch removal for everyone when round starts |
 | scputils_double_ban_duration_each_ban  | bool  | true | Multiply ban duration after each ban |
 | scputils_welcome_message  | string  | Welcome to the server! | Welcome message, Change it! |
-| scputils_ondecontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |
+| scputils_decontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |
 | scputils_auto_restart_message  | string  | <color=red>Round Restart:</color>\n<color=yellow>Round will be restarted in {0} seconds due lack of players</color> | Autorestart message, {0} is the amount of seconds |
 | scputils_suicide_warn_message  | string  | <color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it will result in a ban!</color> | Warn message |
 | scputils_suicide_kick_message  | string  | Suicide as SCP | Kick message |
@@ -37,7 +37,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 
 | Admin Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
-| scputils_info  | none  | All Staff | Show plugin info (All staff) |
+| scputils_help  | none  | none | Show plugin info (All staff) |
 | scputils_player_info  | player / id / userid  | scputils.playerinfo | Show player info (scputils.playerinfo perm) |
 | scputils_player_reset  | player / id / userid  | scputils.playerreset  |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
 
