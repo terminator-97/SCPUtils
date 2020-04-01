@@ -1,29 +1,95 @@
-using System;
 using EXILED;
 using EXILED.Extensions;
-using MEC;
 using LiteDB;
-using System.IO;
+using MEC;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using System.IO;
+
 
 namespace SCPUtils
 {
+    public static class Database
+    {
+        //LiteDB
+        public static string databaseName = "SCPUtils";
 
+        public static LiteDatabase LiteDatabase { get; private set; }
+        public static string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), databaseName);
+        public static string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{databaseName}.db");
+
+        public static Dictionary<ReferenceHub, Player> PlayerData = new Dictionary<ReferenceHub, Player>();
+        public static void CreateDatabase()
+        {
+            if (Directory.Exists(DatabaseDirectory)) return;
+
+            try
+            {
+                Directory.CreateDirectory(DatabaseDirectory);
+                Log.Warn("Database not found, Creating new DB");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Cannot create new DB!\n{ex.ToString()}");
+            }
+        }
+
+        public static void OpenDatabase()
+        {
+            try
+            {
+                LiteDatabase = new LiteDatabase(DatabaseFullPath);
+
+                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
+
+                Log.Info("DB Loaded!");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to open DB!\n{ex.ToString()}");
+            }
+        }
+
+        public static void AddPlayer(ReferenceHub player)
+        {
+            try
+            {
+                if (LiteDatabase.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
+
+                LiteDatabase.GetCollection<Player>().Insert(new Player()
+                {
+                    Id = DatabasePlayer.GetRawUserId(player),
+                    Name = player.GetNickname(),
+                    Authentication = DatabasePlayer.GetAuthentication(player),
+                    ScpSuicideCount = 0,
+                    TotalScpGamesPlayed = 0,
+                    TotalScpSuicideKicks = 0,
+                    TotalScpSuicideBans = 0
+                });
+                Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Cannot add new user to Database: {player.GetNickname()} ({player.GetUserId().Split('@')[0]})!\n{ex.ToString()}");
+            }
+        }
+
+
+    }
     public class Utils : EXILED.Plugin
     {
 
         //Generic
         public static bool IsStarted { get; set; }
         public static string Version = "1.0.3";
+        public override string getName { get; } = "SCPUtils";
 
 
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-        public Dictionary<ReferenceHub, Player> PlayerData = new Dictionary<ReferenceHub, Player>();
+
 
 
         //Configs
@@ -54,12 +120,7 @@ namespace SCPUtils
 
 
 
-        //LiteDB
-        public string databaseName = "SCPUtils";
 
-        public LiteDatabase Database { get; private set; }
-        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), getName);
-        public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{databaseName}.db");
 
 
         public override void OnEnable()
@@ -70,8 +131,8 @@ namespace SCPUtils
             LoadEvents();
             LoadConfig();
             LoadCommands();
-            CreateDatabase();
-            OpenDatabase();
+            Database.CreateDatabase();
+            Database.OpenDatabase();
             Log.Info($"{getName} {Version} Loaded!");
         }
 
@@ -101,7 +162,7 @@ namespace SCPUtils
 
         }
 
-        public override string getName { get; } = "SCPUtils";
+
 
 
         public void LoadEvents()
@@ -135,7 +196,7 @@ namespace SCPUtils
             removeOverwatchRoundStart = Config.GetBool("scputils_remove_overwatch_round_start", false);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
-            decontaminationMessage = Config.GetString("scputils_ondecontamination_message", "Please read server rules!");
+            decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
             autoRestartMessage = Config.GetString("scputils_auto_restart_message", "<color=red>Round Restart:</color>\n<color=yellow>Restarting round in {0} seconds due lack of players</color>");
             suicideWarnMessage = Config.GetString("scputils_suicide_warn_message", "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it will result in a ban!</color>");
             suicideKickMessage = Config.GetString("scputils_suicide_kick_message", "Suicide as SCP");
@@ -153,60 +214,7 @@ namespace SCPUtils
             ConfigValidator();
         }
 
-        private void CreateDatabase()
-        {
-            if (Directory.Exists(DatabaseDirectory)) return;
 
-            try
-            {
-                Directory.CreateDirectory(DatabaseDirectory);
-                Log.Warn("Database not found, Creating new DB");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot create new DB!\n{ex.ToString()}");
-            }
-        }
-
-        private void OpenDatabase()
-        {
-            try
-            {
-                Database = new LiteDatabase(DatabaseFullPath);
-
-                Database.GetCollection<Player>().EnsureIndex(x => x.Name);
-
-                Log.Info("DB Loaded!");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Failed to open DB!\n{ex.ToString()}");
-            }
-        }
-
-        public void AddPlayer(ReferenceHub player)
-        {
-            try
-            {
-                if (Database.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
-
-                Database.GetCollection<Player>().Insert(new Player()
-                {
-                    Id = DatabasePlayer.GetRawUserId(player),
-                    Name = player.GetNickname(),
-                    Authentication = DatabasePlayer.GetAuthentication(player),
-                    ScpSuicideCount = 0,
-                    TotalScpGamesPlayed = 0,
-                    TotalScpSuicideKicks = 0,
-                    TotalScpSuicideBans = 0
-                });
-                Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot add new user to Database: {player.GetNickname()} ({player.GetUserId().Split('@')[0]})!\n{ex.ToString()}");
-            }
-        }
 
         public void ConfigValidator()
         {

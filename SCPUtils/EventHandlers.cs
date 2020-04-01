@@ -50,15 +50,15 @@ namespace SCPUtils
         public void OnPlayerJoin(PlayerJoinEvent ev)
         {
 
-            if (!pluginInstance.Database.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
+            if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
                 Log.Info(ev.Player.GetNickname() + " is not present on DB!");
-                pluginInstance.AddPlayer(ev.Player);
+                Database.AddPlayer(ev.Player);
             }
 
-            var databasePlayer = pluginInstance.Database.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
-            pluginInstance.PlayerData.Add(ev.Player, databasePlayer);
-            pluginInstance.PlayerData[ev.Player].Name = ev.Player.GetNickname();
+            var databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
+            Database.PlayerData.Add(ev.Player, databasePlayer);
+            Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
 
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage);
 
@@ -90,14 +90,14 @@ namespace SCPUtils
 
         public void OnPlayerLeave(PlayerLeaveEvent ev)
         {
-            if (ev.Player.GetNickname() != "Dedicated Server" && ev.Player != null && pluginInstance.PlayerData.ContainsKey(ev.Player))
+            if (ev.Player.GetNickname() != "Dedicated Server" && ev.Player != null && Database.PlayerData.ContainsKey(ev.Player))
             {
                 if (ev.Player.GetTeam() == Team.SCP && pluginInstance.quitEqualsSuicide && Utils.IsStarted)
                 {
                     if (pluginInstance.enableSCPSuicideAutoWarn && pluginInstance.quitEqualsSuicide) functionsInstance.OnQuitOrSuicide(ev.Player);
                 }
-                pluginInstance.Database.GetCollection<Player>().Update(pluginInstance.PlayerData[ev.Player]);
-                pluginInstance.PlayerData.Remove(ev.Player);
+                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
+                Database.PlayerData.Remove(ev.Player);
 
 
             }
@@ -105,7 +105,7 @@ namespace SCPUtils
 
         internal void OnPlayerSpawn(PlayerSpawnEvent ev)
         {
-            if (ev.Player.GetTeam() == Team.SCP) pluginInstance.PlayerData[ev.Player].TotalScpGamesPlayed++;
+            if (ev.Player.GetTeam() == Team.SCP) Database.PlayerData[ev.Player].TotalScpGamesPlayed++;
         }
     }
 

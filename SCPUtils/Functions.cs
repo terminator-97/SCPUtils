@@ -4,6 +4,7 @@ using RemoteAdmin;
 using EXILED.Extensions;
 using System.Collections.Generic;
 
+
 namespace SCPUtils
 {
     public class Functions
@@ -68,31 +69,32 @@ namespace SCPUtils
         public void AutoBanPlayer(ReferenceHub player)
         {
             int duration;
-            pluginInstance.PlayerData[player].TotalScpSuicideBans++;
-            if (pluginInstance.multiplyBanDurationEachBan == true) duration = pluginInstance.PlayerData[player].TotalScpSuicideBans * pluginInstance.autoBanDuration;
+            Database.PlayerData[player].TotalScpSuicideBans++;
+            if (pluginInstance.multiplyBanDurationEachBan == true) duration = Database.PlayerData[player].TotalScpSuicideBans * pluginInstance.autoBanDuration;
             else duration = pluginInstance.autoBanDuration;
             player.BanPlayer(duration, $"Auto-Ban: {string.Format(pluginInstance.autoBanMessage, duration)}", "SCPUtils");
         }
 
         public void AutoKickPlayer(ReferenceHub player)
         {
-            pluginInstance.PlayerData[player].TotalScpSuicideKicks++;
+            Database.PlayerData[player].TotalScpSuicideKicks++;
             player.KickPlayer($"Auto-Kick: {pluginInstance.suicideKickMessage}", "SCPUtils");
         }
 
         public void AutoWarnPlayer(ReferenceHub player)
         {
-            pluginInstance.PlayerData[player].ScpSuicideCount++;
+            Database.PlayerData[player].ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.autoWarnMessageDuration, pluginInstance.suicideWarnMessage);
         }
 
         public void OnQuitOrSuicide(ReferenceHub player)
         {
-            var suicidePercentage = pluginInstance.PlayerData[player].SuicidePercentage;
+            var suicidePercentage = Database.PlayerData[player].SuicidePercentage;
             AutoWarnPlayer(player);
-            if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && pluginInstance.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
-            else if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && pluginInstance.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
+            if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
+            else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
+
         }
 
 

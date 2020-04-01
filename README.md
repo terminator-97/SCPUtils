@@ -10,7 +10,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 
 | Config Name  | Type | Default Value | Description |
 | ------------- | ------------- | ------------- | ------------- |
-| scputils_enable_round_restart_check  | bool  | true | Enable / disable round restart check |
+| scputils_enable_round_restart_check  | bool  | true | Enable / disable round restart check if there is only 1 player |
 | scputils_enable_scp_suicide_autowarn | bool  | true | Enable / disable suicide autowarn (required for kick and warns) |
 | scputils_auto_kick_scp_suicide  | bool  | true | Enable / disable autokick for scp suicides after a certain threshold |
 | scputils_quit_equals_suicide  | bool  | true | Should quits be considered as suicide? |
@@ -20,7 +20,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_remove_overwatch_round_start  | bool  | false | Enable / disable overwatch removal for everyone when round starts |
 | scputils_double_ban_duration_each_ban  | bool  | true | Multiply ban duration after each ban |
 | scputils_welcome_message  | string  | Welcome to the server! | Welcome message, Change it! |
-| scputils_ondecontamination_message  | string  | Please read server rules! | Decontamination message, Change it! |
+| scputils_ondecontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |
 | scputils_auto_restart_message  | string  | <color=red>Round Restart:</color>\n<color=yellow>Round will be restarted in {0} seconds due lack of players</color> | Autorestart message, {0} is the amount of seconds |
 | scputils_suicide_warn_message  | string  | <color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it will result in a ban!</color> | Warn message |
 | scputils_suicide_kick_message  | string  | Suicide as SCP | Kick message |
@@ -38,8 +38,8 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | Admin Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
 | scputils_info  | none  | All Staff | Show plugin info (All staff) |
-| scputils_player_info  | player  | scputils.playerinfo |Show player info (scputils.playerinfo perm) |
-| scputils_player_reset  | player  | scputils.playerreset |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
+| scputils_player_info  | player / id / userid  | scputils.playerinfo | Show player info (scputils.playerinfo perm) |
+| scputils_player_reset  | player / id / userid  | scputils.playerreset  |Reset warns,suicides,bans,kick and games played stats (scputils.playerreset perm) |
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 
