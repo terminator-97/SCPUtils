@@ -1,4 +1,5 @@
 ﻿using EXILED;
+using System;
 using EXILED.Extensions;
 
 
@@ -9,6 +10,7 @@ namespace SCPUtils
     {
         private readonly Functions functionsInstance;
         private readonly Utils pluginInstance;
+        string playerListString;
 
 
 
@@ -66,7 +68,27 @@ namespace SCPUtils
                   $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
                   $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
                   $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-                  $"Total Suicides/Quits Percentage: [ {databasePlayer.SuicidePercentage}% ]\n");
+                  $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n");
+                        }
+                        else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
+                        break;
+                    }
+
+
+
+                case "scputils_player_list":
+                    {
+                        ev.Allow = false;
+
+                        if (commandSender.CheckPermission("scputils.playerlist"))
+                        {
+
+                            foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().FindAll())
+                            {
+                                playerListString += $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n";
+
+                            }
+                            ev.Sender.RAMessage($"{playerListString}");
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;

@@ -81,7 +81,7 @@ namespace SCPUtils
 
         //Generic
         public static bool IsStarted { get; set; }
-        public static string Version = "1.2.1";
+        public static string Version = "1.2.2";
         public override string getName { get; } = "SCPUtils";
 
 
