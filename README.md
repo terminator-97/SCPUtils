@@ -37,7 +37,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 
 | Admin Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
-| scputils_help  | none  | none | Show plugin info (All staff) |
+| scputils_help  | none  | none | Show plugin info |
 | scputils_player_info  | player / id / userid  | scputils.playerinfo | Show player info |
 | scputils_player_list  | none  | scputils.playerlist | List all players info |
 | scputils_player_reset  | player / id / userid  | scputils.playerreset  |Reset warns,suicides,bans,kick and games played stats |
