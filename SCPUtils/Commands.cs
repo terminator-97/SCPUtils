@@ -15,8 +15,6 @@ namespace SCPUtils
         {
             this.functionsInstance = functionsInstance;
             this.pluginInstance = pluginInstance;
-
-            Log.Info("TEST OK");
         }
 
 
@@ -39,15 +37,26 @@ namespace SCPUtils
 
                 case "scputils_player_info":
                     {
+
                         ev.Allow = false;
+                        if (args.Length < 2)
+                        {
+                            ev.Sender.RAMessage("Usage: scputils_player_info <player name/id>", false);
+                            break;
+                        }
                         var commandsender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+
                         if (commandsender.CheckPermission("scputils.playerinfo") && commandsender != null)
                         {
                             var player = EXILED.Extensions.Player.GetPlayer(args[1]);
-
                             if (player == null) ev.Sender.RAMessage("Invalid Player!", false);
                             else
                             {
+                                if (!pluginInstance.PlayerData.ContainsKey(player))
+                                {
+                                    ev.Sender.RAMessage("Player data has not been loaded yet!", false);
+                                    break;
+                                }
                                 var databasePlayer = pluginInstance.PlayerData[player];
                                 ev.Sender.RAMessage($"\n[{player.GetNickname()} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
                                     $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +
@@ -66,14 +75,24 @@ namespace SCPUtils
                 case "scputils_player_reset":
                     {
                         ev.Allow = false;
+                        if (args.Length < 2)
+                        {
+                            ev.Sender.RAMessage("Usage: scputils_player_info <player name/id>", false);
+                            break;
+                        }
                         var commandsender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+
                         if (commandsender.CheckPermission("scputils.playerreset") && commandsender != null)
                         {
                             var player = EXILED.Extensions.Player.GetPlayer(args[1]);
-
                             if (player == null) ev.Sender.RAMessage("Invalid Player!", false);
                             else
                             {
+                                if (!pluginInstance.PlayerData.ContainsKey(player))
+                                {
+                                    ev.Sender.RAMessage("Player data has not been loaded yet!", false);
+                                    break;
+                                }
                                 var databasePlayer = pluginInstance.PlayerData[player];
                                 databasePlayer.Name = player.GetNickname();
                                 databasePlayer.ScpSuicideCount = 0;

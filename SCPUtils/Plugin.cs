@@ -16,7 +16,7 @@ namespace SCPUtils
 
         //Generic
         public static bool IsStarted { get; set; }
-        public static string Version = "1.0.2";
+        public static string Version = "1.0.3";
 
 
         public EventHandlers EventHandlers { get; private set; }
@@ -35,13 +35,13 @@ namespace SCPUtils
         public bool autoKickOnSCPSuicide;
         public bool removeOverwatchRoundStart;
         public bool enableSCPSuicideAutoBan;
-        public bool multiplyBanDurationEachBan;        
+        public bool multiplyBanDurationEachBan;
         public string autoRestartMessage;
         public string suicideWarnMessage;
         public string welcomeMessage;
         public string decontaminationMessage;
         public string suicideKickMessage;
-        public string autoBanMessage;        
+        public string autoBanMessage;
         public uint welcomeMessageDuration;
         public uint decontaminationMessageDuration;
         public uint autoRestartTime;
@@ -131,7 +131,7 @@ namespace SCPUtils
             quitEqualsSuicide = Config.GetBool("scputils_quit_equals_suicide", true);
             welcomeEnabled = Config.GetBool("scputils_welcome_enabled", true);
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
-            enableSCPSuicideAutoBan = Config.GetBool("enable_scp_suicide_auto_ban", true);
+            enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
             removeOverwatchRoundStart = Config.GetBool("scputils_remove_overwatch_round_start", false);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");

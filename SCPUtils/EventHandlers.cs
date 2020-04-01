@@ -90,7 +90,7 @@ namespace SCPUtils
 
         public void OnPlayerLeave(PlayerLeaveEvent ev)
         {
-            if (ev.Player.GetNickname() != "Dedicated Server")
+            if (ev.Player.GetNickname() != "Dedicated Server" && ev.Player != null && pluginInstance.PlayerData.ContainsKey(ev.Player))
             {
                 if (ev.Player.GetTeam() == Team.SCP && pluginInstance.quitEqualsSuicide && Utils.IsStarted)
                 {
