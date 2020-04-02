@@ -30,7 +30,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_auto_restart_time  | int  | 15 | After how many seconds round should be restarted if there is only 1 player? |
 | scputils_autowarn_message_duration  | int  | 30 | Autowarn message duration |
 | scputils_auto_ban_duration  | int | 15 | Autoban duration in minutes |
-| scputils_auto_ban_tollerance  | int | 3 | Tollerance, if the player has commited less suicides than tollerance he won't get kicked or banned even if the percentage is outside of threshold |
+| scputils_auto_ban_tollerance  | int | 5 | Tollerance, if the player has commited less suicides than tollerance he won't get kicked or banned even if the percentage is outside of threshold |
 | scputils_scp_079_tesla_event_wait  | int | 2 | If 079 trigger tesla for how many seconds player shouldn't get warned for suicide? |
 | scputils_auto_ban_threshold | float | 30.5f | Percentage of suicides to trigger a ban (Suicides / Games played as SCP) * 100 |
 | scputils_auto_kick_threshold  | float | 15.5f | Percentage of suicides to trigger a kick (Suicides / Games played as SCP) * 100 |

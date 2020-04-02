@@ -25,12 +25,7 @@ namespace SCPUtils
         {
 
             string[] args = ev.Command.Split(' ');
-            var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-            if (commandSender == null)
-            {
-                ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                return;
-            }
+
 
             switch (args[0].ToLower())
             {
@@ -48,6 +43,14 @@ namespace SCPUtils
                 case "scputils_player_info":
                     {
                         ev.Allow = false;
+
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+                        if (commandSender == null)
+                        {
+                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
+                            break;
+                        }
+
                         if (args.Length < 2)
                         {
                             ev.Sender.RAMessage("Usage: scputils_player_info <player name/id>", false);
@@ -80,6 +83,13 @@ namespace SCPUtils
                     {
                         ev.Allow = false;
 
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+                        if (commandSender == null)
+                        {
+                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
+                            return;
+                        }
+
                         if (commandSender.CheckPermission("scputils.playerlist"))
                         {
 
@@ -98,6 +108,14 @@ namespace SCPUtils
                 case "scputils_player_reset":
                     {
                         ev.Allow = false;
+
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+                        if (commandSender == null)
+                        {
+                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
+                            return;
+                        }
+
                         if (args.Length < 2)
                         {
                             ev.Sender.RAMessage("Usage: scputils_player_reset <player name/id>", false);
