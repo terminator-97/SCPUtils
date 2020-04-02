@@ -10,10 +10,8 @@ using System.IO;
 namespace SCPUtils
 {
     public static class Database
-    {
-        //LiteDB
+    {       
         public static string databaseName = "SCPUtils";
-
         public static LiteDatabase LiteDatabase { get; private set; }
         public static string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), databaseName);
         public static string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{databaseName}.db");
@@ -76,14 +74,11 @@ namespace SCPUtils
 
 
     }
-    public class Utils : EXILED.Plugin
-    {
-
-        //Generic
+    public class Utils : Plugin
+    {     
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.2.3";
+        public static string pluginVersion = "1.2.4";
         public override string getName { get; } = "SCPUtils";
-
 
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
@@ -91,7 +86,6 @@ namespace SCPUtils
         public Player Player { get; private set; }
 
         internal ExiledVersion ExiledVersion { get; private set; } = new ExiledVersion() { Major = 1, Minor = 9, Patch = 10 };
-
 
         //Configs
         public bool enableSCPSuicideAutoWarn;
@@ -119,14 +113,9 @@ namespace SCPUtils
         public float autoBanThreshold;
         public float autoKickThreshold;
 
-
-
-
-
-
         public override void OnEnable()
         {
-            Commands = new Commands(Functions, this);
+            Commands = new Commands();
             Functions = new Functions(this, Commands);
             EventHandlers = new EventHandlers(Functions, this);
             LoadEvents();
@@ -136,8 +125,6 @@ namespace SCPUtils
             Database.OpenDatabase();
             Log.Info($"{getName} {pluginVersion} Loaded!");
         }
-
-
 
         public override void OnDisable()
         {
@@ -156,15 +143,9 @@ namespace SCPUtils
             Functions = null;
         }
 
-
-
         public override void OnReload()
         {
-
         }
-
-
-
 
         public void LoadEvents()
         {
@@ -177,7 +158,6 @@ namespace SCPUtils
             Events.Scp079TriggerTeslaEvent += EventHandlers.On079Tesla;
             Events.PlayerLeaveEvent += EventHandlers.OnPlayerLeave;
             Events.PlayerSpawnEvent += EventHandlers.OnPlayerSpawn;
-
         }
 
         public void LoadCommands()
@@ -211,11 +191,8 @@ namespace SCPUtils
             SCP079TeslaEventWait = Config.GetInt("scputils_scp_079_tesla_event_wait", 2);
             autoBanThreshold = Config.GetFloat("scputils_auto_ban_threshold", 30.5f);
             autoKickThreshold = Config.GetFloat("scputils_auto_kick_threshold", 15.5f);
-
             ConfigValidator();
         }
-
-
 
         public void ConfigValidator()
         {
@@ -224,8 +201,6 @@ namespace SCPUtils
             if (autoRestartTime < 0) Log.Warn("Invalid config scputils_auto_restart_time!");
             if (SCP079TeslaEventWait < 0) Log.Warn("Invalid config scputils_scp_079_tesla_event_wait!");
             if (Version.Parse($"{EventPlugin.Version.Major}.{EventPlugin.Version.Minor}.{EventPlugin.Version.Patch}") < Version.Parse($"{ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}")) Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
-
         }
-
     }
 }

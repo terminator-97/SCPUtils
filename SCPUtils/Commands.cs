@@ -8,17 +8,6 @@ namespace SCPUtils
 {
     public class Commands
     {
-        private readonly Functions functionsInstance;
-        private readonly Utils pluginInstance;
-        string playerListString;
-
-
-
-        public Commands(Functions functionsInstance, Utils pluginInstance)
-        {
-            this.functionsInstance = functionsInstance;
-            this.pluginInstance = pluginInstance;
-        }
 
 
         public void OnRaCommand(ref RACommandEvent ev)
@@ -93,6 +82,7 @@ namespace SCPUtils
                         if (commandSender.CheckPermission("scputils.playerlist"))
                         {
 
+                            var playerListString = "";
                             foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().FindAll())
                             {
                                 playerListString += $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n";
