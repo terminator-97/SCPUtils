@@ -90,7 +90,7 @@ namespace SCPUtils
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
 
-        internal ExiledVersion ExiledVersion { get; private set; } = new ExiledVersion() { Major = 1, Minor = 9, Patch = 11 };
+        internal ExiledVersion ExiledVersion { get; private set; } = new ExiledVersion() { Major = 1, Minor = 9, Patch = 10 };
 
 
         //Configs
