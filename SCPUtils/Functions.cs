@@ -14,19 +14,16 @@ namespace SCPUtils
         private readonly Utils pluginInstance;
         private readonly Commands commandsInstance;
 
-
         public Functions(Utils pluginInstance, Commands commandsInstance)
         {
             this.commandsInstance = commandsInstance;
             this.pluginInstance = pluginInstance;
         }
 
-
         public void StartFixer()
         {
             DT = Timing.RunCoroutine(SCPFixer(5), Segment.FixedUpdate);
         }
-
 
         public IEnumerator<float> SCPFixer(int WT)
         {
@@ -57,7 +54,6 @@ namespace SCPUtils
                 if (SCPUtils.Utils.IsStarted == false) { Timing.KillCoroutines(DT); ServerConsole.AddLog("Killing SCPFix"); }
             }
         }
-
         public void RoundStartPrepare()
         {
             foreach (var player in PlayerManager.players)
@@ -94,10 +90,7 @@ namespace SCPUtils
             AutoWarnPlayer(player);
             if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
             else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
-
         }
-
-
     }
 }
 

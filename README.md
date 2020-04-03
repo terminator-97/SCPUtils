@@ -10,6 +10,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 
 | Config Name  | Type | Default Value | Description |
 | ------------- | ------------- | ------------- | ------------- |
+| scputils_enabled | bool  | true | Enable / disable the entire plugin |
 | scputils_enable_round_restart_check  | bool  | true | Enable / disable round restart check if there is only 1 player |
 | scputils_enable_scp_suicide_autowarn | bool  | true | Enable / disable suicide autowarn (required for kick and warns) |
 | scputils_auto_kick_scp_suicide  | bool  | true | Enable / disable autokick for scp suicides after a certain threshold |

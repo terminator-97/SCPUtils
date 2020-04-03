@@ -1,83 +1,15 @@
 using EXILED;
-using EXILED.Extensions;
-using LiteDB;
 using MEC;
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 
 namespace SCPUtils
 {
-    public static class Database
-    {       
-        public static string databaseName = "SCPUtils";
-        public static LiteDatabase LiteDatabase { get; private set; }
-        public static string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), databaseName);
-        public static string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{databaseName}.db");
 
-        public static Dictionary<ReferenceHub, Player> PlayerData = new Dictionary<ReferenceHub, Player>();
-        public static void CreateDatabase()
-        {
-            if (Directory.Exists(DatabaseDirectory)) return;
-
-            try
-            {
-                Directory.CreateDirectory(DatabaseDirectory);
-                Log.Warn("Database not found, Creating new DB");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot create new DB!\n{ex.ToString()}");
-            }
-        }
-
-        public static void OpenDatabase()
-        {
-            try
-            {
-                LiteDatabase = new LiteDatabase(DatabaseFullPath);
-
-                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
-
-                Log.Info("DB Loaded!");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Failed to open DB!\n{ex.ToString()}");
-            }
-        }
-
-        public static void AddPlayer(ReferenceHub player)
-        {
-            try
-            {
-                if (LiteDatabase.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
-
-                LiteDatabase.GetCollection<Player>().Insert(new Player()
-                {
-                    Id = DatabasePlayer.GetRawUserId(player),
-                    Name = player.GetNickname(),
-                    Authentication = DatabasePlayer.GetAuthentication(player),
-                    ScpSuicideCount = 0,
-                    TotalScpGamesPlayed = 0,
-                    TotalScpSuicideKicks = 0,
-                    TotalScpSuicideBans = 0
-                });
-                Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot add new user to Database: {player.GetNickname()} ({player.GetUserId().Split('@')[0]})!\n{ex.ToString()}");
-            }
-        }
-
-
-    }
     public class Utils : Plugin
-    {     
+    {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.2.4";
+        public static string pluginVersion = "1.2.5";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -88,6 +20,7 @@ namespace SCPUtils
         internal ExiledVersion ExiledVersion { get; private set; } = new ExiledVersion() { Major = 1, Minor = 9, Patch = 10 };
 
         //Configs
+        public bool isEnabled;
         public bool enableSCPSuicideAutoWarn;
         public bool enableRoundRestartCheck;
         public bool quitEqualsSuicide;
@@ -115,11 +48,13 @@ namespace SCPUtils
 
         public override void OnEnable()
         {
+            LoadConfig();
+
+            if (!isEnabled) return;
             Commands = new Commands();
             Functions = new Functions(this, Commands);
             EventHandlers = new EventHandlers(Functions, this);
             LoadEvents();
-            LoadConfig();
             LoadCommands();
             Database.CreateDatabase();
             Database.OpenDatabase();
@@ -137,6 +72,7 @@ namespace SCPUtils
             Events.RemoteAdminCommandEvent -= Commands.OnRaCommand;
             Events.PlayerLeaveEvent -= EventHandlers.OnPlayerLeave;
             Events.PlayerSpawnEvent -= EventHandlers.OnPlayerSpawn;
+            Events.Scp079TriggerTeslaEvent -= EventHandlers.On079Tesla;
             Timing.KillCoroutines(Functions.DT);
             EventHandlers = null;
             Commands = null;
@@ -145,6 +81,7 @@ namespace SCPUtils
 
         public override void OnReload()
         {
+            LoadConfig();
         }
 
         public void LoadEvents()
@@ -167,6 +104,7 @@ namespace SCPUtils
 
         internal void LoadConfig()
         {
+            isEnabled = Config.GetBool("scputils_enabled", true);
             enableRoundRestartCheck = Config.GetBool("scputils_enable_round_restart_check", true);
             enableSCPSuicideAutoWarn = Config.GetBool("scputils_enable_scp_suicide_autowarn", true);
             autoKickOnSCPSuicide = Config.GetBool("scputils_auto_kick_scp_suicide", true);
@@ -200,6 +138,7 @@ namespace SCPUtils
             if (autoKickThreshold >= autoBanThreshold) Log.Warn("Invalid config scputils_auto_kick_threshold OR scputils_auto_ban_threshold!");
             if (autoRestartTime < 0) Log.Warn("Invalid config scputils_auto_restart_time!");
             if (SCP079TeslaEventWait < 0) Log.Warn("Invalid config scputils_scp_079_tesla_event_wait!");
+            if (!isEnabled) Log.Warn("You disabled the plugin in server configs!");
             if (Version.Parse($"{EventPlugin.Version.Major}.{EventPlugin.Version.Minor}.{EventPlugin.Version.Patch}") < Version.Parse($"{ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}")) Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
         }
     }

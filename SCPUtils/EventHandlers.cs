@@ -15,15 +15,11 @@ namespace SCPUtils
 
         public DateTime lastTeslaEvent;
 
-
-
         public EventHandlers(Functions functionsInstance, Utils pluginInstance)
         {
             this.functionsInstance = functionsInstance;
             this.pluginInstance = pluginInstance;
         }
-
-
 
         public void OnRoundStart()
         {
@@ -35,8 +31,6 @@ namespace SCPUtils
         {
             SCPUtils.Utils.IsStarted = false;
             Timing.KillCoroutines(functionsInstance.DT);
-
-
         }
 
         public void OnRoundRestart()
@@ -44,8 +38,6 @@ namespace SCPUtils
             SCPUtils.Utils.IsStarted = false;
             Timing.KillCoroutines(functionsInstance.DT);
         }
-
-
 
         public void OnPlayerJoin(PlayerJoinEvent ev)
         {
@@ -87,7 +79,6 @@ namespace SCPUtils
             lastTeslaEvent = DateTime.Now;
         }
 
-
         public void OnPlayerLeave(PlayerLeaveEvent ev)
         {
             if (ev.Player.GetNickname() != "Dedicated Server" && ev.Player != null && Database.PlayerData.ContainsKey(ev.Player))
@@ -98,8 +89,6 @@ namespace SCPUtils
                 }
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
                 Database.PlayerData.Remove(ev.Player);
-
-
             }
         }
 

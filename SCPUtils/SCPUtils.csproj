@@ -70,8 +70,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database.cs" />
     <Compile Include="DatabasePlayer.cs" />
-    <Compile Include="Data.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="EventHandlers.cs" />

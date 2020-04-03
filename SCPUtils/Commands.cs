@@ -1,15 +1,10 @@
 ﻿using EXILED;
 using System;
-using EXILED.Extensions;
-
-
 
 namespace SCPUtils
 {
     public class Commands
     {
-
-
         public void OnRaCommand(ref RACommandEvent ev)
         {
 
@@ -27,8 +22,6 @@ namespace SCPUtils
                         break;
                     }
 
-
-
                 case "scputils_player_info":
                     {
                         ev.Allow = false;
@@ -45,7 +38,6 @@ namespace SCPUtils
                             ev.Sender.RAMessage("Usage: scputils_player_info <player name/id>", false);
                             break;
                         }
-
 
                         if (commandSender.CheckPermission("scputils.playerinfo"))
                         {
@@ -65,8 +57,6 @@ namespace SCPUtils
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
-
-
 
                 case "scputils_player_list":
                     {
@@ -93,7 +83,6 @@ namespace SCPUtils
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
-
 
                 case "scputils_player_reset":
                     {
@@ -127,13 +116,7 @@ namespace SCPUtils
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
-
             }
-
-
-
         }
-
-
     }
 }
