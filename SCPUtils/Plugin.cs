@@ -80,8 +80,7 @@ namespace SCPUtils
         }
 
         public override void OnReload()
-        {
-            LoadConfig();
+        {         
         }
 
         public void LoadEvents()
