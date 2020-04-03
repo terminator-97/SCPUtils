@@ -9,7 +9,7 @@ namespace SCPUtils
     public class Utils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.2.5";
+        public static string pluginVersion = "1.2.6";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -77,10 +77,11 @@ namespace SCPUtils
             EventHandlers = null;
             Commands = null;
             Functions = null;
+            Database.LiteDatabase.Dispose();
         }
 
         public override void OnReload()
-        {         
+        {        
         }
 
         public void LoadEvents()
