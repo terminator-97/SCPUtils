@@ -10,33 +10,29 @@ namespace SCPUtils
 {
     public class EventHandlers
     {
-        private readonly Utils pluginInstance;
-        private readonly Functions functionsInstance;
-
+        private readonly SCPUtils pluginInstance;        
+        
         public DateTime lastTeslaEvent;
-
-        public EventHandlers(Functions functionsInstance, Utils pluginInstance)
-        {
-            this.functionsInstance = functionsInstance;
-            this.pluginInstance = pluginInstance;
-        }
+  
+        public EventHandlers(SCPUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         public void OnRoundStart()
         {
-            Utils.IsStarted = true;
-            if (pluginInstance.enableRoundRestartCheck) functionsInstance.StartFixer();
+            SCPUtils.IsStarted = true;
+            if (pluginInstance.enableRoundRestartCheck) pluginInstance.Functions.StartFixer();            
         }
 
         public void OnRoundEnd()
         {
-            SCPUtils.Utils.IsStarted = false;
-            Timing.KillCoroutines(functionsInstance.DT);
+            SCPUtils.IsStarted = false;
+            Timing.KillCoroutines(pluginInstance.Functions.DT);
+            
         }
 
         public void OnRoundRestart()
         {
-            SCPUtils.Utils.IsStarted = false;
-            Timing.KillCoroutines(functionsInstance.DT);
+            SCPUtils.IsStarted = false;
+            Timing.KillCoroutines(pluginInstance.Functions.DT);
         }
 
         public void OnPlayerJoin(PlayerJoinEvent ev)
@@ -52,28 +48,29 @@ namespace SCPUtils
             Database.PlayerData.Add(ev.Player, databasePlayer);
             Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
 
-            if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage);
+            if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
 
         }
 
         public void OnDecontaminate(ref DecontaminationEvent ev)
         {
-            if (pluginInstance.decontaminationMessageEnabled) QueryProcessor.Localplayer.GetComponent<Broadcast>().RpcAddElement(pluginInstance.decontaminationMessage, pluginInstance.decontaminationMessageDuration, false);
+            if (pluginInstance.decontaminationMessageEnabled) Map.Broadcast(pluginInstance.decontaminationMessage, pluginInstance.decontaminationMessageDuration, false);
+            
         }
 
         public void OnPlayerDeath(ref PlayerDeathEvent ev)
         {
-            if (ev.Player.GetTeam() == Team.SCP && Utils.IsStarted && pluginInstance.enableSCPSuicideAutoWarn)
+            if (ev.Player.GetTeam() == Team.SCP && SCPUtils.IsStarted && pluginInstance.enableSCPSuicideAutoWarn)
             {
 
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.SCP079TeslaEventWait)
                 {
-                    if (ev.Info.GetDamageType() == DamageTypes.Tesla || ev.Info.GetDamageType() == DamageTypes.Wall) functionsInstance.OnQuitOrSuicide(ev.Player);
-
+                    if (ev.Info.GetDamageType() == DamageTypes.Tesla || ev.Info.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
+                  
                 }
             }
         }
-
+       
         public void On079Tesla(ref Scp079TriggerTeslaEvent ev)
         {
             lastTeslaEvent = DateTime.Now;
@@ -83,9 +80,9 @@ namespace SCPUtils
         {
             if (ev.Player.GetNickname() != "Dedicated Server" && ev.Player != null && Database.PlayerData.ContainsKey(ev.Player))
             {
-                if (ev.Player.GetTeam() == Team.SCP && pluginInstance.quitEqualsSuicide && Utils.IsStarted)
+                if (ev.Player.GetTeam() == Team.SCP && pluginInstance.quitEqualsSuicide && SCPUtils.IsStarted)
                 {
-                    if (pluginInstance.enableSCPSuicideAutoWarn && pluginInstance.quitEqualsSuicide) functionsInstance.OnQuitOrSuicide(ev.Player);
+                    if (pluginInstance.enableSCPSuicideAutoWarn && pluginInstance.quitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
                 }
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
                 Database.PlayerData.Remove(ev.Player);

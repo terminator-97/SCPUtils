@@ -11,25 +11,21 @@ namespace SCPUtils
     {
         public CoroutineHandle DT;
         public int i = 0;
-        private readonly Utils pluginInstance;
-        private readonly Commands commandsInstance;
+        private readonly SCPUtils pluginInstance;
 
-        public Functions(Utils pluginInstance, Commands commandsInstance)
-        {
-            this.commandsInstance = commandsInstance;
-            this.pluginInstance = pluginInstance;
-        }
+
+        public Functions(SCPUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         public void StartFixer()
         {
-            DT = Timing.RunCoroutine(SCPFixer(5), Segment.FixedUpdate);
+            DT = Timing.RunCoroutine(SCPFixer(5));
         }
 
         public IEnumerator<float> SCPFixer(int WT)
         {
             yield return Timing.WaitForSeconds(WT);
 
-            while (SCPUtils.Utils.IsStarted)
+            while (SCPUtils.IsStarted)
             {
                 yield return Timing.WaitForSeconds(WT);
 
@@ -37,30 +33,23 @@ namespace SCPUtils
                 {
                     if (RoundSummary.RoundLock == false)
                     {
-
-                        QueryProcessor.Localplayer.GetComponent<Broadcast>().RpcAddElement(string.Format(pluginInstance.autoRestartMessage, pluginInstance.autoRestartTime), pluginInstance.autoRestartTime, false);
+                        Map.Broadcast(string.Format(pluginInstance.autoRestartMessage, pluginInstance.autoRestartTime), pluginInstance.autoRestartTime, false);
+                      
                         yield return Timing.WaitForSeconds(pluginInstance.autoRestartTime);
 
                         if (RoundSummary.RoundLock == false)
                         {
                             QueryProcessor.Localplayer.GetComponent<PlayerStats>().Roundrestart();
                             Log.Info("<SCPUtils> Round restarted due to lack of players");
-                            SCPUtils.Utils.IsStarted = false;
-                            Timing.KillCoroutines(DT);
+                            SCPUtils.IsStarted = false;
+                            yield break;
                         }
                         else Log.Warn("Auto-Restart aborted!");
                     }
                 }
-                if (SCPUtils.Utils.IsStarted == false) { Timing.KillCoroutines(DT); ServerConsole.AddLog("Killing SCPFix"); }
+                if (SCPUtils.IsStarted == false) { ServerConsole.AddLog("Killing SCPFix"); yield break; }
             }
-        }
-        public void RoundStartPrepare()
-        {
-            foreach (var player in PlayerManager.players)
-            {
-                player.GetComponent<ServerRoles>().CmdSetOverwatchStatus(0);
-            }
-        }
+        }     
 
         public void AutoBanPlayer(ReferenceHub player)
         {
@@ -81,7 +70,8 @@ namespace SCPUtils
         {
             Database.PlayerData[player].ScpSuicideCount++;
             player.ClearBroadcasts();
-            player.Broadcast(pluginInstance.autoWarnMessageDuration, pluginInstance.suicideWarnMessage);
+            player.Broadcast(pluginInstance.autoWarnMessageDuration, pluginInstance.suicideWarnMessage, false);
+           
         }
 
         public void OnQuitOrSuicide(ReferenceHub player)
@@ -91,6 +81,8 @@ namespace SCPUtils
             if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
             else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
         }
+
+     
     }
 }
 

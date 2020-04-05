@@ -6,10 +6,10 @@ using System;
 namespace SCPUtils
 {
 
-    public class Utils : Plugin
+    public class SCPUtils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.2.6";
+        public static string pluginVersion = "1.3.0";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -27,7 +27,6 @@ namespace SCPUtils
         public bool welcomeEnabled;
         public bool decontaminationMessageEnabled;
         public bool autoKickOnSCPSuicide;
-        public bool removeOverwatchRoundStart;
         public bool enableSCPSuicideAutoBan;
         public bool multiplyBanDurationEachBan;
         public string autoRestartMessage;
@@ -52,8 +51,8 @@ namespace SCPUtils
 
             if (!isEnabled) return;
             Commands = new Commands();
-            Functions = new Functions(this, Commands);
-            EventHandlers = new EventHandlers(Functions, this);
+            Functions = new Functions(this);
+            EventHandlers = new EventHandlers(this);
             LoadEvents();
             LoadCommands();
             Database.CreateDatabase();
@@ -111,8 +110,7 @@ namespace SCPUtils
             quitEqualsSuicide = Config.GetBool("scputils_quit_equals_suicide", true);
             welcomeEnabled = Config.GetBool("scputils_welcome_enabled", true);
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
-            enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
-            removeOverwatchRoundStart = Config.GetBool("scputils_remove_overwatch_round_start", false);
+            enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);  
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
             decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
@@ -134,12 +132,36 @@ namespace SCPUtils
 
         public void ConfigValidator()
         {
-            if (scpSuicideTollerance < 0) Log.Warn("Invalid config scputils_scp_suicide_tollerance!");
-            if (autoKickThreshold >= autoBanThreshold) Log.Warn("Invalid config scputils_auto_kick_threshold OR scputils_auto_ban_threshold!");
-            if (autoRestartTime < 0) Log.Warn("Invalid config scputils_auto_restart_time!");
-            if (SCP079TeslaEventWait < 0) Log.Warn("Invalid config scputils_scp_079_tesla_event_wait!");
-            if (!isEnabled) Log.Warn("You disabled the plugin in server configs!");
-            if (Version.Parse($"{EventPlugin.Version.Major}.{EventPlugin.Version.Minor}.{EventPlugin.Version.Patch}") < Version.Parse($"{ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}")) Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
+            if (scpSuicideTollerance < 0)
+            {
+                Log.Warn("Invalid config scputils_scp_suicide_tollerance, loading dafault one!");
+                scpSuicideTollerance = 5;
+
+            }
+            if (autoKickThreshold >= autoBanThreshold)
+            {
+                Log.Warn("Invalid config scputils_auto_kick_threshold OR scputils_auto_ban_threshold, loading dafault one!");
+                autoBanThreshold = 30.5f;
+
+            }
+            if (autoRestartTime < 0) 
+            {
+                Log.Warn("Invalid config scputils_auto_restart_time, loading dafault one!");
+                autoRestartTime = 15;
+            }
+            if (SCP079TeslaEventWait < 0)
+            {
+                Log.Warn("Invalid config scputils_scp_079_tesla_event_wait, loading dafault one!");
+                SCP079TeslaEventWait = 2;
+            }
+            if (!isEnabled)
+            {
+                Log.Warn("You disabled the plugin in server configs!");
+            }
+            if (Version.Parse($"{EventPlugin.Version.Major}.{EventPlugin.Version.Minor}.{EventPlugin.Version.Patch}") < Version.Parse($"{ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}"))
+            {
+                Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
+            }
         }
     }
 }

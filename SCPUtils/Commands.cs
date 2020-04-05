@@ -8,8 +8,7 @@ namespace SCPUtils
         public void OnRaCommand(ref RACommandEvent ev)
         {
 
-            string[] args = ev.Command.Split(' ');
-
+            string[] args = ev.Command.Split(' ');         
 
             switch (args[0].ToLower())
             {
@@ -17,8 +16,9 @@ namespace SCPUtils
                 case "scputils_help":
                     {
                         ev.Allow = false;
+                   
                         ev.Sender.RAMessage($"SCPUtils info:\n" +
-                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_reset", true);
+                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_reset, scputils_player_list", true);
                         break;
                     }
 
@@ -52,7 +52,8 @@ namespace SCPUtils
                   $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
                   $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
                   $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-                  $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n");
+                  $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
+                  $"First Join: [ {databasePlayer.FirstJoin} ]");
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;

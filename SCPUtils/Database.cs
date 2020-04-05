@@ -60,7 +60,9 @@ namespace SCPUtils
                     ScpSuicideCount = 0,
                     TotalScpGamesPlayed = 0,
                     TotalScpSuicideKicks = 0,
-                    TotalScpSuicideBans = 0
+                    TotalScpSuicideBans = 0,
+                    FirstJoin = DateTime.Now
+                    
                 });
                 Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
             }

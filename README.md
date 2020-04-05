@@ -18,7 +18,6 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_welcome_enabled  | bool  | true | Enable / Disabile welcome message when player join |
 | scputils_decontamination_message_enabled  | bool  | false | Enable / disable a message when decontamination starts |
 | scputils_enable_scp_suicide_auto_ban  | bool  | true |  Enable / disable autoban for scp suicides after a certain threshold |
-| scputils_remove_overwatch_round_start  | bool  | false | Enable / disable overwatch removal for everyone when round starts |
 | scputils_double_ban_duration_each_ban  | bool  | true | Multiply ban duration after each ban |
 | scputils_welcome_message  | string  | Welcome to the server! | Welcome message, Change it! |
 | scputils_decontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |

@@ -1,4 +1,6 @@
-﻿namespace SCPUtils
+﻿using System;
+
+namespace SCPUtils
 {
     public class Player
     {
@@ -10,6 +12,8 @@
         public int TotalScpGamesPlayed { get; set; }
         public int TotalScpSuicideKicks { get; set; }
         public int TotalScpSuicideBans { get; set; }
+        public DateTime FirstJoin { get; set; }
+
 
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : ((float)ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
 
