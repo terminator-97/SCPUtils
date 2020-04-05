@@ -16,7 +16,6 @@ namespace SCPUtils
         public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-
         internal ExiledVersion ExiledVersion { get; private set; } = new ExiledVersion() { Major = 1, Minor = 9, Patch = 10 };
 
         //Configs
@@ -80,7 +79,7 @@ namespace SCPUtils
         }
 
         public override void OnReload()
-        {        
+        {
         }
 
         public void LoadEvents()
@@ -110,7 +109,7 @@ namespace SCPUtils
             quitEqualsSuicide = Config.GetBool("scputils_quit_equals_suicide", true);
             welcomeEnabled = Config.GetBool("scputils_welcome_enabled", true);
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
-            enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);  
+            enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
             decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
@@ -144,7 +143,7 @@ namespace SCPUtils
                 autoBanThreshold = 30.5f;
 
             }
-            if (autoRestartTime < 0) 
+            if (autoRestartTime < 0)
             {
                 Log.Warn("Invalid config scputils_auto_restart_time, loading dafault one!");
                 autoRestartTime = 15;

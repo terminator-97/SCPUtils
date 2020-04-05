@@ -34,7 +34,7 @@ namespace SCPUtils
                     if (RoundSummary.RoundLock == false)
                     {
                         Map.Broadcast(string.Format(pluginInstance.autoRestartMessage, pluginInstance.autoRestartTime), pluginInstance.autoRestartTime, false);
-                      
+
                         yield return Timing.WaitForSeconds(pluginInstance.autoRestartTime);
 
                         if (RoundSummary.RoundLock == false)
@@ -49,7 +49,7 @@ namespace SCPUtils
                 }
                 if (SCPUtils.IsStarted == false) { ServerConsole.AddLog("Killing SCPFix"); yield break; }
             }
-        }     
+        }
 
         public void AutoBanPlayer(ReferenceHub player)
         {
@@ -71,7 +71,7 @@ namespace SCPUtils
             Database.PlayerData[player].ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.autoWarnMessageDuration, pluginInstance.suicideWarnMessage, false);
-           
+
         }
 
         public void OnQuitOrSuicide(ReferenceHub player)
@@ -81,8 +81,6 @@ namespace SCPUtils
             if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
             else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
         }
-
-     
     }
 }
 

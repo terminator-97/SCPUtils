@@ -62,7 +62,7 @@ namespace SCPUtils
                     TotalScpSuicideKicks = 0,
                     TotalScpSuicideBans = 0,
                     FirstJoin = DateTime.Now
-                    
+
                 });
                 Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
             }
@@ -71,7 +71,5 @@ namespace SCPUtils
                 Log.Error($"Cannot add new user to Database: {player.GetNickname()} ({player.GetUserId().Split('@')[0]})!\n{ex.ToString()}");
             }
         }
-
-
     }
 }

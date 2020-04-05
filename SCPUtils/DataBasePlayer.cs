@@ -24,7 +24,5 @@ namespace SCPUtils
         {
             return player != null && Database.PlayerData.TryGetValue(player, out Player databasePlayer) ? databasePlayer : null;
         }
-
     }
-
 }

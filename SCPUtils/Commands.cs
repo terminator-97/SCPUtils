@@ -8,7 +8,7 @@ namespace SCPUtils
         public void OnRaCommand(ref RACommandEvent ev)
         {
 
-            string[] args = ev.Command.Split(' ');         
+            string[] args = ev.Command.Split(' ');
 
             switch (args[0].ToLower())
             {
@@ -16,7 +16,7 @@ namespace SCPUtils
                 case "scputils_help":
                     {
                         ev.Allow = false;
-                   
+
                         ev.Sender.RAMessage($"SCPUtils info:\n" +
                         $"Avaible commands: scputils_help, scputils_player_info, scputils_player_reset, scputils_player_list", true);
                         break;

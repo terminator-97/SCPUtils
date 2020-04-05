@@ -5,28 +5,27 @@ using RemoteAdmin;
 using System;
 
 
-
 namespace SCPUtils
 {
     public class EventHandlers
     {
-        private readonly SCPUtils pluginInstance;        
-        
+        private readonly SCPUtils pluginInstance;
+
         public DateTime lastTeslaEvent;
-  
+
         public EventHandlers(SCPUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         public void OnRoundStart()
         {
             SCPUtils.IsStarted = true;
-            if (pluginInstance.enableRoundRestartCheck) pluginInstance.Functions.StartFixer();            
+            if (pluginInstance.enableRoundRestartCheck) pluginInstance.Functions.StartFixer();
         }
 
         public void OnRoundEnd()
         {
             SCPUtils.IsStarted = false;
             Timing.KillCoroutines(pluginInstance.Functions.DT);
-            
+
         }
 
         public void OnRoundRestart()
@@ -55,7 +54,7 @@ namespace SCPUtils
         public void OnDecontaminate(ref DecontaminationEvent ev)
         {
             if (pluginInstance.decontaminationMessageEnabled) Map.Broadcast(pluginInstance.decontaminationMessage, pluginInstance.decontaminationMessageDuration, false);
-            
+
         }
 
         public void OnPlayerDeath(ref PlayerDeathEvent ev)
@@ -66,11 +65,11 @@ namespace SCPUtils
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.SCP079TeslaEventWait)
                 {
                     if (ev.Info.GetDamageType() == DamageTypes.Tesla || ev.Info.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
-                  
+
                 }
             }
         }
-       
+
         public void On079Tesla(ref Scp079TriggerTeslaEvent ev)
         {
             lastTeslaEvent = DateTime.Now;
