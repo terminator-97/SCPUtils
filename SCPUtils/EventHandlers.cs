@@ -46,7 +46,7 @@ namespace SCPUtils
             var databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
             Database.PlayerData.Add(ev.Player, databasePlayer);
             Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
-
+            if (Database.PlayerData[ev.Player].FirstJoin == DateTime.MinValue) Database.PlayerData[ev.Player].FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
 
         }
@@ -54,18 +54,15 @@ namespace SCPUtils
         public void OnDecontaminate(ref DecontaminationEvent ev)
         {
             if (pluginInstance.decontaminationMessageEnabled) Map.Broadcast(pluginInstance.decontaminationMessage, pluginInstance.decontaminationMessageDuration, false);
-
         }
 
         public void OnPlayerDeath(ref PlayerDeathEvent ev)
         {
             if (ev.Player.GetTeam() == Team.SCP && SCPUtils.IsStarted && pluginInstance.enableSCPSuicideAutoWarn)
             {
-
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.SCP079TeslaEventWait)
                 {
                     if (ev.Info.GetDamageType() == DamageTypes.Tesla || ev.Info.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
-
                 }
             }
         }

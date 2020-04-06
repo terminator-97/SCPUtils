@@ -70,16 +70,34 @@ namespace SCPUtils
                             return;
                         }
 
+                        if (args.Length < 2)
+                        {
+                            ev.Sender.RAMessage("Usage: scputils_player_list <minimum quit percentage>", false);
+                            break;
+                        }
+
+
                         if (commandSender.CheckPermission("scputils.playerlist"))
                         {
 
                             var playerListString = "";
-                            foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().FindAll())
-                            {
-                                playerListString += $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n";
 
+                            if (int.TryParse(args[1], out int minpercentage))
+                            {
+                                foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
+                                {
+                                    playerListString += $"\n{databasePlayer.Name}  - Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]";
+                                }
+                                if (playerListString == "") ev.Sender.RAMessage("No results found!", false);
+                                else ev.Sender.RAMessage($"{playerListString}");
                             }
-                            ev.Sender.RAMessage($"{playerListString}");
+                            else
+                            {
+                                ev.Sender.RAMessage("Arg1 is not an integer, Comand usage example: scputils_player_list 50", false);
+                                break;
+                            }
+
+
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
@@ -117,6 +135,7 @@ namespace SCPUtils
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
+
             }
         }
     }

@@ -39,7 +39,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | ------------- | ------------- | ------------- | ------------- |
 | scputils_help  | none  | none | Show plugin info |
 | scputils_player_info  | player / id / userid  | scputils.playerinfo | Show player info |
-| scputils_player_list  | none  | scputils.playerlist | List all players info |
+| scputils_player_list  | minimun percentage  | scputils.playerlist | List all players with a percetage equal or higher of quits/suicides |
 | scputils_player_reset  | player / id / userid  | scputils.playerreset  |Reset warns,suicides,bans,kick and games played stats |
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
