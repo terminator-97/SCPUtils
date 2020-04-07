@@ -45,6 +45,7 @@ namespace SCPUtils
 
             var databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
             Database.PlayerData.Add(ev.Player, databasePlayer);
+            Database.PlayerData[ev.Player].LastSeen = DateTime.Now;
             Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
             if (Database.PlayerData[ev.Player].FirstJoin == DateTime.MinValue) Database.PlayerData[ev.Player].FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);

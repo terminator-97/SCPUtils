@@ -53,7 +53,8 @@ namespace SCPUtils
                   $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
                   $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
                   $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
-                  $"First Join: [ {databasePlayer.FirstJoin} ]");
+                  $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
+                  $"Last Seen: [ {databasePlayer.LastSeen} ]");
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
@@ -80,15 +81,15 @@ namespace SCPUtils
                         if (commandSender.CheckPermission("scputils.playerlist"))
                         {
 
-                            var playerListString = "";
+                            var playerListString = "[Quits/Suicides Percentage]\n";
 
                             if (int.TryParse(args[1], out int minpercentage))
                             {
                                 foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
                                 {
-                                    playerListString += $"\n{databasePlayer.Name}  - Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]";
+                                    playerListString += $"\n{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]";
                                 }
-                                if (playerListString == "") ev.Sender.RAMessage("No results found!", false);
+                                if (playerListString == "[Quits/Suicides as SCP]\n") ev.Sender.RAMessage("No results found!", false);
                                 else ev.Sender.RAMessage($"{playerListString}");
                             }
                             else
