@@ -7,7 +7,6 @@ namespace SCPUtils
     {
         public void OnRaCommand(ref RACommandEvent ev)
         {
-
             string[] args = ev.Command.Split(' ');
 
             switch (args[0].ToLower())

@@ -2,7 +2,6 @@ using EXILED;
 using MEC;
 using System;
 
-
 namespace SCPUtils
 {
 

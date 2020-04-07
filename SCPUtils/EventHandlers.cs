@@ -49,7 +49,6 @@ namespace SCPUtils
             Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
             if (Database.PlayerData[ev.Player].FirstJoin == DateTime.MinValue) Database.PlayerData[ev.Player].FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
-
         }
 
         public void OnDecontaminate(ref DecontaminationEvent ev)

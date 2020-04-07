@@ -13,7 +13,6 @@ namespace SCPUtils
         public static LiteDatabase LiteDatabase { get; private set; }
         public static string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), databaseName);
         public static string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{databaseName}.db");
-
         public static Dictionary<ReferenceHub, Player> PlayerData = new Dictionary<ReferenceHub, Player>();
         public static void CreateDatabase()
         {
