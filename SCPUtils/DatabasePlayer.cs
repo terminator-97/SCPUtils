@@ -1,7 +1,5 @@
 ﻿using EXILED.Extensions;
 
-
-
 namespace SCPUtils
 {
     public static class DatabasePlayer
@@ -13,9 +11,7 @@ namespace SCPUtils
         public static Player GetDatabasePlayer(this string player)
         {
             Player databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(tempPlayer => tempPlayer.Id == player.GetRawUserId() || tempPlayer.Name == player);
-
             if (databasePlayer != null) return databasePlayer;
-
             return EXILED.Extensions.Player.GetPlayer(player)?.GetDatabasePlayer();
         }
 
