@@ -12,7 +12,7 @@ namespace SCPUtils
         public CoroutineHandle DT;
         public int i = 0;
         private readonly SCPUtils pluginInstance;
-        
+
         public Functions(SCPUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         public void StartFixer()
