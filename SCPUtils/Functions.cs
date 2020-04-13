@@ -3,6 +3,7 @@ using MEC;
 using RemoteAdmin;
 using EXILED.Extensions;
 using System.Collections.Generic;
+using System;
 
 
 namespace SCPUtils
@@ -53,21 +54,21 @@ namespace SCPUtils
         public void AutoBanPlayer(ReferenceHub player)
         {
             int duration;
-            Database.PlayerData[player].TotalScpSuicideBans++;
-            if (pluginInstance.multiplyBanDurationEachBan == true) duration = Database.PlayerData[player].TotalScpSuicideBans * pluginInstance.autoBanDuration;
+            player.GetDatabasePlayer().TotalScpSuicideBans++;
+            if (pluginInstance.multiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.autoBanDuration;
             else duration = pluginInstance.autoBanDuration;
             player.BanPlayer(duration, $"Auto-Ban: {string.Format(pluginInstance.autoBanMessage, duration)}", "SCPUtils");
         }
 
         public void AutoKickPlayer(ReferenceHub player)
         {
-            Database.PlayerData[player].TotalScpSuicideKicks++;
+            player.GetDatabasePlayer().TotalScpSuicideKicks++;
             player.KickPlayer($"Auto-Kick: {pluginInstance.suicideKickMessage}", "SCPUtils");
         }
 
         public void AutoWarnPlayer(ReferenceHub player)
         {
-            Database.PlayerData[player].ScpSuicideCount++;
+            player.GetDatabasePlayer().ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.autoWarnMessageDuration, pluginInstance.suicideWarnMessage, false);
 
@@ -75,11 +76,50 @@ namespace SCPUtils
 
         public void OnQuitOrSuicide(ReferenceHub player)
         {
-            var suicidePercentage = Database.PlayerData[player].SuicidePercentage;
+            var suicidePercentage = player.GetDatabasePlayer().SuicidePercentage;
             AutoWarnPlayer(player);
-            if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
-            else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && Database.PlayerData[player].ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
+            if (pluginInstance.enableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.autoBanThreshold && player.GetDatabasePlayer().ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoBanPlayer(player);
+            else if (pluginInstance.autoKickOnSCPSuicide && suicidePercentage >= pluginInstance.autoKickThreshold && suicidePercentage < pluginInstance.autoBanThreshold && player.GetDatabasePlayer().ScpSuicideCount > pluginInstance.scpSuicideTollerance) AutoKickPlayer(player);
         }
+
+        public void PostLoadPlayer(ReferenceHub player)
+        {
+            var databasePlayer = player.GetDatabasePlayer();
+
+
+            if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
+            {
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (databasePlayer.BadgeExpire >= DateTime.Now)
+                    {
+                        EXILED.Extensions.Player.SetRank(player, ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName]);
+                    }
+                    else
+                    {
+                        databasePlayer.BadgeName = "";
+                        databasePlayer.ResetPreferences();
+                    }
+                });
+            }
+
+            if (!string.IsNullOrEmpty(databasePlayer.ColorPreference))
+            {
+                Timing.CallDelayed(1.25f, () =>
+                {
+                    player.SetRankColor(databasePlayer.ColorPreference);
+                });
+            }
+
+            if (databasePlayer.HideBadge == true)
+            {
+                Timing.CallDelayed(1.5f, () =>
+                {
+                    player.characterClassManager.CallCmdRequestHideTag();
+                });
+            }
+        }
+
     }
 }
 

@@ -61,7 +61,10 @@ namespace SCPUtils
                     TotalScpSuicideKicks = 0,
                     TotalScpSuicideBans = 0,
                     FirstJoin = DateTime.Now,
-                    LastSeen = DateTime.Now
+                    LastSeen = DateTime.Now,
+                    ColorPreference = "None",
+                    CustomNickName = "None",
+                    HideBadge = false
 
                 });
                 Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");

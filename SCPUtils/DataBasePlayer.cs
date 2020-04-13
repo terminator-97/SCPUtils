@@ -10,14 +10,16 @@ namespace SCPUtils
 
         public static Player GetDatabasePlayer(this string player)
         {
-            Player databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(tempPlayer => tempPlayer.Id == player.GetRawUserId() || tempPlayer.Name == player);
-            if (databasePlayer != null) return databasePlayer;
-            return EXILED.Extensions.Player.GetPlayer(player)?.GetDatabasePlayer();
+            return EXILED.Extensions.Player.GetPlayer(player)?.GetDatabasePlayer() ??
+                Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId() || queryPlayer.Name == player);
         }
 
         public static Player GetDatabasePlayer(this ReferenceHub player)
         {
-            return player != null && Database.PlayerData.TryGetValue(player, out Player databasePlayer) ? databasePlayer : null;
+            if (player == null) return null;
+            else if (Database.PlayerData.TryGetValue(player, out Player databasePlayer)) return databasePlayer;
+            else return Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId());
         }
+
     }
 }

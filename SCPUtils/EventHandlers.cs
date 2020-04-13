@@ -43,12 +43,15 @@ namespace SCPUtils
                 Database.AddPlayer(ev.Player);
             }
 
-            var databasePlayer = Database.LiteDatabase.GetCollection<Player>().FindOne(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player));
+            var databasePlayer = ev.Player.GetDatabasePlayer();
+            if (Database.PlayerData.ContainsKey(ev.Player)) return;
             Database.PlayerData.Add(ev.Player, databasePlayer);
-            Database.PlayerData[ev.Player].LastSeen = DateTime.Now;
-            Database.PlayerData[ev.Player].Name = ev.Player.GetNickname();
-            if (Database.PlayerData[ev.Player].FirstJoin == DateTime.MinValue) Database.PlayerData[ev.Player].FirstJoin = DateTime.Now;
+            databasePlayer.LastSeen = DateTime.Now;
+            databasePlayer.Name = ev.Player.GetNickname();
+            if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
+            pluginInstance.Functions.PostLoadPlayer(ev.Player);
+
         }
 
         public void OnDecontaminate(ref DecontaminationEvent ev)
@@ -87,7 +90,7 @@ namespace SCPUtils
 
         internal void OnPlayerSpawn(PlayerSpawnEvent ev)
         {
-            if (ev.Player.GetTeam() == Team.SCP) Database.PlayerData[ev.Player].TotalScpGamesPlayed++;
+            if (ev.Player.GetTeam() == Team.SCP) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
         }
     }
 
