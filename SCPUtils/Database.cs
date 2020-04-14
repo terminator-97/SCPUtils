@@ -62,8 +62,10 @@ namespace SCPUtils
                     TotalScpSuicideBans = 0,
                     FirstJoin = DateTime.Now,
                     LastSeen = DateTime.Now,
-                    ColorPreference = "None",
-                    CustomNickName = "None",
+                    ColorPreference = "",
+                    CustomNickName = "",
+                    BadgeName = "",
+                    BadgeExpire = DateTime.MinValue,
                     HideBadge = false
 
                 });

@@ -14,7 +14,8 @@ namespace SCPUtils
         public static void Prefix(NicknameSync __instance, ref string n)
         {
             var databasePlayer = __instance.gameObject.GetPlayer().GetDatabasePlayer();
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName))
+            if (databasePlayer == null) return;
+            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName!="None")
             {
                 n = databasePlayer.CustomNickName;
             }
