@@ -319,12 +319,10 @@ namespace SCPUtils
 
         private bool IsAllowed(CommandSender sender, string permission)
         {
-            if (sender == null) return false;
-            else if (sender.SenderId == "GAME CONSOLE") return true;
-            else if (EXILED.Extensions.Player.GetPlayer(sender.Nickname).CheckPermission(permission)) return true;
-            else return false;
+            ReferenceHub player;
+            return sender != null && (sender.SenderId == "GAME CONSOLE" || (player = EXILED.Extensions.Player.GetPlayer(sender.Nickname)) == null || player.CheckPermission(permission));
+        
         }
-
     }
 
 }
