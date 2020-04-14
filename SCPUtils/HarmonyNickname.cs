@@ -15,7 +15,7 @@ namespace SCPUtils
         {
             var databasePlayer = __instance.gameObject.GetPlayer().GetDatabasePlayer();
             if (databasePlayer == null) return;
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName!="None")
+            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
             {
                 n = databasePlayer.CustomNickName;
             }

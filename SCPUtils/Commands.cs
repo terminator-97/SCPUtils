@@ -14,13 +14,12 @@ namespace SCPUtils
 
             switch (args[0].ToLower())
             {
-
                 case "scputils_help":
                     {
                         ev.Allow = false;
 
                         ev.Sender.RAMessage($"SCPUtils info:\n" +
-                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_player_set_color, scputils_player_set_name,  scputils_player_set_badge,  scputils_player_revoke_badge", true);
+                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name,  scputils_set_badge,  scputils_revoke_badge", true);
                         break;
                     }
 
@@ -29,11 +28,6 @@ namespace SCPUtils
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            break;
-                        }
 
                         if (args.Length < 2)
                         {
@@ -41,7 +35,7 @@ namespace SCPUtils
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.playerinfo"))
+                        if (IsAllowed(ev.Sender, "scputils.playerinfo"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             if (databasePlayer == null)
@@ -72,11 +66,6 @@ namespace SCPUtils
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 2)
                         {
@@ -85,7 +74,7 @@ namespace SCPUtils
                         }
 
 
-                        if (commandSender.CheckPermission("scputils.playerlist"))
+                        if (IsAllowed(ev.Sender, "scputils.playerlist"))
                         {
 
                             var playerListString = "[Quits/Suicides Percentage]\n";
@@ -116,11 +105,6 @@ namespace SCPUtils
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 2)
                         {
@@ -149,11 +133,6 @@ namespace SCPUtils
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 2)
                         {
@@ -161,7 +140,7 @@ namespace SCPUtils
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.playerresetpreferences"))
+                        if (IsAllowed(ev.Sender, "scputils.playerresetpreferences"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             if (databasePlayer == null)
@@ -177,26 +156,20 @@ namespace SCPUtils
                         break;
                     }
 
-
-                case "scputils_player_set_color":
+                case "scputils_set_color":
                     {
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 3)
                         {
-                            ev.Sender.RAMessage("Usage: scputils_player_set_color <player name/id> <color>", false);
+                            ev.Sender.RAMessage("Usage: scputils_set_color <player name/id> <color>", false);
                             break;
                         }
                         args[2] = args[2].ToLower().ToString();
 
-                        if (commandSender.CheckPermission("scputils.playersetcolor"))
+                        if (IsAllowed(ev.Sender, "scputils.playersetcolor"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             var target = EXILED.Extensions.Player.GetPlayer(args[1]);
@@ -226,25 +199,20 @@ namespace SCPUtils
                         break;
                     }
 
-                case "scputils_player_set_name":
+                case "scputils_set_name":
                     {
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 3)
                         {
-                            ev.Sender.RAMessage("Usage: scputils_player_set_name <player name/id> <nick>", false);
+                            ev.Sender.RAMessage("Usage: scputils_set_name <player name/id> <nick>", false);
                             break;
                         }
 
 
-                        if (commandSender.CheckPermission("scputils.playersetname"))
+                        if (IsAllowed(ev.Sender, "scputils.playersetname"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             var target = EXILED.Extensions.Player.GetPlayer(args[1]);
@@ -272,24 +240,19 @@ namespace SCPUtils
 
 
 
-                case "scputils_player_set_badge":
+                case "scputils_set_badge":
                     {
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 4)
                         {
-                            ev.Sender.RAMessage("Usage: scputils_player_badge <player name/id> <Badge Name> <Minutes>", false);
+                            ev.Sender.RAMessage("Usage: scputils_set_badge <player name/id> <Badge Name> <Minutes>", false);
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.handlebadges"))
+                        if (IsAllowed(ev.Sender, "scputils.handlebadges"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             var player = EXILED.Extensions.Player.GetPlayer(args[1]);
@@ -320,24 +283,19 @@ namespace SCPUtils
                         break;
                     }
 
-                case "scputils_player_revoke_badge":
+                case "scputils_revoke_badge":
                     {
                         ev.Allow = false;
 
                         var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
-                        if (commandSender == null)
-                        {
-                            ev.Sender.RAMessage("An error has occured while executing the command!", false);
-                            return;
-                        }
 
                         if (args.Length < 2)
                         {
-                            ev.Sender.RAMessage("Usage: scputils_player_revoke_badge <player name/id>", false);
+                            ev.Sender.RAMessage("Usage: scputils_revoke_badge <player name/id>", false);
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.handlebadges"))
+                        if (IsAllowed(ev.Sender, "scputils.handlebadges"))
                         {
                             var player = EXILED.Extensions.Player.GetPlayer(args[1]);
                             var databasePlayer = args[1].GetDatabasePlayer();
@@ -358,5 +316,15 @@ namespace SCPUtils
                     }
             }
         }
+
+        private bool IsAllowed(CommandSender sender, string permission)
+        {
+            if (sender == null) return false;
+            else if (sender.SenderId == "GAME CONSOLE") return true;
+            else if (EXILED.Extensions.Player.GetPlayer(sender.Nickname).CheckPermission(permission)) return true;
+            else return false;
+        }
+
     }
+
 }

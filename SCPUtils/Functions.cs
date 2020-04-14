@@ -103,7 +103,7 @@ namespace SCPUtils
                 });
             }
 
-            if (!string.IsNullOrEmpty(databasePlayer.ColorPreference)&& databasePlayer.ColorPreference!="None")
+            if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
             {
                 Timing.CallDelayed(1.25f, () =>
                 {
