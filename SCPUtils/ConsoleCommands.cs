@@ -38,7 +38,7 @@ namespace SCPUtils
 
                 case "scputils_change_nickname":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetNickname());
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
 
                         if (commandSender == null)
                         {
@@ -97,7 +97,7 @@ namespace SCPUtils
 
                 case "scputils_change_color":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetNickname());
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
 
                         if (commandSender == null)
                         {
@@ -155,7 +155,7 @@ namespace SCPUtils
 
                 case "scputils_hide_badge":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetNickname());
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
 
                         if (commandSender == null)
                         {
@@ -182,7 +182,7 @@ namespace SCPUtils
 
                 case "scputils_show_badge":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetNickname());
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
 
                         if (commandSender == null)
                         {

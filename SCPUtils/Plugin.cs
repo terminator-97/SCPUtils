@@ -10,7 +10,7 @@ namespace SCPUtils
     public class SCPUtils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.7.0";
+        public static string pluginVersion = "1.7.1";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
