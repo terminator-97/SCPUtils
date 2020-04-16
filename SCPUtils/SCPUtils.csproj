@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SCPSpeak.cs" />
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabasePlayer.cs" />

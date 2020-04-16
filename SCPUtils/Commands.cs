@@ -321,7 +321,6 @@ namespace SCPUtils
         {
             ReferenceHub player;
             return sender != null && (sender.SenderId == "GAME CONSOLE" || (player = EXILED.Extensions.Player.GetPlayer(sender.Nickname)) == null || player.CheckPermission(permission));
-        
         }
     }
 

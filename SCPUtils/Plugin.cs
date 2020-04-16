@@ -10,7 +10,7 @@ namespace SCPUtils
     public class SCPUtils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.6.3";
+        public static string pluginVersion = "1.7.0";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -52,7 +52,8 @@ namespace SCPUtils
         public int SCP079TeslaEventWait;
         public float autoBanThreshold;
         public float autoKickThreshold;
-        public List<string> restrictedRoleColors = new List<string>();
+        public List<string> restrictedRoleColors = new List<string>();  
+    
 
         public override void OnEnable()
         {
@@ -126,7 +127,7 @@ namespace SCPUtils
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
             enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
-            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);
+            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);      
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
             decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
             autoRestartMessage = Config.GetString("scputils_auto_restart_message", "<color=red>Round Restart:</color>\n<color=yellow>Restarting round in {0} seconds due lack of players</color>");
@@ -146,6 +147,7 @@ namespace SCPUtils
             autoBanThreshold = Config.GetFloat("scputils_auto_ban_threshold", 30.5f);
             autoKickThreshold = Config.GetFloat("scputils_auto_kick_threshold", 15.5f);
             restrictedRoleColors = Config.GetStringList("scputils_restricted_role_colors");
+     
             ConfigValidator();
         }
 

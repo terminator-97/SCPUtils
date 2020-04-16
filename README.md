@@ -1,6 +1,6 @@
 **SCPUtils Plugin**<br />
 
-Welcome to SCPUtils, this plugin has many features such as welcome messages, decontamination messages, autorestart when only 1 player is present in game and  punishements for the ones that quit / suicide as SCP and many others features <br /><br />
+Welcome to SCPUtils, this plugin has many features such as welcome messages, decontamination messages, autorestart when only 1 player is present in game and  punishements for the ones that quit / suicide as SCP, temporarily badges, custom nicknames and colors, you can allow specific scps to specific roles to speak to humans using V and much more <br /><br />
 Database will get created inside Exiled/SCPUtils folder.<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
 **Required minimum Exiled version: 1.9.10**
@@ -19,7 +19,6 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_decontamination_message_enabled  | bool  | false | Enable / disable a message when decontamination starts |
 | scputils_enable_scp_suicide_auto_ban  | bool  | true |  Enable / disable autoban for scp suicides after a certain threshold |
 | scputils_double_ban_duration_each_ban  | bool  | true | Multiply ban duration after each ban |
-| scputils_reset_preferences_on_badge_expire  | bool  | true | Reset player preferences when badge expires (custom name, color, showtag) |
 | scputils_welcome_message  | string  | Welcome to the server! | Welcome message, Change it! |
 | scputils_decontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |
 | scputils_auto_restart_message  | string  | <color=red>Round Restart:</color>\n<color=yellow>Round will be restarted in {0} seconds due lack of players</color> | Autorestart message, {0} is the amount of seconds |
@@ -65,18 +64,21 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_show_badge  | none  | scputils.badgevisibility | Permanently show your badge |
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
 
+**Speak permissions**
+
+| Permisssion  | Description | 
+| ------------- | ------------- | 
+| scputils_speak.scp049  | Allows to speak with V using this scp |
+| scputils_speak.scp0492  | Allows to speak with V using this scp |
+| scputils_speak.scp079 | Allows to speak with V using this scp |
+| scputils_speak.scp096 | Allows to speak with V using this scp |
+| scputils_speak.scp106  | Allows to speak with V using this scp |
+| scputils_speak.scp173  | Allows to speak with V using this scp |
+
+Pro tip: use scputils_speak.* to allow someone to speak with all the SCPs, set permission to default role to allow everyone to speak with that scp.
+
 Console commands must be executed like .scputils_help in game console (press ò to open it)
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 
 Thanks to iopietro for his advices<br />
-
-
-
-
-
-
-
-
-
-
