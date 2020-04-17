@@ -26,6 +26,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_suicide_kick_message  | string  | Suicide as SCP | Kick message |
 | scputils_unauthorized_nickname_change | string  | You can't do that! | Missing permission message |
 | scputils_unauthorized_color_change  | string  | You can't do that! | Missing permission message |
+| scputils_database_name  | string  | SCPUtils | Change it only if you run multiple servers, LiteDb doesn't allow multiple server instances on same database |
 | scputils_unauthorized_badge_change_visibility | string  | You need a higher administration level to use this command! | Missing permission message |
 | scputils_auto_ban_message | string  | Exceeded SCP suicide limit Duration: {0} minutes | Ban message {0} is the ban duration |
 | scputils_welcome_duration  | int  | 12 | Welcome message duration |

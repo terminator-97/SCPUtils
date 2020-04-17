@@ -163,11 +163,10 @@ namespace SCPUtils
                             ev.ReturnMessage = "An error has occured while executing this command!";
                             break;
                         }
-
                         if (commandSender.CheckPermission("scputils.badgevisibility"))
                         {
                             ev.Player.characterClassManager.CallCmdRequestHideTag();
-                            Database.PlayerData[commandSender].HideBadge = true;
+                            commandSender.GetDatabasePlayer().HideBadge = true;
                             ev.Color = "green";
                             ev.ReturnMessage = "Your badge has been hidden!";
                         }
@@ -194,7 +193,7 @@ namespace SCPUtils
                         if (commandSender.CheckPermission("scputils.badgevisibility"))
                         {
                             ev.Player.characterClassManager.CallCmdRequestShowTag(false);
-                            Database.PlayerData[commandSender].HideBadge = false;
+                            commandSender.GetDatabasePlayer().HideBadge = false;
                             ev.Color = "green";
                             ev.ReturnMessage = "Your badge has been shown!";
                         }
@@ -203,6 +202,26 @@ namespace SCPUtils
                             ev.Color = "red";
                             ev.ReturnMessage = pluginInstance.unauthorizedBadgeChangeVisibility;
                         }
+                        break;
+                    }
+
+                case "scputils_my_info":
+                    {
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+
+                        if (commandSender == null)
+                        {
+                            ev.Color = "red";
+                            ev.ReturnMessage = "An error has occured while executing this command!";
+                            break;
+                        }
+                        ev.Color = "green";
+                        ev.ReturnMessage = "Those are your preferences:\n" +
+                        $"Custom Name: {commandSender.GetDatabasePlayer().CustomNickName}\n" +
+                        $"Badge Color: {commandSender.GetDatabasePlayer().ColorPreference}\n" +
+                        $"Hide Badge: {commandSender.GetDatabasePlayer().HideBadge}\n" +
+                        $"Temporarily Badge: {commandSender.GetDatabasePlayer().BadgeName}\n" +
+                        $"Badge Expire: {commandSender.GetDatabasePlayer().BadgeExpire}";
                         break;
                     }
             }

@@ -112,7 +112,7 @@ namespace SCPUtils
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.playerreset"))
+                        if (IsAllowed(ev.Sender, "scputils.playerreset"))
                         {
                             var databasePlayer = args[1].GetDatabasePlayer();
                             if (databasePlayer == null)
@@ -314,6 +314,7 @@ namespace SCPUtils
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
+
             }
         }
 
