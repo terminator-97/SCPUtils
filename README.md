@@ -64,6 +64,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_change_color | Color / None | scputils.changecolor | Change your badge color |
 | scputils_show_badge  | none  | scputils.badgevisibility | Permanently show your badge |
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
+| scputils_my_info  | none | none | Show your preferences and temporarily badges info |
 
 **Speak permissions**
 
