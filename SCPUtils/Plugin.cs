@@ -10,7 +10,7 @@ namespace SCPUtils
     public class SCPUtils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.7.2";
+        public static string pluginVersion = "1.7.3";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -128,7 +128,7 @@ namespace SCPUtils
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
             enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
-            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);
+            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);            
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
             decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
             autoRestartMessage = Config.GetString("scputils_auto_restart_message", "<color=red>Round Restart:</color>\n<color=yellow>Restarting round in {0} seconds due lack of players</color>");
@@ -185,6 +185,7 @@ namespace SCPUtils
             {
                 Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
             }
+          
         }
     }
 }

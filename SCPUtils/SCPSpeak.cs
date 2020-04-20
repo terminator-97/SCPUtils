@@ -11,13 +11,14 @@ namespace SCPUtils
         public static void Prefix(DissonanceUserSetup __instance, bool value)
         {
             var player = EXILED.Extensions.Player.GetPlayer(__instance.gameObject);
-            if (player.GetRole() == RoleType.None) return;
-            if (player.CheckPermission($"scputils_speak.{player.GetRole().ToString().ToLower()}"))
+            if (string.IsNullOrEmpty(player?.GetUserId())) return;
+            else if (player.IsHost()) return;
+            else if (player.GetTeam() != Team.SCP) return;     
+            else if (player.CheckPermission($"scputils_speak.{player.GetRole().ToString().ToLower()}"))
             {
                 __instance.MimicAs939 = value;
-            }
-            Log.Debug($"GroupName: {EXILED.Extensions.Player.GetGroupName(player)}");
+            }            
+            // Log.Debug($"PlayerName: {player.GetNickname()}");
         }
-
     }
 }

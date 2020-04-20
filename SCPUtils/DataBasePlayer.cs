@@ -8,6 +8,8 @@ namespace SCPUtils
         public static string GetRawUserId(this ReferenceHub player) => player.GetUserId().GetRawUserId();
         public static string GetRawUserId(this string player) => player.Split('@')[0];
 
+
+
         public static Player GetDatabasePlayer(this string player)
         {
             return EXILED.Extensions.Player.GetPlayer(player)?.GetDatabasePlayer() ??

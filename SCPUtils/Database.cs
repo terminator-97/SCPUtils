@@ -35,7 +35,7 @@ namespace SCPUtils
             {
                 LiteDatabase = new LiteDatabase(DatabaseFullPath);
 
-                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
+                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
 
                 Log.Info("DB Loaded!");
             }
