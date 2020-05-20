@@ -313,7 +313,7 @@ namespace SCPUtils
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
-                    }                
+                    }
             }
         }
 

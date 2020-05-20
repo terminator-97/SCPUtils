@@ -4,7 +4,7 @@ using RemoteAdmin;
 using EXILED.Extensions;
 using System.Collections.Generic;
 using System;
-
+using System.Text.RegularExpressions;
 
 namespace SCPUtils
 {
@@ -120,9 +120,17 @@ namespace SCPUtils
             }
         }
 
+        public bool CheckNickname(string name)
+        {
+            foreach (var nickname in SCPUtils.bannedNickNames)
+            {
+                name = Regex.Replace(name, @"\W+", "");
+                string input = $@"\w*{name.ToLower()}\w*";
+                string pattern = nickname.ToLower();
+                Regex.Replace(pattern, @"\W+", "");
+                if (Regex.Match(input, pattern).Success) return true;
+            }
+            return false;
+        }
     }
 }
-
-
-
-

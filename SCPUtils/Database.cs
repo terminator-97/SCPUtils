@@ -34,9 +34,8 @@ namespace SCPUtils
             try
             {
                 LiteDatabase = new LiteDatabase(DatabaseFullPath);
-
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
-
+                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
                 Log.Info("DB Loaded!");
             }
             catch (Exception ex)
@@ -67,7 +66,6 @@ namespace SCPUtils
                     BadgeName = "",
                     BadgeExpire = DateTime.MinValue,
                     HideBadge = false
-
                 });
                 Log.Info("Trying to add ID: " + player.GetUserId().Split('@')[0] + " Discriminator: " + player.GetUserId().Split('@')[1] + " to Database");
             }

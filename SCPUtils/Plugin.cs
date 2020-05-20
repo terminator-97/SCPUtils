@@ -10,7 +10,7 @@ namespace SCPUtils
     public class SCPUtils : Plugin
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "1.7.3";
+        public static string pluginVersion = "1.8.0";
         public override string getName { get; } = "SCPUtils";
 
         public EventHandlers EventHandlers { get; private set; }
@@ -34,15 +34,18 @@ namespace SCPUtils
         public bool multiplyBanDurationEachBan;
         public bool saveColorChoice;
         public bool resetPreferencedOnBadgeExpire;
+        public bool autoKickBannedNames;
         public string autoRestartMessage;
         public string suicideWarnMessage;
         public string welcomeMessage;
         public string decontaminationMessage;
         public string suicideKickMessage;
+        public string autoKickBannedNameMessage;
         public string autoBanMessage;
         public string unauthorizedNickNameChange;
         public string unauthorizedColorChange;
         public string unauthorizedBadgeChangeVisibility;
+        public string invalidNicknameText;
         public static string databaseName;
         public uint welcomeMessageDuration;
         public uint decontaminationMessageDuration;
@@ -54,7 +57,7 @@ namespace SCPUtils
         public float autoBanThreshold;
         public float autoKickThreshold;
         public List<string> restrictedRoleColors = new List<string>();
-
+        public static List<string> bannedNickNames = new List<string>();
 
         public override void OnEnable()
         {
@@ -128,16 +131,19 @@ namespace SCPUtils
             decontaminationMessageEnabled = Config.GetBool("scputils_decontamination_message_enabled", false);
             enableSCPSuicideAutoBan = Config.GetBool("scputils_enable_scp_suicide_auto_ban", true);
             multiplyBanDurationEachBan = Config.GetBool("scputils_double_ban_duration_each_ban", true);
-            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);            
+            resetPreferencedOnBadgeExpire = Config.GetBool("scputils_reset_preferences_on_badge_expire", true);
+            autoKickBannedNames = Config.GetBool("scputils_auto_kick_banned_names", true);
             welcomeMessage = Config.GetString("scputils_welcome_message", "Welcome to the server!");
             decontaminationMessage = Config.GetString("scputils_decontamination_message", "Decontamination has started!");
             autoRestartMessage = Config.GetString("scputils_auto_restart_message", "<color=red>Round Restart:</color>\n<color=yellow>Restarting round in {0} seconds due lack of players</color>");
             suicideWarnMessage = Config.GetString("scputils_suicide_warn_message", "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it will result in a ban!</color>");
             suicideKickMessage = Config.GetString("scputils_suicide_kick_message", "Suicide as SCP");
+            autoKickBannedNameMessage = Config.GetString("scputils_auto_kick_banned_name_message", "You're using a restricted nickname or too similar to a restricted one, please change it");
             autoBanMessage = Config.GetString("scputils_auto_ban_message", "Exceeded SCP suicide limit Duration: {0} minutes");
             unauthorizedNickNameChange = Config.GetString("scputils_unauthorized_nickname_change", "You can't do that!");
             unauthorizedColorChange = Config.GetString("scputils_unauthorized_color_change", "You can't do that!");
             unauthorizedBadgeChangeVisibility = Config.GetString("scputils_unauthorized_badge_change_visibility", "You need a higher administration level to use this command!");
+            invalidNicknameText = Config.GetString("scputils_invalid_nickname_text", "This nickname has been restricted by server owner, please use another nickname!");
             databaseName = Config.GetString("scputils_database_name", "SCPUtils");
             welcomeMessageDuration = Config.GetUInt("scputils_welcome_duration", 12);
             decontaminationMessageDuration = Config.GetUInt("scputils_decontamination_message_duration", 10);
@@ -149,7 +155,7 @@ namespace SCPUtils
             autoBanThreshold = Config.GetFloat("scputils_auto_ban_threshold", 30.5f);
             autoKickThreshold = Config.GetFloat("scputils_auto_kick_threshold", 15.5f);
             restrictedRoleColors = Config.GetStringList("scputils_restricted_role_colors");
-
+            bannedNickNames = Config.GetStringList("scputils_banned_names");
             ConfigValidator();
         }
 
@@ -185,7 +191,7 @@ namespace SCPUtils
             {
                 Log.Warn($"You are running the plugin in an outdated EXILED version, you may try to use the plugin but it's advisable to update your EXILED version (Required version: {ExiledVersion.Major}.{ExiledVersion.Minor}.{ExiledVersion.Patch}), plugin developer won't offer support for incompatible EXILED versions!");
             }
-          
+
         }
     }
 }

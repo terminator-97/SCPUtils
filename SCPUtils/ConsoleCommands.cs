@@ -81,6 +81,12 @@ namespace SCPUtils
                                     ev.ReturnMessage = "This nickname is already used by another player, please choose another name!";
                                     break;
                                 }
+                                else if (pluginInstance.Functions.CheckNickname(args[1]) && !commandSender.CheckPermission("scputils.bypassnickrestriction"))
+                                {
+                                    ev.Color = "red";
+                                    ev.ReturnMessage = pluginInstance.invalidNicknameText;
+                                    break;
+                                }
                                 ev.Color = "green";
                                 ev.ReturnMessage = "Your nickname has been changed, changes will take effect next round, use scputils_change_nickname None to remove the nickname";
                                 string nickname = args[1];
