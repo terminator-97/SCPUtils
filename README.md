@@ -31,7 +31,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_database_name  | string  | SCPUtils | Change it only if you run multiple servers, LiteDb doesn't allow multiple server instances on same database |
 | scputils_unauthorized_badge_change_visibility | string  | You need a higher administration level to use this command! | Missing permission message |
 | scputils_auto_ban_message | string  | Exceeded SCP suicide limit Duration: {0} minutes | Ban message {0} is the ban duration |
-| scputils_auto_kick_banned_name_message | string  | You're using a restricted nickname or too similar to a restricted one, please change it |
+| scputils_auto_kick_banned_name_message | string  | You're using a restricted nickname or too similar to a restricted one, please change it | Auto-kick Message when player has invalid nick |
 | scputils_welcome_duration  | int  | 12 | Welcome message duration |
 | scputils_decontamination_message_duration | int  | 10 | Decontamination message duration |
 | scputils_auto_restart_time  | int  | 15 | After how many seconds round should be restarted if there is only 1 player? |
