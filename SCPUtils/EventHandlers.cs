@@ -50,8 +50,13 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.GetNickname();
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
-            pluginInstance.Functions.PostLoadPlayer(ev.Player);
-            if (pluginInstance.autoKickBannedNames && pluginInstance.Functions.CheckNickname(ev.Player.GetNickname()) && !ev.Player.CheckPermission("scputils.bypassnickrestriction")) Timing.CallDelayed(3f, () => ev.Player.KickPlayer("Auto-Kick: " + pluginInstance.autoKickBannedNameMessage, "SCPUtils"));
+            pluginInstance.Functions.PostLoadPlayer(ev.Player);      
+
+            Timing.CallDelayed(3f, () =>
+            {
+                if (pluginInstance.autoKickBannedNames && pluginInstance.Functions.CheckNickname(ev.Player.GetNickname()) && !ev.Player.CheckPermission("scputils.bypassnickrestriction")) ev.Player.KickPlayer("Auto-Kick: " + pluginInstance.autoKickBannedNameMessage, "SCPUtils");
+            });
+
         }
 
         public void OnDecontaminate(ref DecontaminationEvent ev)

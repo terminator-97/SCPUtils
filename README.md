@@ -144,8 +144,8 @@ groups:
 ```		
 		
 <br />Using scputils.* grants every permission that starts with prefix scputils
-Using '*' grants every possible permission on the server
-To verify if you yml file is valid paste it into this website: http://www.yamllint.com/
+Using '*' grants every possible permission on the server<br />
+To verify if you yml file is valid paste it into this website: http://www.yamllint.com/<br />
 Note: you must add every group in permissionsm don't forget default one<br /><br />
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
