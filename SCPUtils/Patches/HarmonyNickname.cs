@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Harmony;
-using EXILED.Extensions;
+using HarmonyLib;
+
 
 namespace SCPUtils
 {
@@ -10,7 +10,7 @@ namespace SCPUtils
     {
         public static void Prefix(NicknameSync __instance, ref string n)
         {
-            var player = __instance.gameObject.GetPlayer();
+            var player = Exiled.API.Features.Player.Get(__instance.gameObject);
             var databasePlayer = player.GetDatabasePlayer();
             if (databasePlayer == null) return;
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
