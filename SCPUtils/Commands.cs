@@ -1,6 +1,7 @@
 ﻿using EXILED;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SCPUtils
 {
@@ -55,7 +56,53 @@ namespace SCPUtils
                   $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
                   $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
                   $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
-                  $"Hide Badge: [ {databasePlayer.HideBadge} ]");
+                  $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
+                  $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
+                        }
+                        else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
+                        break;
+                    }
+
+                case "scputils_play_time":
+                    {
+                        ev.Allow = false;
+
+                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Sender.Nickname);
+
+                        if (args.Length < 3)
+                        {
+                            ev.Sender.RAMessage("Usage: scputils_player_info <player name/id> <days range>", false);
+                            break;
+                        }
+
+                        if (IsAllowed(ev.Sender, "scputils.playtime"))
+                        {
+                            int.TryParse(args[2], out int range);
+
+                            if (range < 0)
+                            {
+                                ev.Sender.RAMessage("You have to specify a positive number!", false);
+                                return;
+                            }
+
+                            var databasePlayer = args[1].GetDatabasePlayer();
+                            if (databasePlayer == null)
+                            {
+                                ev.Sender.RAMessage("Player not found on Database or Player is loading data!", false);
+                                break;
+                            }
+                            string message = $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
+                            $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n";
+
+
+                            for (int i = 0; i <= range; i++)
+                            {
+                                DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
+                                if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString())) message += $"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]\n";
+                                else message += $"{date.Date.ToShortDateString()} Playtime: [ No activity ]\n";
+                            }
+
+                            ev.Sender.RAMessage(message);
                         }
                         else ev.Sender.RAMessage("You need a higher administration level to use this command!", false);
                         break;

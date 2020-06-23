@@ -50,7 +50,7 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.GetNickname();
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.welcomeEnabled) ev.Player.Broadcast(pluginInstance.welcomeMessageDuration, pluginInstance.welcomeMessage, false);
-            pluginInstance.Functions.PostLoadPlayer(ev.Player);      
+            pluginInstance.Functions.PostLoadPlayer(ev.Player);
 
             Timing.CallDelayed(3f, () =>
             {
@@ -88,6 +88,7 @@ namespace SCPUtils
                 {
                     if (pluginInstance.enableSCPSuicideAutoWarn && pluginInstance.quitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
                 }
+                ev.Player.GetDatabasePlayer().SetCurrentDayPlayTime();
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
                 Database.PlayerData.Remove(ev.Player);
             }

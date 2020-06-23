@@ -57,6 +57,7 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_set_name  | <player / id / userid> <name/None>   | scputils.playersetname  | Change player name, changes take effects next round/rejoin |
 | scputils_set_badge  | <player / id / userid> <badge name> <duration in minutes> | scputils.handlebadges | Add a temp player badge |
 | scputils_revoke_badge  | <player / id / userid> | scputils.handlebadges | Revoke a badge given to a player |
+| scputils_play_time  | <player / id / userid> <range days> | scputils.playtime | Show recent player activity withing the specified days |
 
 **Console commands**
 

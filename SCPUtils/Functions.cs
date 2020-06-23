@@ -124,11 +124,9 @@ namespace SCPUtils
         {
             foreach (var nickname in SCPUtils.bannedNickNames)
             {
-                name = Regex.Replace(name, @"\W+", "");
-                string input = $@"\w*{name.ToLower()}\w*";
-                string pattern = nickname.ToLower();
-                Regex.Replace(pattern, @"\W+", "");
-                if (Regex.Match(input, pattern).Success) return true;
+                name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
+                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
+                if (Regex.Match(name, pattern).Success) return true;
             }
             return false;
         }
