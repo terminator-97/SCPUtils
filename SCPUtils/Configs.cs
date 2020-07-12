@@ -106,10 +106,16 @@ namespace SCPUtils
         public float AutoKickThreshold { get; private set; } = 15.5f;
 
         [Description("Which colors are restricted on .scputils_change_color command?")]
-        public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1","Color2" };
+        public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1", "Color2" };
 
         [Description("Which nicknames are restricted on .scputils_change_nickname command?")]
-        public static List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin", "Nicko || Rin" };
+        public static List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin" };
+
+        [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
+        public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
+
+        [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
+        public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
 
 
         public void ConfigValidator()

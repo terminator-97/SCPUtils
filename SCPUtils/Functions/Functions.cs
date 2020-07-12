@@ -1,11 +1,10 @@
-﻿using EXILED;
-using MEC;
+﻿using MEC;
 using RemoteAdmin;
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils
 {
@@ -79,8 +78,8 @@ namespace SCPUtils
         {
             var suicidePercentage = player.GetDatabasePlayer().SuicidePercentage;
             AutoWarnPlayer(player);
-            if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().ScpSuicideCount > pluginInstance.Config.ScpSuicideTollerance) AutoBanPlayer(player);
-            else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().ScpSuicideCount > pluginInstance.Config.ScpSuicideTollerance) AutoKickPlayer(player);
+            if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoBanPlayer(player);
+            else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoKickPlayer(player);
         }
 
         public void PostLoadPlayer(Exiled.API.Features.Player player)
@@ -106,7 +105,7 @@ namespace SCPUtils
 
             if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
             {
-                Timing.CallDelayed(1.25f, () =>
+                Timing.CallDelayed(1.15f, () =>
                 {
                     player.RankColor = databasePlayer.ColorPreference;
                 });
@@ -114,23 +113,25 @@ namespace SCPUtils
 
             if (databasePlayer.HideBadge == true)
             {
-                Timing.CallDelayed(1.5f, () =>
+                Timing.CallDelayed(1.25f, () =>
                 {
                     player.BadgeHidden = true;
                 });
             }
+
+
         }
 
         public bool CheckNickname(string name)
         {
             foreach (var nickname in Configs.BannedNickNames)
             {
-                name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();            
+                name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
                 string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
-                if (Regex.Match(name, pattern).Success) return true;              
+                if (Regex.Match(name, pattern).Success) return true;
             }
             return false;
-        }     
+        }
 
     }
 }

@@ -21,6 +21,7 @@ namespace SCPUtils
         public DateTime BadgeExpire { get; set; }
         public Dictionary<string, int> PlayTimeRecords { get; set; } = new Dictionary<string, int>();
 
+        public bool ASNWhitelisted { get; set; }
 
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : ((float)ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
 

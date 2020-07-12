@@ -1,11 +1,8 @@
-using Exiled.API.Interfaces;
 using Log = Exiled.API.Features.Log;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using MapEvents = Exiled.Events.Handlers.Map;
-using CommandEvents = Exiled.Events.Handlers.Command;
 using Features = Exiled.API.Features;
-using System.Collections.Generic;
 using MEC;
 using HarmonyLib;
 using System;
@@ -16,7 +13,7 @@ namespace SCPUtils
     public class ScpUtils : Features.Plugin<Configs>
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "2.0.0";
+        public static string pluginVersion = "2.0.0 {PTB II}";
 
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
@@ -24,7 +21,7 @@ namespace SCPUtils
         public Player Player { get; private set; }
         public ConsoleCommands PlayerConsoleCommands { get; private set; }
         public int PatchesCounter { get; private set; }
-        //  public HarmonyInstance HarmonyInstance { get; private set; }  
+
         public Harmony Harmony { get; private set; }
 
 
@@ -43,6 +40,7 @@ namespace SCPUtils
             PlayerEvents.TriggeringTesla += EventHandlers.OnTeslaEvent;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
+
         }
 
         public void LoadCommands()

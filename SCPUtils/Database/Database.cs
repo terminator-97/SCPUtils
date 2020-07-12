@@ -66,7 +66,8 @@ namespace SCPUtils
                     BadgeName = "",
                     BadgeExpire = DateTime.MinValue,
                     HideBadge = false,
-                    PlayTimeRecords = null
+                    PlayTimeRecords = null,
+                    ASNWhitelisted = false
                 });
                 Log.Info("Trying to add ID: " + player.UserId.Split('@')[0] + " Discriminator: " + player.UserId.Split('@')[1] + " to Database");
             }

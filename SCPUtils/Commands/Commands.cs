@@ -1,6 +1,4 @@
 ﻿using Exiled.Events.EventArgs;
-using Exiled.Permissions.Extensions;
-using EXILED;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +18,7 @@ namespace SCPUtils
                         ev.IsAllowed = false;
 
                         ev.Sender.RemoteAdminMessage($"SCPUtils info:\n" +
-                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name,  scputils_set_badge,  scputils_revoke_badge", true);
+                        $"Avaible commands: scputils_help, scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name,  scputils_set_badge,  scputils_revoke_badge, scputils_play_time, scputils_whitelist_asn, scputils_unwhitelist_asn", true);
                         break;
                     }
 
@@ -57,6 +55,7 @@ namespace SCPUtils
                   $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
                   $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
                   $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
+                  $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
                   $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
                         }
                         else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
@@ -278,7 +277,8 @@ namespace SCPUtils
                             string name = ev.Arguments[1];
                             databasePlayer.CustomNickName = name;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Success, changes will take effect next round!", false);
+                            ev.Sender.RemoteAdminMessage("Success, choice has been saved!", false);
+                            if (target != null) target.ReferenceHub.nicknameSync.DisplayName = ev.Arguments[1].ToString();
 
                         }
                         else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
@@ -357,11 +357,73 @@ namespace SCPUtils
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                             if (player != null) player.SetRank(null, null);
                             ev.Sender.RemoteAdminMessage("Badge revoked!", false);
+
                         }
                         else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
-             
+
+                case "scputils_whitelist_asn":
+                    {
+                        ev.IsAllowed = false;
+
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Sender.Nickname);
+
+                        if (ev.Arguments.Count < 1)
+                        {
+                            ev.Sender.RemoteAdminMessage("Usage: scputils_whitelist_asn <player name/id>", false);
+                            break;
+                        }
+
+                        if (IsAllowed(ev.Sender.Nickname, "scputils.whitelist"))
+                        {
+                            var player = Exiled.API.Features.Player.Get(ev.Arguments[0]);
+                            var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
+                            if (databasePlayer == null)
+                            {
+                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                break;
+                            }
+
+                            databasePlayer.ASNWhitelisted = true;
+                            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                            ev.Sender.RemoteAdminMessage("Player has been successfully whitelisted!", false);
+
+                        }
+                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        break;
+                    }
+
+                case "scputils_unwhitelist_asn":
+                    {
+                        ev.IsAllowed = false;
+
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Sender.Nickname);
+
+                        if (ev.Arguments.Count < 1)
+                        {
+                            ev.Sender.RemoteAdminMessage("Usage: scputils_unwhitelist_asn <player name/id>", false);
+                            break;
+                        }
+
+                        if (IsAllowed(ev.Sender.Nickname, "scputils.whitelist"))
+                        {
+                            var player = Exiled.API.Features.Player.Get(ev.Arguments[0]);
+                            var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
+                            if (databasePlayer == null)
+                            {
+                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                break;
+                            }
+
+                            databasePlayer.ASNWhitelisted = false;
+                            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                            ev.Sender.RemoteAdminMessage("Player has been successfully removed from whitelist!", false);
+
+                        }
+                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        break;
+                    }
             }
         }
 
