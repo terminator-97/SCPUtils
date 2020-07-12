@@ -1,21 +1,23 @@
-﻿using System.Collections.Generic;
-using EXILED;
-using EXILED.Extensions;
-using MEC;
+﻿using System;
+using System.Collections.Generic;
+using Exiled.Events.EventArgs;
+using Player = Exiled.API.Features.Player;
+using Exiled.Permissions.Extensions;
+
 
 namespace SCPUtils
 {
     public class ConsoleCommands
     {
-        private readonly SCPUtils pluginInstance;
-        public ConsoleCommands(SCPUtils pluginInstance) => this.pluginInstance = pluginInstance;
+        private readonly ScpUtils pluginInstance;
+        public ConsoleCommands(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin" };
-        public void OnConsoleCommand(ConsoleCommandEvent ev)
+        public void OnConsoleCommand(SendingConsoleCommandEventArgs ev)
         {
-            string[] args = ev.Command.Split(' ');
 
-            switch (args[0].ToLower())
+
+            switch (ev.Name)
             {
                 case "scputils_help":
                     {
@@ -31,14 +33,14 @@ namespace SCPUtils
                         ev.Color = "green";
                         ev.ReturnMessage = "Plugin Info: \n" +
                             "SCPUtils is a public plugin created by Terminator_97#0507, you can download this plugin at: github.com/terminator-97/SCPUtils \n" +
-                            $"This server is running SCPUtils version {SCPUtils.pluginVersion}";
+                            $"This server is running SCPUtils version {ScpUtils.pluginVersion}";
                         break;
                     }
 
 
                 case "scputils_change_nickname":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
                         {
@@ -47,17 +49,17 @@ namespace SCPUtils
                             break;
                         }
 
-                        if (args.Length < 2)
+                        if (ev.Arguments.Count < 1)
                         {
                             ev.Color = "red";
                             ev.ReturnMessage = "Usage: scputils_changenickname <Nick>";
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.changenickname"))
+                        if (IsAllowed(commandSender.Nickname, "scputils.changenickname"))
                         {
-                            args[1] = args[1].ToString();
-                            if (args[1].ToLower() == "none")
+
+                            if (ev.Arguments[0].ToLower() == "none")
                             {
                                 ev.Color = "green";
                                 ev.ReturnMessage = "Your nickname has been removed, changes will take effect next round!";
@@ -67,9 +69,9 @@ namespace SCPUtils
                             else
                             {
                                 bool allowChange = true;
-                                foreach (ReferenceHub player in EXILED.Extensions.Player.GetHubs())
+                                foreach (var player in Exiled.API.Features.Player.List)
                                 {
-                                    if (player.GetNickname().ToLower() == args[1].ToLower())
+                                    if (player.Nickname.ToLower() == ev.Arguments[0].ToLower())
                                     {
                                         allowChange = false;
                                         break;
@@ -81,29 +83,30 @@ namespace SCPUtils
                                     ev.ReturnMessage = "This nickname is already used by another player, please choose another name!";
                                     break;
                                 }
-                                else if (pluginInstance.Functions.CheckNickname(args[1]) && !commandSender.CheckPermission("scputils.bypassnickrestriction"))
+                                else if (pluginInstance.Functions.CheckNickname(ev.Arguments[0]) && !IsAllowed(commandSender.Nickname, "scputils.bypassnickrestriction"))
                                 {
                                     ev.Color = "red";
-                                    ev.ReturnMessage = pluginInstance.invalidNicknameText;
+                                    ev.ReturnMessage = pluginInstance.Config.InvalidNicknameText;
                                     break;
                                 }
                                 ev.Color = "green";
                                 ev.ReturnMessage = "Your nickname has been changed, changes will take effect next round, use scputils_change_nickname None to remove the nickname";
-                                string nickname = args[1];
+                                string nickname = ev.Arguments[0];
                                 ev.Player.GetDatabasePlayer().CustomNickName = nickname;
+                                ev.Player.ReferenceHub.nicknameSync.DisplayName = nickname;
                             }
                         }
                         else
                         {
                             ev.Color = "red";
-                            ev.ReturnMessage = pluginInstance.unauthorizedNickNameChange;
+                            ev.ReturnMessage = pluginInstance.Config.UnauthorizedNickNameChange;
                         }
                         break;
                     }
 
                 case "scputils_change_color":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
                         {
@@ -111,25 +114,24 @@ namespace SCPUtils
                             ev.ReturnMessage = "An error has occured while executing this command!";
                             break;
                         }
-                        if (args.Length < 2)
+                        if (ev.Arguments.Count < 1)
                         {
                             ev.Color = "red";
                             ev.ReturnMessage = "Usage: scputils_changecolor <Color / None>";
                             break;
                         }
-                        if (commandSender.CheckPermission("scputils.changecolor"))
+                        if (IsAllowed(commandSender.Nickname, "scputils.changecolor"))
                         {
-                            args[1] = args[1].ToLower().ToString();
 
-                            if (args[1] == "none")
+                            if (ev.Arguments[0].ToLower() == "none")
                             {
                                 ev.Color = "green";
                                 ev.ReturnMessage = "Your color has been removed, changes will take effect next round!";
                                 ev.Player.GetDatabasePlayer().ColorPreference = "";
                             }
-                            if (validColors.Contains(args[1]))
+                            if (validColors.Contains(ev.Arguments[0]))
                             {
-                                if (pluginInstance.restrictedRoleColors.Contains(args[1]))
+                                if (pluginInstance.Config.RestrictedRoleColors.Contains(ev.Arguments[0]))
                                 {
                                     ev.Color = "red";
                                     ev.ReturnMessage = "This color has been restricted by server owner, please use another color!";
@@ -139,8 +141,8 @@ namespace SCPUtils
                                 {
                                     ev.Color = "green";
                                     ev.ReturnMessage = "Your color has been changed, use scputils_change_color None to remove the color!";
-                                    commandSender.SetRankColor(args[1]);
-                                    string colorPreference = args[1];
+                                    commandSender.RankColor = ev.Arguments[0];
+                                    string colorPreference = ev.Arguments[0];
                                     ev.Player.GetDatabasePlayer().ColorPreference = colorPreference;
                                 }
                             }
@@ -153,7 +155,7 @@ namespace SCPUtils
                         else
                         {
                             ev.Color = "red";
-                            ev.ReturnMessage = pluginInstance.unauthorizedColorChange;
+                            ev.ReturnMessage = pluginInstance.Config.UnauthorizedColorChange;
                         }
                         break;
                     }
@@ -161,7 +163,7 @@ namespace SCPUtils
 
                 case "scputils_hide_badge":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
                         {
@@ -169,9 +171,9 @@ namespace SCPUtils
                             ev.ReturnMessage = "An error has occured while executing this command!";
                             break;
                         }
-                        if (commandSender.CheckPermission("scputils.badgevisibility"))
+                        if (IsAllowed(commandSender.Nickname, "scputils.badgevisibility"))
                         {
-                            ev.Player.characterClassManager.CallCmdRequestHideTag();
+                            ev.Player.BadgeHidden = true;
                             commandSender.GetDatabasePlayer().HideBadge = true;
                             ev.Color = "green";
                             ev.ReturnMessage = "Your badge has been hidden!";
@@ -179,7 +181,7 @@ namespace SCPUtils
                         else
                         {
                             ev.Color = "red";
-                            ev.ReturnMessage = pluginInstance.unauthorizedBadgeChangeVisibility;
+                            ev.ReturnMessage = pluginInstance.Config.UnauthorizedBadgeChangeVisibility;
                         }
                         break;
                     }
@@ -187,7 +189,7 @@ namespace SCPUtils
 
                 case "scputils_show_badge":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
                         {
@@ -196,9 +198,9 @@ namespace SCPUtils
                             break;
                         }
 
-                        if (commandSender.CheckPermission("scputils.badgevisibility"))
+                        if (IsAllowed(commandSender.Nickname, "scputils.badgevisibility"))
                         {
-                            ev.Player.characterClassManager.CallCmdRequestShowTag(false);
+                            ev.Player.BadgeHidden = false;
                             commandSender.GetDatabasePlayer().HideBadge = false;
                             ev.Color = "green";
                             ev.ReturnMessage = "Your badge has been shown!";
@@ -206,14 +208,14 @@ namespace SCPUtils
                         else
                         {
                             ev.Color = "red";
-                            ev.ReturnMessage = pluginInstance.unauthorizedBadgeChangeVisibility;
+                            ev.ReturnMessage = pluginInstance.Config.UnauthorizedBadgeChangeVisibility;
                         }
                         break;
                     }
 
                 case "scputils_my_info":
                     {
-                        var commandSender = EXILED.Extensions.Player.GetPlayer(ev.Player.GetUserId());
+                        var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
                         {
@@ -231,6 +233,14 @@ namespace SCPUtils
                         break;
                     }
             }
+
         }
+        private bool IsAllowed(string sender, string permission)
+        {
+            Exiled.API.Features.Player player;
+            return sender != null && (sender == "GAME CONSOLE" || (player = Exiled.API.Features.Player.Get(sender)) == null || Exiled.Permissions.Extensions.Permissions.CheckPermission(player, permission));
+        }
+
+
     }
 }

@@ -1,48 +1,31 @@
+
 **SCPUtils Plugin**<br />
 
-Welcome to SCPUtils, this plugin has many features such as welcome messages, decontamination messages, autorestart when only 1 player is present in game and  punishements for the ones that quit / suicide as SCP, temporarily badges, custom nicknames and colors, you can allow specific scps to specific roles to speak to humans using V and much more <br /><br />
-Database will get created inside Exiled/SCPUtils folder.<br /><br />
+Welcome to SCPUtils, overtime i implemented many features so i decided to rework the documentation.
+
+This is the list of SCPUtils features with a brief description, i recomend to read configs:
+
+- **Welcome Message:** You can set in server config a welcome broadcast that every player join will see.
+- **Decontamination Message:** A broadcast that all players will see when decontamination starts
+- **Auto-Restart:** Having only one player in server may cause round stuck forever, with this plugin you can avoid it!
+- **Advanced SCP Suicide / Quit punishements:** If a SCP suicide or leave the server you can punish him, with warns, kicks or bans, depending on settings you use and DC/Suicide percentage player has (configurable also for tutorial role)
+- **Temporarily badges:** Sometimes may be useful to give a player a temporarily role for event winners and donators (or anything else you want), with this plugin it's easy, see commands list.
+- **Custom nicknames:** Admins with permission can set any nickname to any player in server using admin console, users with permission can set their own nickname using a simple command on User's console.
+- **Nickname Blacklist:** You can prevent players joining with blacklisted nicknames and preventing them to change nicknames to restricted ones, users with bypassnickname permission bypass this limit!
+- **Badge colors:** Admins can assign a color to every person, users with permissions can assign any color to themselves if it's not in restricted list!
+- **Permanently show/hide badges:** Users with permission can permanently show or hide badge using a simple command (in user console)
+- **SCPSpeak features:** Playing with permissions you can decide which badge (even default one) can speak with that SCP like 939 using V!
+- **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
+- **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
+
+**Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Required minimum Exiled version: 1.9.10**
+**Required minimum Exiled version: 2.0.0**
+**Currently plugin is in beta phase, documentation is not complete**
 
 ### Configs:
 
-
-| Config Name  | Type | Default Value | Description |
-| ------------- | ------------- | ------------- | ------------- |
-| scputils_enabled | bool  | true | Enable / disable the entire plugin |
-| scputils_enable_round_restart_check  | bool  | true | Enable / disable round restart check if there is only 1 player |
-| scputils_enable_scp_suicide_autowarn | bool  | true | Enable / disable suicide autowarn (required for kick and warns) |
-| scputils_auto_kick_scp_suicide  | bool  | true | Enable / disable autokick for scp suicides after a certain threshold |
-| scputils_quit_equals_suicide  | bool  | true | Should quits be considered as suicide? |
-| scputils_welcome_enabled  | bool  | true | Enable / Disabile welcome message when player join |
-| scputils_decontamination_message_enabled  | bool  | false | Enable / disable a message when decontamination starts |
-| scputils_enable_scp_suicide_auto_ban  | bool  | true |  Enable / disable autoban for scp suicides after a certain threshold |
-| scputils_double_ban_duration_each_ban  | bool  | true | Multiply ban duration after each ban |
-| scputils_auto_kick_banned_names  | bool  | true | Auto-kick invalid nicknames similiar to the ones specified in scputils_banned_names |
-| scputils_welcome_message  | string  | Welcome to the server! | Welcome message, Change it! |
-| scputils_decontamination_message  | string  | Decontamination has started! | Decontamination message, Change it! |
-| scputils_auto_restart_message  | string  | <color=red>Round Restart:</color>\n<color=yellow>Round will be restarted in {0} seconds due lack of players</color> | Autorestart message, {0} is the amount of seconds |
-| scputils_suicide_warn_message  | string  | <color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it will result in a ban!</color> | Warn message |
-| scputils_suicide_kick_message  | string  | Suicide as SCP | Kick message |
-| scputils_unauthorized_nickname_change | string  | You can't do that! | Missing permission message |
-| scputils_unauthorized_color_change  | string  | You can't do that! | Missing permission message |
-| scputils_invalid_nickname_text  | string  | This nickname has been restricted by server owner, please use another nickname! | Invalid nickname text when player changes their own name |
-| scputils_database_name  | string  | SCPUtils | Change it only if you run multiple servers, LiteDb doesn't allow multiple server instances on same database |
-| scputils_unauthorized_badge_change_visibility | string  | You need a higher administration level to use this command! | Missing permission message |
-| scputils_auto_ban_message | string  | Exceeded SCP suicide limit Duration: {0} minutes | Ban message {0} is the ban duration |
-| scputils_auto_kick_banned_name_message | string  | You're using a restricted nickname or too similar to a restricted one, please change it |
-| scputils_welcome_duration  | int  | 12 | Welcome message duration |
-| scputils_decontamination_message_duration | int  | 10 | Decontamination message duration |
-| scputils_auto_restart_time  | int  | 15 | After how many seconds round should be restarted if there is only 1 player? |
-| scputils_autowarn_message_duration  | int  | 30 | Autowarn message duration |
-| scputils_auto_ban_duration  | int | 15 | Autoban duration in minutes |
-| scputils_auto_ban_tollerance  | int | 5 | Tollerance, if the player has commited less suicides than tollerance he won't get kicked or banned even if the percentage is outside of threshold |
-| scputils_scp_079_tesla_event_wait  | int | 2 | If 079 trigger tesla for how many seconds player shouldn't get warned for suicide? |
-| scputils_auto_ban_threshold | float | 30.5f | Percentage of suicides to trigger a ban (Suicides / Games played as SCP) * 100 |
-| scputils_auto_kick_threshold  | float | 15.5f | Percentage of suicides to trigger a kick (Suicides / Games played as SCP) * 100 |
-| scputils_restricted_role_colors  | list | - | List of restricted colors in .scputils_change_color |
-| scputils_banned_names  | list | - | list of banned nicknames |
+You can see settings and edit them inside Exiled/port-config.yml file(example Exiled/7777-config.yml)
 
 **Admin commands**
 
@@ -57,6 +40,9 @@ Database will get created inside Exiled/SCPUtils folder.<br /><br />
 | scputils_set_name  | <player / id / userid> <name/None>   | scputils.playersetname  | Change player name, changes take effects next round/rejoin |
 | scputils_set_badge  | <player / id / userid> <badge name> <duration in minutes> | scputils.handlebadges | Add a temp player badge |
 | scputils_revoke_badge  | <player / id / userid> | scputils.handlebadges | Revoke a badge given to a player |
+| scputils_play_time  | <player / id / userid> <range days> | scputils.playtime | Show recent player activity withing the specified days |
+| scputils_whitelist_asn | <id / userid> | scputils.whitelist | Add player to ASN whitelist |
+| scputils_unwhitelist_asn | <id / userid> | scputils.whitelist | Removes player to ASN whitelist |
 
 **Console commands**
 
@@ -94,27 +80,8 @@ Console commands must be executed like .scputils_help in game console (press ò 
 
 **Config Example**
 
-To edit your configs you must go into EXILED folder and edit port-config.yml file (example 7777-config.yml), bellow you can see a sample config<br />
+To edit your configs you must go into EXILED folder and edit port-config.yml file (example 7777-config.yml), and edit them<br />
 
-```
-scputils_welcome_message: WELCOME TO MY SERVER!
-scputils_scp_079_tesla_event_wait: 3
-scputils_auto_ban_threshold: 35
-scputils_restricted_role_colors: 
- - red
- - magenta
- - pink 
- - cyan
- - lime
- - deep_pink
- - crimson
- - carmine
-scputils_banned_names:
- - Admin
- - Nickname1
- - Nickname2
- - Nickname3
-```
 
 <br />To edit permissions you must go into Plugins/Exiled Permissions folder and edit permissions.yml file, bellow you can see a sample config<br />
 

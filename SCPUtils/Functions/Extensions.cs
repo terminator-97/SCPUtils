@@ -1,4 +1,5 @@
-using EXILED;
+using System.Collections.Generic;
+using System;
 
 namespace SCPUtils
 {
@@ -6,5 +7,9 @@ namespace SCPUtils
     {
         public static void RAMessage(this CommandSender sender, string message, bool success = true) =>
         sender.RaReply("SCPUtils#" + message, success, true, string.Empty);
+
+        public static string Convert(int seconds) => TimeSpan.FromSeconds(seconds).ToString();
+
+
     }
 }
