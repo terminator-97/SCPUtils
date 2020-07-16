@@ -6,15 +6,19 @@ using System.IO;
 
 namespace SCPUtils
 {
-    public static class Database
+    public class Database
     {
+        private readonly ScpUtils pluginInstance;
+
+        public Database(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
+
 
         public static LiteDatabase LiteDatabase { get; private set; }
-        public static string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), Configs.DatabaseName);
-        public static string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{Configs.DatabaseName}.db");
+        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-PTB"), pluginInstance.Config.DatabaseName);
+        public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
 
-        public static void CreateDatabase()
+        public void CreateDatabase()
         {
             if (Directory.Exists(DatabaseDirectory)) return;
 
@@ -29,7 +33,7 @@ namespace SCPUtils
             }
         }
 
-        public static void OpenDatabase()
+        public void OpenDatabase()
         {
             try
             {
@@ -44,7 +48,7 @@ namespace SCPUtils
             }
         }
 
-        public static void AddPlayer(Exiled.API.Features.Player player)
+        public void AddPlayer(Exiled.API.Features.Player player)
         {
             try
             {

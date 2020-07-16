@@ -52,7 +52,7 @@ namespace SCPUtils
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
                 Log.Info(ev.Player.Nickname + " is not present on DB!");
-                Database.AddPlayer(ev.Player);
+                pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
             }
 
             Log.Debug(ev.Player.ReferenceHub.nicknameSync.DisplayName);

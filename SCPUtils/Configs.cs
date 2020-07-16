@@ -76,7 +76,7 @@ namespace SCPUtils
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
 
         [Description("Database name, change it only if you are running multiple servers")]
-        public static string DatabaseName { get; private set; } = "SCPUtils";
+        public string DatabaseName { get; private set; } = "SCPUtils";
 
         [Description("Welcome message duration (if enabled)")]
         public ushort WelcomeMessageDuration { get; private set; } = 12;
@@ -109,7 +109,7 @@ namespace SCPUtils
         public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1", "Color2" };
 
         [Description("Which nicknames are restricted on .scputils_change_nickname command?")]
-        public static List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin" };
+        public List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin" };
 
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };

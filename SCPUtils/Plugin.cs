@@ -6,6 +6,7 @@ using Features = Exiled.API.Features;
 using MEC;
 using HarmonyLib;
 using System;
+using System.IO;
 
 namespace SCPUtils
 {
@@ -13,16 +14,19 @@ namespace SCPUtils
     public class ScpUtils : Features.Plugin<Configs>
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "2.0.0 {PTB II}";
+        public static string pluginVersion = "2.0.1 {PTB III}";
 
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
         public ConsoleCommands PlayerConsoleCommands { get; private set; }
+
+        public Database DatabasePlayerData { get; private set; }
         public int PatchesCounter { get; private set; }
 
         public Harmony Harmony { get; private set; }
+
 
 
 
@@ -59,10 +63,12 @@ namespace SCPUtils
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
             PlayerConsoleCommands = new ConsoleCommands(this);
+            DatabasePlayerData = new Database(this);
             LoadEvents();
             LoadCommands();
-            Database.CreateDatabase();
-            Database.OpenDatabase();
+            DatabasePlayerData.CreateDatabase();
+            DatabasePlayerData.OpenDatabase();
+
             try
             {
                 Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");
