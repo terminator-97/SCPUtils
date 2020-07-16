@@ -55,7 +55,6 @@ namespace SCPUtils
                 pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
             }
 
-            Log.Debug(ev.Player.ReferenceHub.nicknameSync.DisplayName);
             var databasePlayer = ev.Player.GetDatabasePlayer();
             if (Database.PlayerData.ContainsKey(ev.Player)) return;
             Database.PlayerData.Add(ev.Player, databasePlayer);
@@ -63,11 +62,11 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.ReferenceHub.nicknameSync.DisplayName = databasePlayer.CustomNickName;
+            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.Nickname = databasePlayer.CustomNickName;
             if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(ev.Player.Nickname) && !ev.Player.CheckPermission("scputils.bypassnickrestriction")) ev.Player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
             else if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
-            Log.Debug(ev.Player.ReferenceHub.nicknameSync.DisplayName);
+
 
         }
 

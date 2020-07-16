@@ -278,7 +278,7 @@ namespace SCPUtils
                             databasePlayer.CustomNickName = name;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                             ev.Sender.RemoteAdminMessage("Success, choice has been saved!", false);
-                            if (target != null) target.ReferenceHub.nicknameSync.DisplayName = ev.Arguments[1].ToString();
+                            if (target != null) target.Nickname = ev.Arguments[1].ToString();
 
                         }
                         else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);

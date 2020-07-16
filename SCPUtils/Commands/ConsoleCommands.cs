@@ -93,7 +93,7 @@ namespace SCPUtils
                                 ev.ReturnMessage = "Your nickname has been changed, changes will take effect next round, use scputils_change_nickname None to remove the nickname";
                                 string nickname = ev.Arguments[0];
                                 ev.Player.GetDatabasePlayer().CustomNickName = nickname;
-                                ev.Player.ReferenceHub.nicknameSync.DisplayName = nickname;
+                                ev.Player.Nickname = nickname;
                             }
                         }
                         else
