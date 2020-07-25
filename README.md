@@ -86,8 +86,8 @@ To edit your configs you must go into EXILED folder and edit port-config.yml fil
 <br />To edit permissions you must go into Plugins/Exiled Permissions folder and edit permissions.yml file, bellow you can see a sample config<br />
 
 ```
-groups:
     user:
+    inheritance: []
         default: true
         permissions:
         - scputils_speak.scp049
@@ -95,6 +95,7 @@ groups:
         permissions:
         - '*'
     admin:
+    inheritance: []
         permissions:       
         - scputils.playerinfo
         - scputils.playerlist
@@ -104,6 +105,7 @@ groups:
         - scputils.playerresetpreferences
         - scputils_speak.*      
     vip:
+    inheritance: []
         permissions:        
         - scputils.changecolor
         - scputils.changenickname     
