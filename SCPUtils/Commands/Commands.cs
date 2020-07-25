@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils
 {
@@ -17,10 +18,11 @@ namespace SCPUtils
                     {
                         ev.IsAllowed = false;
 
-                        ev.Sender.RemoteAdminMessage($"SCPUtils info:\n" +
+                        ev.CommandSender.RAMessage($"SCPUtils info:\n" +
                         $"Avaible commands: scputils_help, scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name,  scputils_set_badge,  scputils_revoke_badge, scputils_play_time, scputils_whitelist_asn, scputils_unwhitelist_asn", true);
                         break;
                     }
+
 
                 case "scputils_player_info":
                     {
@@ -30,7 +32,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_player_info <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_player_info <player name/id>", false);
                             break;
                         }
 
@@ -39,10 +41,10 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
-                            ev.Sender.RemoteAdminMessage($"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
+                            ev.CommandSender.RAMessage($"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
                   $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +
                   $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
                   $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
@@ -58,36 +60,33 @@ namespace SCPUtils
                   $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
                   $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
+
                         break;
                     }
 
                 case "scputils_play_time":
                     {
                         ev.IsAllowed = false;
-
                         var commandSender = Exiled.API.Features.Player.Get(ev.Sender.Nickname);
-
                         if (ev.Arguments.Count < 2)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_player_info <player name/id> <days range>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_play_time <player name/id> <days range>", false);
                             break;
                         }
-
                         if (IsAllowed(ev.Sender.Nickname, "scputils.playtime"))
                         {
                             int.TryParse(ev.Arguments[1], out int range);
 
                             if (range < 0)
                             {
-                                ev.Sender.RemoteAdminMessage("You have to specify a positive number!", false);
+                                ev.CommandSender.RAMessage("You have to specify a positive number!", false);
                                 return;
                             }
-
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             string message = $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
@@ -101,9 +100,9 @@ namespace SCPUtils
                                 else message += $"{date.Date.ToShortDateString()} Playtime: [ No activity ]\n";
                             }
 
-                            ev.Sender.RemoteAdminMessage(message);
+                            ev.CommandSender.RAMessage(message);
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -115,7 +114,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_player_list <minimum quit percentage>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_player_list <minimum quit percentage>", false);
                             break;
                         }
 
@@ -131,18 +130,18 @@ namespace SCPUtils
                                 {
                                     playerListString += $"\n{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]";
                                 }
-                                if (playerListString == "[Quits/Suicides as SCP]\n") ev.Sender.RemoteAdminMessage("No results found!", false);
-                                else ev.Sender.RemoteAdminMessage($"{playerListString}");
+                                if (playerListString == "[Quits/Suicides as SCP]\n") ev.CommandSender.RAMessage("No results found!", false);
+                                else ev.CommandSender.RAMessage($"{playerListString}");
                             }
                             else
                             {
-                                ev.Sender.RemoteAdminMessage("Arg1 is not an integer, Comand usage example: scputils_player_list 50", false);
+                                ev.CommandSender.RAMessage("Arg1 is not an integer, Comand usage example: scputils_player_list 50", false);
                                 break;
                             }
 
 
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -154,7 +153,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_player_reset <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_player_reset <player name/id>", false);
                             break;
                         }
 
@@ -163,14 +162,14 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             databasePlayer.Reset();
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Success!", false);
+                            ev.CommandSender.RAMessage("Success!", false);
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -182,7 +181,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_player_reset_preferences <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_player_reset_preferences <player name/id>", false);
                             break;
                         }
 
@@ -191,14 +190,14 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             databasePlayer.ResetPreferences();
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Success!", false);
+                            ev.CommandSender.RAMessage("Success!", false);
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -210,7 +209,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 2)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_set_color <player name/id> <color>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_set_color <player name/id> <color>", false);
                             break;
                         }
                         ev.Arguments[1].ToLower().ToString();
@@ -221,14 +220,14 @@ namespace SCPUtils
                             var target = Exiled.API.Features.Player.Get(ev.Arguments[0]);
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             if (ev.Arguments[1] == "none")
                             {
                                 databasePlayer.ColorPreference = "";
                                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                                ev.Sender.RemoteAdminMessage("Success, effects will take effect next round!", false);
+                                ev.CommandSender.RAMessage("Success, effects will take effect next round!", false);
                                 break;
                             }
                             if (validColors.Contains(ev.Arguments[1]))
@@ -237,11 +236,11 @@ namespace SCPUtils
                                 string color = ev.Arguments[1];
                                 databasePlayer.ColorPreference = color;
                                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                                ev.Sender.RemoteAdminMessage("Success!", false);
+                                ev.CommandSender.RAMessage("Success!", false);
                             }
-                            else ev.Sender.RemoteAdminMessage("Invalid color!", false);
+                            else ev.CommandSender.RAMessage("Invalid color!", false);
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -253,7 +252,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 2)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_set_name <player name/id> <nick>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_set_name <player name/id> <nick>", false);
                             break;
                         }
 
@@ -264,24 +263,24 @@ namespace SCPUtils
                             var target = Exiled.API.Features.Player.Get(ev.Arguments[0]);
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             if (ev.Arguments[1].ToLower() == "none")
                             {
                                 databasePlayer.CustomNickName = "";
                                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                                ev.Sender.RemoteAdminMessage("Success, changes will take effect next round!", false);
+                                ev.CommandSender.RAMessage("Success, changes will take effect next round!", false);
                                 break;
                             }
                             string name = ev.Arguments[1];
                             databasePlayer.CustomNickName = name;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Success, choice has been saved!", false);
+                            ev.CommandSender.RAMessage("Success, choice has been saved!", false);
                             if (target != null) target.Nickname = ev.Arguments[1].ToString();
 
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -295,7 +294,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 3)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_set_badge <player name/id> <Badge Name> <Minutes>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_set_badge <player name/id> <Badge Name> <Minutes>", false);
                             break;
                         }
 
@@ -305,12 +304,12 @@ namespace SCPUtils
                             var player = Exiled.API.Features.Player.Get(ev.Arguments[0]);
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
                             if (!ServerStatic.GetPermissionsHandler().GetAllGroups().ContainsKey(ev.Arguments[1]))
                             {
-                                ev.Sender.RemoteAdminMessage("Invalid role name!", false);
+                                ev.CommandSender.RAMessage("Invalid role name!", false);
                                 break;
                             }
 
@@ -321,12 +320,12 @@ namespace SCPUtils
                                 databasePlayer.BadgeExpire = DateTime.Now.AddMinutes(duration);
                                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                                 if (player != null) player.ReferenceHub.serverRoles.Group = ServerStatic.GetPermissionsHandler()._groups[ev.Arguments[1]];
-                                ev.Sender.RemoteAdminMessage("Badge set!", false);
+                                ev.CommandSender.RAMessage("Badge set!", false);
 
                             }
-                            else ev.Sender.RemoteAdminMessage("Arg3 must be integer!", false);
+                            else ev.CommandSender.RAMessage("Arg3 must be integer!", false);
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -338,7 +337,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_revoke_badge <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_revoke_badge <player name/id>", false);
                             break;
                         }
 
@@ -348,7 +347,7 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
 
@@ -356,10 +355,10 @@ namespace SCPUtils
                             databasePlayer.BadgeExpire = DateTime.MinValue;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                             if (player != null) player.SetRank(null, null);
-                            ev.Sender.RemoteAdminMessage("Badge revoked!", false);
+                            ev.CommandSender.RAMessage("Badge revoked!", false);
 
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -371,7 +370,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_whitelist_asn <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_whitelist_asn <player name/id>", false);
                             break;
                         }
 
@@ -381,16 +380,16 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
 
                             databasePlayer.ASNWhitelisted = true;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Player has been successfully whitelisted!", false);
+                            ev.CommandSender.RAMessage("Player has been successfully whitelisted!", false);
 
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
 
@@ -402,7 +401,7 @@ namespace SCPUtils
 
                         if (ev.Arguments.Count < 1)
                         {
-                            ev.Sender.RemoteAdminMessage("Usage: scputils_unwhitelist_asn <player name/id>", false);
+                            ev.CommandSender.RAMessage("Usage: scputils_unwhitelist_asn <player name/id>", false);
                             break;
                         }
 
@@ -412,16 +411,16 @@ namespace SCPUtils
                             var databasePlayer = ev.Arguments[0].GetDatabasePlayer();
                             if (databasePlayer == null)
                             {
-                                ev.Sender.RemoteAdminMessage("Player not found on Database or Player is loading data!", false);
+                                ev.CommandSender.RAMessage("Player not found on Database or Player is loading data!", false);
                                 break;
                             }
 
                             databasePlayer.ASNWhitelisted = false;
                             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                            ev.Sender.RemoteAdminMessage("Player has been successfully removed from whitelist!", false);
+                            ev.CommandSender.RAMessage("Player has been successfully removed from whitelist!", false);
 
                         }
-                        else ev.Sender.RemoteAdminMessage("You need a higher administration level to use this command!", false);
+                        else ev.CommandSender.RAMessage("You need a higher administration level to use this command!", false);
                         break;
                     }
             }

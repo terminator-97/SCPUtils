@@ -78,6 +78,9 @@ namespace SCPUtils
         [Description("Database name, change it only if you are running multiple servers")]
         public string DatabaseName { get; private set; } = "SCPUtils";
 
+        [Description("In which folder database should be stored?")]
+        public string DatabaseFolder { get; private set; } = "EXILED";
+
         [Description("Welcome message duration (if enabled)")]
         public ushort WelcomeMessageDuration { get; private set; } = 12;
 

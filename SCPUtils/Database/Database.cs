@@ -14,7 +14,7 @@ namespace SCPUtils
 
 
         public static LiteDatabase LiteDatabase { get; private set; }
-        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-PTB"), pluginInstance.Config.DatabaseName);
+        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.Config.DatabaseFolder), pluginInstance.Config.DatabaseName);
         public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
 

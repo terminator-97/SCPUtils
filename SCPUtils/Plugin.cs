@@ -14,7 +14,7 @@ namespace SCPUtils
     public class ScpUtils : Features.Plugin<Configs>
     {
         public static bool IsStarted { get; set; }
-        public static string pluginVersion = "2.0.1 {PTB III}";
+        public static string pluginVersion = "2.0.2";
 
         public EventHandlers EventHandlers { get; private set; }
         public Commands Commands { get; private set; }
@@ -93,6 +93,8 @@ namespace SCPUtils
             PlayerEvents.TriggeringTesla -= EventHandlers.OnTeslaEvent;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
+            ServerEvents.SendingRemoteAdminCommand -= Commands.OnRaCommand;
+            ServerEvents.SendingConsoleCommand -= PlayerConsoleCommands.OnConsoleCommand;
             Timing.KillCoroutines(Functions.DT);
             EventHandlers = null;
             Commands = null;
