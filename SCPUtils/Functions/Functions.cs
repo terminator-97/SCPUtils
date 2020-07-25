@@ -57,11 +57,13 @@ namespace SCPUtils
             player.GetDatabasePlayer().TotalScpSuicideBans++;
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration;
             else duration = pluginInstance.Config.AutoBanDuration;
+            Map.Broadcast(12, $"<color=blue><SCPUtils> {player.Nickname} has been banned from the server for exceeding Quits / Suicides limit. Duration: {duration} mitutes</color>", Broadcast.BroadcastFlags.AdminChat);
             player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration)}", "SCPUtils");
         }
 
         public void AutoKickPlayer(Exiled.API.Features.Player player)
         {
+            Map.Broadcast(12, $"<color=blue><SCPUtils> {player.Nickname} has been kicked from the server for exceeding Quits / Suicides limit</color>", Broadcast.BroadcastFlags.AdminChat);
             player.GetDatabasePlayer().TotalScpSuicideKicks++;
             player.Kick($"Auto-Kick: {pluginInstance.Config.SuicideKickMessage}", "SCPUtils");
         }
