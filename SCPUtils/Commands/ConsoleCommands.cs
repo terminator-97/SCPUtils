@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Exiled.Events.EventArgs;
 using Player = Exiled.API.Features.Player;
 using Exiled.Permissions.Extensions;
-
+using System.Linq;
 
 namespace SCPUtils
 {
@@ -21,6 +21,7 @@ namespace SCPUtils
             {
                 case "scputils_help":
                     {
+                        ev.Allow = false;
                         ev.Color = "green";
                         ev.ReturnMessage = "Avaible commands: \n" +
                             ".scputils_info, .scputils_help, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge";
@@ -30,6 +31,7 @@ namespace SCPUtils
 
                 case "scputils_info":
                     {
+                        ev.Allow = false;
                         ev.Color = "green";
                         ev.ReturnMessage = "Plugin Info: \n" +
                             "SCPUtils is a public plugin created by Terminator_97#0507, you can download this plugin at: github.com/terminator-97/SCPUtils \n" +
@@ -40,6 +42,7 @@ namespace SCPUtils
 
                 case "scputils_change_nickname":
                     {
+                        ev.Allow = false;
                         var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
@@ -106,6 +109,7 @@ namespace SCPUtils
 
                 case "scputils_change_color":
                     {
+                        ev.Allow = false;
                         var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
@@ -163,6 +167,7 @@ namespace SCPUtils
 
                 case "scputils_hide_badge":
                     {
+                        ev.Allow = false;
                         var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
@@ -189,6 +194,7 @@ namespace SCPUtils
 
                 case "scputils_show_badge":
                     {
+                        ev.Allow = false;
                         var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
@@ -215,6 +221,7 @@ namespace SCPUtils
 
                 case "scputils_my_info":
                     {
+                        ev.Allow = false;
                         var commandSender = Exiled.API.Features.Player.Get(ev.Player.UserId);
 
                         if (commandSender == null)
@@ -224,12 +231,15 @@ namespace SCPUtils
                             break;
                         }
                         ev.Color = "green";
-                        ev.ReturnMessage = "Those are your preferences:\n" +
-                        $"Custom Name: {commandSender.GetDatabasePlayer().CustomNickName}\n" +
-                        $"Badge Color: {commandSender.GetDatabasePlayer().ColorPreference}\n" +
-                        $"Hide Badge: {commandSender.GetDatabasePlayer().HideBadge}\n" +
-                        $"Temporarily Badge: {commandSender.GetDatabasePlayer().BadgeName}\n" +
-                        $"Badge Expire: {commandSender.GetDatabasePlayer().BadgeExpire}";
+                        var databasePlayer = commandSender.GetDatabasePlayer();
+                        ev.ReturnMessage = "Those are your preferences and informations:\n" +
+                        $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
+                        $"Badge Color: [ {databasePlayer.ColorPreference} ]\n" +
+                        $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
+                        $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
+                        $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
+                        $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
+                        $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]";
                         break;
                     }
             }

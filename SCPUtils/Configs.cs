@@ -42,6 +42,12 @@ namespace SCPUtils
         [Description("Should Tutorials be considered as SCP? If true they will get warned for suicides / quits if enabled")]
         public bool AreTutorialsSCP { get; private set; } = false;
 
+        [Description("Broadcast in admin chat auto kick and bans for quitting or suicide as SCP")]
+        public bool BroadcastSanctions { get; private set; } = true;
+
+        [Description("Broadcast in admin chat auto warns for quitting or suicide as SCP")]
+        public bool BroadcastWarns { get; private set; } = false;
+
         [Description("Autorestart message broadcasted when there is one player left (if enabled)")]
         public string AutoRestartMessage { get; private set; } = "<color=red>Round Restart:</color>\n<color=yellow> Restarting round in {0} seconds due lack of players</color>";
 

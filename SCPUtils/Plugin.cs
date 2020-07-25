@@ -40,10 +40,10 @@ namespace SCPUtils
             ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
             PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
-            PlayerEvents.Died += EventHandlers.OnPlayerDeath;
-            PlayerEvents.TriggeringTesla += EventHandlers.OnTeslaEvent;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
+            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
+            Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
 
         }
 
@@ -89,12 +89,12 @@ namespace SCPUtils
             ServerEvents.RestartingRound -= EventHandlers.OnRoundRestart;
             MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
             PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
-            PlayerEvents.Died -= EventHandlers.OnPlayerDeath;
-            PlayerEvents.TriggeringTesla -= EventHandlers.OnTeslaEvent;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
             ServerEvents.SendingRemoteAdminCommand -= Commands.OnRaCommand;
             ServerEvents.SendingConsoleCommand -= PlayerConsoleCommands.OnConsoleCommand;
+            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
+            Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
             Timing.KillCoroutines(Functions.DT);
             EventHandlers = null;
             Commands = null;

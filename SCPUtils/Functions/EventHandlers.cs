@@ -33,19 +33,21 @@ namespace SCPUtils
             Timing.KillCoroutines(pluginInstance.Functions.DT);
         }
 
-
-        internal void OnPlayerDeath(DiedEventArgs ev)
+        internal void OnPlayerDeath(DyingEventArgs ev)
         {
             if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && ScpUtils.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformations.GetDamageType() == DamageTypes.Tesla || ev.HitInformations.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ev.HitInformation.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
         }
 
-
+        internal void On079TeslaEvent(InteractingTeslaEventArgs ev)
+        {
+            lastTeslaEvent = DateTime.Now;
+        }
 
         internal void OnPlayerJoin(JoinedEventArgs ev)
         {
@@ -63,11 +65,8 @@ namespace SCPUtils
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.Nickname = databasePlayer.CustomNickName;
-            if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(ev.Player.Nickname) && !ev.Player.CheckPermission("scputils.bypassnickrestriction")) ev.Player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
             else if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
-
-
         }
 
 
@@ -91,16 +90,10 @@ namespace SCPUtils
             }
         }
 
-        internal void OnTeslaEvent(TriggeringTeslaEventArgs ev)
-        {
-            lastTeslaEvent = DateTime.Now;
-        }
-
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
         {
             if (pluginInstance.Config.DecontaminationMessageEnabled) Map.Broadcast(pluginInstance.Config.DecontaminationMessageDuration, pluginInstance.Config.DecontaminationMessage, Broadcast.BroadcastFlags.Normal);
         }
-
 
 
 

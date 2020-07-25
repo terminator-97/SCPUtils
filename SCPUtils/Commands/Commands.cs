@@ -27,7 +27,6 @@ namespace SCPUtils
                 case "scputils_player_info":
                     {
                         ev.IsAllowed = false;
-
                         var commandSender = Exiled.API.Features.Player.Get(ev.Sender.Nickname);
 
                         if (ev.Arguments.Count < 1)
