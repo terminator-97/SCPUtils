@@ -45,6 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\release\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
+    <Reference Include="CommandSystem.Core">
+      <HintPath>..\..\..\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Exiled.API, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\release\Exiled\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
@@ -86,13 +89,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AsnUnwhitelist.cs" />
+    <Compile Include="Commands\AsnWhitelist.cs" />
+    <Compile Include="Commands\PlayerReset.cs" />
+    <Compile Include="Commands\PlayerResetPreferences.cs" />
+    <Compile Include="Commands\PlayTime.cs" />
+    <Compile Include="Commands\RevokeBadge.cs" />
+    <Compile Include="Commands\SetBadge.cs" />
+    <Compile Include="Commands\SetColor.cs" />
+    <Compile Include="Commands\SetName.cs" />
     <Compile Include="Configs.cs" />
     <Compile Include="Patches\SCPSpeak.cs" />
-    <Compile Include="Commands\ConsoleCommands.cs" />
+    <Compile Include="Commands\CommandExtensions.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\DatabasePlayer.cs" />
     <Compile Include="Database\Player.cs" />
-    <Compile Include="Commands\Commands.cs" />
     <Compile Include="Functions\Functions.cs" />
     <Compile Include="Functions\EventHandlers.cs" />
     <Compile Include="Functions\Extensions.cs" />
@@ -103,6 +114,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Commands\Help.cs" />
+    <Compile Include="Commands\HideBadge.cs" />
+    <Compile Include="Commands\Info.cs" />
+    <Compile Include="Commands\PlayerInfo.cs" />
+    <Compile Include="Commands\PlayerList.cs" />
+    <Compile Include="Commands\ShowBadge.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

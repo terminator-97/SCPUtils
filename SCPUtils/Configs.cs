@@ -70,13 +70,13 @@ namespace SCPUtils
         public string AutoBanMessage { get; private set; } = "Exceeded SCP suicide limit Duration: {0} minutes";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedNickNameChange { get; private set; } = "Permission denied.";
+        public string UnauthorizedNickNameChange { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedColorChange { get; private set; } = "Permission denied.";
+        public string UnauthorizedColorChange { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedBadgeChangeVisibility { get; private set; } = "Permission denied.";
+        public string UnauthorizedBadgeChangeVisibility { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player try to change his nickname to a restricted one")]
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
@@ -104,6 +104,9 @@ namespace SCPUtils
 
         [Description("SCP Suicide / Quit base ban duration (if enabled)")]
         public int AutoBanDuration { get; private set; } = 15;
+
+        [Description("Which is the max length of a nickname using change name command?")]
+        public int NicknameMaxLength { get; private set; } = 32;
 
         [Description("If 079 trigger tesla for how many seconds player shouldn't get warned for suicide? (2 is enough for most of servers)")]
         public int Scp079TeslaEventWait { get; private set; } = 2;

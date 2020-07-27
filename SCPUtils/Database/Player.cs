@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils
 {

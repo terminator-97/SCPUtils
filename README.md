@@ -73,6 +73,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | Permisssion  | Description | 
 | ------------- | ------------- | 
 | scputils.bypassnickrestriction | Allows to bypass nickname restrictions |
+| scputils.help | Show also admin command list in scputils_help command, without this permission only user commands are shown |
 
 Pro tip: use scputils_speak.* to allow someone to speak with all the SCPs, set permission to default role to allow everyone to speak with that scp.
 
