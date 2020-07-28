@@ -2,7 +2,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
 using System;
-
+using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils
 {
@@ -23,11 +23,21 @@ namespace SCPUtils
         internal void OnRoundEnd(RoundEndedEventArgs ev)
         {
             ScpUtils.IsStarted = false;
-            Timing.KillCoroutines(pluginInstance.Functions.DT);
+            Timing.KillCoroutines(pluginInstance.Functions.DT);           
+            foreach (var player in Exiled.API.Features.Player.List)
+            {
+                pluginInstance.Functions.SaveData(player);
+            }          
+         
         }
 
         internal void OnRoundRestart()
-        {
+        {            
+                foreach (var player in Exiled.API.Features.Player.List)
+                {
+                    pluginInstance.Functions.SaveData(player);
+                }
+                
             ScpUtils.IsStarted = false;
             Timing.KillCoroutines(pluginInstance.Functions.DT);
         }
@@ -41,6 +51,7 @@ namespace SCPUtils
                     if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ev.HitInformation.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
+
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs ev)
@@ -79,16 +90,7 @@ namespace SCPUtils
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
-            if (ev.Player.Nickname != "Dedicated Server" && ev.Player != null && Database.PlayerData.ContainsKey(ev.Player))
-            {
-                if ((ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
-                {
-                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
-                }
-                ev.Player.GetDatabasePlayer().SetCurrentDayPlayTime();
-                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
-                Database.PlayerData.Remove(ev.Player);
-            }
+            pluginInstance.Functions.SaveData(ev.Player);
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)

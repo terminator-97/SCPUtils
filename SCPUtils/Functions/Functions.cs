@@ -89,7 +89,7 @@ namespace SCPUtils
         {
             var databasePlayer = player.GetDatabasePlayer();
 
-
+          
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
                 Timing.CallDelayed(1f, () =>
@@ -105,7 +105,7 @@ namespace SCPUtils
                     }
                 });
             }
-
+      
             if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
             {
                 Timing.CallDelayed(1.15f, () =>
@@ -113,7 +113,7 @@ namespace SCPUtils
                     player.RankColor = databasePlayer.ColorPreference;
                 });
             }
-
+   
             if (databasePlayer.HideBadge == true)
             {
                 Timing.CallDelayed(1.25f, () =>
@@ -121,28 +121,41 @@ namespace SCPUtils
                     player.BadgeHidden = true;
                 });
             }
-
-
+      
             if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
             {
-                Timing.CallDelayed(1.4f, () =>
+                Timing.CallDelayed(3f, () =>
                 {
                     player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
                 });
-            }
-
+            }          
 
         }
 
         public bool CheckNickname(string name)
         {
             foreach (var nickname in pluginInstance.Config.BannedNickNames)
-            {
+            {           
                 name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
-                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
+                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");       
                 if (Regex.Match(name, pattern).Success) return true;
             }
             return false;
+        }
+
+        public void SaveData (Exiled.API.Features.Player player)
+        {
+            if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
+            {
+                if ((player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
+                {
+                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(player);
+                }
+                player.GetDatabasePlayer().SetCurrentDayPlayTime();
+                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
+                Database.PlayerData.Remove(player);
+                Log.Debug($"Saving data of {player.Nickname}");
+            }
         }
 
     }
