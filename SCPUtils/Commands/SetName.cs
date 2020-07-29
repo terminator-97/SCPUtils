@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <Nickname> </color>";
+                    response = $"<color=yellow>Usage: {Command} <player name/id> <Nickname / None> </color>";
                     return false;
                 }
                 else
@@ -39,7 +39,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <Nickname> </color>";
+                    response = $"<color=yellow>Usage: {Command} <Nickname / None> </color>";
                     return false;
                 }
                 else

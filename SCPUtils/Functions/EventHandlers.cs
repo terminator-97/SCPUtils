@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs;
 using MEC;
 using System;
 using Log = Exiled.API.Features.Log;
+using System.Collections.Generic;
 
 namespace SCPUtils
 {
@@ -12,6 +13,9 @@ namespace SCPUtils
 
         public DateTime lastTeslaEvent;
 
+        public Dictionary<string, Team> roleManager = new Dictionary<string, Team>();
+
+   
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         internal void OnRoundStart()
@@ -51,7 +55,13 @@ namespace SCPUtils
                     if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ev.HitInformation.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
+            roleManager[ev.Target.UserId] = Team.RIP;
 
+        }
+
+        internal void OnChangeRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.Player.Team == Team.RIP) roleManager[ev.Player.UserId] = Team.RIP;          
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs ev)
@@ -85,20 +95,27 @@ namespace SCPUtils
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
-            if (ev.Player.Team == Team.SCP) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
+            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;       
+      
+            if (!roleManager.ContainsKey(ev.Player.UserId)) roleManager.Add(ev.Player.UserId, ev.Player.Team);
+            else roleManager[ev.Player.UserId] = ev.Player.Team;         
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
+            if (!roleManager.ContainsKey(ev.Player.UserId)) return;
+            else if ( (ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
+            {            
+                if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
+            }
             pluginInstance.Functions.SaveData(ev.Player);
+            roleManager.Remove(ev.Player.UserId);
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
         {
             if (pluginInstance.Config.DecontaminationMessageEnabled) Map.Broadcast(pluginInstance.Config.DecontaminationMessageDuration, pluginInstance.Config.DecontaminationMessage, Broadcast.BroadcastFlags.Normal);
         }
-
-
 
     }
 
