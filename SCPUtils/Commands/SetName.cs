@@ -14,7 +14,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_set_name";
 
-        public string[] Aliases { get; } = new string[] { "un", "scputils_change_nickname" };
+        public string[] Aliases { get; } = new[] { "un", "scputils_change_nickname" };
 
         public string Description { get; } = "You can change everyone name or only your name based on the permissions you have";
 

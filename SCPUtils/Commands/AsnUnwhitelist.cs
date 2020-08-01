@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_unwhitelist_asn";
 
-        public string[] Aliases { get; } = new string[] { "asnuw" };
+        public string[] Aliases { get; } = new[] { "asnuw" };
 
         public string Description { get; } = "Un-Whitelist a player to disallow him access the server even if ASN is blacklisted!";
 

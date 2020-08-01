@@ -14,42 +14,7 @@ namespace SCPUtils
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
-        public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
-
-        public void StartFixer()
-        {
-            DT = Timing.RunCoroutine(SCPFixer(5));
-        }
-
-        public IEnumerator<float> SCPFixer(int WT)
-        {
-            yield return Timing.WaitForSeconds(WT);
-
-            while (ScpUtils.IsStarted)
-            {
-                yield return Timing.WaitForSeconds(WT);
-
-                if (PlayerManager.players.Count <= 1)
-                {
-                    if (RoundSummary.RoundLock == false)
-                    {
-                        Map.Broadcast(pluginInstance.Config.AutoRestartTime, string.Format(pluginInstance.Config.AutoRestartMessage, pluginInstance.Config.AutoRestartTime), Broadcast.BroadcastFlags.Normal);
-
-                        yield return Timing.WaitForSeconds(pluginInstance.Config.AutoRestartTime);
-
-                        if (RoundSummary.RoundLock == false)
-                        {
-                            QueryProcessor.Localplayer.GetComponent<PlayerStats>().Roundrestart();
-                            Log.Info("<SCPUtils> Round restarted due to lack of players");
-                            ScpUtils.IsStarted = false;
-                            yield break;
-                        }
-                        else Log.Warn("Auto-Restart aborted!");
-                    }
-                }
-                if (ScpUtils.IsStarted == false) { ServerConsole.AddLog("Killing SCPFix"); yield break; }
-            }
-        }
+        public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;       
 
         public void AutoBanPlayer(Exiled.API.Features.Player player)
         {
@@ -57,42 +22,23 @@ namespace SCPUtils
             player.GetDatabasePlayer().TotalScpSuicideBans++;
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration;
             else duration = pluginInstance.Config.AutoBanDuration;
-            foreach (var admin in Exiled.API.Features.Player.List)
-            {
-                if (pluginInstance.Config.BroadcastSanctions)
-                {
-                   if(admin.ReferenceHub.serverRoles.RemoteAdmin) admin.Broadcast(12, $"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration} mitutes</color>", Broadcast.BroadcastFlags.AdminChat);
-                }
-            }
-            player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration)}", "SCPUtils");
+            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration} mitutes</color>");
+            player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration * 60)}", "SCPUtils");
         }
 
         public void AutoKickPlayer(Exiled.API.Features.Player player)
-        {
-            foreach (var admin in Exiled.API.Features.Player.List)
-            {
-                if (pluginInstance.Config.BroadcastSanctions)
-                {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) admin.Broadcast(12, $"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>", Broadcast.BroadcastFlags.AdminChat);
-                }
-            }
+        {      
+            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
             player.GetDatabasePlayer().TotalScpSuicideKicks++;
             player.Kick($"Auto-Kick: {pluginInstance.Config.SuicideKickMessage}", "SCPUtils");
         }
 
         public void AutoWarnPlayer(Exiled.API.Features.Player player)
         {
-            foreach (var admin in Exiled.API.Features.Player.List)
-            {
-                if (pluginInstance.Config.BroadcastSanctions)
-                {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) if (pluginInstance.Config.BroadcastWarns) admin.Broadcast(12, $"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>", Broadcast.BroadcastFlags.AdminChat);
-                }
-            }
+            if (pluginInstance.Config.BroadcastWarns) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
             player.GetDatabasePlayer().ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.Config.AutoWarnMessageDuration, pluginInstance.Config.SuicideWarnMessage, Broadcast.BroadcastFlags.Normal);
-
         }
 
         public void OnQuitOrSuicide(Exiled.API.Features.Player player)
@@ -113,8 +59,9 @@ namespace SCPUtils
                 Timing.CallDelayed(1f, () =>
                 {
                     if (databasePlayer.BadgeExpire >= DateTime.Now)
-                    {
-                        player.ReferenceHub.serverRoles.Group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
+                    {                     
+                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];                        
+                        player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                     }
                     else
                     {
@@ -165,7 +112,7 @@ namespace SCPUtils
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
-                if ((player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
+                if ((player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
                 {
                     if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(player);
                 }
@@ -174,6 +121,17 @@ namespace SCPUtils
                 Database.PlayerData.Remove(player);
                 Log.Debug($"Saving data of {player.Nickname}");
             }
+        }
+
+        private void BroadcastSuicideQuitAction(string text)
+        {           
+                foreach (var admin in Exiled.API.Features.Player.List)
+                {
+                    if (pluginInstance.Config.BroadcastSanctions)
+                    {
+                        if (admin.ReferenceHub.serverRoles.RemoteAdmin) Map.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                    }
+                }            
         }
 
     }

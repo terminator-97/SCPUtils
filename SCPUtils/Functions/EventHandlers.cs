@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs;
 using MEC;
 using System;
 using Log = Exiled.API.Features.Log;
+using Round = Exiled.API.Features.Round;
 using System.Collections.Generic;
 
 namespace SCPUtils
@@ -17,38 +18,10 @@ namespace SCPUtils
 
    
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
-
-        internal void OnRoundStart()
-        {
-            ScpUtils.IsStarted = true;
-            if (pluginInstance.Config.EnableRoundRestartCheck) pluginInstance.Functions.StartFixer();
-        }
-
-        internal void OnRoundEnd(RoundEndedEventArgs ev)
-        {
-            ScpUtils.IsStarted = false;
-            Timing.KillCoroutines(pluginInstance.Functions.DT);           
-            foreach (var player in Exiled.API.Features.Player.List)
-            {
-                pluginInstance.Functions.SaveData(player);
-            }          
-         
-        }
-
-        internal void OnRoundRestart()
-        {            
-                foreach (var player in Exiled.API.Features.Player.List)
-                {
-                    pluginInstance.Functions.SaveData(player);
-                }
-                
-            ScpUtils.IsStarted = false;
-            Timing.KillCoroutines(pluginInstance.Functions.DT);
-        }
-
+ 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
-            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && ScpUtils.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn)
+            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
@@ -60,8 +33,15 @@ namespace SCPUtils
         }
 
         internal void OnChangeRole(ChangingRoleEventArgs ev)
-        {
-            if (ev.Player.Team == Team.RIP) roleManager[ev.Player.UserId] = Team.RIP;          
+        { 
+            if (ev.Player == null) return;               
+            if (!roleManager.ContainsKey(ev.Player.UserId)) roleManager.Add(ev.Player.UserId, ev.Player.Team);            
+            if (ev.Player.Team == Team.RIP) roleManager[ev.Player.UserId] = Team.RIP;            
+        }
+
+        internal void OnPlayerHurt(HurtingEventArgs ev)
+        {     
+            ev.IsAllowed = !(pluginInstance.Config.DisableHandcuffHurtClassD && ev.Target.Team == Team.CDP && ev.Target.IsCuffed && ev.Attacker.Team == Team.MTF && pluginInstance.Config.ClassDImmunityZones.Contains(ev.Target.CurrentRoom.Zone));
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs ev)
@@ -88,7 +68,7 @@ namespace SCPUtils
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.Nickname = databasePlayer.CustomNickName;
             if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
-            else pluginInstance.Functions.PostLoadPlayer(ev.Player);
+            else pluginInstance.Functions.PostLoadPlayer(ev.Player);   
         }
 
 
@@ -98,13 +78,13 @@ namespace SCPUtils
             if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;       
       
             if (!roleManager.ContainsKey(ev.Player.UserId)) roleManager.Add(ev.Player.UserId, ev.Player.Team);
-            else roleManager[ev.Player.UserId] = ev.Player.Team;         
+            else roleManager[ev.Player.UserId] = ev.Player.Team;
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
-        {
+        {         
             if (!roleManager.ContainsKey(ev.Player.UserId)) return;
-            else if ( (ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
+            else if ( (ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
             {            
                 if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
             }

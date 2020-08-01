@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_hide_badge";
 
-        public string[] Aliases { get; } = new string[] { "hb" };
+        public string[] Aliases { get; } = new[] { "hb" };
 
         public string Description { get; } = "Hides your badge permanently until you execute scputils_show_badge or sb";
 

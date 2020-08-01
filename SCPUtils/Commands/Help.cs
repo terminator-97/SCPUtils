@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     class Help : ICommand
     {
-        public string Command => "scputils_help";
+        public string Command { get; } = "scputils_help";
 
         public string[] Aliases { get; } = new string[] { };
 
-        public string Description => "Show plugin info";
+        public string Description { get; } = "Show plugin info";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

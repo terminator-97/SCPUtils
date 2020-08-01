@@ -13,13 +13,12 @@ namespace SCPUtils
     public class ScpUtils : Features.Plugin<Configs>
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
-        public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static bool IsStarted { get; set; }
-        public static string pluginVersion = "2.1.2";
+        public static ScpUtils StaticInstance => LazyInstance.Value;        
+        public static string pluginVersion = "2.2.0";
         public override string Author { get; } = "Terminator_9#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 1, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 0, 7);
+        public override Version Version { get; } = new Version(2, 2, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 0, 9);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -37,16 +36,14 @@ namespace SCPUtils
         }
 
         public void LoadEvents()
-        {
-            ServerEvents.RoundStarted += EventHandlers.OnRoundStart;
-            ServerEvents.RoundEnded += EventHandlers.OnRoundEnd;
-            ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;            
+        {               
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
             PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;        
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
             PlayerEvents.ChangingRole += EventHandlers.OnChangeRole;
+            PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
         }
 
@@ -75,15 +72,13 @@ namespace SCPUtils
 
         public override void OnDisabled()
         {
-            ServerEvents.RoundStarted -= EventHandlers.OnRoundStart;
-            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnd;
-            ServerEvents.RestartingRound -= EventHandlers.OnRoundRestart;
             MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
             PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
             PlayerEvents.ChangingRole -= EventHandlers.OnChangeRole;
+            PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
             Timing.KillCoroutines(Functions.DT);
             EventHandlers = null;

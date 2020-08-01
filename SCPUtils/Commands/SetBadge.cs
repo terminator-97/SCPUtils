@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_set_badge";
 
-        public string[] Aliases { get; } = new string[] { "setb", "issue_badge" };
+        public string[] Aliases { get; } = new[] { "setb", "issue_badge" };
 
         public string Description { get; } = "You can change everyone admin or only your name based on the permissions you have";
 
@@ -53,7 +53,8 @@ namespace SCPUtils.Commands
                 databasePlayer.BadgeName = badge;
                 databasePlayer.BadgeExpire = DateTime.Now.AddMinutes(duration);
                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                if (player != null) player.ReferenceHub.serverRoles.Group = ServerStatic.GetPermissionsHandler()._groups[badge];
+                var group = ServerStatic.GetPermissionsHandler()._groups[badge];
+                if (player != null) player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                 response = "Badge set!";
 
             }

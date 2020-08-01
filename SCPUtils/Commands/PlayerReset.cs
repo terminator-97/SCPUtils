@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_reset";
 
-        public string[] Aliases { get; } = new string[] { "pr" };
+        public string[] Aliases { get; } = new[] { "pr" };
 
         public string Description { get; } = "Reset player data (Quits,Ban,Kicks,Nickname,Badge etc, everything)!";
 

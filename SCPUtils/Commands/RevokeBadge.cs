@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_revoke_badge";
 
-        public string[] Aliases { get; } = new string[] { "rb" };
+        public string[] Aliases { get; } = new[] { "rb" };
 
         public string Description { get; } = "Removes a temporarily badge that has been given to a player!";
 

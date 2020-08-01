@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_list";
 
-        public string[] Aliases { get; } = new string[] { "pl" };
+        public string[] Aliases { get; } = new[] { "pl" };
 
         public string Description { get; } = "Show player list in scputils database with some basic informations, don't use values like 0 otherwise the list may get huge";
 

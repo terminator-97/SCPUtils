@@ -17,6 +17,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **SCPSpeak features:** Playing with permissions you can decide which badge (even default one) can speak with that SCP like 939 using V!
 - **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
+- **Class-D protection:** Editing configs you can set protection against MTFs on handcuffed Class-D in specific zones of the map
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
@@ -43,6 +44,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_play_time  | <player / id / userid> <range days> | scputils.playtime | Show recent player activity withing the specified days |
 | scputils_whitelist_asn | <id / userid> | scputils.whitelist | Add player to ASN whitelist |
 | scputils_unwhitelist_asn | <id / userid> | scputils.whitelist | Removes player to ASN whitelist |
+| scputils_staff_list | - | scputils.stafflist | Show both local staff and global staff present in game |
 
 **Console commands**
 

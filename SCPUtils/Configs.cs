@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Log = Exiled.API.Features.Log;
+using ZoneType = Exiled.API.Enums.ZoneType;
 
 namespace SCPUtils
 {
@@ -48,8 +49,8 @@ namespace SCPUtils
         [Description("Broadcast in admin chat auto warns for quitting or suicide as SCP")]
         public bool BroadcastWarns { get; private set; } = false;
 
-        [Description("Autorestart message broadcasted when there is one player left (if enabled)")]
-        public string AutoRestartMessage { get; private set; } = "<color=red>Round Restart:</color>\n<color=yellow> Restarting round in {0} seconds due lack of players</color>";
+        [Description("Should Class-D be immune from MTF while cuffed?")]
+        public bool DisableHandcuffHurtClassD { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
@@ -67,7 +68,7 @@ namespace SCPUtils
         public string AutoKickBannedNameMessage { get; private set; } = "You're using a restricted nickname or too similar to a restricted one, please change it";
 
         [Description("Suicide auto-ban reason (if enabled)")]
-        public string AutoBanMessage { get; private set; } = "Exceeded SCP suicide limit Duration: {0} minutes";
+        public string AutoBanMessage { get; private set; } = "Exceeded SCP suicide limit";
 
         [Description("Message if player is not authorized to use this command")]
         public string UnauthorizedNickNameChange { get; private set; } = "<color=red>Permission denied.</color>";
@@ -125,6 +126,9 @@ namespace SCPUtils
 
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
+
+        [Description("Zones where handcuffed class-d are immune from MTF damage")]
+        public List<ZoneType> ClassDImmunityZones { get; private set; } = new List<ZoneType>() { ZoneType.Surface, ZoneType.Entrance };
 
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";

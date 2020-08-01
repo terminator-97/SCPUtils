@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
         private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin" };
         public string Command { get; } = "scputils_set_color";
 
-        public string[] Aliases { get; } = new string[] { "sc", "scputils_change_color" };
+        public string[] Aliases { get; } = new[] { "sc", "scputils_change_color" };
 
         public string Description { get; } = "You can change everyone color or only your one based on the permissions you have";
 
