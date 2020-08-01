@@ -5,7 +5,7 @@ using Log = Exiled.API.Features.Log;
 using ZoneType = Exiled.API.Enums.ZoneType;
 
 namespace SCPUtils
-{
+{ 
     public class Configs : IConfig
     {
         public bool IsEnabled { get; set; } = true;

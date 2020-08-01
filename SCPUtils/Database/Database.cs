@@ -24,7 +24,7 @@ namespace SCPUtils
 
             try
             {
-                Directory.CreateDirectory(DatabaseDirectory);
+                Directory.CreateDirectory(DatabaseDirectory); 
                 Log.Warn("Database not found, Creating new DB");
             }
             catch (Exception ex)

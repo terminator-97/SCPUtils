@@ -13,7 +13,7 @@ namespace SCPUtils
     public class ScpUtils : Features.Plugin<Configs>
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
-        public static ScpUtils StaticInstance => LazyInstance.Value;        
+        public static ScpUtils StaticInstance => LazyInstance.Value;
         public static string pluginVersion = "2.2.0";
         public override string Author { get; } = "Terminator_9#0507";
         public override string Name { get; } = "SCPUtils";
@@ -36,10 +36,10 @@ namespace SCPUtils
         }
 
         public void LoadEvents()
-        {               
+        {
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
             PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
-            PlayerEvents.Left += EventHandlers.OnPlayerLeave;        
+            PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
             PlayerEvents.ChangingRole += EventHandlers.OnChangeRole;

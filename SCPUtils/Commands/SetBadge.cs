@@ -59,7 +59,7 @@ namespace SCPUtils.Commands
 
             }
             else response = "Arg3 must be integer!";
-
+             
             return true;
         }
     }

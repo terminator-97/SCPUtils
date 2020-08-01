@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
             else if (arguments.Count < 1)
             {
                 response = $"Usage: {Command} <player name/id>";
-                return false;
+                return false; 
             }
 
             else target = arguments.Array[1].ToString();

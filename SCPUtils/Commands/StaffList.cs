@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     class StaffList : ICommand
     {
-        public string Command { get;  } = "scputils_staff_list";
+        public string Command { get; } = "scputils_staff_list";
 
         public string[] Aliases { get; } = new[] { "sl", "stafflist" };
 
@@ -20,10 +20,10 @@ namespace SCPUtils.Commands
                 response = "You need a higher administration level to use this command!";
                 return false;
             }
-            string text = "";            
-            foreach(var player in Exiled.API.Features.Player.List)
-            {              
-                if(player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff) text += $"(SCP:SL Staff) Player: {player.Nickname} {player.UserId} Global badge: {player.GlobalBadge}\n";
+            string text = "";
+            foreach (var player in Exiled.API.Features.Player.List)
+            {
+                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff) text += $"(SCP:SL Staff) Player: {player.Nickname} {player.UserId} Global badge: {player.GlobalBadge}\n";
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin) text += $"Player: {player.Nickname} {player.UserId} Rank: {player.GroupName}\n";
             }
             if (string.IsNullOrEmpty(text)) text = "No staff online!";

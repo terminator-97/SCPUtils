@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
             {
                 response = "This command cannot be executed from console!";
                 return false;
-            }
+            } 
             else
             {
                 var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);

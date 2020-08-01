@@ -8,8 +8,6 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class AsnUnWhitelist : ICommand
     {
-
-
         public string Command { get; } = "scputils_unwhitelist_asn";
 
         public string[] Aliases { get; } = new[] { "asnuw" };

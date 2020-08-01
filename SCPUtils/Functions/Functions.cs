@@ -14,7 +14,7 @@ namespace SCPUtils
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
-        public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;       
+        public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         public void AutoBanPlayer(Exiled.API.Features.Player player)
         {
@@ -27,7 +27,7 @@ namespace SCPUtils
         }
 
         public void AutoKickPlayer(Exiled.API.Features.Player player)
-        {      
+        {
             if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
             player.GetDatabasePlayer().TotalScpSuicideKicks++;
             player.Kick($"Auto-Kick: {pluginInstance.Config.SuicideKickMessage}", "SCPUtils");
@@ -53,14 +53,14 @@ namespace SCPUtils
         {
             var databasePlayer = player.GetDatabasePlayer();
 
-          
+
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
                 Timing.CallDelayed(1f, () =>
                 {
                     if (databasePlayer.BadgeExpire >= DateTime.Now)
-                    {                     
-                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];                        
+                    {
+                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                     }
                     else
@@ -70,7 +70,7 @@ namespace SCPUtils
                     }
                 });
             }
-      
+
             if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
             {
                 Timing.CallDelayed(1.15f, () =>
@@ -78,7 +78,7 @@ namespace SCPUtils
                     player.RankColor = databasePlayer.ColorPreference;
                 });
             }
-   
+
             if (databasePlayer.HideBadge == true)
             {
                 Timing.CallDelayed(1.25f, () =>
@@ -86,29 +86,29 @@ namespace SCPUtils
                     player.BadgeHidden = true;
                 });
             }
-      
+
             if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
             {
                 Timing.CallDelayed(3f, () =>
                 {
                     player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
                 });
-            }          
+            }
 
         }
 
         public bool CheckNickname(string name)
         {
             foreach (var nickname in pluginInstance.Config.BannedNickNames)
-            {           
+            {
                 name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
-                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");       
+                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
                 if (Regex.Match(name, pattern).Success) return true;
             }
             return false;
         }
 
-        public void SaveData (Exiled.API.Features.Player player)
+        public void SaveData(Exiled.API.Features.Player player)
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
@@ -124,14 +124,14 @@ namespace SCPUtils
         }
 
         private void BroadcastSuicideQuitAction(string text)
-        {           
-                foreach (var admin in Exiled.API.Features.Player.List)
+        {
+            foreach (var admin in Exiled.API.Features.Player.List)
+            {
+                if (pluginInstance.Config.BroadcastSanctions)
                 {
-                    if (pluginInstance.Config.BroadcastSanctions)
-                    {
-                        if (admin.ReferenceHub.serverRoles.RemoteAdmin) Map.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
-                    }
-                }            
+                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) Map.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                }
+            }
         }
 
     }

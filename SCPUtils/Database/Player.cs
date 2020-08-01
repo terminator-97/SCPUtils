@@ -34,7 +34,7 @@ namespace SCPUtils
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
         }
 
-        public void Reset()
+        public void Reset() 
         {
             ScpSuicideCount = 0;
             TotalScpSuicideKicks = 0;
