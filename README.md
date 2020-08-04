@@ -118,7 +118,7 @@ To edit your configs you must go into EXILED folder and edit port-config.yml fil
         - scputils_speak.*	  
 ```		
 
-**Team protecion**
+**Team protection**
 
 CDP = Class-D  <br />
 CHI = Chaos Insurgency <br />
