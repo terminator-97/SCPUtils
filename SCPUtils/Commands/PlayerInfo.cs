@@ -22,7 +22,7 @@ namespace SCPUtils.Commands
             if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playerinfo") && !((CommandSender)sender).FullPermissions) target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
             else
             {
-                if (arguments.Count < 1) 
+                if (arguments.Count < 1)
                 {
                     response = $"<color=yellow>Usage: {Command} <player name/id></color>";
                     return false;

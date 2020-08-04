@@ -29,7 +29,7 @@ namespace SCPUtils.Commands
             }
             else
             {
-                var target = arguments.Array[1].ToString(); 
+                var target = arguments.Array[1].ToString();
 
                 var databasePlayer = target.GetDatabasePlayer();
 

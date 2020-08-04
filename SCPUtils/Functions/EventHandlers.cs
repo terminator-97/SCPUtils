@@ -5,6 +5,7 @@ using System;
 using Log = Exiled.API.Features.Log;
 using Round = Exiled.API.Features.Round;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SCPUtils
 {
@@ -16,12 +17,13 @@ namespace SCPUtils
 
         public Dictionary<string, Team> roleManager = new Dictionary<string, Team>();
 
+        public static bool TemporarilyDisabledWarns;
 
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
-            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn)
+            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
@@ -41,13 +43,17 @@ namespace SCPUtils
 
         internal void OnPlayerHurt(HurtingEventArgs ev)
         {
-            ev.IsAllowed = !(pluginInstance.Config.DisableHandcuffHurtClassD && ev.Target.Team == Team.CDP && ev.Target.IsCuffed && ev.Attacker.Team == Team.MTF && pluginInstance.Config.ClassDImmunityZones.Contains(ev.Target.CurrentRoom.Zone));
+            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Target.Team) == true)
+            {
+                ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
+            }
         }
 
-        internal void On079TeslaEvent(InteractingTeslaEventArgs ev)
-        {
-            lastTeslaEvent = DateTime.Now;
-        }
+        internal void OnWaitingForPlayers() => TemporarilyDisabledWarns = false;
+
+
+        internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
+
 
 
 
@@ -84,7 +90,7 @@ namespace SCPUtils
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
             if (!roleManager.ContainsKey(ev.Player.UserId)) return;
-            else if ((ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
+            else if ((ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted && !TemporarilyDisabledWarns)
             {
                 if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
             }

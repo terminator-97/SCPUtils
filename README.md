@@ -1,4 +1,5 @@
 
+
 **SCPUtils Plugin**<br />
 
 Welcome to SCPUtils, overtime i implemented many features so i decided to rework the documentation.
@@ -17,7 +18,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **SCPSpeak features:** Playing with permissions you can decide which badge (even default one) can speak with that SCP like 939 using V!
 - **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
-- **Class-D protection:** Editing configs you can set protection against MTFs on handcuffed Class-D in specific zones of the map
+- **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
@@ -45,6 +46,8 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_whitelist_asn | <id / userid> | scputils.whitelist | Add player to ASN whitelist |
 | scputils_unwhitelist_asn | <id / userid> | scputils.whitelist | Removes player to ASN whitelist |
 | scputils_staff_list | - | scputils.stafflist | Show both local staff and global staff present in game |
+| scputils_enable_suicide_warns | - | scputils.warnmanagement | Enabled previously disabled suicide / quits warns |
+|  scputils_disable_suicide_warns | - | scputils.warnmanagement | Disable suicides / quits warns for the rest of the round |
 
 **Console commands**
 
@@ -114,7 +117,37 @@ To edit your configs you must go into EXILED folder and edit port-config.yml fil
         - scputils.changenickname     
         - scputils_speak.*	  
 ```		
-		
+
+**Team protecion**
+
+CDP = Class-D  <br />
+CHI = Chaos Insurgency <br />
+MTF = MTF Team (included guards) <br />
+RIP = Spectators <br />
+RSC = Scientist <br />
+SCP = SCP <br />
+TUT = Tutorial <br />
+
+*Sample Config for team protection:*<br />
+
+In the following example we will protect Class-D against MTF team and Scientist, since they are listed on cuffed_protected_teams they require to be handcuffed to be protected. They also must be in Entrance or Surface to get protection. <br />
+
+```
+  # You have to add the team you want to protect from the target as key and enemy teams on the list as value, on github documentation you can see all the teams.
+  cuffed_immunity_players:
+    CDP:
+    - MTF
+    - RSC
+  # Indicates if the protected teams should be cuffed to get the protection, if you don't add a team it will get protection regardless
+  cuffed_protected_teams:
+  - CDP
+  # Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified }
+  cuffed_safe_zones:
+    CDP:
+    - Entrance
+    - Surface
+```
+
 <br />Using scputils.* grants every permission that starts with prefix scputils
 Using '*' grants every possible permission on the server<br />
 To verify if you yml file is valid paste it into this website: http://www.yamllint.com/<br />

@@ -14,17 +14,14 @@ namespace SCPUtils
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
         public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.2.0";
+        public static string pluginVersion = "2.3.0";
         public override string Author { get; } = "Terminator_9#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 2, 0);
+        public override Version Version { get; } = new Version(2, 3, 0);
         public override Version RequiredExiledVersion { get; } = new Version(2, 0, 9);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-        public Commands.ShowBadge ShowBadge { get; private set; }
-        public Commands.HideBadge HideBadge { get; private set; }
-
         public Database DatabasePlayerData { get; private set; }
         public int PatchesCounter { get; private set; }
 
@@ -45,6 +42,7 @@ namespace SCPUtils
             PlayerEvents.ChangingRole += EventHandlers.OnChangeRole;
             PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
+            ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
         }
 
         public override void OnEnabled()
@@ -53,10 +51,10 @@ namespace SCPUtils
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
             DatabasePlayerData = new Database(this);
+            EventHandlers.TemporarilyDisabledWarns = false;
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
             DatabasePlayerData.OpenDatabase();
-
             try
             {
                 Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");
@@ -80,11 +78,9 @@ namespace SCPUtils
             PlayerEvents.ChangingRole -= EventHandlers.OnChangeRole;
             PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
-            Timing.KillCoroutines(Functions.DT);
+            ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
             EventHandlers = null;
             Functions = null;
-            HideBadge = null;
-            ShowBadge = null;
             Database.LiteDatabase.Dispose();
             Harmony.UnpatchAll();
         }

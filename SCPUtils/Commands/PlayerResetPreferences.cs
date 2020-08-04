@@ -22,7 +22,7 @@ namespace SCPUtils.Commands
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
             }
-            else if (arguments.Count < 1) 
+            else if (arguments.Count < 1)
             {
                 response = $"<color=red>Usage: {Command} <player name/id></color>";
                 return false;

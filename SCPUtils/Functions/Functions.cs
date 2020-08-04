@@ -5,6 +5,7 @@ using System;
 using System.Text.RegularExpressions;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using System.Linq;
 
 namespace SCPUtils
 {
@@ -132,6 +133,56 @@ namespace SCPUtils
                     if (admin.ReferenceHub.serverRoles.RemoteAdmin) Map.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
                 }
             }
+        }
+
+        public bool IsTeamImmune(Exiled.API.Features.Player player, Exiled.API.Features.Player attacker)
+        {
+            if (pluginInstance.Config.CuffedImmunityPlayers[player.Team]?.Any() == true)
+            {
+
+                if (pluginInstance.Config.CuffedImmunityPlayers[player.Team].Contains(attacker.Team)) return true;
+                else return false;
+            }
+            else
+            {
+                Log.Error($"Detected invalid setting on cuffed_immunity_players! Key: {player.Team}, List cannot be null!");
+                return false;
+            }
+
+        }
+
+        public bool CuffedCheck(Exiled.API.Features.Player player)
+        {
+            if (pluginInstance.Config.CuffedProtectedTeams?.Any() == true)
+            {
+                if (pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team) && player.IsCuffed) return true;
+                else if (!pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team)) return true;
+                else return false;
+            }
+            else return true;
+        }
+
+
+        public bool CheckSafeZones(Exiled.API.Features.Player player)
+        {
+            if (pluginInstance.Config.CuffedSafeZones == null)
+            {
+                Log.Error($"Detected invalid setting on cuffed_safe_zones! Key cannot be null!");
+                return false;
+            }
+
+            else if (pluginInstance.Config.CuffedSafeZones[player.Team]?.Any() == true)
+            {
+                if (pluginInstance.Config.CuffedSafeZones[player.Team].Contains(player.CurrentRoom.Zone)) return true;
+                else return false;
+            }
+
+            else
+            {
+                Log.Error($"Detected invalid setting on cuffed_safe_zones! Key: {player.Team}, List cannot be null!");
+                return false;
+            }
+
         }
 
     }

@@ -20,7 +20,7 @@ namespace SCPUtils
         {
             if (player == null) return null;
             else if (Database.PlayerData.TryGetValue(player, out Player databasePlayer)) return databasePlayer;
-            else return Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId()); 
+            else return Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId());
         }
 
     }

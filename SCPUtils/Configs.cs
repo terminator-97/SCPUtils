@@ -4,8 +4,9 @@ using System.ComponentModel;
 using Log = Exiled.API.Features.Log;
 using ZoneType = Exiled.API.Enums.ZoneType;
 
+
 namespace SCPUtils
-{ 
+{
     public class Configs : IConfig
     {
         public bool IsEnabled { get; set; } = true;
@@ -49,8 +50,6 @@ namespace SCPUtils
         [Description("Broadcast in admin chat auto warns for quitting or suicide as SCP")]
         public bool BroadcastWarns { get; private set; } = false;
 
-        [Description("Should Class-D be immune from MTF while cuffed?")]
-        public bool DisableHandcuffHurtClassD { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
@@ -127,11 +126,52 @@ namespace SCPUtils
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
 
-        [Description("Zones where handcuffed class-d are immune from MTF damage")]
-        public List<ZoneType> ClassDImmunityZones { get; private set; } = new List<ZoneType>() { ZoneType.Surface, ZoneType.Entrance };
 
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
+
+
+        /*
+
+          public Dictionary<Team, ImmunityPlayers> ImmunityPlayers { get; private set; } = new Dictionary<Team, ImmunityPlayers>()
+          {
+              //Class-D example dictionary config
+              {
+                Team.CDP, //key
+                new ImmunityPlayers
+                {                  
+                   Attacker = new List<Team>() { Team.RSC, Team.MTF }, //Attacker List
+                   ShouldBeCuffed = true, //Cuffed
+                   ImmunityZones = new List<ZoneType>() { ZoneType.Entrance, ZoneType.Surface } //Zone List                  
+                }
+              },
+
+              //Rip example dictionary config
+              {
+                Team.RIP, //key
+                new ImmunityPlayers
+                {
+                    Attacker = new List<Team>() { Team.TUT }, //Attacker List
+                    ShouldBeCuffed = false, //Cuffed
+                    ImmunityZones = new List<ZoneType>() { ZoneType.Entrance, ZoneType.Surface, ZoneType.LightContainment, ZoneType.HeavyContainment, ZoneType.Unspecified } //Zone list
+                }
+              }
+          };
+
+          */
+
+        [Description("You have to add the team you want to protect from the target as key and enemy teams on the list as value, on github documentation you can see all the teams.")]
+
+        public Dictionary<Team, List<Team>> CuffedImmunityPlayers { get; private set; } = new Dictionary<Team, List<Team>>();
+
+
+        [Description("Indicates if the protected teams should be cuffed to get the protection, if you don't add a team it will get protection regardless")]
+
+        public List<Team> CuffedProtectedTeams { get; private set; } = new List<Team>();
+
+        [Description("Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified")]
+
+        public Dictionary<Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<Team, List<ZoneType>>();
 
 
         public void ConfigValidator()

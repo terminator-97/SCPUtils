@@ -43,26 +43,27 @@
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\release\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>..\..\..\..\..\ptb\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
-    <Reference Include="CommandSystem.Core">
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Exiled.API, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\release\Exiled 2.0.9\Exiled\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
+      <HintPath>..\..\..\..\..\release\Exiled\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Exiled.Events, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\release\Exiled 2.0.9\Exiled\EXILED\Plugins\Exiled.Events.dll</HintPath>
+      <HintPath>..\..\..\..\..\release\Exiled\EXILED\Plugins\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Exiled.Loader, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\release\Exiled 2.0.9\Exiled\EXILED\Exiled.Loader.dll</HintPath>
+      <HintPath>..\..\..\..\..\release\Exiled\EXILED\Exiled.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Exiled.Permissions, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\release\Exiled 2.0.9\Exiled\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+      <HintPath>..\..\..\..\..\release\Exiled\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="LiteDB, Version=5.0.8.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.8\lib\net45\LiteDB.dll</HintPath>
@@ -84,13 +85,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="YamlDotNet">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\EXILED-PTB\Plugins\dependencies\YamlDotNet.dll</HintPath>
+    <Reference Include="YamlDotNet, Version=8.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\release\Exiled\EXILED\Plugins\dependencies\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AsnUnwhitelist.cs" />
     <Compile Include="Commands\AsnWhitelist.cs" />
+    <Compile Include="Commands\DisableSuicideWarn.cs" />
+    <Compile Include="Commands\EnableSuicideWarn.cs" />
     <Compile Include="Commands\PlayerReset.cs" />
     <Compile Include="Commands\PlayerResetPreferences.cs" />
     <Compile Include="Commands\PlayTime.cs" />

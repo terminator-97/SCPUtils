@@ -31,7 +31,7 @@ namespace SCPUtils.Commands
                 {
                     target = arguments.Array[1].ToString();
                     color = arguments.Array[2].ToString();
-                     
+
                     if (!validColors.Contains(color))
                     {
                         response = "<color=red>Invalid color, type color in console to see valid SCP colors<color>";

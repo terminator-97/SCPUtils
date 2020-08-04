@@ -24,7 +24,7 @@ namespace SCPUtils.Commands
             else
             {
                 if (arguments.Count < 1)
-                { 
+                {
                     response = $"<color=yellow>Usage: {Command} <Minimun SCP quit percentage></color>";
                     return false;
                 }
