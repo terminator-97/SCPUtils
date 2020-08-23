@@ -14,7 +14,7 @@ namespace SCPUtils
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
         public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.3.0";
+        public static string pluginVersion = "2.3.1";
         public override string Author { get; } = "Terminator_9#0507";
         public override string Name { get; } = "SCPUtils";
         public override Version Version { get; } = new Version(2, 3, 0);

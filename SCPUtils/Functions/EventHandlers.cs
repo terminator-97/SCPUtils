@@ -72,7 +72,7 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.Nickname = databasePlayer.CustomNickName;
+            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.DisplayNickname = databasePlayer.CustomNickName;
             if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }
