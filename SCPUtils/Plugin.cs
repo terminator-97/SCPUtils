@@ -38,7 +38,7 @@ namespace SCPUtils
             PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;    
+            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
             PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
@@ -74,7 +74,7 @@ namespace SCPUtils
             PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;            
+            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
             PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;

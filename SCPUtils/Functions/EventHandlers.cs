@@ -13,9 +13,7 @@ namespace SCPUtils
     {
         private readonly ScpUtils pluginInstance;
 
-        public DateTime lastTeslaEvent;
-
-        public Dictionary<string, Team> roleManager = new Dictionary<string, Team>();
+        public DateTime lastTeslaEvent;  
 
         public static bool TemporarilyDisabledWarns;
 
@@ -27,9 +25,9 @@ namespace SCPUtils
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ( ev.HitInformation.GetDamageType() == DamageTypes.Wall && pluginInstance.Config.QuitEqualsSuicide ) ) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && pluginInstance.Config.QuitEqualsSuicide)) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
-            }  
+            }
         }
 
         internal void OnRoundEnded(RoundEndedEventArgs ev) => TemporarilyDisabledWarns = true;
@@ -65,14 +63,14 @@ namespace SCPUtils
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.DisplayNickname = databasePlayer.CustomNickName;
             if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
-            else pluginInstance.Functions.PostLoadPlayer(ev.Player);            
+            else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }
 
 
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
-            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;      
+            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)

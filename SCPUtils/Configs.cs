@@ -9,7 +9,7 @@ namespace SCPUtils
 {
     public class Configs : IConfig
     {
-        public bool IsEnabled { get; set; } = true;   
+        public bool IsEnabled { get; set; } = true;
 
         [Description("Should SCPs be warned for quitting or suicide?")]
         public bool EnableSCPSuicideAutoWarn { get; private set; } = true;
