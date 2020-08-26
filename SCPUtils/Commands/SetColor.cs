@@ -30,9 +30,8 @@ namespace SCPUtils.Commands
                 else
                 {
                     target = arguments.Array[1].ToString();
-                    color = arguments.Array[2].ToString();
-
-                    if (!validColors.Contains(color))
+                    color = arguments.Array[2].ToString().ToLower();             
+                    if (!validColors.Contains(color) && !color.Equals("none"))
                     {
                         response = "<color=red>Invalid color, type color in console to see valid SCP colors<color>";
                         return false;
@@ -49,8 +48,8 @@ namespace SCPUtils.Commands
                 else
                 {
                     target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
-                    color = arguments.Array[1].ToString().ToLower();
-                    if (!validColors.Contains(color))
+                    color = arguments.Array[1].ToString().ToLower();                    
+                    if (!validColors.Contains(color) && !color.Equals("none"))
                     {
                         response = "<color=red>Invalid color, type color in console to see valid SCP colors</color>";
                         return false;

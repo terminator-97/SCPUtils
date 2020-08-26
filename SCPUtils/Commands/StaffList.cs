@@ -20,7 +20,7 @@ namespace SCPUtils.Commands
                 response = "You need a higher administration level to use this command!";
                 return false;
             }
-            string text = "";
+            string text = "Online Staff List:\n";
             foreach (var player in Exiled.API.Features.Player.List)
             {
                 if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff) text += $"(SCP:SL Staff) Player: {player.Nickname} {player.UserId} Global badge: {player.GlobalBadge}\n";

@@ -21,22 +21,22 @@ namespace SCPUtils
         {
             int duration;
             player.GetDatabasePlayer().TotalScpSuicideBans++;
-            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration;
-            else duration = pluginInstance.Config.AutoBanDuration;
-            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration} mitutes</color>");
-            player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration * 60)}", "SCPUtils");
+            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration * 60;
+            else duration = pluginInstance.Config.AutoBanDuration * 60;
+            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration} mitutes</color>");
+            player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration )}", "SCPUtils");
         }
 
         public void AutoKickPlayer(Exiled.API.Features.Player player)
         {
-            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
+            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
             player.GetDatabasePlayer().TotalScpSuicideKicks++;
             player.Kick($"Auto-Kick: {pluginInstance.Config.SuicideKickMessage}", "SCPUtils");
         }
 
         public void AutoWarnPlayer(Exiled.API.Features.Player player)
         {
-            if (pluginInstance.Config.BroadcastWarns) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
+            if (pluginInstance.Config.BroadcastWarns) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
             player.GetDatabasePlayer().ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.Config.AutoWarnMessageDuration, pluginInstance.Config.SuicideWarnMessage, Broadcast.BroadcastFlags.Normal);

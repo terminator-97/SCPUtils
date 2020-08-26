@@ -27,19 +27,17 @@ namespace SCPUtils
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ev.HitInformation.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ( ev.HitInformation.GetDamageType() == DamageTypes.Wall && pluginInstance.Config.QuitEqualsSuicide ) ) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
-            }
-            roleManager[ev.Target.UserId] = Team.RIP;
-
+            }  
         }
 
-        internal void OnChangeRole(ChangingRoleEventArgs ev)
-        {
-            if (ev.Player == null) return;
-            if (!roleManager.ContainsKey(ev.Player.UserId)) roleManager.Add(ev.Player.UserId, ev.Player.Team);
-            if (ev.Player.Team == Team.RIP) roleManager[ev.Player.UserId] = Team.RIP;
-        }
+        internal void OnRoundEnded(RoundEndedEventArgs ev) => TemporarilyDisabledWarns = true;
+
+        internal void OnWaitingForPlayers() => TemporarilyDisabledWarns = false;
+
+        internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
+
 
         internal void OnPlayerHurt(HurtingEventArgs ev)
         {
@@ -48,13 +46,6 @@ namespace SCPUtils
                 ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
             }
         }
-
-        internal void OnWaitingForPlayers() => TemporarilyDisabledWarns = false;
-
-
-        internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
-
-
 
 
         internal void OnPlayerJoin(JoinedEventArgs ev)
@@ -74,28 +65,19 @@ namespace SCPUtils
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.DisplayNickname = databasePlayer.CustomNickName;
             if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
-            else pluginInstance.Functions.PostLoadPlayer(ev.Player);
+            else pluginInstance.Functions.PostLoadPlayer(ev.Player);            
         }
 
 
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
-            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
-
-            if (!roleManager.ContainsKey(ev.Player.UserId)) roleManager.Add(ev.Player.UserId, ev.Player.Team);
-            else roleManager[ev.Player.UserId] = ev.Player.Team;
+            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;      
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
-            if (!roleManager.ContainsKey(ev.Player.UserId)) return;
-            else if ((ev.Player.Team == Team.SCP || roleManager[ev.Player.UserId] == Team.SCP) || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT || roleManager[ev.Player.UserId] == Team.TUT) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted && !TemporarilyDisabledWarns)
-            {
-                if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
-            }
             pluginInstance.Functions.SaveData(ev.Player);
-            roleManager.Remove(ev.Player.UserId);
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)

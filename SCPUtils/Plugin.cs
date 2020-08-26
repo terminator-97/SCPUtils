@@ -14,10 +14,10 @@ namespace SCPUtils
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
         public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.3.1";
+        public static string pluginVersion = "2.3.2";
         public override string Author { get; } = "Terminator_9#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 3, 1);
+        public override Version Version { get; } = new Version(2, 3, 2);
         public override Version RequiredExiledVersion { get; } = new Version(2, 1, 2);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
@@ -38,11 +38,11 @@ namespace SCPUtils
             PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
-            PlayerEvents.ChangingRole += EventHandlers.OnChangeRole;
+            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;    
             PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+            ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
         }
 
         public override void OnEnabled()
@@ -74,11 +74,11 @@ namespace SCPUtils
             PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
-            PlayerEvents.ChangingRole -= EventHandlers.OnChangeRole;
+            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;            
             PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
+            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
             EventHandlers = null;
             Functions = null;
             Database.LiteDatabase.Dispose();
