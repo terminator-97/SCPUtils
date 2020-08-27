@@ -96,8 +96,11 @@
   <ItemGroup>
     <Compile Include="Commands\AsnUnwhitelist.cs" />
     <Compile Include="Commands\AsnWhitelist.cs" />
+    <Compile Include="Commands\PlayerDelete.cs" />
     <Compile Include="Commands\DisableSuicideWarn.cs" />
     <Compile Include="Commands\EnableSuicideWarn.cs" />
+    <Compile Include="Commands\GlobalEdit.cs" />
+    <Compile Include="Commands\PlayerEdit.cs" />
     <Compile Include="Commands\PlayerReset.cs" />
     <Compile Include="Commands\PlayerResetPreferences.cs" />
     <Compile Include="Commands\PlayTime.cs" />

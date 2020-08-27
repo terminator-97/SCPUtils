@@ -22,7 +22,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.0.10 and LiteDB 5.0.8**
+**Minimum requirements: Exiled version: 2.1.2 and LiteDB 5.0.8**
 
 ### Configs:
 
@@ -46,7 +46,10 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_unwhitelist_asn | <id / userid> | scputils.whitelist | Removes player to ASN whitelist |
 | scputils_staff_list | - | scputils.stafflist | Show both local staff and global staff present in game |
 | scputils_enable_suicide_warns | - | scputils.warnmanagement | Enabled previously disabled suicide / quits warns |
-|  scputils_disable_suicide_warns | - | scputils.warnmanagement | Disable suicides / quits warns for the rest of the round |
+| scputils_disable_suicide_warns | - | scputils.warnmanagement | Disable suicides / quits warns for the rest of the round |
+| scputils_global_edit | <Total  SCP Games to remove> <Suicides/Quits to remove> <Kicks to remove> <Bans to remove> | scputils.globaledit | Globally edits player stats (removes total scp games/suicides/kicks/bans) |
+| scputils_player_edit | <id / userid> <Total  SCP Games> <Suicides/Quits> <Kicks> <Bans>| scputils.playeredit | Edits player stats (total scp games/suicides/kicks/bans) by setting them to specified amount |
+| scputils_player_delete | <userid / id> | scputils.playerdelete | Deletes a player from db, action is irreversible, do this when player is not in server. |
 
 **Console commands**
 
@@ -98,7 +101,8 @@ To edit your configs you must go into EXILED folder and edit port-config.yml fil
         - scputils_speak.scp049
     owner:
         permissions:
-        - '*'
+        - scputils.*
+		- scputils_speak.*
     admin:
     inheritance: []
         permissions:       

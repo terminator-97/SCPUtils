@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
                 if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff) text += $"(SCP:SL Staff) Player: {player.Nickname} {player.UserId} Global badge: {player.GlobalBadge}\n";
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin) text += $"Player: {player.Nickname} {player.UserId} Rank: {player.GroupName}\n";
             }
-            if (string.IsNullOrEmpty(text)) text = "No staff online!";
+            if (text.Equals("Online Staff List:\n")) text = "No staff online!";
             response = text;
             return true;
         }

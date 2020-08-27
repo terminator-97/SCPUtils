@@ -33,7 +33,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data! ({target})</color>";
+                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
                 return false;
             }
 

@@ -13,7 +13,7 @@ namespace SCPUtils
     {
         private readonly ScpUtils pluginInstance;
 
-        public DateTime lastTeslaEvent;  
+        public DateTime lastTeslaEvent;
 
         public static bool TemporarilyDisabledWarns;
 
