@@ -173,6 +173,10 @@ namespace SCPUtils
 
         public Dictionary<Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<Team, List<ZoneType>>();
 
+        [Description("With which SCPs users are allowed to speak using V to humans without any badge (remove the disallowed SCPs)? (This will bypass permissions check so everyone will be able to speak with those SCPs regardless rank)")]
+
+        public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
+
 
         public void ConfigValidator()
         {

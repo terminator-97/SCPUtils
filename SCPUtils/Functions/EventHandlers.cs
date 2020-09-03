@@ -32,7 +32,10 @@ namespace SCPUtils
 
         internal void OnRoundEnded(RoundEndedEventArgs ev) => TemporarilyDisabledWarns = true;
 
-        internal void OnWaitingForPlayers() => TemporarilyDisabledWarns = false;
+        internal void OnWaitingForPlayers()
+        {
+            TemporarilyDisabledWarns = false;
+        }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
 
@@ -62,7 +65,7 @@ namespace SCPUtils
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
             if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.DisplayNickname = databasePlayer.CustomNickName;
-            if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
+            if (pluginInstance.Functions.CheckAsnPlayer(ev.Player)) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }
 
