@@ -16,7 +16,7 @@ namespace SCPUtils
         private readonly ScpUtils pluginInstance;
 
         public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
-
+        public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
         public void AutoBanPlayer(Exiled.API.Features.Player player)
         {
             int duration;
@@ -44,10 +44,13 @@ namespace SCPUtils
 
         public void OnQuitOrSuicide(Exiled.API.Features.Player player)
         {
+            if (!LastWarn.ContainsKey(player.UserId)) LastWarn.Add(player.UserId, DateTime.MinValue);
+            else if (LastWarn[player.UserId] >= DateTime.Now) return;
             var suicidePercentage = player.GetDatabasePlayer().SuicidePercentage;
             AutoWarnPlayer(player);
             if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoBanPlayer(player);
             else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoKickPlayer(player);
+            LastWarn[player.UserId] = DateTime.Now.AddSeconds(5);             
         }
 
         public void PostLoadPlayer(Exiled.API.Features.Player player)
@@ -130,7 +133,7 @@ namespace SCPUtils
             {
                 if (pluginInstance.Config.BroadcastSanctions)
                 {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) Map.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
                 }
             }
         }

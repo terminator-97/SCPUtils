@@ -54,8 +54,13 @@ namespace SCPUtils.Commands
                 databasePlayer.BadgeExpire = DateTime.Now.AddMinutes(duration);
                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                 var group = ServerStatic.GetPermissionsHandler()._groups[badge];
+                if(group.KickPower > ((CommandSender)sender).KickPower && !((CommandSender)sender).FullPermissions)
+                {
+                    response = $"You need a higher administration level to use this command: The group you are trying to set has more kick power than yours. (Your kick power: {((CommandSender)sender).KickPower}, Required: {group.KickPower})";
+                    return false;
+                }
                 if (player != null) player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
-                response = "Badge set!";
+                response = $"Successfully setted {group.BadgeText} badge! Duration: {duration} minute(s)!";
 
             }
             else response = "Arg3 must be integer!";

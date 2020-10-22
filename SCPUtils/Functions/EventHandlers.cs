@@ -15,9 +15,10 @@ namespace SCPUtils
 
         public DateTime lastTeslaEvent;
 
-        public static bool TemporarilyDisabledWarns;
+        public static bool TemporarilyDisabledWarns;        
 
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
+    
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
@@ -25,7 +26,7 @@ namespace SCPUtils
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && pluginInstance.Config.QuitEqualsSuicide)) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ( ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000 ) && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
         }
@@ -68,8 +69,6 @@ namespace SCPUtils
             if (pluginInstance.Functions.CheckAsnPlayer(ev.Player)) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }
-
-
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
