@@ -22,7 +22,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.1.2 and LiteDB 5.0.8**
+**Minimum requirements: Exiled version: 2.1.8 and LiteDB 5.0.9**
 
 ### Configs:
 
