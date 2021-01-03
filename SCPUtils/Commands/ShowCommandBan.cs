@@ -14,7 +14,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = new[] { "scb" };
 
-        public string Description { get; } = "You can see detailed informations about playtime";
+        public string Description { get; } = "You can see detailed informations about restriction";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
