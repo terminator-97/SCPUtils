@@ -50,6 +50,14 @@ namespace SCPUtils
         [Description("Broadcast in admin chat auto warns for quitting or suicide as SCP")]
         public bool BroadcastWarns { get; private set; } = false;
 
+        [Description("Should the nickname gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepNameWithoutPermission { get; private set; } = false;
+
+        [Description("Should the color gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepColorWithoutPermission { get; private set; } = false;
+
+        [Description("Should the badge visibility gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepBadgeVisibilityWithoutPermission { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";

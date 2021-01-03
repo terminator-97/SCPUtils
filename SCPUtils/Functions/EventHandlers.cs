@@ -15,10 +15,10 @@ namespace SCPUtils
 
         public DateTime lastTeslaEvent;
 
-        public static bool TemporarilyDisabledWarns;        
+        public static bool TemporarilyDisabledWarns;
 
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
-    
+
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
@@ -26,7 +26,7 @@ namespace SCPUtils
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || ( ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000 ) && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.GetDamageType() == DamageTypes.Grenade && ev.Killer == ev.Target) && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
         }
@@ -49,12 +49,16 @@ namespace SCPUtils
             }
         }
 
+        internal void Tafazzi(BanningEventArgs ev)
+        {
+            throw new NotImplementedException();
+        }
 
         internal void OnPlayerJoin(JoinedEventArgs ev)
         {
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
-                Log.Info(ev.Player.Nickname + " is not present on DB!");
+                Log.Info(ev.Player.Nickname + " is not present on DB, creating account!");
                 pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
             }
 
@@ -65,7 +69,6 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.DisplayNickname = databasePlayer.CustomNickName;
             if (pluginInstance.Functions.CheckAsnPlayer(ev.Player)) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }

@@ -49,7 +49,14 @@ namespace SCPUtils.Commands
                 {
                     target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
                     color = arguments.Array[1].ToString().ToLower();
-                    if (!validColors.Contains(color) && !color.Equals("none"))
+
+                    if (target.GetDatabasePlayer().IsRestricted())
+                    {
+                        response = "<color=red>You are banned from executing this command!</color>";
+                        return false;
+                    }
+
+                    else if (!validColors.Contains(color) && !color.Equals("none"))
                     {
                         response = "<color=red>Invalid color, type color in console to see valid SCP colors</color>";
                         return false;

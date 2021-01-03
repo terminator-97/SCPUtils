@@ -22,17 +22,17 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.1.8 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 2.1.22 and LiteDB 5.0.9**
 
 ### Configs:
 
 You can see settings and edit them inside Exiled/port-config.yml file(example Exiled/7777-config.yml)
 
-**Admin commands**
+**Admin commands and Game console commands**
 
 | Admin Commands  | Args | Permission | Description | 
 | ------------- | ------------- | ------------- | ------------- |
-| scputils_help  | none  | none | Show plugin info |
+| scputils_help  | none  | scputils.help | Show plugin info |
 | scputils_player_info  | player / id / userid  | scputils.playerinfo | Show player info |
 | scputils_player_list  | minimun percentage  | scputils.playerlist | List all players with a percetage equal or higher of quits/suicides |
 | scputils_player_reset  | player / id / userid  | scputils.playerreset  | Reset warns,suicides,bans,kick and games played stats |
@@ -50,6 +50,10 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_global_edit | <Total  SCP Games to remove> <Suicides/Quits to remove> <Kicks to remove> <Bans to remove> | scputils.globaledit | Globally edits player stats (removes total scp games/suicides/kicks/bans) |
 | scputils_player_edit | <id / userid> <Total  SCP Games> <Suicides/Quits> <Kicks> <Bans>| scputils.playeredit | Edits player stats (total scp games/suicides/kicks/bans) by setting them to specified amount |
 | scputils_player_delete | <userid / id> | scputils.playerdelete | Deletes a player from db, action is irreversible, do this when player is not in server. |
+| scputils_preference_persist | <userid / id> | scputils.keep | If disabled by config players that lose the permission to change name,color,hide badge will have that setting resetted, by using this command you allow the player to use their preference even without permissions |
+| scputils_player_restrict | <userid / id> | scputils.moderatecommands | <duration in minutes (0=permanent) <reason> | You can a specific player from change name and color feature |
+| scputils_player_unrestrict | <userid / id> | scputils.moderatecommands | Unban a previously command banned player |
+| scputils_show_command_bans | <userid / id> | scputils.moderatecommands | Show command ban history of a specific player |
 
 **Console commands**
 
@@ -62,6 +66,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_show_badge  | none  | scputils.badgevisibility | Permanently show your badge |
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
 | scputils_my_info  | none | none | Show your preferences and temporarily badges info |
+| scputils_play_time | none | none | Show your own playtime with a max range of 120 days |
 
 **Speak permissions**
 

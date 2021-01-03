@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CommandSystem;
 
 
@@ -6,18 +7,18 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class RevokeBadge : ICommand
+    public class PlayerUnrestrict : ICommand
     {
-        public string Command { get; } = "scputils_revoke_badge";
+        public string Command { get; } = "scputils_player_unrestrict";
 
-        public string[] Aliases { get; } = new[] { "rb" };
+        public string[] Aliases { get; } = new[] { "unrestrict", "unsusp" };
 
-        public string Description { get; } = "Removes a temporarily badge that has been given to a player!";
+        public string Description { get; } = "Removes a restriction from a player!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.handlebadges") && !((CommandSender)sender).FullPermissions)
+            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.moderatecommands") && !((CommandSender)sender).FullPermissions)
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
@@ -28,6 +29,7 @@ namespace SCPUtils.Commands
                 response = $"Usage: {Command} <player name/id>";
                 return false;
             }
+
 
             else target = arguments.Array[1].ToString();
 
@@ -40,10 +42,15 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            databasePlayer.BadgeExpire = DateTime.MinValue;
+            else if (!databasePlayer.IsRestricted())
+            {
+                response = "Player is not suspended!";
+                return false;
+            }
+
+            databasePlayer.Restricted.Remove(databasePlayer.Restricted.Keys.Last());
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-            if (player != null) player.BadgeHidden = false;
-            response = "Badge revoked!";
+            response = "Player unsuspended!";
             return true;
 
         }

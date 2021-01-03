@@ -37,21 +37,29 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            response = $"<color=green>\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
-           $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +
-           $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
-           $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
-           $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-           $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
-           $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
-           $"Last Seen: [ {databasePlayer.LastSeen} ]\n" +
-           $"Custom Color: [ {databasePlayer.ColorPreference} ]\n" +
-           $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
-           $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
-           $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
-           $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
-           $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
-           $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
+
+
+            string text = $"<color=green>\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
+            $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +
+            $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
+            $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
+            $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
+            $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
+            $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
+            $"Last Seen: [ {databasePlayer.LastSeen} ]\n" +
+            $"Custom Color: [ {databasePlayer.ColorPreference} ]\n" +
+            $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
+            $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
+            $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
+            $"Previous Badge: [ {databasePlayer.PreviousBadge} ]\n" +
+            $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
+            $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
+            $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +
+            $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
+
+            if (databasePlayer.IsRestricted()) text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";
+
+            response = text;
 
             return true;
         }

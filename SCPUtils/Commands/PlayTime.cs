@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using CommandSystem;
+using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
+    [CommandHandler(typeof(ClientCommandHandler))]
     class PlayTime : ICommand
     {
 
@@ -18,10 +21,24 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playtime") && !((CommandSender)sender).FullPermissions)
+            int range;
+            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playerinfo") && !((CommandSender)sender).FullPermissions)
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
-                return false;
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+
+                if (arguments.Count < 1)
+                {
+                    response = $"<color=yellow>Usage: {Command} <days range> </color>";
+                    return false;
+                }
+
+                else int.TryParse(arguments.Array[1], out range);
+
+                if (range > 120)
+                {
+                    response = "<color=red>You can specify a range of max 120 days!</color>";
+                    return false;
+                }
             }
             else
             {
@@ -31,6 +48,9 @@ namespace SCPUtils.Commands
                     return false;
                 }
                 else target = arguments.Array[1].ToString();
+
+                int.TryParse(arguments.Array[2], out range);
+
             }
             var databasePlayer = target.GetDatabasePlayer();
 
@@ -40,8 +60,6 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-
-            int.TryParse(arguments.Array[2], out int range);
 
             if (range < 0)
             {
@@ -54,15 +72,17 @@ namespace SCPUtils.Commands
                 response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
                 return false;
             }
-            string message = $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
-  $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n";
+            StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})");
+            message.AppendLine();
+            message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
 
 
             for (int i = 0; i <= range; i++)
             {
+                message.AppendLine();
                 DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
-                if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString())) message += $"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]\n";
-                else message += $"{date.Date.ToShortDateString()} Playtime: [ No activity ]\n";
+                if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString())) message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");
+                else message.Append($"{date.Date.ToShortDateString()} Playtime: [ No activity ]");
             }
 
             response = $"{message}";

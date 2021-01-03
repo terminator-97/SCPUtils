@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using CommandSystem;
 
 namespace SCPUtils.Commands
@@ -29,16 +30,16 @@ namespace SCPUtils.Commands
                     return false;
                 }
             }
-            var playerListString = "[Quits/Suicides Percentage]\n";
-
+            StringBuilder playerListString = new StringBuilder("[Quits/Suicides Percentage]");
+            playerListString.AppendLine();
             if (int.TryParse(arguments.Array[1].ToString(), out int minpercentage))
             {
                 foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
                 {
-                    playerListString += $"\n{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]";
+                    playerListString.AppendLine();
+                    playerListString.Append($"{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]");
                 }
-                if (playerListString == "[Quits/Suicides as SCP]\n") response = "No results found";
-                else response = $"{playerListString}";
+                response = $"{playerListString}";
             }
 
             else

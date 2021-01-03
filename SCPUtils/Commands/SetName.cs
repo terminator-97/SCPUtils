@@ -45,6 +45,11 @@ namespace SCPUtils.Commands
                 else
                 {
                     target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
+                    if (target.GetDatabasePlayer().IsRestricted())
+                    {
+                        response = "<color=red>You are banned from executing this command!</color>";
+                        return false;
+                    }
                     nickname = string.Join(" ", arguments.Array, 1, arguments.Array.Length - 1);
                     bool allowChange = true;
                     foreach (var playerList in Exiled.API.Features.Player.List)

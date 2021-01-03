@@ -69,11 +69,14 @@ namespace SCPUtils
                     CustomNickName = "",
                     BadgeName = "",
                     BadgeExpire = DateTime.MinValue,
+                    PreviousBadge = "",
                     HideBadge = false,
                     PlayTimeRecords = null,
-                    ASNWhitelisted = false
+                    ASNWhitelisted = false,
+                    Restricted = null,
+                    KeepPreferences = false
                 });
-                Log.Info("Trying to add ID: " + player.UserId.Split('@')[0] + " Discriminator: " + player.UserId.Split('@')[1] + " to Database");
+                // Log.Info("Trying to add ID: " + player.UserId.Split('@')[0] + " Discriminator: " + player.UserId.Split('@')[1] + " to Database");
             }
             catch (Exception ex)
             {

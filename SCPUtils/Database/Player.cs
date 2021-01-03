@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using Log = Exiled.API.Features.Log;
 
@@ -20,13 +21,12 @@ namespace SCPUtils
         public bool HideBadge { get; set; }
         public string BadgeName { get; set; }
         public DateTime BadgeExpire { get; set; }
+        public string PreviousBadge { get; set; }
         public Dictionary<string, int> PlayTimeRecords { get; set; } = new Dictionary<string, int>();
-
         public bool ASNWhitelisted { get; set; }
-
+        public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
+        public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : ((float)ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
-
-
 
         public void SetCurrentDayPlayTime()
         {
@@ -44,6 +44,9 @@ namespace SCPUtils
             CustomNickName = "";
             HideBadge = false;
             BadgeName = "";
+            PreviousBadge = "";
+            KeepPreferences = false;
+            PlayTimeRecords.Clear();
         }
 
         public void ResetPreferences()
@@ -51,6 +54,16 @@ namespace SCPUtils
             ColorPreference = "";
             CustomNickName = "";
             HideBadge = false;
+            KeepPreferences = false;
+        }
+
+        public bool IsRestricted()
+        {
+            foreach (var a in Restricted)
+            {
+                if (a.Key >= DateTime.Now) return true;
+            }
+            return false;
         }
 
     }
