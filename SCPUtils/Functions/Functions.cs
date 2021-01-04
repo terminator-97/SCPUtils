@@ -66,7 +66,7 @@ namespace SCPUtils
                     if (databasePlayer.BadgeExpire >= DateTime.Now)
                     {
                         var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
-                        if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText) databasePlayer.PreviousBadge = player.Group.BadgeText;
+                        if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText) databasePlayer.PreviousBadge = player.GroupName;
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                         if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);

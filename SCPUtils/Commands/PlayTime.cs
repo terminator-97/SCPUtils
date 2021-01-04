@@ -22,7 +22,13 @@ namespace SCPUtils.Commands
         {
             string target;
             int range;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playerinfo") && !((CommandSender)sender).FullPermissions)
+            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.ownplaytime") && !CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playtime") && !((CommandSender)sender).FullPermissions)
+            {
+                response = "<color=red>You need a higher administration level to use this command!</color>";
+                return false;
+            }
+
+            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
                 target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
 

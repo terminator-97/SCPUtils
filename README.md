@@ -54,6 +54,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_restrict | <userid / id> | scputils.moderatecommands | <duration in minutes (0=permanent) <reason> | You can a specific player from change name and color feature |
 | scputils_player_unrestrict | <userid / id> | scputils.moderatecommands | Unban a previously command banned player |
 | scputils_show_command_bans | <userid / id> | scputils.moderatecommands | Show command ban history of a specific player |
+| scputils_remove_previous_badge | <userid / id> | scputils.handlebadges | Removes previous badge from database for that player |
 
 **Console commands**
 
@@ -66,7 +67,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_show_badge  | none  | scputils.badgevisibility | Permanently show your badge |
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
 | scputils_my_info  | none | none | Show your preferences and temporarily badges info |
-| scputils_play_time | none | none | Show your own playtime with a max range of 120 days |
+| scputils_play_time | none | scputils.ownplaytime | Show your own playtime with a max range of 120 days |
 
 **Speak permissions**
 
