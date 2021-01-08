@@ -14,11 +14,11 @@ namespace SCPUtils
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
         public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.4.1";
+        public static string pluginVersion = "2.4.2";
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 4, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 22);
+        public override Version Version { get; } = new Version(2, 4, 2);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 25);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }

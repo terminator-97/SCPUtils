@@ -31,7 +31,14 @@ namespace SCPUtils
             }
         }
 
-        internal void OnRoundEnded(RoundEndedEventArgs ev) => TemporarilyDisabledWarns = true;
+        internal void OnRoundEnded(RoundEndedEventArgs ev)
+        {
+            foreach(var player in Exiled.API.Features.Player.List)
+            {
+                pluginInstance.Functions.SaveData(player);
+            }
+            TemporarilyDisabledWarns = true;
+        }
 
         internal void OnWaitingForPlayers()
         {
@@ -79,7 +86,7 @@ namespace SCPUtils
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
-        {
+        {           
             pluginInstance.Functions.SaveData(ev.Player);
         }
 
