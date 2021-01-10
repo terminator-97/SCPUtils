@@ -79,7 +79,7 @@ namespace SCPUtils
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
                     }
                     databasePlayer.PreviousBadge = "";
-                    if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
+                  //  if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
 
                 }
             }
