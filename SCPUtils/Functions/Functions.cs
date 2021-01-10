@@ -55,83 +55,75 @@ namespace SCPUtils
 
         public void PostLoadPlayer(Exiled.API.Features.Player player)
         {
+
             var databasePlayer = player.GetDatabasePlayer();
-
-
 
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
-                Timing.CallDelayed(1f, () =>
+                if (databasePlayer.BadgeExpire >= DateTime.Now)
                 {
-                    if (databasePlayer.BadgeExpire >= DateTime.Now)
+                    var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
+                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText) databasePlayer.PreviousBadge = player.GroupName;
+                    player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
+                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
+                }
+                else
+                {
+                    databasePlayer.BadgeName = "";
+
+                    if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge))
                     {
-                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
-                        if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText) databasePlayer.PreviousBadge = player.GroupName;
+                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
-                        if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
-                        ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
+                        ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
                     }
-                    else
-                    {
-                        databasePlayer.BadgeName = "";
+                    databasePlayer.PreviousBadge = "";
+                    if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
 
-                        if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge))
-                        {
-                            var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
-                            player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
-                            ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
-                        }
-                        databasePlayer.PreviousBadge = "";
-                        if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
+                }
+            }
 
+            Timing.CallDelayed(1.5f, () =>
+            {
+
+                if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
+                {
+                    if (player.CheckPermission("scputils.changecolor") || player.CheckPermission("scputils.playersetcolor") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepColorWithoutPermission)
+                    {                       
+                            player.RankColor = databasePlayer.ColorPreference;                        
                     }
-                });
-            }
+                    else databasePlayer.ColorPreference = "";
+                }
 
-            if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
-            {
-                if (player.CheckPermission("scputils.changecolor") || player.CheckPermission("scputils.playersetcolor") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepColorWithoutPermission)
+                if (databasePlayer.HideBadge == true)
                 {
-                    Timing.CallDelayed(1.15f, () =>
+                    if (player.CheckPermission("scputils.badgevisibility") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepBadgeVisibilityWithoutPermission)
+                    {                      
+                            player.BadgeHidden = true;                  
+                    }
+                    else databasePlayer.HideBadge = false;
+                }
+
+
+                if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
+                {
+                    if (player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepNameWithoutPermission)
+                    {                  
+                            player.DisplayNickname = databasePlayer.CustomNickName;                       
+                    }
+                    else databasePlayer.CustomNickName = "";
+                }
+
+                if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
+                {
+                    Timing.CallDelayed(2f, () =>
                     {
-                        player.RankColor = databasePlayer.ColorPreference;
+                        player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
                     });
                 }
-                else databasePlayer.ColorPreference = "";
-            }
 
-            if (databasePlayer.HideBadge == true)
-            {
-                if (player.CheckPermission("scputils.badgevisibility") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepBadgeVisibilityWithoutPermission)
-                {
-                    Timing.CallDelayed(1.25f, () =>
-                    {
-                        player.BadgeHidden = true;
-                    });
-                }
-                else databasePlayer.HideBadge = false;
-            }
-
-
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
-            {
-                if (player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepNameWithoutPermission)
-                {
-                    Timing.CallDelayed(1.35f, () =>
-                    {
-                        player.DisplayNickname = databasePlayer.CustomNickName;
-                    });
-                }
-                else databasePlayer.CustomNickName = "";
-            }
-
-            if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
-            {
-                Timing.CallDelayed(3f, () =>
-                {
-                    player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
-                });
-            }
+            });
 
         }
 

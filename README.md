@@ -20,9 +20,12 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
 
+
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
+**Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.1.25 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 2.1.28 and LiteDB 5.0.9**
+
 
 ### Configs:
 

@@ -69,7 +69,7 @@ namespace SCPUtils.Commands
                 databasePlayer.BadgeName = badge;
                 databasePlayer.BadgeExpire = DateTime.Now.AddMinutes(duration);
 
-              
+
                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                 response = $"Successfully set {group.BadgeText} badge! Duration: {duration} minute(s)!";
 

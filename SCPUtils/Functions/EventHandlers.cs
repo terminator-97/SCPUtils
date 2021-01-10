@@ -33,7 +33,7 @@ namespace SCPUtils
 
         internal void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            foreach(var player in Exiled.API.Features.Player.List)
+            foreach (var player in Exiled.API.Features.Player.List)
             {
                 pluginInstance.Functions.SaveData(player);
             }
@@ -86,7 +86,7 @@ namespace SCPUtils
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
-        {           
+        {
             pluginInstance.Functions.SaveData(ev.Player);
         }
 
