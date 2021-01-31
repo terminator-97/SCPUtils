@@ -35,7 +35,7 @@ namespace SCPUtils
         public void LoadEvents()
         {
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
-            PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
+            PlayerEvents.Verified += EventHandlers.OnPlayerVerify;
             PlayerEvents.Left += EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
@@ -72,7 +72,7 @@ namespace SCPUtils
         public override void OnDisabled()
         {
             MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
-            PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
+            PlayerEvents.Verified -= EventHandlers.OnPlayerVerify;
             PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
