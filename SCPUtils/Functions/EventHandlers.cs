@@ -61,7 +61,7 @@ namespace SCPUtils
             throw new NotImplementedException();
         }
 
-        internal void OnPlayerJoin(JoinedEventArgs ev)
+        internal void OnPlayerVerify(VerifiedEventArgs ev)
         {
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
