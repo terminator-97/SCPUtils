@@ -40,6 +40,11 @@ namespace SCPUtils
             TemporarilyDisabledWarns = true;
         }
 
+        internal void OnPlayerDestroy(DestroyingEventArgs ev)
+        {
+            pluginInstance.Functions.SaveData(ev.Player);
+        }
+
         internal void OnWaitingForPlayers()
         {
             TemporarilyDisabledWarns = false;
@@ -54,11 +59,6 @@ namespace SCPUtils
             {
                 ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
             }
-        }
-
-        internal void Tafazzi(BanningEventArgs ev)
-        {
-            throw new NotImplementedException();
         }
 
         internal void OnPlayerVerify(VerifiedEventArgs ev)

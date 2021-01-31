@@ -14,11 +14,11 @@ namespace SCPUtils
     {
         private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
         public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.4.3";
+        public static string pluginVersion = "2.4.4";
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 4, 3);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 25);
+        public override Version Version { get; } = new Version(2, 4, 4);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -36,14 +36,13 @@ namespace SCPUtils
         {
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
             PlayerEvents.Verified += EventHandlers.OnPlayerVerify;
-            PlayerEvents.Left += EventHandlers.OnPlayerLeave;
+            PlayerEvents.Destroying += EventHandlers.OnPlayerDestroy;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
             PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
             ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
-
         }
 
         public override void OnEnabled()
@@ -73,7 +72,7 @@ namespace SCPUtils
         {
             MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
             PlayerEvents.Verified -= EventHandlers.OnPlayerVerify;
-            PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
+            PlayerEvents.Destroying -= EventHandlers.OnPlayerDestroy;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
             PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
             PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;

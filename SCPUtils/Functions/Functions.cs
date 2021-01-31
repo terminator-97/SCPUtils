@@ -129,11 +129,13 @@ namespace SCPUtils
 
         public bool CheckNickname(string name)
         {
+            if (pluginInstance.Config.BannedNickNames == null) return false;
+                
             foreach (var nickname in pluginInstance.Config.BannedNickNames)
             {
-                name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
-                string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
-                if (Regex.Match(name, pattern).Success) return true;
+               //name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
+               //string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
+               if (Regex.Match(name, nickname).Success) return true;
             }
             return false;
         }
