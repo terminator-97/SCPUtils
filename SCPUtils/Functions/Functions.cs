@@ -133,9 +133,7 @@ namespace SCPUtils
                 
             foreach (var nickname in pluginInstance.Config.BannedNickNames)
             {
-               //name = Regex.Replace(name, "[^a-zA-Z0-9]", "").ToLower();
-               //string pattern = Regex.Replace(nickname.ToLower(), "[^a-zA-Z0-9]", "");
-               if (Regex.Match(name, nickname).Success) return true;
+                if (Regex.Match(name.ToLower(), nickname.ToLower()).Success) return true;
             }
             return false;
         }
