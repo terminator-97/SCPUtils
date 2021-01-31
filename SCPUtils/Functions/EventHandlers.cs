@@ -1,9 +1,11 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using Exiled.Permissions.Extensions;
 using MEC;
 using System;
-
+using Log = Exiled.API.Features.Log;
+using Round = Exiled.API.Features.Round;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SCPUtils
 {
@@ -13,49 +15,60 @@ namespace SCPUtils
 
         public DateTime lastTeslaEvent;
 
+        public static bool TemporarilyDisabledWarns;
+
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
-        internal void OnRoundStart()
-        {
-            ScpUtils.IsStarted = true;
-            if (pluginInstance.Config.EnableRoundRestartCheck) pluginInstance.Functions.StartFixer();
-        }
 
-        internal void OnRoundEnd(RoundEndedEventArgs ev)
+        internal void OnPlayerDeath(DyingEventArgs ev)
         {
-            ScpUtils.IsStarted = false;
-            Timing.KillCoroutines(pluginInstance.Functions.DT);
-        }
-
-        internal void OnRoundRestart()
-        {
-            ScpUtils.IsStarted = false;
-            Timing.KillCoroutines(pluginInstance.Functions.DT);
-        }
-
-
-        internal void OnPlayerDeath(DiedEventArgs ev)
-        {
-            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && ScpUtils.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn)
+            if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformations.GetDamageType() == DamageTypes.Tesla || ev.HitInformations.GetDamageType() == DamageTypes.Wall) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.GetDamageType() == DamageTypes.Grenade && ev.Killer == ev.Target) && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                 }
             }
         }
 
+        internal void OnRoundEnded(RoundEndedEventArgs ev)
+        {
+            foreach (var player in Exiled.API.Features.Player.List)
+            {
+                pluginInstance.Functions.SaveData(player);
+            }
+            TemporarilyDisabledWarns = true;
+        }
+
+        internal void OnPlayerDestroy(DestroyingEventArgs ev)
+        {
+            pluginInstance.Functions.SaveData(ev.Player);
+        }
+
+        internal void OnWaitingForPlayers()
+        {
+            TemporarilyDisabledWarns = false;
+        }
+
+        internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
 
 
-        internal void OnPlayerJoin(JoinedEventArgs ev)
+        internal void OnPlayerHurt(HurtingEventArgs ev)
+        {
+            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Target.Team) == true)
+            {
+                ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
+            }
+        }
+
+        internal void OnPlayerVerify(VerifiedEventArgs ev)
         {
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
-                Log.Info(ev.Player.Nickname + " is not present on DB!");
-                Database.AddPlayer(ev.Player);
+                Log.Info(ev.Player.Nickname + " is not present on DB, creating account!");
+                pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
             }
 
-            Log.Debug(ev.Player.ReferenceHub.nicknameSync.DisplayName);
             var databasePlayer = ev.Player.GetDatabasePlayer();
             if (Database.PlayerData.ContainsKey(ev.Player)) return;
             Database.PlayerData.Add(ev.Player, databasePlayer);
@@ -63,47 +76,24 @@ namespace SCPUtils
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
             if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
-            if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None") ev.Player.ReferenceHub.nicknameSync.DisplayName = databasePlayer.CustomNickName;
-            if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(ev.Player.Nickname) && !ev.Player.CheckPermission("scputils.bypassnickrestriction")) ev.Player.Kick("Auto-Kick: " + pluginInstance.Config.AutoKickBannedNameMessage, "SCPUtils");
-            else if (pluginInstance.Config.ASNBlacklist.Contains(ev.Player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
+            if (pluginInstance.Functions.CheckAsnPlayer(ev.Player)) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
-            Log.Debug(ev.Player.ReferenceHub.nicknameSync.DisplayName);
-
         }
-
-
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
-            if (ev.Player.Team == Team.SCP) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
+            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
-            if (ev.Player.Nickname != "Dedicated Server" && ev.Player != null && Database.PlayerData.ContainsKey(ev.Player))
-            {
-                if ((ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && ScpUtils.IsStarted)
-                {
-                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
-                }
-                ev.Player.GetDatabasePlayer().SetCurrentDayPlayTime();
-                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[ev.Player]);
-                Database.PlayerData.Remove(ev.Player);
-            }
-        }
-
-        internal void OnTeslaEvent(TriggeringTeslaEventArgs ev)
-        {
-            lastTeslaEvent = DateTime.Now;
+            pluginInstance.Functions.SaveData(ev.Player);
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
         {
             if (pluginInstance.Config.DecontaminationMessageEnabled) Map.Broadcast(pluginInstance.Config.DecontaminationMessageDuration, pluginInstance.Config.DecontaminationMessage, Broadcast.BroadcastFlags.Normal);
         }
-
-
-
 
     }
 

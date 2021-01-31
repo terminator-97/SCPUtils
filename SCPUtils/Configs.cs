@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Log = Exiled.API.Features.Log;
+using ZoneType = Exiled.API.Enums.ZoneType;
+
 
 namespace SCPUtils
 {
@@ -42,8 +44,20 @@ namespace SCPUtils
         [Description("Should Tutorials be considered as SCP? If true they will get warned for suicides / quits if enabled")]
         public bool AreTutorialsSCP { get; private set; } = false;
 
-        [Description("Autorestart message broadcasted when there is one player left (if enabled)")]
-        public string AutoRestartMessage { get; private set; } = "<color=red>Round Restart:</color>\n<color=yellow> Restarting round in {0} seconds due lack of players</color>";
+        [Description("Broadcast in admin chat auto kick and bans for quitting or suicide as SCP")]
+        public bool BroadcastSanctions { get; private set; } = true;
+
+        [Description("Broadcast in admin chat auto warns for quitting or suicide as SCP")]
+        public bool BroadcastWarns { get; private set; } = false;
+
+        [Description("Should the nickname gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepNameWithoutPermission { get; private set; } = false;
+
+        [Description("Should the color gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepColorWithoutPermission { get; private set; } = false;
+
+        [Description("Should the badge visibility gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
+        public bool KeepBadgeVisibilityWithoutPermission { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
@@ -61,22 +75,25 @@ namespace SCPUtils
         public string AutoKickBannedNameMessage { get; private set; } = "You're using a restricted nickname or too similar to a restricted one, please change it";
 
         [Description("Suicide auto-ban reason (if enabled)")]
-        public string AutoBanMessage { get; private set; } = "Exceeded SCP suicide limit Duration: {0} minutes";
+        public string AutoBanMessage { get; private set; } = "Exceeded SCP suicide limit";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedNickNameChange { get; private set; } = "Permission denied.";
+        public string UnauthorizedNickNameChange { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedColorChange { get; private set; } = "Permission denied.";
+        public string UnauthorizedColorChange { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player is not authorized to use this command")]
-        public string UnauthorizedBadgeChangeVisibility { get; private set; } = "Permission denied.";
+        public string UnauthorizedBadgeChangeVisibility { get; private set; } = "<color=red>Permission denied.</color>";
 
         [Description("Message if player try to change his nickname to a restricted one")]
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
 
         [Description("Database name, change it only if you are running multiple servers")]
-        public static string DatabaseName { get; private set; } = "SCPUtils";
+        public string DatabaseName { get; private set; } = "SCPUtils";
+
+        [Description("In which folder database should be stored?")]
+        public string DatabaseFolder { get; private set; } = "EXILED";
 
         [Description("Welcome message duration (if enabled)")]
         public ushort WelcomeMessageDuration { get; private set; } = 12;
@@ -96,6 +113,9 @@ namespace SCPUtils
         [Description("SCP Suicide / Quit base ban duration (if enabled)")]
         public int AutoBanDuration { get; private set; } = 15;
 
+        [Description("Which is the max length of a nickname using change name command?")]
+        public int NicknameMaxLength { get; private set; } = 32;
+
         [Description("If 079 trigger tesla for how many seconds player shouldn't get warned for suicide? (2 is enough for most of servers)")]
         public int Scp079TeslaEventWait { get; private set; } = 2;
 
@@ -109,13 +129,61 @@ namespace SCPUtils
         public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1", "Color2" };
 
         [Description("Which nicknames are restricted on .scputils_change_nickname command?")]
-        public static List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin" };
+        public List<string> BannedNickNames { get; private set; } = new List<string>() { "@everyone", "@here", "Admin" };
 
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
 
+
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
+
+
+        /*
+
+          public Dictionary<Team, ImmunityPlayers> ImmunityPlayers { get; private set; } = new Dictionary<Team, ImmunityPlayers>()
+          {
+              //Class-D example dictionary config
+              {
+                Team.CDP, //key
+                new ImmunityPlayers
+                {                  
+                   Attacker = new List<Team>() { Team.RSC, Team.MTF }, //Attacker List
+                   ShouldBeCuffed = true, //Cuffed
+                   ImmunityZones = new List<ZoneType>() { ZoneType.Entrance, ZoneType.Surface } //Zone List                  
+                }
+              },
+
+              //Rip example dictionary config
+              {
+                Team.RIP, //key
+                new ImmunityPlayers
+                {
+                    Attacker = new List<Team>() { Team.TUT }, //Attacker List
+                    ShouldBeCuffed = false, //Cuffed
+                    ImmunityZones = new List<ZoneType>() { ZoneType.Entrance, ZoneType.Surface, ZoneType.LightContainment, ZoneType.HeavyContainment, ZoneType.Unspecified } //Zone list
+                }
+              }
+          };
+
+          */
+
+        [Description("You have to add the team you want to protect from the target as key and enemy teams on the list as value, on github documentation you can see all the teams.")]
+
+        public Dictionary<Team, List<Team>> CuffedImmunityPlayers { get; private set; } = new Dictionary<Team, List<Team>>();
+
+
+        [Description("Indicates if the protected teams should be cuffed to get the protection, if you don't add a team it will get protection regardless")]
+
+        public List<Team> CuffedProtectedTeams { get; private set; } = new List<Team>();
+
+        [Description("Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified")]
+
+        public Dictionary<Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<Team, List<ZoneType>>();
+
+        [Description("With which SCPs users are allowed to speak using V to humans without any badge (remove the disallowed SCPs)? (This will bypass permissions check so everyone will be able to speak with those SCPs regardless rank)")]
+
+        public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
 
 
         public void ConfigValidator()

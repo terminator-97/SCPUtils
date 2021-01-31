@@ -12,57 +12,49 @@ namespace SCPUtils
 
     public class ScpUtils : Features.Plugin<Configs>
     {
-        public static bool IsStarted { get; set; }
-        public static string pluginVersion = "2.0.0 {PTB II}";
-
+        private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
+        public static ScpUtils StaticInstance => LazyInstance.Value;
+        public static string pluginVersion = "2.4.4";
+        public override string Author { get; } = "Terminator_97#0507";
+        public override string Name { get; } = "SCPUtils";
+        public override Version Version { get; } = new Version(2, 4, 4);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29);
         public EventHandlers EventHandlers { get; private set; }
-        public Commands Commands { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-        public ConsoleCommands PlayerConsoleCommands { get; private set; }
+        public Database DatabasePlayerData { get; private set; }
         public int PatchesCounter { get; private set; }
 
         public Harmony Harmony { get; private set; }
 
+        private ScpUtils()
+        {
 
-
-
+        }
 
         public void LoadEvents()
         {
-
-            ServerEvents.RoundStarted += EventHandlers.OnRoundStart;
-            ServerEvents.RoundEnded += EventHandlers.OnRoundEnd;
-            ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
-            PlayerEvents.Joined += EventHandlers.OnPlayerJoin;
-            PlayerEvents.Died += EventHandlers.OnPlayerDeath;
-            PlayerEvents.TriggeringTesla += EventHandlers.OnTeslaEvent;
-            PlayerEvents.Left += EventHandlers.OnPlayerLeave;
+            PlayerEvents.Verified += EventHandlers.OnPlayerVerify;
+            PlayerEvents.Destroying += EventHandlers.OnPlayerDestroy;
             PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
-
+            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
+            PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
+            Exiled.Events.Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
+            ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+            ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
         }
-
-        public void LoadCommands()
-        {
-            ServerEvents.SendingRemoteAdminCommand += Commands.OnRaCommand;
-            ServerEvents.SendingConsoleCommand += PlayerConsoleCommands.OnConsoleCommand;
-
-        }
-
-
 
         public override void OnEnabled()
         {
             if (!Config.IsEnabled) return;
-            Commands = new Commands();
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
-            PlayerConsoleCommands = new ConsoleCommands(this);
+            DatabasePlayerData = new Database(this);
+            EventHandlers.TemporarilyDisabledWarns = false;
             LoadEvents();
-            LoadCommands();
-            Database.CreateDatabase();
-            Database.OpenDatabase();
+            DatabasePlayerData.CreateDatabase();
+            DatabasePlayerData.OpenDatabase();
             try
             {
                 Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");
@@ -78,19 +70,18 @@ namespace SCPUtils
 
         public override void OnDisabled()
         {
-            ServerEvents.RoundStarted -= EventHandlers.OnRoundStart;
-            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnd;
-            ServerEvents.RestartingRound -= EventHandlers.OnRoundRestart;
             MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
-            PlayerEvents.Joined -= EventHandlers.OnPlayerJoin;
-            PlayerEvents.Died -= EventHandlers.OnPlayerDeath;
-            PlayerEvents.TriggeringTesla -= EventHandlers.OnTeslaEvent;
-            PlayerEvents.Left -= EventHandlers.OnPlayerLeave;
+            PlayerEvents.Verified -= EventHandlers.OnPlayerVerify;
+            PlayerEvents.Destroying -= EventHandlers.OnPlayerDestroy;
             PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
-            Timing.KillCoroutines(Functions.DT);
+            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
+            PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
+            Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
+            ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
+            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
             EventHandlers = null;
-            Commands = null;
             Functions = null;
+            Functions.LastWarn.Clear();
             Database.LiteDatabase.Dispose();
             Harmony.UnpatchAll();
         }

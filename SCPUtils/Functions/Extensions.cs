@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System;
 
 namespace SCPUtils
@@ -9,7 +8,5 @@ namespace SCPUtils
         sender.RaReply("SCPUtils#" + message, success, true, string.Empty);
 
         public static string Convert(int seconds) => TimeSpan.FromSeconds(seconds).ToString();
-
-
     }
 }
