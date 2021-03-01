@@ -24,7 +24,7 @@ namespace SCPUtils.Commands
                 response = "You need a higher administration level to use this command!";
                 return false;
             }
-            StringBuilder message = new StringBuilder($"Online Staffers({CountStaffMembers()}");           
+            StringBuilder message = new StringBuilder($"Online Staffers( {CountStaffMembers()} )");           
             
             foreach (var player in Exiled.API.Features.Player.List)
             {

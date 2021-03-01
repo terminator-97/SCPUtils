@@ -79,7 +79,7 @@ namespace SCPUtils.Commands
                 response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
                 return false;
             }
-            StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})");
+            StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]");
             message.AppendLine();
             message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
 
