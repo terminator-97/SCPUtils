@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
@@ -22,13 +23,13 @@ namespace SCPUtils.Commands
         {
             string target;
             int range;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.ownplaytime") && !CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playtime") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.ownplaytime") && !sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
                 response = "<color=red>You need a higher administration level to use this command!</color>";
                 return false;
             }
 
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playtime") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.playtime"))
             {
                 target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
 

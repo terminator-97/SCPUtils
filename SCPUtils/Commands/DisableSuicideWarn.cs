@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -14,7 +15,7 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.warnmanagement") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.warnmanagement"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;

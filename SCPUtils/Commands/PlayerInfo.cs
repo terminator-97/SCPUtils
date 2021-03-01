@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -19,7 +20,7 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playerinfo") && !((CommandSender)sender).FullPermissions) target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+            if (!sender.CheckPermission("scputils.playerinfo")) target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
             else
             {
                 if (arguments.Count < 1)

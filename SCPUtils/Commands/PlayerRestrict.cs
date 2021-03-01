@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -18,7 +19,7 @@ namespace SCPUtils.Commands
         {
             string target;
             string reason;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.moderatecommands") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.moderatecommands"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;

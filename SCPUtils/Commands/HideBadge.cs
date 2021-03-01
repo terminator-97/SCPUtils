@@ -1,7 +1,6 @@
 ﻿using System;
 using CommandSystem;
-
-
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -17,7 +16,7 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.badgevisibility"))
+            if (!sender.CheckPermission("scputils.badgevisibility"))
             {
                 response = $"{ScpUtils.StaticInstance.Config.UnauthorizedBadgeChangeVisibility} ";
                 return false;

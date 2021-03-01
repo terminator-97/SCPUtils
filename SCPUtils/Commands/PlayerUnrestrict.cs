@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
-
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -18,7 +18,7 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.moderatecommands") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.moderatecommands"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
