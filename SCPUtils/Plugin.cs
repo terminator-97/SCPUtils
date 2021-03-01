@@ -11,8 +11,7 @@ namespace SCPUtils
 {
 
     public class ScpUtils : Features.Plugin<Configs>
-    {     
-        public static string pluginVersion = "2.4.5";
+    {    
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
         public override Version Version { get; } = new Version(2, 4, 5);
