@@ -1,5 +1,6 @@
 ﻿using System;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
@@ -19,7 +20,7 @@ namespace SCPUtils.Commands
         {
             string target;
             string badge;
-            if (!CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.handlebadges") && !((CommandSender)sender).FullPermissions)
+            if (!sender.CheckPermission("scputils.handlebadges"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;

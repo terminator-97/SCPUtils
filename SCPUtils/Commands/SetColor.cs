@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace SCPUtils.Commands
 {
@@ -20,7 +21,7 @@ namespace SCPUtils.Commands
         {
             string target;
             string color;
-            if (CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playersetcolor") || ((CommandSender)sender).FullPermissions)
+            if (sender.CheckPermission("scputils.playersetcolor"))
             {
                 if (arguments.Count < 2)
                 {
@@ -38,7 +39,7 @@ namespace SCPUtils.Commands
                     }
                 }
             }
-            else if (CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.changecolor"))
+            else if (sender.CheckPermission("scputils.changecolor"))
             {
                 if (arguments.Count < 1)
                 {

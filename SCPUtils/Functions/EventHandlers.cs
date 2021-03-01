@@ -31,7 +31,7 @@ namespace SCPUtils
             }
         }
 
-        internal void OnRoundEnded(RoundEndedEventArgs ev)
+        internal void OnRoundEnded(RoundEndedEventArgs _)
         {
             foreach (var player in Exiled.API.Features.Player.List)
             {
@@ -50,7 +50,7 @@ namespace SCPUtils
             TemporarilyDisabledWarns = false;
         }
 
-        internal void On079TeslaEvent(InteractingTeslaEventArgs ev) => lastTeslaEvent = DateTime.Now;
+        internal void On079TeslaEvent(InteractingTeslaEventArgs _) => lastTeslaEvent = DateTime.Now;
 
 
         internal void OnPlayerHurt(HurtingEventArgs ev)
@@ -61,8 +61,10 @@ namespace SCPUtils
             }
         }
 
+  
         internal void OnPlayerVerify(VerifiedEventArgs ev)
-        {
+        {                    
+           
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
                 Log.Info(ev.Player.Nickname + " is not present on DB, creating account!");

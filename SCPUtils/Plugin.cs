@@ -11,14 +11,11 @@ namespace SCPUtils
 {
 
     public class ScpUtils : Features.Plugin<Configs>
-    {
-        private static readonly Lazy<ScpUtils> LazyInstance = new Lazy<ScpUtils>(() => new ScpUtils());
-        public static ScpUtils StaticInstance => LazyInstance.Value;
-        public static string pluginVersion = "2.4.4";
+    {    
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 4, 4);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29);
+        public override Version Version { get; } = new Version(2, 4, 5);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 3, 4);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -27,10 +24,14 @@ namespace SCPUtils
 
         public Harmony Harmony { get; private set; }
 
+        private static readonly ScpUtils InstanceValue = new ScpUtils();
+
         private ScpUtils()
         {
 
         }
+
+        public static ScpUtils StaticInstance => InstanceValue;
 
         public void LoadEvents()
         {
@@ -78,7 +79,7 @@ namespace SCPUtils
             PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
             Exiled.Events.Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
             ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
-            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
+            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;            
             EventHandlers = null;
             Functions = null;
             Functions.LastWarn.Clear();
@@ -86,9 +87,6 @@ namespace SCPUtils
             Harmony.UnpatchAll();
         }
 
-        public override void OnReloaded()
-        {
-
-        }
+       
     }
 }

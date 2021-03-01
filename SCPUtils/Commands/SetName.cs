@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 using HarmonyLib;
 using Log = Exiled.API.Features.Log;
 
@@ -22,7 +23,7 @@ namespace SCPUtils.Commands
         {
             string target;
             string nickname = "";
-            if (CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.playersetname") || ((CommandSender)sender).FullPermissions)
+            if (sender.CheckPermission("scputils.playersetname"))
             {
                 if (arguments.Count < 2)
                 {
@@ -35,7 +36,7 @@ namespace SCPUtils.Commands
                     nickname = string.Join(" ", arguments.Array, 2, arguments.Array.Length - 2);
                 }
             }
-            else if (CommandExtensions.IsAllowed(((CommandSender)sender).SenderId, "scputils.changenickname"))
+            else if (sender.CheckPermission("scputils.changenickname"))
             {
                 if (arguments.Count < 1)
                 {
@@ -67,7 +68,7 @@ namespace SCPUtils.Commands
                         response = "<color=red>This nickname is already used by another player, please choose another name!</color>";
                         return false;
                     }
-                    else if (ScpUtils.StaticInstance.Functions.CheckNickname(nickname) && !CommandExtensions.IsAllowed(target, "scputils.bypassnickrestriction"))
+                    else if (ScpUtils.StaticInstance.Functions.CheckNickname(nickname) && !sender.CheckPermission("scputils.bypassnickrestriction"))
                     {
 
                         response = $"{ScpUtils.StaticInstance.Config.InvalidNicknameText} ";
