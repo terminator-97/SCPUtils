@@ -6,6 +6,7 @@ using Log = Exiled.API.Features.Log;
 using Round = Exiled.API.Features.Round;
 using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Extensions;
 
 namespace SCPUtils
 {
@@ -17,8 +18,17 @@ namespace SCPUtils
 
         public static bool TemporarilyDisabledWarns;
 
+        public int ChaosRespawnCount { get; set; }
+
+        public int MtfRespawnCount { get; set; }
+
+        public DateTime LastChaosRespawn { get; set; }
+
+        public DateTime LastMtfRespawn { get; set; }
+
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
+ 
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
@@ -28,6 +38,18 @@ namespace SCPUtils
                 {
                     if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.GetDamageType() == DamageTypes.Grenade && ev.Killer == ev.Target)) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                     else if ((ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                }
+            }
+
+            if(pluginInstance.Config.NotifyLastPlayerAlive)
+            {                
+                var team = Exiled.API.Features.Player.Get(ev.Target.Team).ToList();              
+                if (team.Count - 1 == 1)
+                {                   
+                    if (team[0] == ev.Target)
+                        team[1].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
+                    else
+                        team[0].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);                   
                 }
             }
         }
@@ -41,9 +63,31 @@ namespace SCPUtils
             TemporarilyDisabledWarns = true;
         }
 
+        internal void OnTeamRespawn(RespawningTeamEventArgs ev)
+        {       
+
+            if (ev.NextKnownTeam.ToString() == "ChaosInsurgency")
+            {
+                ChaosRespawnCount++;
+                LastChaosRespawn = DateTime.Now;
+            }
+
+            else if (ev.NextKnownTeam.ToString() == "NineTailedFox")
+            {
+                MtfRespawnCount++;
+                LastMtfRespawn = DateTime.Now;
+            }
+
+        }
+
         internal void OnPlayerDestroy(DestroyingEventArgs ev)
         {
             pluginInstance.Functions.SaveData(ev.Player);
+        }
+
+        internal void On096AddTarget(AddingTargetEventArgs ev)
+        {           
+            if (pluginInstance.Config.Scp096TargetEnabled) ev.Target.ShowHint(pluginInstance.Config.Scp096TargetText, pluginInstance.Config.Scp096TargetMessageDuration);                  
         }
 
         internal void OnWaitingForPlayers()

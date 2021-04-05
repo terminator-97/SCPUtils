@@ -19,12 +19,13 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
-
+- **SCP-096 Target:** Players gets notified via hint when they become a SCP-096 Target.
+- **Last Player:** Players gets notified via hint when they are the last player of the Team.
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.1.29 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 2.8.0 and LiteDB 5.0.9**
 
 
 ### Configs:
@@ -58,6 +59,8 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_unrestrict | <userid / id> | scputils.moderatecommands | Unban a previously command banned player |
 | scputils_show_command_bans | <userid / id> | scputils.moderatecommands | Show command ban history of a specific player |
 | scputils_remove_previous_badge | <userid / id> | scputils.handlebadges | Removes previous badge from database for that player |
+| scputils_round_info | <userid / id> | See bellow | Show round info |
+| scputils_online_list | <userid / id> | See bellow | Show online player list |
 
 **Console commands**
 
@@ -94,6 +97,35 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 Pro tip: use scputils_speak.* to allow someone to speak with all the SCPs, set permission to default role to allow everyone to speak with that scp.
 
 Console commands must be executed like .scputils_help in game console (press ò to open it)
+
+**Round Info**
+
+This command allows to show advanced round info and users are able to use it by default to see informations about their own team (using user console), if you don't like that just edit configs.
+It has also the following permissions (those bypass server config):
+
+| Permisssion  | Description | 
+| ------------- | ------------- | 
+| scputils.roundinfo.execute | Needed to simply executing the command, doesnt show any info |
+| scputils.roundinfo.roundtime | Show roundtime |
+| scputils.roundinfo.tickets | Show tickets of all teams |
+| scputils.roundinfo.nextrespawnteam | Show which team respawn next and when |
+| scputils.roundinfo.respawncount | Show how many times MTF/Chaos respawned |
+| scputils.roundinfo.lastrespawn | Show when MTF/Chaos respawned |
+
+**Online List**
+
+This command show online player list, it's also usable by users on normal console, it uses advanced permissions like past command.
+
+
+| Permisssion  | Description | 
+| ------------- | ------------- | 
+| scputils.onlinelist.basic | Allows to execute the command, see total players online and player nicknames |
+| scputils.onlinelist.userid | Show UserIDs |
+| scputils.onlinelist.badge | Show badges (hidden or not) |
+| scputils.onlinelist.role | Show roles |
+| scputils.onlinelist.health | Show players health |
+| scputils.onlinelist.flags | Show player flags (God, DNT, Muted etc...) |
+
 
 **Config Example**
 
