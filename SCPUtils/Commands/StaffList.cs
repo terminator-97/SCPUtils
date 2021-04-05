@@ -14,8 +14,7 @@ namespace SCPUtils.Commands
         public string[] Aliases { get; } = new[] { "sl", "stafflist" };
 
         public string Description { get; } = "Show staff list";
-
-        public static int Count { get; private set; }
+      
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,7 +23,7 @@ namespace SCPUtils.Commands
                 response = "You need a higher administration level to use this command!";
                 return false;
             }
-            StringBuilder message = new StringBuilder($"Online Staffers( {CountStaffMembers()} )");           
+            StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");           
             
             foreach (var player in Exiled.API.Features.Player.List)
             {
@@ -43,6 +42,7 @@ namespace SCPUtils.Commands
                     if (player.IsOverwatchEnabled) message.Append(" [OVERWATCH]");
                     if (player.NoClipEnabled) message.Append(" [NOCLIP]");
                     if (player.IsGodModeEnabled) message.Append(" [GODMODE]");
+                    if (player.IsStaffBypassEnabled) message.Append(" [BYPASS MODE]");
                 }
             }
             if (CountStaffMembers()==0)
@@ -55,12 +55,13 @@ namespace SCPUtils.Commands
         }
 
         private static int CountStaffMembers()
-        {        
+        {
+            var value = 0;
             foreach (var player in Exiled.API.Features.Player.List)
             {
-                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess) Count++;
+                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess) value++;
             }
-            return Count;
+            return value;
         }
     }
 }

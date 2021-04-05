@@ -59,6 +59,12 @@ namespace SCPUtils
         [Description("Should the badge visibility gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
         public bool KeepBadgeVisibilityWithoutPermission { get; private set; } = false;
 
+        [Description("Is 096 target feature enabled?")]
+        public bool Scp096TargetEnabled { get; private set; } = true;
+
+        [Description("Notify last player alive?")]
+        public bool NotifyLastPlayerAlive { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
 
@@ -107,6 +113,12 @@ namespace SCPUtils
         [Description("Auto-warn message duration (if enabled)")]
         public ushort AutoWarnMessageDuration { get; private set; } = 30;
 
+        [Description("SCP-096 target message duration (if enabled)")]
+        public ushort Scp096TargetMessageDuration { get; private set; } = 12;
+
+        [Description("Last player alive message duration (if enabled)")]
+        public ushort LastPlayerAliveMessageDuration { get; private set; } = 12;
+
         [Description("Which is the minimun number of suicides before the player may not receive any kick o ban ignoring the SCP suicides / quit percentage? (if enabled)")]
         public int ScpSuicideTollerance { get; private set; } = 5;
 
@@ -138,6 +150,17 @@ namespace SCPUtils
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
 
+        [Description("Which message should be shown to who become SCP-096 target?")]
+        public string Scp096TargetText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You became a target of SCP-096!</color>";
+
+        [Description("Which message should be shown to last player alive of a team?")]
+        public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
+
+        [Description("Allowed classes to see MTF and Next respawn info")]
+        public List<Team> AllowedMtfInfoTeam { get; private set; } = new List<Team>() { Team.MTF, Team.RSC, Team.RIP };
+
+        [Description("Allowed classes to see Chaos info and Next respawn info")]
+        public List<Team> AllowedChaosInfoTeam { get; private set; } = new List<Team>() { Team.CDP, Team.CHI, Team.RIP };
 
         /*
 

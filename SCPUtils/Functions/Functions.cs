@@ -75,6 +75,7 @@ namespace SCPUtils
                     if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge))
                     {
                         var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
+                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
                     }
@@ -137,6 +138,8 @@ namespace SCPUtils
             }
             return false;
         }
+
+
 
         public void SaveData(Exiled.API.Features.Player player)
         {
