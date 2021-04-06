@@ -1,6 +1,6 @@
-﻿using System;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System;
 
 namespace SCPUtils.Commands
 {

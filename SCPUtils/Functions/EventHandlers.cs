@@ -1,12 +1,8 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using MEC;
 using System;
-using Log = Exiled.API.Features.Log;
-using Round = Exiled.API.Features.Round;
-using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Extensions;
+using Round = Exiled.API.Features.Round;
 
 namespace SCPUtils
 {
@@ -28,7 +24,7 @@ namespace SCPUtils
 
         public EventHandlers(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
 
- 
+
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
@@ -41,15 +37,15 @@ namespace SCPUtils
                 }
             }
 
-            if(pluginInstance.Config.NotifyLastPlayerAlive)
-            {                
-                var team = Exiled.API.Features.Player.Get(ev.Target.Team).ToList();              
+            if (pluginInstance.Config.NotifyLastPlayerAlive)
+            {
+                var team = Exiled.API.Features.Player.Get(ev.Target.Team).ToList();
                 if (team.Count - 1 == 1)
-                {                   
+                {
                     if (team[0] == ev.Target)
                         team[1].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
                     else
-                        team[0].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);                   
+                        team[0].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
                 }
             }
         }
@@ -64,7 +60,7 @@ namespace SCPUtils
         }
 
         internal void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {       
+        {
 
             if (ev.NextKnownTeam.ToString() == "ChaosInsurgency")
             {
@@ -86,8 +82,8 @@ namespace SCPUtils
         }
 
         internal void On096AddTarget(AddingTargetEventArgs ev)
-        {           
-            if (pluginInstance.Config.Scp096TargetEnabled) ev.Target.ShowHint(pluginInstance.Config.Scp096TargetText, pluginInstance.Config.Scp096TargetMessageDuration);                  
+        {
+            if (pluginInstance.Config.Scp096TargetEnabled) ev.Target.ShowHint(pluginInstance.Config.Scp096TargetText, pluginInstance.Config.Scp096TargetMessageDuration);
         }
 
         internal void OnWaitingForPlayers()
@@ -106,13 +102,12 @@ namespace SCPUtils
             }
         }
 
-  
+
         internal void OnPlayerVerify(VerifiedEventArgs ev)
-        {                    
-           
+        {
+
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
-                Log.Info(ev.Player.Nickname + " is not present on DB, creating account!");
                 pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
             }
 

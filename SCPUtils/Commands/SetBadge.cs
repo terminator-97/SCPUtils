@@ -1,7 +1,6 @@
-﻿using System;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
-using Log = Exiled.API.Features.Log;
+using System;
 
 namespace SCPUtils.Commands
 {

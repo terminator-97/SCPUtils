@@ -76,7 +76,7 @@ namespace SCPUtils
                     Restricted = null,
                     KeepPreferences = false
                 });
-                // Log.Info("Trying to add ID: " + player.UserId.Split('@')[0] + " Discriminator: " + player.UserId.Split('@')[1] + " to Database");
+
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System;
+using System.Linq;
 
 namespace SCPUtils.Commands
 {
@@ -38,7 +38,7 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            
+
 
             string text = $"<color=green>\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
             $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +

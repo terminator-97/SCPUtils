@@ -1,5 +1,5 @@
-﻿using System;
-using CommandSystem;
+﻿using CommandSystem;
+using System;
 
 namespace SCPUtils.Commands
 {

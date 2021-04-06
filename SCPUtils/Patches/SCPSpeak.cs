@@ -1,7 +1,7 @@
 ﻿using Assets._Scripts.Dissonance;
+using Exiled.Permissions.Extensions;
 using HarmonyLib;
 using System.Linq;
-using Exiled.Permissions.Extensions;
 
 namespace SCPUtils
 {

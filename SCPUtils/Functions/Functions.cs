@@ -1,11 +1,10 @@
-﻿using MEC;
-using RemoteAdmin;
-using System.Collections.Generic;
-using System;
-using System.Text.RegularExpressions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using MEC;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SCPUtils
 {
@@ -80,7 +79,7 @@ namespace SCPUtils
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
                     }
                     databasePlayer.PreviousBadge = "";
-                  //  if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
+                    //  if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
 
                 }
             }
@@ -91,8 +90,8 @@ namespace SCPUtils
                 if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
                 {
                     if (player.CheckPermission("scputils.changecolor") || player.CheckPermission("scputils.playersetcolor") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepColorWithoutPermission)
-                    {                       
-                            player.RankColor = databasePlayer.ColorPreference;                        
+                    {
+                        player.RankColor = databasePlayer.ColorPreference;
                     }
                     else databasePlayer.ColorPreference = "";
                 }
@@ -100,8 +99,8 @@ namespace SCPUtils
                 if (databasePlayer.HideBadge == true)
                 {
                     if (player.CheckPermission("scputils.badgevisibility") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepBadgeVisibilityWithoutPermission)
-                    {                      
-                            player.BadgeHidden = true;                  
+                    {
+                        player.BadgeHidden = true;
                     }
                     else databasePlayer.HideBadge = false;
                 }
@@ -110,8 +109,8 @@ namespace SCPUtils
                 if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
                 {
                     if (player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepNameWithoutPermission)
-                    {                  
-                            player.DisplayNickname = databasePlayer.CustomNickName;                       
+                    {
+                        player.DisplayNickname = databasePlayer.CustomNickName;
                     }
                     else databasePlayer.CustomNickName = "";
                 }
@@ -131,7 +130,7 @@ namespace SCPUtils
         public bool CheckNickname(string name)
         {
             if (pluginInstance.Config.BannedNickNames == null) return false;
-                
+
             foreach (var nickname in pluginInstance.Config.BannedNickNames)
             {
                 if (Regex.Match(name.ToLower(), nickname.ToLower()).Success) return true;

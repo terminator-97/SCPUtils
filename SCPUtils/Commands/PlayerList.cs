@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System;
+using System.Text;
 
 namespace SCPUtils.Commands
 {

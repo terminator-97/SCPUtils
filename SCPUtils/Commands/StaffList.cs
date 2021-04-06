@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using System;
+using System.Text;
 
 namespace SCPUtils.Commands
 {
@@ -14,7 +14,7 @@ namespace SCPUtils.Commands
         public string[] Aliases { get; } = new[] { "sl", "stafflist" };
 
         public string Description { get; } = "Show staff list";
-      
+
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -23,8 +23,8 @@ namespace SCPUtils.Commands
                 response = "You need a higher administration level to use this command!";
                 return false;
             }
-            StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");           
-            
+            StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");
+
             foreach (var player in Exiled.API.Features.Player.List)
             {
                 if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff)
@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
                     if (player.IsStaffBypassEnabled) message.Append(" [BYPASS MODE]");
                 }
             }
-            if (CountStaffMembers()==0)
+            if (CountStaffMembers() == 0)
             {
                 response = "No staff online!";
                 return true;
