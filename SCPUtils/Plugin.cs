@@ -58,7 +58,7 @@ namespace SCPUtils
             EventHandlers.TemporarilyDisabledWarns = false;
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
-            DatabasePlayerData.OpenDatabase();
+            DatabasePlayerData.OpenDatabase();     
             try
             {
                 Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");

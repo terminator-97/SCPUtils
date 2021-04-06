@@ -89,6 +89,8 @@ namespace SCPUtils
         internal void OnWaitingForPlayers()
         {
             TemporarilyDisabledWarns = false;
+            ChaosRespawnCount = 0;
+            MtfRespawnCount = 0;
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs _) => lastTeslaEvent = DateTime.Now;
