@@ -61,6 +61,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_remove_previous_badge | <userid / id> | scputils.handlebadges | Removes previous badge from database for that player |
 | scputils_round_info | <userid / id> | See bellow | Show round info |
 | scputils_online_list | <userid / id> | See bellow | Show online player list |
+| scputils_player_dnt | <userid / id> | scputils.dnt | Ignore DNT requests from a certain player |
 
 **Console commands**
 

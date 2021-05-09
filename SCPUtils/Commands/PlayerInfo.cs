@@ -56,6 +56,7 @@ namespace SCPUtils.Commands
             $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
             $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
             $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +
+            $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
             $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
 
             if (databasePlayer.IsRestricted()) text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";

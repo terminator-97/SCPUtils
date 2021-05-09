@@ -83,8 +83,10 @@ namespace SCPUtils.Commands
             message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
 
 
+
             for (int i = 0; i <= range; i++)
             {
+                databasePlayer.PlayTimeRecords.Count();
                 message.AppendLine();
                 DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
                 if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString())) message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");

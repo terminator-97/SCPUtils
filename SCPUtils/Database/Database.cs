@@ -74,7 +74,8 @@ namespace SCPUtils
                     PlayTimeRecords = null,
                     ASNWhitelisted = false,
                     Restricted = null,
-                    KeepPreferences = false
+                    KeepPreferences = false,
+                    IgnoreDNT = false
                 });
 
             }

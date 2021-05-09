@@ -36,6 +36,7 @@ namespace SCPUtils.Commands
                 StringBuilder message = new StringBuilder($"Round Info:");
                 if (sender.CheckPermission("scputils.roundinfo.roundtime"))
                 {
+                    message.AppendLine();
                     message.AppendLine($"Round time: {Exiled.API.Features.Round.ElapsedTime.ToString(@"hh\:mm\:ss")}");
                 }
                 if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))

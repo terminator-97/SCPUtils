@@ -149,7 +149,16 @@ namespace SCPUtils
                     if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(player);
                 }
                 var databasePlayer = player.GetDatabasePlayer();
-                databasePlayer.SetCurrentDayPlayTime();
+             
+
+                if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT) 
+                {
+                    databasePlayer.PlayTimeRecords.Clear();
+                    databasePlayer.ResetPreferences();
+                    databasePlayer.FirstJoin = DateTime.MinValue;
+                    databasePlayer.LastSeen = DateTime.MinValue;
+                }
+                else databasePlayer.SetCurrentDayPlayTime();
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
                 {

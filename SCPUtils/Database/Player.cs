@@ -25,9 +25,9 @@ namespace SCPUtils
         public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
         public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : ((float)ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
-
+        public bool IgnoreDNT { get; set; }
         public void SetCurrentDayPlayTime()
-        {
+        {           
             if (!PlayTimeRecords.ContainsKey(DateTime.Now.Date.ToShortDateString())) PlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
         }

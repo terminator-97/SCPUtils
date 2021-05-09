@@ -119,7 +119,7 @@ namespace SCPUtils
             databasePlayer.LastSeen = DateTime.Now;
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue) databasePlayer.FirstJoin = DateTime.Now;
-            if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage, Broadcast.BroadcastFlags.Normal);
+            if (pluginInstance.Config.WelcomeEnabled) ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage.Replace("%player%", ev.Player.Nickname), Broadcast.BroadcastFlags.Normal);
             if (pluginInstance.Functions.CheckAsnPlayer(ev.Player)) ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
             else pluginInstance.Functions.PostLoadPlayer(ev.Player);
         }

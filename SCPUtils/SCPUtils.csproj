@@ -101,7 +101,9 @@
   <ItemGroup>
     <Compile Include="Commands\AsnUnwhitelist.cs" />
     <Compile Include="Commands\AsnWhitelist.cs" />
+    <Compile Include="Commands\Convert.cs" />
     <Compile Include="Commands\OnlineList.cs" />
+    <Compile Include="Commands\PlayerDnt.cs" />
     <Compile Include="Commands\RemovePreviousBadge.cs" />
     <Compile Include="Commands\PlayerRestrict.cs" />
     <Compile Include="Commands\PlayerUnrestrict.cs" />

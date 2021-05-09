@@ -65,11 +65,14 @@ namespace SCPUtils
         [Description("Notify last player alive?")]
         public bool NotifyLastPlayerAlive { get; private set; } = true;
 
+        [Description("Ignore DNT requests?")]
+        public bool IgnoreDntRequests { get; private set; } = false;
+
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
 
         [Description("Welcome message (if enabled)")]
-        public string WelcomeMessage { get; private set; } = "<color=green>Welcome to the server!</color>";
+        public string WelcomeMessage { get; private set; } = "<color=green>Welcome to the server %player%!</color>";
 
         [Description("Decontamination message (if enabled)")]
         public string DecontaminationMessage { get; private set; } = "<color=yellow>Decontamination has started</color>";
@@ -156,6 +159,10 @@ namespace SCPUtils
         [Description("Which message should be shown to last player alive of a team?")]
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
 
+
+        [Description("From which groups plugin should ignore DNT flag?")]
+        public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
+
         [Description("Allowed classes to see MTF and Next respawn info")]
         public List<Team> AllowedMtfInfoTeam { get; private set; } = new List<Team>() { Team.MTF, Team.RSC, Team.RIP };
 
@@ -232,6 +239,10 @@ namespace SCPUtils
             {
                 Log.Warn("Invalid config scputils_scp_079_tesla_event_wait, loading dafault one!");
                 Scp079TeslaEventWait = 2;
+            }
+            if(IgnoreDntRequests)
+            {
+                Log.Warn("You have set in server configs to ignore Do Not Track requests but that's a violation on Verified Server Rules (if your server is verified) and could cause punishement such as delist [Rule 8.11]");
             }
             if (!IsEnabled)
             {
