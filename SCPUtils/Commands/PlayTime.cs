@@ -9,7 +9,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class PlayTime : ICommand
+    internal class PlayTime : ICommand
     {
 
         public string Command { get; } = "scputils_play_time";
@@ -38,7 +38,10 @@ namespace SCPUtils.Commands
                     return false;
                 }
 
-                else int.TryParse(arguments.Array[1], out range);
+                else
+                {
+                    int.TryParse(arguments.Array[1], out range);
+                }
 
                 if (range > 120)
                 {
@@ -53,12 +56,15 @@ namespace SCPUtils.Commands
                     response = $"<color=yellow>Usage: {Command} <player name/id> <days range> </color>";
                     return false;
                 }
-                else target = arguments.Array[1].ToString();
+                else
+                {
+                    target = arguments.Array[1].ToString();
+                }
 
                 int.TryParse(arguments.Array[2], out range);
 
             }
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -89,8 +95,14 @@ namespace SCPUtils.Commands
                 databasePlayer.PlayTimeRecords.Count();
                 message.AppendLine();
                 DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
-                if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString())) message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");
-                else message.Append($"{date.Date.ToShortDateString()} Playtime: [ No activity ]");
+                if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
+                {
+                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");
+                }
+                else
+                {
+                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ No activity ]");
+                }
             }
 
             response = $"{message}";

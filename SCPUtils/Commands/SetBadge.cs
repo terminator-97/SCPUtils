@@ -6,7 +6,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class SetBadge : ICommand
+    internal class SetBadge : ICommand
     {
 
         public string Command { get; } = "scputils_set_badge";
@@ -33,8 +33,8 @@ namespace SCPUtils.Commands
 
             target = arguments.Array[1].ToString();
             badge = arguments.Array[2].ToString();
-            var player = Exiled.API.Features.Player.Get(target);
-            var databasePlayer = target.GetDatabasePlayer();
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -50,7 +50,7 @@ namespace SCPUtils.Commands
 
             else if (int.TryParse(arguments.Array[3], out int duration))
             {
-                var group = ServerStatic.GetPermissionsHandler()._groups[badge];
+                UserGroup group = ServerStatic.GetPermissionsHandler()._groups[badge];
 
                 if (group.KickPower > ((CommandSender)sender).KickPower && !((CommandSender)sender).FullPermissions)
                 {
@@ -60,8 +60,16 @@ namespace SCPUtils.Commands
 
                 if (player != null)
                 {
-                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null) databasePlayer.PreviousBadge = player.GroupName;
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null)
+                    {
+                        databasePlayer.PreviousBadge = player.GroupName;
+                    }
+
+                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    {
+                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    }
+
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, badge);
                 }
@@ -75,7 +83,10 @@ namespace SCPUtils.Commands
 
 
             }
-            else response = "Arg3 must be integer!";
+            else
+            {
+                response = "Arg3 must be integer!";
+            }
 
             return true;
         }

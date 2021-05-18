@@ -122,6 +122,12 @@ namespace SCPUtils
         [Description("Last player alive message duration (if enabled)")]
         public ushort LastPlayerAliveMessageDuration { get; private set; } = 12;
 
+        [Description("Default duration for broadcast sent via scputils_broadcast command")]
+        public ushort BroadcastDuration { get; private set; } = 12;
+
+        [Description("Default duration for hints sent via scputils_broadcast command")]
+        public ushort HintsDuration { get; private set; } = 12;
+
         [Description("Which is the minimun number of suicides before the player may not receive any kick o ban ignoring the SCP suicides / quit percentage? (if enabled)")]
         public int ScpSuicideTollerance { get; private set; } = 5;
 
@@ -159,6 +165,8 @@ namespace SCPUtils
         [Description("Which message should be shown to last player alive of a team?")]
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
 
+        [Description("Which message should be shown for offline warns when a player rejoin??")]
+        public string OfflineWarnNotification { get; private set; } = "<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>";
 
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
@@ -240,7 +248,7 @@ namespace SCPUtils
                 Log.Warn("Invalid config scputils_scp_079_tesla_event_wait, loading dafault one!");
                 Scp079TeslaEventWait = 2;
             }
-            if(IgnoreDntRequests)
+            if (IgnoreDntRequests)
             {
                 Log.Warn("You have set in server configs to ignore Do Not Track requests but that's a violation on Verified Server Rules (if your server is verified) and could cause punishement such as delist [Rule 8.11]");
             }

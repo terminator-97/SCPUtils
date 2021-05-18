@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class StaffList : ICommand
+    internal class StaffList : ICommand
     {
         public string Command { get; } = "scputils_staff_list";
 
@@ -25,24 +25,50 @@ namespace SCPUtils.Commands
             }
             StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");
 
-            foreach (var player in Exiled.API.Features.Player.List)
+            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
             {
                 if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff)
                 {
                     message.AppendLine();
                     message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.GlobalBadge}] [{player.Role}]");
-                    if (player.IsOverwatchEnabled) message.Append(" [OVERWATCH]");
-                    if (player.NoClipEnabled) message.Append(" [NOCLIP]");
-                    if (player.IsGodModeEnabled) message.Append(" [GODMODE]");
+                    if (player.IsOverwatchEnabled)
+                    {
+                        message.Append(" [OVERWATCH]");
+                    }
+
+                    if (player.NoClipEnabled)
+                    {
+                        message.Append(" [NOCLIP]");
+                    }
+
+                    if (player.IsGodModeEnabled)
+                    {
+                        message.Append(" [GODMODE]");
+                    }
                 }
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
                     message.AppendLine();
                     message.Append($"{player.Nickname} ({player.UserId}) [{player.Group.BadgeText}] [{player.Role}]");
-                    if (player.IsOverwatchEnabled) message.Append(" [OVERWATCH]");
-                    if (player.NoClipEnabled) message.Append(" [NOCLIP]");
-                    if (player.IsGodModeEnabled) message.Append(" [GODMODE]");
-                    if (player.IsStaffBypassEnabled) message.Append(" [BYPASS MODE]");
+                    if (player.IsOverwatchEnabled)
+                    {
+                        message.Append(" [OVERWATCH]");
+                    }
+
+                    if (player.NoClipEnabled)
+                    {
+                        message.Append(" [NOCLIP]");
+                    }
+
+                    if (player.IsGodModeEnabled)
+                    {
+                        message.Append(" [GODMODE]");
+                    }
+
+                    if (player.IsStaffBypassEnabled)
+                    {
+                        message.Append(" [BYPASS MODE]");
+                    }
                 }
             }
             if (CountStaffMembers() == 0)
@@ -56,10 +82,13 @@ namespace SCPUtils.Commands
 
         private static int CountStaffMembers()
         {
-            var value = 0;
-            foreach (var player in Exiled.API.Features.Player.List)
+            int value = 0;
+            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
             {
-                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess) value++;
+                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess)
+                {
+                    value++;
+                }
             }
             return value;
         }

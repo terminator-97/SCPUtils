@@ -8,7 +8,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class SetColor : ICommand
+    internal class SetColor : ICommand
     {
         private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin" };
         public string Command { get; } = "scputils_set_color";
@@ -78,7 +78,7 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -97,8 +97,12 @@ namespace SCPUtils.Commands
             databasePlayer.ColorPreference = color;
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
-            var player = Exiled.API.Features.Player.Get(target);
-            if (player != null) player.RankColor = color;
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            if (player != null)
+            {
+                player.RankColor = color;
+            }
+
             return true;
         }
     }

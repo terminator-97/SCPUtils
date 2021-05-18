@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class PlayerList : ICommand
+    internal class PlayerList : ICommand
     {
 
         public string Command { get; } = "scputils_player_list";
@@ -35,7 +35,7 @@ namespace SCPUtils.Commands
             playerListString.AppendLine();
             if (int.TryParse(arguments.Array[1].ToString(), out int minpercentage))
             {
-                foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
+                foreach (Player databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
                 {
                     playerListString.AppendLine();
                     playerListString.Append($"{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]");

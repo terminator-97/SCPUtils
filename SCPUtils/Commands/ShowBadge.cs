@@ -29,7 +29,7 @@ namespace SCPUtils.Commands
             }
             else
             {
-                var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+                Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
                 player.BadgeHidden = false;
                 player.GetDatabasePlayer().HideBadge = false;
                 response = "<color=green>Your badge has been shown!</color>";

@@ -30,9 +30,9 @@ namespace SCPUtils.Commands
             }
             else
             {
-                var target = arguments.Array[1].ToString();
+                string target = arguments.Array[1].ToString();
 
-                var databasePlayer = target.GetDatabasePlayer();
+                Player databasePlayer = target.GetDatabasePlayer();
 
                 if (databasePlayer == null)
                 {

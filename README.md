@@ -62,6 +62,9 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_round_info | <userid / id> | See bellow | Show round info |
 | scputils_online_list | <userid / id> | See bellow | Show online player list |
 | scputils_player_dnt | <userid / id> | scputils.dnt | Ignore DNT requests from a certain player |
+| scputils_player_warnings | <userid / id> | scputils.showwarns | Show all scputils warnings of a specific player |
+| scputils_player_warning | <userid / id> | scputils.showwarns | Show last scputils warning of a specific player |
+| scputils_player_unwarn | <userid / id> <warn id> | scputils.unwarn | Removes a specific warning from a user |
 
 **Console commands**
 

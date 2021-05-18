@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class PlayerDnt: ICommand
+    internal class PlayerDnt : ICommand
     {
 
         public string Command { get; } = "scputils_player_dnt";
@@ -31,9 +31,12 @@ namespace SCPUtils.Commands
                     response = $"<color=yellow>Usage: {Command} <player name/id></color>";
                     return false;
                 }
-                else target = arguments.Array[1].ToString();
+                else
+                {
+                    target = arguments.Array[1].ToString();
+                }
             }
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {

@@ -10,17 +10,23 @@ namespace SCPUtils
     {
         private readonly ScpUtils pluginInstance;
 
-        public Database(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
-
+        public Database(ScpUtils pluginInstance)
+        {
+            this.pluginInstance = pluginInstance;
+        }
 
         public static LiteDatabase LiteDatabase { get; private set; }
         public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.Config.DatabaseFolder), pluginInstance.Config.DatabaseName);
         public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
 
+
         public void CreateDatabase()
         {
-            if (Directory.Exists(DatabaseDirectory)) return;
+            if (Directory.Exists(DatabaseDirectory))
+            {
+                return;
+            }
 
             try
             {
@@ -52,7 +58,10 @@ namespace SCPUtils
         {
             try
             {
-                if (LiteDatabase.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
+                if (LiteDatabase.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player)))
+                {
+                    return;
+                }
 
                 LiteDatabase.GetCollection<Player>().Insert(new Player()
                 {

@@ -14,28 +14,55 @@ namespace SCPUtils
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
-        public Functions(ScpUtils pluginInstance) => this.pluginInstance = pluginInstance;
+        public Functions(ScpUtils pluginInstance)
+        {
+            this.pluginInstance = pluginInstance;
+        }
+
         public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
         public void AutoBanPlayer(Exiled.API.Features.Player player)
         {
             int duration;
-            player.GetDatabasePlayer().TotalScpSuicideBans++;
-            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) duration = player.GetDatabasePlayer().TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration * 60;
-            else duration = pluginInstance.Config.AutoBanDuration * 60;
-            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
+            Player databasePlayer = player.GetDatabasePlayer();
+            databasePlayer.TotalScpSuicideBans++;
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Ban";
+            if (pluginInstance.Config.MultiplyBanDurationEachBan == true)
+            {
+                duration = databasePlayer.TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration * 60;
+            }
+            else
+            {
+                duration = pluginInstance.Config.AutoBanDuration * 60;
+            }
+
+            if (pluginInstance.Config.BroadcastSanctions)
+            {
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
+            }
+
             player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration)}", "SCPUtils");
         }
 
         public void AutoKickPlayer(Exiled.API.Features.Player player)
         {
-            if (pluginInstance.Config.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
-            player.GetDatabasePlayer().TotalScpSuicideKicks++;
+            if (pluginInstance.Config.BroadcastSanctions)
+            {
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
+            }
+
+            Player databasePlayer = player.GetDatabasePlayer();
+            databasePlayer.TotalScpSuicideKicks++;
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Kick";
             player.Kick($"Auto-Kick: {pluginInstance.Config.SuicideKickMessage}", "SCPUtils");
         }
 
         public void AutoWarnPlayer(Exiled.API.Features.Player player)
         {
-            if (pluginInstance.Config.BroadcastWarns) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ( {player.Role} ) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
+            if (pluginInstance.Config.BroadcastWarns)
+            {
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
+            }
+
             player.GetDatabasePlayer().ScpSuicideCount++;
             player.ClearBroadcasts();
             player.Broadcast(pluginInstance.Config.AutoWarnMessageDuration, pluginInstance.Config.SuicideWarnMessage, Broadcast.BroadcastFlags.Normal);
@@ -43,28 +70,52 @@ namespace SCPUtils
 
         public void OnQuitOrSuicide(Exiled.API.Features.Player player)
         {
-            if (!LastWarn.ContainsKey(player.UserId)) LastWarn.Add(player.UserId, DateTime.MinValue);
-            else if (LastWarn[player.UserId] >= DateTime.Now) return;
-            var suicidePercentage = player.GetDatabasePlayer().SuicidePercentage;
+            if (!LastWarn.ContainsKey(player.UserId))
+            {
+                LastWarn.Add(player.UserId, DateTime.MinValue);
+            }
+            else if (LastWarn[player.UserId] >= DateTime.Now)
+            {
+                return;
+            }
+
+            Player databasePlayer = player.GetDatabasePlayer();
+            float suicidePercentage = databasePlayer.SuicidePercentage;
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
             AutoWarnPlayer(player);
-            if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoBanPlayer(player);
-            else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance) AutoKickPlayer(player);
+            if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
+            {
+                AutoBanPlayer(player);
+            }
+            else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
+            {
+                AutoKickPlayer(player);
+            }
+
             LastWarn[player.UserId] = DateTime.Now.AddSeconds(5);
         }
 
         public void PostLoadPlayer(Exiled.API.Features.Player player)
         {
 
-            var databasePlayer = player.GetDatabasePlayer();
+            Player databasePlayer = player.GetDatabasePlayer();
 
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
                 if (databasePlayer.BadgeExpire >= DateTime.Now)
                 {
-                    var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
-                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText) databasePlayer.PreviousBadge = player.GroupName;
+                    UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
+                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText)
+                    {
+                        databasePlayer.PreviousBadge = player.GroupName;
+                    }
+
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    {
+                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    }
+
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
                 }
                 else
@@ -73,7 +124,7 @@ namespace SCPUtils
 
                     if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge))
                     {
-                        var group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
+                        UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
@@ -93,7 +144,10 @@ namespace SCPUtils
                     {
                         player.RankColor = databasePlayer.ColorPreference;
                     }
-                    else databasePlayer.ColorPreference = "";
+                    else
+                    {
+                        databasePlayer.ColorPreference = "";
+                    }
                 }
 
                 if (databasePlayer.HideBadge == true)
@@ -102,7 +156,10 @@ namespace SCPUtils
                     {
                         player.BadgeHidden = true;
                     }
-                    else databasePlayer.HideBadge = false;
+                    else
+                    {
+                        databasePlayer.HideBadge = false;
+                    }
                 }
 
 
@@ -112,7 +169,10 @@ namespace SCPUtils
                     {
                         player.DisplayNickname = databasePlayer.CustomNickName;
                     }
-                    else databasePlayer.CustomNickName = "";
+                    else
+                    {
+                        databasePlayer.CustomNickName = "";
+                    }
                 }
 
                 if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
@@ -125,44 +185,87 @@ namespace SCPUtils
 
             });
 
+            if (databasePlayer.UserNotified.Count() <= 0)
+            {
+                return;
+            }
+
+            if (databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] == false)
+            {
+                player.ClearBroadcasts();
+                player.Broadcast(pluginInstance.Config.AutoWarnMessageDuration, pluginInstance.Config.OfflineWarnNotification);
+                databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
+            }
+
         }
 
         public bool CheckNickname(string name)
         {
-            if (pluginInstance.Config.BannedNickNames == null) return false;
-
-            foreach (var nickname in pluginInstance.Config.BannedNickNames)
+            if (pluginInstance.Config.BannedNickNames == null)
             {
-                if (Regex.Match(name.ToLower(), nickname.ToLower()).Success) return true;
+                return false;
+            }
+
+            foreach (string nickname in pluginInstance.Config.BannedNickNames)
+            {
+                if (Regex.Match(name.ToLower(), nickname.ToLower()).Success)
+                {
+                    return true;
+                }
             }
             return false;
         }
 
 
-
+        public void LogWarn(Exiled.API.Features.Player player, string suicidetype)
+        {
+            Player databasePlayer = player.GetDatabasePlayer();
+            databasePlayer.SuicideDate.Add(DateTime.Now);
+            databasePlayer.SuicideType.Add(suicidetype);
+            databasePlayer.SuicideScp.Add(player.Role.ToString());
+            databasePlayer.SuicidePunishment.Add("None");
+            databasePlayer.LogStaffer.Add("SCPUtils");
+            if (suicidetype == "Disconnect")
+            {
+                databasePlayer.UserNotified.Add(false);
+            }
+            else
+            {
+                databasePlayer.UserNotified.Add(true);
+            }
+        }
         public void SaveData(Exiled.API.Features.Player player)
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
                 if ((player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
                 {
-                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide) pluginInstance.Functions.OnQuitOrSuicide(player);
+                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide)
+                    {
+                        pluginInstance.Functions.OnQuitOrSuicide(player);
+                    }
                 }
-                var databasePlayer = player.GetDatabasePlayer();
-             
+                Player databasePlayer = player.GetDatabasePlayer();
 
-                if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT) 
+
+                if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT)
                 {
                     databasePlayer.PlayTimeRecords.Clear();
                     databasePlayer.ResetPreferences();
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
                 }
-                else databasePlayer.SetCurrentDayPlayTime();
+                else
+                {
+                    databasePlayer.SetCurrentDayPlayTime();
+                }
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
                 {
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    {
+                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    }
                 }
 
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
@@ -173,11 +276,14 @@ namespace SCPUtils
 
         private void BroadcastSuicideQuitAction(string text)
         {
-            foreach (var admin in Exiled.API.Features.Player.List)
+            foreach (Exiled.API.Features.Player admin in Exiled.API.Features.Player.List)
             {
                 if (pluginInstance.Config.BroadcastSanctions)
                 {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin) admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                    if (admin.ReferenceHub.serverRoles.RemoteAdmin)
+                    {
+                        admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                    }
                 }
             }
         }
@@ -187,8 +293,14 @@ namespace SCPUtils
             if (pluginInstance.Config.CuffedImmunityPlayers[player.Team]?.Any() == true)
             {
 
-                if (pluginInstance.Config.CuffedImmunityPlayers[player.Team].Contains(attacker.Team)) return true;
-                else return false;
+                if (pluginInstance.Config.CuffedImmunityPlayers[player.Team].Contains(attacker.Team))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -202,11 +314,23 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.CuffedProtectedTeams?.Any() == true)
             {
-                if (pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team) && player.IsCuffed) return true;
-                else if (!pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team)) return true;
-                else return false;
+                if (pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team) && player.IsCuffed)
+                {
+                    return true;
+                }
+                else if (!pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else return true;
+            else
+            {
+                return true;
+            }
         }
 
 
@@ -220,8 +344,14 @@ namespace SCPUtils
 
             else if (pluginInstance.Config.CuffedSafeZones[player.Team]?.Any() == true)
             {
-                if (pluginInstance.Config.CuffedSafeZones[player.Team].Contains(player.CurrentRoom.Zone)) return true;
-                else return false;
+                if (pluginInstance.Config.CuffedSafeZones[player.Team].Contains(player.CurrentRoom.Zone))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             else
@@ -234,10 +364,20 @@ namespace SCPUtils
 
         public bool CheckAsnPlayer(Exiled.API.Features.Player player)
         {
-            var databasePlayer = player.GetDatabasePlayer();
-            if (pluginInstance.Config.ASNBlacklist == null) return false;
-            if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted) return true;
-            else return false;
+            Player databasePlayer = player.GetDatabasePlayer();
+            if (pluginInstance.Config.ASNBlacklist == null)
+            {
+                return false;
+            }
+
+            if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

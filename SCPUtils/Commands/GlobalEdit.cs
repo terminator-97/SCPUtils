@@ -6,7 +6,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class GlobalEdit : ICommand
+    internal class GlobalEdit : ICommand
     {
 
         public string Command { get; } = "scputils_global_edit";
@@ -33,16 +33,44 @@ namespace SCPUtils.Commands
 
             if (int.TryParse(arguments.Array[1].ToString(), out int scpGamesToRemove) && int.TryParse(arguments.Array[2].ToString(), out int suicidesToRemove) && int.TryParse(arguments.Array[3].ToString(), out int kicksToRemove) && int.TryParse(arguments.Array[4].ToString(), out int bansToRemove))
             {
-                foreach (var databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= 1))
+                foreach (Player databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= 1))
                 {
-                    if (databasePlayer.TotalScpGamesPlayed >= scpGamesToRemove) databasePlayer.TotalScpGamesPlayed -= scpGamesToRemove;
-                    else databasePlayer.TotalScpGamesPlayed = 0;
-                    if (databasePlayer.ScpSuicideCount >= suicidesToRemove) databasePlayer.ScpSuicideCount -= suicidesToRemove;
-                    else databasePlayer.ScpSuicideCount = 0;
-                    if (databasePlayer.TotalScpSuicideKicks >= kicksToRemove) databasePlayer.TotalScpSuicideKicks -= kicksToRemove;
-                    else databasePlayer.TotalScpSuicideKicks = 0;
-                    if (databasePlayer.TotalScpSuicideBans >= bansToRemove) databasePlayer.TotalScpSuicideBans -= bansToRemove;
-                    else databasePlayer.TotalScpSuicideBans = 0;
+                    if (databasePlayer.TotalScpGamesPlayed >= scpGamesToRemove)
+                    {
+                        databasePlayer.TotalScpGamesPlayed -= scpGamesToRemove;
+                    }
+                    else
+                    {
+                        databasePlayer.TotalScpGamesPlayed = 0;
+                    }
+
+                    if (databasePlayer.ScpSuicideCount >= suicidesToRemove)
+                    {
+                        databasePlayer.ScpSuicideCount -= suicidesToRemove;
+                    }
+                    else
+                    {
+                        databasePlayer.ScpSuicideCount = 0;
+                    }
+
+                    if (databasePlayer.TotalScpSuicideKicks >= kicksToRemove)
+                    {
+                        databasePlayer.TotalScpSuicideKicks -= kicksToRemove;
+                    }
+                    else
+                    {
+                        databasePlayer.TotalScpSuicideKicks = 0;
+                    }
+
+                    if (databasePlayer.TotalScpSuicideBans >= bansToRemove)
+                    {
+                        databasePlayer.TotalScpSuicideBans -= bansToRemove;
+                    }
+                    else
+                    {
+                        databasePlayer.TotalScpSuicideBans = 0;
+                    }
+
                     Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                 }
             }

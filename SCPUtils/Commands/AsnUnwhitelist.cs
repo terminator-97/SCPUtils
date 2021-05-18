@@ -29,8 +29,8 @@ namespace SCPUtils.Commands
 
             else
             {
-                var target = arguments.Array[1];
-                var databasePlayer = target.GetDatabasePlayer();
+                string target = arguments.Array[1];
+                Player databasePlayer = target.GetDatabasePlayer();
 
                 if (databasePlayer == null)
                 {

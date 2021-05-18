@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class SetName : ICommand
+    internal class SetName : ICommand
     {
 
         public string Command { get; } = "scputils_set_name";
@@ -50,7 +50,7 @@ namespace SCPUtils.Commands
                     }
                     nickname = string.Join(" ", arguments.Array, 1, arguments.Array.Length - 1);
                     bool allowChange = true;
-                    foreach (var playerList in Exiled.API.Features.Player.List)
+                    foreach (Exiled.API.Features.Player playerList in Exiled.API.Features.Player.List)
                     {
                         if (playerList.Nickname.ToLower() == nickname.ToLower())
                         {
@@ -82,7 +82,7 @@ namespace SCPUtils.Commands
             }
 
 
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -108,8 +108,11 @@ namespace SCPUtils.Commands
             databasePlayer.CustomNickName = nickname;
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
-            var player = Exiled.API.Features.Player.Get(target);
-            if (player != null) player.DisplayNickname = nickname;
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            if (player != null)
+            {
+                player.DisplayNickname = nickname;
+            }
 
             return true;
         }

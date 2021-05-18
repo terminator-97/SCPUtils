@@ -31,10 +31,13 @@ namespace SCPUtils.Commands
             }
 
 
-            else target = arguments.Array[1].ToString();
+            else
+            {
+                target = arguments.Array[1].ToString();
+            }
 
-            var player = Exiled.API.Features.Player.Get(target);
-            var databasePlayer = target.GetDatabasePlayer();
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {

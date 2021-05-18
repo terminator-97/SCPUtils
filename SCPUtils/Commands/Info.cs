@@ -6,7 +6,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class Info : ICommand
+    internal class Info : ICommand
     {
         public string Command { get; } = "scputils_info";
 

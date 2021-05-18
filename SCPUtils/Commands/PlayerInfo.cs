@@ -8,7 +8,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class PlayerInfo : ICommand
+    internal class PlayerInfo : ICommand
     {
 
         public string Command { get; } = "scputils_player_info";
@@ -20,7 +20,10 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            if (!sender.CheckPermission("scputils.playerinfo")) target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+            if (!sender.CheckPermission("scputils.playerinfo"))
+            {
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+            }
             else
             {
                 if (arguments.Count < 1)
@@ -28,9 +31,12 @@ namespace SCPUtils.Commands
                     response = $"<color=yellow>Usage: {Command} <player name/id></color>";
                     return false;
                 }
-                else target = arguments.Array[1].ToString();
+                else
+                {
+                    target = arguments.Array[1].ToString();
+                }
             }
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -59,7 +65,10 @@ namespace SCPUtils.Commands
             $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
             $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
 
-            if (databasePlayer.IsRestricted()) text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";
+            if (databasePlayer.IsRestricted())
+            {
+                text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";
+            }
 
             response = text;
 

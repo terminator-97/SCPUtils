@@ -24,11 +24,25 @@ namespace SCPUtils
         public bool ASNWhitelisted { get; set; }
         public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
         public bool KeepPreferences { get; set; }
-        public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : ((float)ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
+        public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         public bool IgnoreDNT { get; set; }
+
+        //Suicide logs
+        public List<DateTime> SuicideDate { get; set; } = new List<DateTime>();
+        public List<string> SuicideType { get; set; } = new List<string>();
+        public List<string> SuicideScp { get; set; } = new List<string>();
+        public List<string> SuicidePunishment { get; set; } = new List<string>();
+        public List<string> LogStaffer { get; set; } = new List<string>();
+        public List<bool> UserNotified { get; set; } = new List<bool>();
+
+
         public void SetCurrentDayPlayTime()
-        {           
-            if (!PlayTimeRecords.ContainsKey(DateTime.Now.Date.ToShortDateString())) PlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
+        {
+            if (!PlayTimeRecords.ContainsKey(DateTime.Now.Date.ToShortDateString()))
+            {
+                PlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
+            }
+
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
         }
 
@@ -57,9 +71,12 @@ namespace SCPUtils
 
         public bool IsRestricted()
         {
-            foreach (var a in Restricted)
+            foreach (KeyValuePair<DateTime, string> a in Restricted)
             {
-                if (a.Key >= DateTime.Now) return true;
+                if (a.Key >= DateTime.Now)
+                {
+                    return true;
+                }
             }
             return false;
         }

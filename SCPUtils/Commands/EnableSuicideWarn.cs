@@ -6,7 +6,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class EnableSuicideWarn : ICommand
+    internal class EnableSuicideWarn : ICommand
     {
         public string Command { get; } = "scputils_enable_suicide_warns";
 

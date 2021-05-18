@@ -7,7 +7,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class ShowCommandBans : ICommand
+    internal class ShowCommandBans : ICommand
     {
 
         public string Command { get; } = "scputils_show_command_bans";
@@ -31,9 +31,12 @@ namespace SCPUtils.Commands
                     response = $"<color=yellow>Usage: {Command} <player name/id></color>";
                     return false;
                 }
-                else target = arguments.Array[1].ToString();
+                else
+                {
+                    target = arguments.Array[1].ToString();
+                }
             }
-            var databasePlayer = target.GetDatabasePlayer();
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -50,20 +53,26 @@ namespace SCPUtils.Commands
   $"Total Command restrictions: [ { databasePlayer.Restricted.Count } ]\n";
 
 
-            if (databasePlayer.IsRestricted()) message += $"*** Active Restrictions: ***\n\n" +
+            if (databasePlayer.IsRestricted())
+            {
+                message += $"*** Active Restrictions: ***\n\n" +
                                $"Reason: [ {databasePlayer.Restricted.Values.Last()} ]\n" +
                                $"Expire: [ {databasePlayer.Restricted.Keys.Last()} ]\n";
+            }
 
             if (databasePlayer.Restricted.Count >= 1)
             {
                 message += $"\n*** Restrictions History: ***\n\n";
-                foreach (var a in databasePlayer.Restricted)
+                foreach (System.Collections.Generic.KeyValuePair<DateTime, string> a in databasePlayer.Restricted)
                 {
                     message += $"Reason: [ {a.Value} ]\n";
                     message += $"Expire: [ {a.Key} ]\n\n";
                 }
             }
-            else message += "No restrictions!";
+            else
+            {
+                message += "No restrictions!";
+            }
 
             response = $"{message}";
 

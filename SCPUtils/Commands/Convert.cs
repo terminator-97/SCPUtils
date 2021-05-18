@@ -1,10 +1,6 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Log = Exiled.API.Features.Log;
 
 //Command is here in case if you need convert playtime of all players inside database, you must edit the code for your needs. (example: if you change time format in the vps), this this is a DIY, to recompile the plugin you need publicized assembly c# and you must allow unsafe code.
 //Before doing anything make a copy of your database
@@ -12,19 +8,19 @@ using Log = Exiled.API.Features.Log;
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class Convert : ICommand
+    internal class Convert : ICommand
     {
-        
-                public string Command { get; } = "scputils_convert";
 
-                public string[] Aliases { get; } = new[] { "sconv" };
+        public string Command { get; } = "scputils_convert";
 
-                public string Description { get; } = "Convert english date format to italian";
+        public string[] Aliases { get; } = new[] { "sconv" };
 
-                public Dictionary<string, int> TempDict { get; private set; } = new Dictionary<string, int>();
+        public string Description { get; } = "Convert english date format to italian";
 
-                public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-                {
+        public Dictionary<string, int> TempDict { get; private set; } = new Dictionary<string, int>();
+
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        {
             /*
 
                     if (!sender.CheckPermission("scputils.convert") && !((CommandSender)sender).FullPermissions)
@@ -69,7 +65,7 @@ namespace SCPUtils.Commands
 
                     response = "Playtime converted!";
         */
-        response = "Disabled!";
+            response = "Disabled!";
             return true;
         }
     }

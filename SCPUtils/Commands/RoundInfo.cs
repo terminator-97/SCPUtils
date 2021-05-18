@@ -8,7 +8,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
-    class RoundInfo : ICommand
+    internal class RoundInfo : ICommand
     {
         public string Command { get; } = "scputils_round_info";
 
@@ -18,8 +18,11 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 
-            if(!(Exiled.API.Features.Player.Get((CommandSender)sender) is Exiled.API.Features.Player player)) player = Exiled.API.Features.Server.Host;
-     
+            if (!(Exiled.API.Features.Player.Get((CommandSender)sender) is Exiled.API.Features.Player player))
+            {
+                player = Exiled.API.Features.Server.Host;
+            }
+
             if (!sender.CheckPermission("scputils.roundinfo.execute") && !ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team) && !ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))
             {
                 response = "You need a higher administration level to use this command!";
@@ -66,7 +69,7 @@ namespace SCPUtils.Commands
                 {
                     if (ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount >= 1)
                     {
-                        var timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastChaosRespawn);
+                        TimeSpan timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastChaosRespawn);
                         message.AppendLine($"Last Chaos wave respawn elapsed time: { timespan.ToString(@"hh\:mm\:ss")} ").AppendLine();
 
                     }
@@ -75,7 +78,7 @@ namespace SCPUtils.Commands
                 {
                     if (ScpUtils.StaticInstance.EventHandlers.MtfRespawnCount >= 1)
                     {
-                        var timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastMtfRespawn);
+                        TimeSpan timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastMtfRespawn);
 
                         message.AppendLine($"Last MTF wave respawn elapsed time: { timespan.ToString(@"hh\:mm\:ss")}");
                     }

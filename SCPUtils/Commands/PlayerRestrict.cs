@@ -6,7 +6,7 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    class PlayerRestrict : ICommand
+    internal class PlayerRestrict : ICommand
     {
 
         public string Command { get; } = "scputils_player_restrict";
@@ -32,8 +32,8 @@ namespace SCPUtils.Commands
             }
             target = arguments.Array[1].ToString();
 
-            var player = Exiled.API.Features.Player.Get(target);
-            var databasePlayer = target.GetDatabasePlayer();
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
@@ -52,12 +52,19 @@ namespace SCPUtils.Commands
             {
                 reason = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
                 databasePlayer.Restricted.Add(DateTime.Now.AddMinutes(minutes), reason);
-                if (minutes == 0) databasePlayer.Restricted.Add(DateTime.Now.AddDays(20000), reason);
+                if (minutes == 0)
+                {
+                    databasePlayer.Restricted.Add(DateTime.Now.AddDays(20000), reason);
+                }
+
                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
                 response = $"Player suspended!";
 
             }
-            else response = "Duration must be integer!";
+            else
+            {
+                response = "Duration must be integer!";
+            }
 
             return true;
         }
