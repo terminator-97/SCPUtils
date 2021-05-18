@@ -65,6 +65,8 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_warnings | <userid / id> | scputils.showwarns | Show all scputils warnings of a specific player |
 | scputils_player_warning | <userid / id> | scputils.showwarns | Show last scputils warning of a specific player |
 | scputils_player_unwarn | <userid / id> <warn id> | scputils.unwarn | Removes a specific warning from a user |
+| scputils_player_broadcast | <userid / id> <broadcast/hint> <text> | scputils.broadcast | Send an hint or broadcast to a specific player |
+| scputils_broadcast | <broadcast/hint> <text>  | scputils.broadcast | Send an hint or broadcast to all players |
 
 **Console commands**
 
