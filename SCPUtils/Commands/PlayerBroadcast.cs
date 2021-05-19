@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class PlayerBroadcast : ICommand
     {
-        public string Command { get; } = "scputils_plyaer_broadcast";
+        public string Command { get; } = "scputils_player_broadcast";
 
-        public string[] Aliases { get; } = new[] { "spbc" };
+        public string[] Aliases { get; } = new[] { "spbc", "su_pbc", "su_player_bc", "su_p_bc", "su_p_broadcast", "scpu_pbc", "scpu_player_bc", "scpu_p_bc", "scpu_p_broadcast" };
 
-        public string Description { get; } = "Allows to send custom broadcastes";
+        public string Description { get; } = "Allows to send custom broadcaste";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
