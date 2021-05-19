@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_round_info";
 
-        public string[] Aliases { get; } = new[] { "ri", "roundinfo", "round_info" };
+        public string[] Aliases { get; } = new[] { "ri", "roundinfo", "round_info", "su_ri", "su_roundinfo", "su_round_info", "scpu_ri", "scpu_roundinfo", "scpu_round_info" };
         public string Description { get; } = "Show round info";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_info";
 
-        public string[] Aliases { get; } = new[] { "upi", "scputils_my_info" };
+        public string[] Aliases { get; } = new[] { "upi", "scputils_my_info", "su_pi", "su_player_info", "su_playerinfo", "scpu_pi", "scpu_player_info", "scpu_playerinfo" };
 
         public string Description { get; } = "Show player info, in case you are not admin you can see only your info";
 

@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_last_warning";
 
-        public string[] Aliases { get; } = new[] { "lwarn" };
+        public string[] Aliases { get; } = new[] { "lwarn", "su_lwarn", "su_last_warn", "su_lastw", "scpu_lwarn", "scpu_last_warn", "scpu_lastw" };
 
         public string Description { get; } = "Show last SCPUtils warning of a specific player!";
 

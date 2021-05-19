@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_help";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = new string[] { "su_help", "su_h", "scpu_help", "scpu_h" };
 
         public string Description { get; } = "Show plugin info";
 

@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_reset";
 
-        public string[] Aliases { get; } = new[] { "pr" };
+        public string[] Aliases { get; } = new[] { "pr", "su_pr", "su_playerreset", "su_playereset", "scpu_pr", "scpu_playerreset", "scpu_playereset" };
 
         public string Description { get; } = "Reset player data (Quits,Ban,Kicks,Nickname,Badge etc, everything)!";
 

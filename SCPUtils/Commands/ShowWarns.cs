@@ -13,9 +13,9 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_warnings";
 
-        public string[] Aliases { get; } = new[] { "warns", "swarns" };
+        public string[] Aliases { get; } = new[] { "warns", "swarns", "su_warns", "scpu_warns" };
 
-        public string Description { get; } = "Show all SCPUtils warnings of a specific player";
+        public string Description { get; } = "Show all SCPUtils warnings of a specific player!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
