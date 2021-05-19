@@ -67,6 +67,7 @@ namespace SCPUtils
                 {
                     Id = DatabasePlayer.GetRawUserId(player),
                     Name = player.Nickname,
+                    Ip = "None",
                     Authentication = DatabasePlayer.GetAuthentication(player),
                     ScpSuicideCount = 0,
                     TotalScpGamesPlayed = 0,

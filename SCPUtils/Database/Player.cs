@@ -8,6 +8,7 @@ namespace SCPUtils
         public string Id { get; set; }
         public string Name { get; set; }
         public string Authentication { get; set; }
+        public string Ip { get; set; }
         public int ScpSuicideCount { get; set; }
         public int TotalScpGamesPlayed { get; set; }
         public int TotalScpSuicideKicks { get; set; }

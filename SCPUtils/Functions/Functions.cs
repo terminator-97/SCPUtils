@@ -10,7 +10,7 @@ namespace SCPUtils
 {
     public class Functions
     {
-        public CoroutineHandle DT;
+        public CoroutineHandle RS;
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
@@ -18,6 +18,16 @@ namespace SCPUtils
         {
             this.pluginInstance = pluginInstance;
         }
+
+      /*  public void StartFixer()
+        {
+            RS = Timing.RunCoroutine(Restarter(DateTime.Now.Second), Segment.FixedUpdate);
+        }
+
+        private IEnumerator<float> Restarter(int v)
+        {
+            yield return Timing.WaitForSeconds(v);
+        }*/
 
         public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
         public void AutoBanPlayer(Exiled.API.Features.Player player)
@@ -268,6 +278,7 @@ namespace SCPUtils
                     }
                 }
 
+                databasePlayer.Ip = player.IPAddress;
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
                 Database.PlayerData.Remove(player);
                 //  Log.Debug($"Saving data of {player.Nickname}");

@@ -81,6 +81,16 @@ namespace SCPUtils.Commands
                     databasePlayer.LogStaffer[id] = sender.LogName;
                     databasePlayer.UserNotified[id] = true;
                     Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                   if (DateTime.Now < DateTime.Now.AddMinutes(databasePlayer.TotalScpSuicideBans)&&!ScpUtils.StaticInstance.Config.MultiplyBanDurationEachBan)
+                    {
+                        BanHandler.RemoveBan(databasePlayer.Id, BanHandler.BanType.UserId);
+                        BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
+                    }
+                   else if(DateTime.Now<DateTime.Now.AddMinutes(databasePlayer.TotalScpSuicideBans*ScpUtils.StaticInstance.Config.AutoBanDuration)&& ScpUtils.StaticInstance.Config.MultiplyBanDurationEachBan)
+                    {
+                        BanHandler.RemoveBan(databasePlayer.Id, BanHandler.BanType.UserId);
+                        BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
+                    }
                     break;
                 case "REMOVED":
                     message = "This sanction has already been removed!";
