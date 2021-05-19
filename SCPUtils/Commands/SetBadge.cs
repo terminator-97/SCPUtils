@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = new[] { "setb", "issue_badge", "su_setb", "su_sbadge", "su_setbadge", "scpu_setb", "scpu_sbadge", "scpu_setbadge" };
 
-        public string Description { get; } = "With this command you can set temporaly badge, with using badge name for example: scpu_setb 2 owner 60";
+        public string Description { get; } = "With this command you can set temporary badge, by their name for example: scpu_setb 2 owner 60";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
