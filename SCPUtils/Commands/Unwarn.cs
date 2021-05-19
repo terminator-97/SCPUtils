@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_unwarn";
 
-        public string[] Aliases { get; } = new[] { "unwarn", "sunwarn" };
+        public string[] Aliases { get; } = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
 
         public string Description { get; } = "Removes a specific warning from a player!";
 
