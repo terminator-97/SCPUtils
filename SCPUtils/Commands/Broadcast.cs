@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_broadcast";
 
-        public string[] Aliases { get; } = new[] { "sbc", "gbc" };
+        public string[] Aliases { get; } = new[] { "sbc", "gbc", "su_bc", "scpu_bc" };
 
         public string Description { get; } = "Allows to send custom broadcastes";
 
