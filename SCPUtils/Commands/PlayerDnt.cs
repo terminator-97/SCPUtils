@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_dnt";
 
-        public string[] Aliases { get; } = new[] { "pdnt", "dnt" };
+        public string[] Aliases { get; } = new[] { "pdnt", "dnt", "su_pdnt", "su_playerdnt", "scpu_pdnt", "scpu_playerdnt" };
 
         public string Description { get; } = "Use this command to forcefully refuse dnt requests!";
 
