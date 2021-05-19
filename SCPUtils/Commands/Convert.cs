@@ -13,9 +13,9 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_convert";
 
-        public string[] Aliases { get; } = new[] { "sconv" };
+        public string[] Aliases { get; } = new[] { "sconv", "su_conv", "scpu_conv" };
 
-        public string Description { get; } = "Convert english date format to italian";
+        public string Description { get; } = "Convert english date format to your date";
 
         public Dictionary<string, int> TempDict { get; private set; } = new Dictionary<string, int>();
 
