@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_global_edit";
 
-        public string[] Aliases { get; } = new[] { "gedit" };
+        public string[] Aliases { get; } = new[] { "gedit", "su_gedit", "su_globaledit", "su_ge", "scpu_gedit", "scpu_globaledit", "scpu_ge" };
 
         public string Description { get; } = "Remove specified amount of scp games / warns / kick / bans from each player present in DB!";
 

@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_enable_suicide_warns";
 
-        public string[] Aliases { get; } = new[] { "esw", "enable_suicide_warn" };
+        public string[] Aliases { get; } = new[] { "esw", "enable_suicide_warns", "su_esw", "scpu_esw" };
 
         public string Description { get; } = "Enables again SCP suicide/quit detector";
 
@@ -28,11 +28,11 @@ namespace SCPUtils.Commands
             }
             else if (!ScpUtils.StaticInstance.Config.EnableSCPSuicideAutoWarn)
             {
-                response = "Suicides / Quits warns are disabled by server config, contact server owner if this is an error!";
+                response = "Suicide / Quit warns are disabled by server config, contact server owner if this is an error!";
                 return false;
             }
             EventHandlers.TemporarilyDisabledWarns = false;
-            response = "Suicides and Quits warns have been re-enabled!";
+            response = "Suicide and Quit warns have been re-enabled!";
             return true;
         }
     }

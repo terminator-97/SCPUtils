@@ -12,9 +12,9 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_preference_persist";
 
-        public string[] Aliases { get; } = new[] { "pp" };
+        public string[] Aliases { get; } = new[] { "pp", "su_pp", "su_preference_p", "scpu_pp", "scpu_preference_p" };
 
-        public string Description { get; } = "Use this to keep player badge and color even if he doesn't have access to that permission!";
+        public string Description { get; } = "Use this command to keep player badge and color even if he doesn't have access to that permission!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

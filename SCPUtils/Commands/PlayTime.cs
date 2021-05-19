@@ -14,7 +14,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_play_time";
 
-        public string[] Aliases { get; } = new[] { "pt" };
+        public string[] Aliases { get; } = new[] { "pt", "su_playtime", "su_pt", "scpu_playtime", "scpu_pt" };
 
         public string Description { get; } = "You can see detailed informations about playtime";
 

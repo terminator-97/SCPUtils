@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_online_list";
 
-        public string[] Aliases { get; } = new[] { "ol", "onlinelist" };
+        public string[] Aliases { get; } = new[] { "ol", "onlinelist", "su_ol", "su_onlinelist", "scpu_ol", "scpu_onlinelist" };
 
         public string Description { get; } = "Show online player list";
 

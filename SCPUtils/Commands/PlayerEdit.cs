@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_edit";
 
-        public string[] Aliases { get; } = new[] { "pedit" };
+        public string[] Aliases { get; } = new[] { "pedit", "su_pedit", "su_playeredit", "scpu_pedit", "scpu_playeredit" };
 
         public string Description { get; } = "Edits the specified player data!";
 

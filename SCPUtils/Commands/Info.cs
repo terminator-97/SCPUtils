@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_info";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = new string[] { "su_info", "su_i", "scpu_info", "scpu_i" };
         public string Description { get; } = "Show plugin info";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

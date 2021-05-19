@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_delete";
 
-        public string[] Aliases { get; } = new[] { "pdelete" };
+        public string[] Aliases { get; } = new[] { "pdelete", "su_pdelete", "su_playerdelete", "scpu_pdelete", "scpu_playerdelete" };
 
         public string Description { get; } = "Delete a player (and all the player data) from the database, action is irreversible!";
 
