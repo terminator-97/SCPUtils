@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = new[] { "sb", "su_showb", "su_sbadge", "scpu_showb", "scpu_sbadge" };
 
-        public string Description { get; } = "Shows your badge permanently until you execute scputils_hide_badge or their aliases";
+        public string Description { get; } = "Shows your badge permanently until you execute scputils_hide_badge or their aliases.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
