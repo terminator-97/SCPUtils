@@ -11,9 +11,9 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_staff_list";
 
-        public string[] Aliases { get; } = new[] { "sl", "stafflist" };
+        public string[] Aliases { get; } = new[] { "sl", "stafflist", "su_sl", "su_staffl", "su_staff_l", "su_slist", "scpu_sl", "scpu_staffl", "scpu_staff_l", "scpu_slist" };
 
-        public string Description { get; } = "Show staff list";
+        public string Description { get; } = "Show list of online staffer.";
 
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
