@@ -11,9 +11,9 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_remove_previous_badge";
 
-        public string[] Aliases { get; } = new[] { "rpb" };
+        public string[] Aliases { get; } = new[] { "rpb", "su_rpb", "su_remove_pb", "scpu_rpb", "scpu_remove_pb" };
 
-        public string Description { get; } = "Removes previous badge!";
+        public string Description { get; } = "Remove previous badge!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
