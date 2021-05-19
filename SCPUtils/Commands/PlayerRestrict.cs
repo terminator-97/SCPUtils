@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_restrict";
 
-        public string[] Aliases { get; } = new[] { "restrict", "susp" };
+        public string[] Aliases { get; } = new[] { "restrict", "susp", "su_playerrestrict", "su_playerestrict" "su_player_r", "scpu_playerestrict", "scpu_playerrestrict", "scpu_player_r" };
 
         public string Description { get; } = "This command restrict a player from using change name and set color commands!";
 
