@@ -11,9 +11,9 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_player_unrestrict";
 
-        public string[] Aliases { get; } = new[] { "unrestrict", "unsusp" };
+        public string[] Aliases { get; } = new[] { "unrestrict", "unsusp", "su_playerunrestrict", "su_player_unr", "scpu_playerunrestrict", "scpu_player_unr" };
 
-        public string Description { get; } = "Removes a restriction from a player!";
+        public string Description { get; } = "This command removes the restriction to use scputils_change_nickname or scputils_change_color from a player!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
