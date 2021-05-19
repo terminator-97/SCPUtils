@@ -6,7 +6,6 @@ namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    [CommandHandler(typeof(ClientCommandHandler))]
     internal class PlayerDnt : ICommand
     {
 
