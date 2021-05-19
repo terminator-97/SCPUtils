@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_show_command_bans";
 
-        public string[] Aliases { get; } = new[] { "scb" };
+        public string[] Aliases { get; } = new[] { "scb", "su_show_cb", "su_scb", "scpu_show_cb", "scpu_scb" };
 
         public string Description { get; } = "You can see detailed informations about restriction";
 
