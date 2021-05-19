@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_player_reset_preferences";
 
-        public string[] Aliases { get; } = new[] { "prp" };
+        public string[] Aliases { get; } = new[] { "prp", "su_prp", "su_playerpreferences", "su_player_preferences", "su_player_reset_preferences", "scpu_prp", "scpu_playerpreferences", "scpu_player_preferences", "scpu_player_reset_preferences" };
 
         public string Description { get; } = "Reset player preferences (Nickname, badges etc)!";
 
