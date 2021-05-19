@@ -68,6 +68,9 @@ namespace SCPUtils
         [Description("Ignore DNT requests?")]
         public bool IgnoreDntRequests { get; private set; } = false;
 
+        [Description("Enable auto restart module?")]
+        public bool EnableAutoRestart { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
 
@@ -165,8 +168,12 @@ namespace SCPUtils
         [Description("Which message should be shown to last player alive of a team?")]
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
 
-        [Description("Which message should be shown for offline warns when a player rejoin??")]
+        [Description("Which message should be shown for offline warns when a player rejoin?")]
         public string OfflineWarnNotification { get; private set; } = "<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>";
+
+        [Description("Which time of the day the server should autorestart?")]
+
+        public string AutoRestartTimeTask { get; private set; } = "1:35:0";
 
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };

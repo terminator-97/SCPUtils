@@ -60,6 +60,7 @@ namespace SCPUtils
             EventHandlers = new EventHandlers(this);
             DatabasePlayerData = new Database(this);
             EventHandlers.TemporarilyDisabledWarns = false;
+            Functions.Test();
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
             DatabasePlayerData.OpenDatabase();

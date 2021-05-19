@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SCPUtils
 {
@@ -19,15 +20,37 @@ namespace SCPUtils
             this.pluginInstance = pluginInstance;
         }
 
-      /*  public void StartFixer()
-        {
-            RS = Timing.RunCoroutine(Restarter(DateTime.Now.Second), Segment.FixedUpdate);
+        public void Test()
+        {       
+            var DailyTime = pluginInstance.Config.AutoRestartTimeTask;
+            var timeParts = DailyTime.Split(new char[1] { ':' });
+
+            var dateNow = DateTime.Now;
+            var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day,
+                       int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
+            TimeSpan ts;
+            if (date > dateNow)
+                ts = date - dateNow;
+            else
+            {
+                date = date.AddDays(1);
+                ts = date - dateNow;
+            }
+            Task.Delay(ts).ContinueWith((x) => OnTimer());
         }
 
-        private IEnumerator<float> Restarter(int v)
-        {
-            yield return Timing.WaitForSeconds(v);
-        }*/
+        private void OnTimer() => Server.Restart();
+       
+
+        /*  public void StartFixer()
+          {
+              RS = Timing.RunCoroutine(Restarter(DateTime.Now.Second), Segment.FixedUpdate);
+          }
+
+          private IEnumerator<float> Restarter(int v)
+          {
+              yield return Timing.WaitForSeconds(v);
+          }*/
 
         public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
         public void AutoBanPlayer(Exiled.API.Features.Player player)
