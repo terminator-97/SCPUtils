@@ -10,9 +10,9 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_revoke_badge";
 
-        public string[] Aliases { get; } = new[] { "rb" };
+        public string[] Aliases { get; } = new[] { "rb", "su_rb", "su_remove_badge", "su_revoke_b", "scpu_rb", "scpu_remove_badge", "scpu_revoke_b" };
 
-        public string Description { get; } = "Removes a temporarily badge that has been given to a player!";
+        public string Description { get; } = "Remove a temporarily badge that has been given to a player!";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
