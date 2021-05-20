@@ -51,7 +51,7 @@ namespace SCPUtils.Commands
             }
             StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]").AppendLine().AppendLine();
 
-            message.AppendLine($"ID: {databasePlayer.SuicideDate.Count-1}");
+            message.AppendLine($"ID: {databasePlayer.SuicideDate.Count - 1}");
             message.AppendLine($"Date: {databasePlayer.SuicideDate[databasePlayer.SuicideDate.Count - 1]}");
             message.AppendLine($"Death type: {databasePlayer.SuicideType[databasePlayer.SuicideType.Count - 1]}");
             message.AppendLine($"Class: {databasePlayer.SuicideScp[databasePlayer.SuicideScp.Count - 1]}");

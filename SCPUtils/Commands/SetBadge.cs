@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string Command { get; } = "scputils_set_badge";
 
-        public string[] Aliases { get; } = new[] { "setb", "issue_badge", "su_setb", "su_sbadge", "su_setbadge", "scpu_setb", "scpu_sbadge", "scpu_setbadge" };
+        public string[] Aliases { get; } = new[] { "setb", "issue_badge", "su_setb", "su_setbadge", "scpu_setb", "scpu_sbadge", "scpu_setbadge" };
 
         public string Description { get; } = "With this command you can set temporary badge, by their name for example: scpu_setb 2 owner 60";
 
