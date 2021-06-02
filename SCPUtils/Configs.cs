@@ -59,8 +59,8 @@ namespace SCPUtils
         [Description("Should the badge visibility gets resetted if the user when joins doesn't have the permission to execute the command? You can bypass it using scputils_preference_persist command")]
         public bool KeepBadgeVisibilityWithoutPermission { get; private set; } = false;
 
-        [Description("Is 096 target feature enabled?")]
-        public bool Scp096TargetEnabled { get; private set; } = true;
+        [Description("Is 096's notify target feature enabled?")]
+        public bool Scp096TargetNotifyEnabled { get; private set; } = true;
 
         [Description("Notify last player alive?")]
         public bool NotifyLastPlayerAlive { get; private set; } = true;
@@ -175,7 +175,7 @@ namespace SCPUtils
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
 
         [Description("Which message should be shown to who become SCP-096 target?")]
-        public string Scp096TargetText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You became a target of SCP-096!</color>";
+        public string Scp096TargetNotifyText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You became a target of SCP-096!</color>";
 
         [Description("Which message should be shown to last player alive of a team?")]
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
