@@ -69,7 +69,10 @@ namespace SCPUtils
         public bool IgnoreDntRequests { get; private set; } = false;
 
         [Description("Enable auto restart module?")]
-        public bool EnableAutoRestart { get; private set; } = true;
+        public bool EnableAutoRestart { get; private set; } = false;
+
+        [Description("Enable SCP Death message module?")]
+        public bool DeathMessageModuleEnabled { get; private set; } = true;
 
         [Description("Autowarn message for suiciding as SCP")]
         public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
@@ -106,6 +109,15 @@ namespace SCPUtils
 
         [Description("In which folder database should be stored?")]
         public string DatabaseFolder { get; private set; } = "EXILED";
+
+        [Description("Which broadcast should be shown when a SCP die?")]
+        public string ScpDeathMessage { get; private set; } = "<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>";
+
+        [Description("Which broadcast should be shown when a SCP die?")]
+        public string ScpSuicideMessage { get; private set; } = "<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>";
+
+        [Description("SCP Death message duration")]
+        public ushort ScpDeathMessageDuration { get; private set; } = 12;
 
         [Description("Welcome message duration (if enabled)")]
         public ushort WelcomeMessageDuration { get; private set; } = 12;

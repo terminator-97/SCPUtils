@@ -116,16 +116,19 @@ namespace SCPUtils
 
             Player databasePlayer = player.GetDatabasePlayer();
 
+         
+            if (string.IsNullOrEmpty(databasePlayer.BadgeName) && !string.IsNullOrEmpty(player.GroupName))
+            {             
+                databasePlayer.PreviousBadge = player.GroupName;
+            }
+
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
-                if (databasePlayer.BadgeExpire >= DateTime.Now)
-                {
-                    UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
-                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null && group.BadgeText != player.Group.BadgeText)
-                    {
-                        databasePlayer.PreviousBadge = player.GroupName;
-                    }
+               UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
+           
 
+                if (databasePlayer.BadgeExpire >= DateTime.Now)
+                {                              
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {
@@ -135,19 +138,18 @@ namespace SCPUtils
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
                 }
                 else
-                {
-                    databasePlayer.BadgeName = "";
-
-                    if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge))
+                {               
+                    if (!string.IsNullOrEmpty(databasePlayer.PreviousBadge) && !string.IsNullOrEmpty(player.GroupName))
                     {
-                        UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.PreviousBadge];
+                        if (databasePlayer.BadgeName == player.GroupName)
+                        {
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                         player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.PreviousBadge);
+                        }
                     }
-                    databasePlayer.PreviousBadge = "";
-                    //  if (!databasePlayer.KeepPreferences) databasePlayer.ResetPreferences();
-
+                    else ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                    databasePlayer.BadgeName = "";
                 }
             }
 
@@ -271,6 +273,10 @@ namespace SCPUtils
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
                 }
+                else if (!player.DoNotTrack)
+                {
+                    databasePlayer.SetCurrentDayPlayTime();
+                }
                 else
                 {
                     databasePlayer.SetCurrentDayPlayTime();
@@ -287,7 +293,6 @@ namespace SCPUtils
                 databasePlayer.Ip = player.IPAddress;
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
                 Database.PlayerData.Remove(player);
-                //  Log.Debug($"Saving data of {player.Nickname}");
             }
         }
 

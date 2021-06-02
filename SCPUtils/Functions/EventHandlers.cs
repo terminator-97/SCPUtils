@@ -61,6 +61,18 @@ namespace SCPUtils
                     }
                 }
             }
+
+            if(pluginInstance.Config.DeathMessageModuleEnabled && ev.Target.IsScp || ev.Target.Role== RoleType.Tutorial && pluginInstance.Config.AreTutorialsSCP)
+            {  
+                if (ev.Target.Nickname != ev.Killer.Nickname)
+                {
+                    Map.Broadcast(pluginInstance.Config.ScpDeathMessageDuration, pluginInstance.Config.ScpDeathMessage.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", ev.HitInformation.GetDamageName()), Broadcast.BroadcastFlags.Normal);           
+                }
+                if (ev.Target.Nickname == ev.Killer.Nickname)
+                {
+                    Map.Broadcast(pluginInstance.Config.ScpDeathMessageDuration, pluginInstance.Config.ScpSuicideMessage.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", ev.HitInformation.GetDamageName()), Broadcast.BroadcastFlags.Normal);
+                }
+            }
         }
 
         internal void OnRoundEnded(RoundEndedEventArgs _)
