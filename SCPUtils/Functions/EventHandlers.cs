@@ -1,8 +1,10 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Round = Exiled.API.Features.Round;
+using Features = Exiled.API.Features;
 
 namespace SCPUtils
 {
@@ -13,6 +15,8 @@ namespace SCPUtils
         public DateTime lastTeslaEvent;
 
         public static bool TemporarilyDisabledWarns;
+
+        private static Dictionary<string, DateTime> PreauthTime { get; set; } = new Dictionary<string, DateTime>();
 
         public int ChaosRespawnCount { get; set; }
 
@@ -48,7 +52,7 @@ namespace SCPUtils
 
             if (pluginInstance.Config.NotifyLastPlayerAlive)
             {
-                System.Collections.Generic.List<Exiled.API.Features.Player> team = Exiled.API.Features.Player.Get(ev.Target.Team).ToList();
+                List<Features.Player> team = Features.Player.Get(ev.Target.Team).ToList();
                 if (team.Count - 1 == 1)
                 {
                     if (team[0] == ev.Target)
@@ -62,22 +66,53 @@ namespace SCPUtils
                 }
             }
 
-            if(pluginInstance.Config.DeathMessageModuleEnabled && ev.Target.IsScp || ev.Target.Role== RoleType.Tutorial && pluginInstance.Config.AreTutorialsSCP)
-            {  
+            if (ev.Target.IsScp || ev.Target.Role == RoleType.Tutorial && pluginInstance.Config.AreTutorialsSCP)
+            {
                 if (ev.Target.Nickname != ev.Killer.Nickname)
                 {
-                    Map.Broadcast(pluginInstance.Config.ScpDeathMessageDuration, pluginInstance.Config.ScpDeathMessage.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", ev.HitInformation.GetDamageName()), Broadcast.BroadcastFlags.Normal);           
+                    if (pluginInstance.Config.ScpDeathMessage.Show)
+                    {
+                        var message = pluginInstance.Config.ScpDeathMessage.Content;
+                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", ev.HitInformation.GetDamageName());
+                        Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration,message,pluginInstance.Config.ScpDeathMessage.Type);
+                    }
                 }
+             
                 if (ev.Target.Nickname == ev.Killer.Nickname)
                 {
-                    Map.Broadcast(pluginInstance.Config.ScpDeathMessageDuration, pluginInstance.Config.ScpSuicideMessage.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", ev.HitInformation.GetDamageName()), Broadcast.BroadcastFlags.Normal);
+                    if (pluginInstance.Config.ScpSuicideMessage.Show)
+                    {
+                        var message = pluginInstance.Config.ScpSuicideMessage.Content;
+                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", ev.HitInformation.GetDamageName());
+                        Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration,message,pluginInstance.Config.ScpSuicideMessage.Type);
+                    }
                 }
             }
         }
 
+        internal void OnRoundRestart()
+        {
+            foreach (Features.Player player in Features.Player.List)
+            {
+                pluginInstance.Functions.SaveData(player);
+            }
+        }
+
+
+        internal void OnPlayerPreauth(PreAuthenticatingEventArgs ev)
+        {
+            if (PreauthTime.ContainsKey(ev.UserId))
+            {
+                PreauthTime.Remove(ev.UserId);
+            }
+
+            PreauthTime.Add(ev.UserId, DateTime.Now);
+        }
+
+
         internal void OnRoundEnded(RoundEndedEventArgs _)
         {
-            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+            foreach (Features.Player player in Exiled.API.Features.Player.List)
             {
                 pluginInstance.Functions.SaveData(player);
             }
@@ -137,7 +172,6 @@ namespace SCPUtils
 
         internal void OnPlayerVerify(VerifiedEventArgs ev)
         {
-
             if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
             {
                 pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
@@ -150,18 +184,21 @@ namespace SCPUtils
             }
 
             Database.PlayerData.Add(ev.Player, databasePlayer);
-            databasePlayer.LastSeen = DateTime.Now;
+            databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];    
+            PreauthTime.Remove(ev.Player.UserId);
             databasePlayer.Name = ev.Player.Nickname;
             if (databasePlayer.FirstJoin == DateTime.MinValue)
             {
                 databasePlayer.FirstJoin = DateTime.Now;
-            }
-
-            if (pluginInstance.Config.WelcomeEnabled)
+            }                       
+         
+            if(pluginInstance.Config.WelcomeMessage.Show)
             {
-                ev.Player.Broadcast(pluginInstance.Config.WelcomeMessageDuration, pluginInstance.Config.WelcomeMessage.Replace("%player%", ev.Player.Nickname), Broadcast.BroadcastFlags.Normal);
-            }
-
+                var message = pluginInstance.Config.WelcomeMessage.Content;
+                message = message.Replace("%player%", ev.Player.Nickname);                
+                ev.Player.Broadcast(pluginInstance.Config.WelcomeMessage.Duration, message, pluginInstance.Config.WelcomeMessage.Type);
+            }             
+      
             if (pluginInstance.Functions.CheckAsnPlayer(ev.Player))
             {
                 ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}", "SCPUtils");
@@ -186,11 +223,8 @@ namespace SCPUtils
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
-        {
-            if (pluginInstance.Config.DecontaminationMessageEnabled)
-            {
-                Map.Broadcast(pluginInstance.Config.DecontaminationMessageDuration, pluginInstance.Config.DecontaminationMessage, Broadcast.BroadcastFlags.Normal);
-            }
+        {          
+                Map.Broadcast(pluginInstance.Config.DecontaminationMessage);            
         }
 
     }

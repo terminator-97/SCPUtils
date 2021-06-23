@@ -60,10 +60,6 @@ namespace SCPUtils.Commands
 
                 if (player != null)
                 {
-                    if (string.IsNullOrEmpty(databasePlayer.PreviousBadge) && player.Group != null)
-                    {
-                        databasePlayer.PreviousBadge = player.GroupName;
-                    }
 
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {

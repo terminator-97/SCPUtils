@@ -20,12 +20,6 @@ namespace SCPUtils
         [Description("Are quits as SCP considered a warnable offence?")]
         public bool QuitEqualsSuicide { get; private set; } = true;
 
-        [Description("Should welcome message be shown?")]
-        public bool WelcomeEnabled { get; private set; } = true;
-
-        [Description("Should decontamination message be shown?")]
-        public bool DecontaminationMessageEnabled { get; private set; } = false;
-
         [Description("Should SCPs be kicked for quitting or suicide after a certain threshold?")]
         public bool AutoKickOnSCPSuicide { get; private set; } = true;
 
@@ -69,19 +63,17 @@ namespace SCPUtils
         public bool IgnoreDntRequests { get; private set; } = false;
 
         [Description("Enable auto restart module?")]
-        public bool EnableAutoRestart { get; private set; } = false;
+        public bool EnableAutoRestart { get; private set; } = false;      
 
-        [Description("Enable SCP Death message module?")]
-        public bool DeathMessageModuleEnabled { get; private set; } = true;
+        [Description("Autowarn message for suiciding as SCP")]     
 
-        [Description("Autowarn message for suiciding as SCP")]
-        public string SuicideWarnMessage { get; private set; } = "<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>";
+        public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Welcome message (if enabled)")]
-        public string WelcomeMessage { get; private set; } = "<color=green>Welcome to the server %player%!</color>";
+        public Exiled.API.Features.Broadcast WelcomeMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=green>Welcome to the server %player%!</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Decontamination message (if enabled)")]
-        public string DecontaminationMessage { get; private set; } = "<color=yellow>Decontamination has started</color>";
+        public Exiled.API.Features.Broadcast DecontaminationMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=yellow>Decontamination has started</color>", 12, false, Broadcast.BroadcastFlags.Normal);
 
         [Description("Suicide auto-kick reason (if enabled)")]
         public string SuicideKickMessage { get; private set; } = "Suicide as SCP";
@@ -111,25 +103,13 @@ namespace SCPUtils
         public string DatabaseFolder { get; private set; } = "EXILED";
 
         [Description("Which broadcast should be shown when a SCP die?")]
-        public string ScpDeathMessage { get; private set; } = "<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>";
+        public Exiled.API.Features.Broadcast ScpDeathMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which broadcast should be shown when a SCP die?")]
-        public string ScpSuicideMessage { get; private set; } = "<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>";
-
-        [Description("SCP Death message duration")]
-        public ushort ScpDeathMessageDuration { get; private set; } = 12;
-
-        [Description("Welcome message duration (if enabled)")]
-        public ushort WelcomeMessageDuration { get; private set; } = 12;
-
-        [Description("Decontamination message duration (if enabled)")]
-        public ushort DecontaminationMessageDuration { get; private set; } = 10;
-
+        public Exiled.API.Features.Broadcast ScpSuicideMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+              
         [Description("Auto-restart time if there is only one player in server (if enabled)")]
         public ushort AutoRestartTime { get; private set; } = 15;
-
-        [Description("Auto-warn message duration (if enabled)")]
-        public ushort AutoWarnMessageDuration { get; private set; } = 30;
 
         [Description("SCP-096 target message duration (if enabled)")]
         public ushort Scp096TargetMessageDuration { get; private set; } = 12;
@@ -170,7 +150,6 @@ namespace SCPUtils
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
 
-
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";
 
@@ -181,7 +160,7 @@ namespace SCPUtils
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
 
         [Description("Which message should be shown for offline warns when a player rejoin?")]
-        public string OfflineWarnNotification { get; private set; } = "<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>";
+        public Exiled.API.Features.Broadcast OfflineWarnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which time of the day the server should autorestart?")]
 

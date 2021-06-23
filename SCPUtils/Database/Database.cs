@@ -85,7 +85,8 @@ namespace SCPUtils
                     ASNWhitelisted = false,
                     Restricted = null,
                     KeepPreferences = false,
-                    IgnoreDNT = false
+                    IgnoreDNT = false,
+                    PlaytimeSessions = null
                 });
 
             }

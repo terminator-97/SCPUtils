@@ -58,7 +58,7 @@ namespace SCPUtils.Commands
             $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
             $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
             $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
-            $"Previous Badge: [ {databasePlayer.PreviousBadge} ]\n" +
+            //  $"Previous Badge: [ {databasePlayer.PreviousBadge} ]\n" +
             $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
             $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
             $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +

@@ -106,6 +106,7 @@
     <Compile Include="Commands\OnlineList.cs" />
     <Compile Include="Commands\PlayerBroadcast.cs" />
     <Compile Include="Commands\PlayerDnt.cs" />
+    <Compile Include="Commands\PlaySessions.cs" />
     <Compile Include="Commands\RemovePreviousBadge.cs" />
     <Compile Include="Commands\PlayerRestrict.cs" />
     <Compile Include="Commands\PlayerUnrestrict.cs" />
