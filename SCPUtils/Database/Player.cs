@@ -106,15 +106,9 @@ namespace SCPUtils
 
         public bool IsBanned()
         {
-            foreach (var ban in BanHandler.GetBans(BanHandler.BanType.UserId))
-            {
-                Log.Debug(ban.Id);
-            }
             var bans = BanHandler.GetBans(BanHandler.BanType.UserId);
-            Log.Debug(bans.Count());
             foreach (var playerban in bans)
             {
-                Log.Debug(BanHandler.CheckExpiration(playerban, BanHandler.BanType.UserId));
                 if (playerban.Id != Id +"@"+Authentication)
                     return false;
                 if (BanHandler.CheckExpiration(playerban, BanHandler.BanType.UserId))
