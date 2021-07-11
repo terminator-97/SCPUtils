@@ -21,6 +21,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
 - **SCP-096 Target:** Players gets notified via hint when they become a SCP-096 Target.
 - **Last Player:** Players gets notified via hint when they are the last player of the Team.
+- **Ip check:** Check if player change IP or if player join with more than 1 account associated on same IP
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
@@ -67,6 +68,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_unwarn | <userid / id> <warn id> | scputils.unwarn | Removes a specific warning from a user |
 | scputils_player_broadcast | <userid / id> <broadcast/hint> <text> | scputils.broadcast | Send an hint or broadcast to a specific player |
 | scputils_broadcast | <broadcast/hint> <text>  | scputils.broadcast | Send an hint or broadcast to all players |
+| scputils_dupeip | <userid / id / name> | scputils.dupeip | Check if player has more than 1 account associated on the same IP |
 
 **Console commands**
 
