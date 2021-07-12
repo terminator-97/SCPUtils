@@ -143,9 +143,9 @@ namespace SCPUtils
 
         internal void On096AddTarget(AddingTargetEventArgs ev)
         {
-            if (pluginInstance.Config.Scp096TargetEnabled)
+            if (pluginInstance.Config.Scp096TargetNotifyEnabled)
             {
-                ev.Target.ShowHint(pluginInstance.Config.Scp096TargetText, pluginInstance.Config.Scp096TargetMessageDuration);
+                ev.Target.ShowHint(pluginInstance.Config.Scp096TargetNotifyText, pluginInstance.Config.Scp096TargetMessageDuration);
             }
         }
 
