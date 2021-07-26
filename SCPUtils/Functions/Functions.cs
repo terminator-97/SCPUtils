@@ -301,7 +301,7 @@ namespace SCPUtils
             {
                 if (pluginInstance.Config.BroadcastSanctions)
                 {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin)
+                    if (admin.Sender.CheckPermission(PlayerPermissions.AdminChat))
                     {
                         admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
                     }
