@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Round = Exiled.API.Features.Round;
 using Features = Exiled.API.Features;
+using SCPUtils.Events;
 
 namespace SCPUtils
 {
@@ -88,7 +89,7 @@ namespace SCPUtils
                     }
                 }
             }
-        }
+        }   
 
         internal void OnRoundRestart()
         {

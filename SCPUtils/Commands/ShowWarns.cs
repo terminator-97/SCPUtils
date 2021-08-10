@@ -49,6 +49,7 @@ namespace SCPUtils.Commands
                 response = "Player has no warnings";
                 return true;
             }
+            ScpUtils.StaticInstance.Functions.FixBanTime(databasePlayer);
             int currentindex = 0;
             StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]").AppendLine().AppendLine();
             foreach (DateTime a in databasePlayer.SuicideDate)
@@ -59,6 +60,7 @@ namespace SCPUtils.Commands
                 message.AppendLine($"Class: {databasePlayer.SuicideScp[currentindex]}");
                 message.AppendLine($"Punishment: {databasePlayer.SuicidePunishment[currentindex]}");
                 message.AppendLine($"Staffer: {databasePlayer.LogStaffer[currentindex]}");
+                if(databasePlayer.SuicidePunishment[currentindex] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[currentindex]}");            
                 message.AppendLine($"User Notified: {databasePlayer.UserNotified[currentindex]}");
                 message.AppendLine();
                 currentindex++;

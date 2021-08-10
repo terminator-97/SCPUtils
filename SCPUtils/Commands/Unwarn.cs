@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
+using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
 {
@@ -80,16 +81,11 @@ namespace SCPUtils.Commands
                     databasePlayer.LogStaffer[id] = sender.LogName;
                     databasePlayer.UserNotified[id] = true;
                     Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                    if (DateTime.Now < DateTime.Now.AddMinutes(databasePlayer.TotalScpSuicideBans) && !ScpUtils.StaticInstance.Config.MultiplyBanDurationEachBan)
+                    if (DateTime.Now < databasePlayer.Expire[id])
                     {
                         BanHandler.RemoveBan($"{databasePlayer.Id}@{databasePlayer.Authentication}", BanHandler.BanType.UserId);
                         BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
-                    }
-                    else if (DateTime.Now < DateTime.Now.AddMinutes(databasePlayer.TotalScpSuicideBans * ScpUtils.StaticInstance.Config.AutoBanDuration) && ScpUtils.StaticInstance.Config.MultiplyBanDurationEachBan)
-                    {
-                        BanHandler.RemoveBan($"{databasePlayer.Id}@{databasePlayer.Authentication}", BanHandler.BanType.UserId);
-                        BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
-                    }
+                    }               
                     break;
                 case "REMOVED":
                     message = "This sanction has already been removed!";

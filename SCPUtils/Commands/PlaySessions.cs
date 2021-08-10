@@ -67,9 +67,9 @@ namespace SCPUtils.Commands
 
             for (int i = 0; i <= range; i++)
             {
-                if(databasePlayer.PlaytimeSessions.Count()-i-1>=0)
+                if(databasePlayer.PlaytimeSessionsLog.Count()-i-1>=0)
                 {
-                    var session = databasePlayer.PlaytimeSessions.ElementAt(databasePlayer.PlaytimeSessions.Count()-i-1);
+                    var session = databasePlayer.PlaytimeSessionsLog.ElementAt(databasePlayer.PlaytimeSessionsLog.Count()-i-1);
                     message.AppendLine($"Session Start: [ {session.Key} ] - Session End: [ { session.Value} ] - Duration: [ {(session.Value-session.Key).ToString(@"hh\:mm\:ss")} ]");
                 }               
                 else

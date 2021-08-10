@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using SCPUtils.Events;
 using System;
 
 namespace SCPUtils.Commands
@@ -60,6 +61,10 @@ namespace SCPUtils.Commands
 
                 if (player != null)
                 {
+                    BadgeSetEvent args = new BadgeSetEvent();
+                    args.Player = player;
+                    args.NewBadgeName = badge;                   
+                   
 
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {
@@ -68,6 +73,8 @@ namespace SCPUtils.Commands
 
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, badge);
+
+                    ScpUtils.StaticInstance.Events.OnBadgeSet(args);
                 }
 
                 databasePlayer.BadgeName = badge;

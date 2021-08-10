@@ -28,7 +28,7 @@ namespace SCPUtils
         public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         public bool IgnoreDNT { get; set; }
-        public Dictionary<DateTime, DateTime> PlaytimeSessions { get; set; } = new Dictionary<DateTime, DateTime>();
+        public Dictionary<DateTime, DateTime> PlaytimeSessionsLog { get; set; } = new Dictionary<DateTime, DateTime>();
 
         //Suicide logs
         public List<DateTime> SuicideDate { get; set; } = new List<DateTime>();
@@ -37,6 +37,7 @@ namespace SCPUtils
         public List<string> SuicidePunishment { get; set; } = new List<string>();
         public List<string> LogStaffer { get; set; } = new List<string>();
         public List<bool> UserNotified { get; set; } = new List<bool>();
+        public List<DateTime> Expire { get; set; } = new List<DateTime>();
 
 
         public void SetCurrentDayPlayTime()
@@ -47,23 +48,7 @@ namespace SCPUtils
             }
 
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
-
-            if (!DateTime.TryParse(LastSeen.ToString(), out DateTime o)) return;
-            PlaytimeSessions.Add(LastSeen, DateTime.Now);
-
-            try
-            {
-                foreach(var a in PlaytimeSessions)
-                {
-                    if (!DateTime.TryParse(a.Key.ToString(), out DateTime output)) PlaytimeSessions = null;
-                    if (!DateTime.TryParse(a.Value.ToString(), out DateTime output2)) PlaytimeSessions = null;
-                }
-            }
-            catch(Exception e)
-            {
-                PlaytimeSessions = null;
-                Log.Error("[SCPUTILS] Error: "+e);
-            }
+          
         }
 
         public void Reset()
@@ -79,7 +64,7 @@ namespace SCPUtils
             PreviousBadge = "";
             KeepPreferences = false;
             PlayTimeRecords.Clear();
-            PlaytimeSessions.Clear();
+            PlaytimeSessionsLog.Clear();
         }
 
         public void ResetPreferences()

@@ -19,7 +19,7 @@ namespace SCPUtils.Commands
         {
             string text = "";
             text = $"<color=#1BBC9B>User commands:</color> \n" +
-               "<color=#1BBC9B>.scputils_info, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge, .scputils_my_info, .scputils_play_time, scputils_round_info</color>";
+               "<color=#1BBC9B>.scputils_info, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge, .scputils_my_info, .scputils_play_time, scputils_round_info, scputils_permissions_view</color>";
             if (sender.CheckPermission("scputils.help"))
             {
                 text += "\n<color=#FFD700>Administration commands (Remote Admin): </color>\n" +

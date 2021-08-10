@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using MEC;
+using SCPUtils.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace SCPUtils
         public CoroutineHandle RS;
         public int i = 0;
         private readonly ScpUtils pluginInstance;
+
         public Functions(ScpUtils pluginInstance)
         {
             this.pluginInstance = pluginInstance;
         }
+
+
 
         public void CoroutineRestart()
         {
@@ -39,12 +43,14 @@ namespace SCPUtils
         }
 
         public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
+
         public void AutoBanPlayer(Exiled.API.Features.Player player)
         {
             int duration;
             Player databasePlayer = player.GetDatabasePlayer();
             databasePlayer.TotalScpSuicideBans++;
             databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Ban";
+
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true)
             {
                 duration = databasePlayer.TotalScpSuicideBans * pluginInstance.Config.AutoBanDuration * 60;
@@ -58,7 +64,8 @@ namespace SCPUtils
             {
                 BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
             }
-
+            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration/60)* databasePlayer.TotalScpSuicideBans);
+            else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);
             player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration)}", "SCPUtils");
         }
 
@@ -76,7 +83,7 @@ namespace SCPUtils
         }
 
         public void AutoWarnPlayer(Exiled.API.Features.Player player)
-        {
+        {            
             if (pluginInstance.Config.BroadcastWarns)
             {
                 BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
@@ -100,7 +107,7 @@ namespace SCPUtils
 
             Player databasePlayer = player.GetDatabasePlayer();
             float suicidePercentage = databasePlayer.SuicidePercentage;
-            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";           
             AutoWarnPlayer(player);
             if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
             {
@@ -134,10 +141,20 @@ namespace SCPUtils
                     }
 
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
+                    BadgeSetEvent args = new BadgeSetEvent();
+                    args.Player = player;
+                    args.NewBadgeName = databasePlayer.BadgeName;
+                    pluginInstance.Events.OnBadgeSet(args);
+
                 }
                 else
                 {
+
+                    BadgeRemovedEvent args = new BadgeRemovedEvent();
+                    args.Player = player;
+                    args.BadgeName = databasePlayer.BadgeName;
                     databasePlayer.BadgeName = "";
+
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
@@ -148,6 +165,7 @@ namespace SCPUtils
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]);
                         player.ReferenceHub.serverRoles.SetGroup(previous, false, true, true);
                     }
+                    pluginInstance.Events.OnBadgeRemoved(args);
                 }
             }
 
@@ -236,9 +254,11 @@ namespace SCPUtils
         public void LogWarn(Exiled.API.Features.Player player, string suicidetype)
         {
             Player databasePlayer = player.GetDatabasePlayer();
+            FixBanTime(databasePlayer);
             databasePlayer.SuicideDate.Add(DateTime.Now);
             databasePlayer.SuicideType.Add(suicidetype);
             databasePlayer.SuicideScp.Add(player.Role.ToString());
+            databasePlayer.Expire.Add(DateTime.Now);
             databasePlayer.SuicidePunishment.Add("None");
             databasePlayer.LogStaffer.Add("SCPUtils");
             if (suicidetype == "Disconnect")
@@ -267,7 +287,7 @@ namespace SCPUtils
                 if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT)
                 {
                     databasePlayer.PlayTimeRecords.Clear();
-                    databasePlayer.PlaytimeSessions.Clear();
+                    databasePlayer.PlaytimeSessionsLog.Clear();
                     databasePlayer.ResetPreferences();
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
@@ -401,5 +421,18 @@ namespace SCPUtils
             }
         }
 
+
+        public void FixBanTime(SCPUtils.Player databasePlayer)
+        {          
+            if (databasePlayer.SuicideDate.Count() != databasePlayer.Expire.Count())
+            {                
+                databasePlayer.Expire.Clear();
+                for (var i = 0; i < databasePlayer.SuicideDate.Count(); i++)
+                {
+                    databasePlayer.Expire.Add(DateTime.MinValue);
+                }
+            }   
+        }
     }
+
 }

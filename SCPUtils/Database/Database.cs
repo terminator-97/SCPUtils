@@ -86,7 +86,8 @@ namespace SCPUtils
                     Restricted = null,
                     KeepPreferences = false,
                     IgnoreDNT = false,
-                    PlaytimeSessions = null
+                    PlaytimeSessionsLog = null,
+                    Expire = null
                 });
 
             }
