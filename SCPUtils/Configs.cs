@@ -221,6 +221,12 @@ namespace SCPUtils
 
         public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
 
+        [Description("The command name for the unwarn command")]
+        public string UnwarnCommand {get; set;} = "scputils_player_unwarn";
+
+        [Description("The aliases for the unwarn command")]
+        public string[] UnwarnCommandAliases {get; set;} = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+
 
         public void ConfigValidator()
         {

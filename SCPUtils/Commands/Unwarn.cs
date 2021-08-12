@@ -11,9 +11,9 @@ namespace SCPUtils.Commands
     internal class Unwarn : ICommand
     {
 
-        public string Command { get; } = "scputils_player_unwarn";
+        public string Command { get; } = Plugin.Singleton.Config.UnwarnCommand;
 
-        public string[] Aliases { get; } = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+        public string[] Aliases { get; } = Plugin.Singleton.Config.UnwarnCommandAliases;
 
         public string Description { get; } = "Removes a specific warning from a player!";
 
