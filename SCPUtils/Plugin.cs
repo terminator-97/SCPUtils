@@ -27,6 +27,8 @@ namespace SCPUtils
 
         private static readonly ScpUtils InstanceValue = new ScpUtils();
 
+        public static Plugin Singleton = null;
+
         private ScpUtils()
         {
 
@@ -54,6 +56,8 @@ namespace SCPUtils
 
         public override void OnEnabled()
         {
+            Singleton = this;
+
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
             DatabasePlayerData = new Database(this);
@@ -100,6 +104,7 @@ namespace SCPUtils
             Functions.LastWarn.Clear();
             Database.LiteDatabase.Dispose();
             Harmony.UnpatchAll();
+            Singleton = null;
         }
 
 
