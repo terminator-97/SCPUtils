@@ -233,6 +233,13 @@ namespace SCPUtils
            { DamageTypes.Shotgun.Name.ToUpper(), DamageTypes.Shotgun.Name.ToUpper() }, { DamageTypes.Tesla.Name.ToUpper(), DamageTypes.Tesla.Name.ToUpper() } };
       
        
+        [Description("The command name for the unwarn command")]
+        public string UnwarnCommand {get; set;} = "scputils_player_unwarn";
+
+        [Description("The aliases for the unwarn command")]
+        public string[] UnwarnCommandAliases {get; set;} = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+
+
         public void ConfigValidator()
         {
             if (ScpSuicideTollerance < 0)
