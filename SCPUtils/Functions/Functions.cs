@@ -434,6 +434,39 @@ namespace SCPUtils
                 }
             }   
         }
+        
+        public void ChangeIP(Exiled.API.Features.Player player)
+        {
+            Player databasePlayer = player.GetDatabasePlayer();
+            var accounts = Database.LiteDatabase.GetCollection<Player>().FindAll()
+                .Where(ip => ip.Ip == databasePlayer.Ip).ToList();
+            StringBuilder message =
+                new StringBuilder(
+                        $"<color=green>[Player {databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) has changed IP ({accounts.Count})]</color>")
+                    .AppendLine();
+            foreach (var ips in accounts)
+            {
+                message.AppendLine();
+                message.Append(
+                        $"Old IP: <color=yellow>{databasePlayer.Ip}</color>\nNew IP: <color=yellow>{player.IPAddress}</color>\nPlayer: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>")
+                    .AppendLine();
+            }
+
+            foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
+            {
+                if (pluginInstance.Config.AlertStaffBroadcastChangeIP.Show)
+                {
+                    staffer.ClearBroadcasts();
+                    staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastChangeIP.Duration,
+                        pluginInstance.Config.AlertStaffBroadcastChangeIP.Content
+                            .Replace("{player}", player.Nickname + " " + player.UserId)
+                            .Replace("{oldIP}", databasePlayer.Ip).Replace("{newIP}", player.IPAddress));
+                    staffer.SendConsoleMessage(message.ToString(), "default");
+                }
+            }
+            databasePlayer.Ip = player.IPAddress;
+            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+        }
     }
 
 }
