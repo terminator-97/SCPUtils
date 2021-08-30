@@ -188,7 +188,7 @@ namespace SCPUtils
                 {
                     if (player.CheckPermission("scputils.badgevisibility") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepBadgeVisibilityWithoutPermission)
                     {
-                        player.BadgeHidden = true;
+                       player.BadgeHidden = true;                     
                     }
                     else
                     {
@@ -324,7 +324,7 @@ namespace SCPUtils
                     if (admin.ReferenceHub.serverRoles.RemoteAdmin)
                     if (admin.Sender.CheckPermission(PlayerPermissions.AdminChat))
                     {
-                            admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat);
+                            admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat, false);
                     }
                 }
             }

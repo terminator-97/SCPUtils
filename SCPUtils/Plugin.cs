@@ -14,8 +14,8 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(2, 7, 4);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 11, 1);
+        public override Version Version { get; } = new Version(3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -48,8 +48,7 @@ namespace SCPUtils
             ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
             Handlers.Scp096.AddingTarget += EventHandlers.On096AddTarget;
             ServerEvents.RespawningTeam += EventHandlers.OnTeamRespawn;
-            ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;  
-
+            ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;
         }
 
         public override void OnEnabled()

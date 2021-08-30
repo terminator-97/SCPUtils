@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
+using Exiled.API.Features;
 
 namespace SCPUtils.Commands
 {
@@ -41,7 +42,7 @@ namespace SCPUtils.Commands
                 {
                     case "broadcast":
                     case "bc":
-                        player.Broadcast(ScpUtils.StaticInstance.Config.BroadcastDuration, broadcast);
+                        player.Broadcast(ScpUtils.StaticInstance.Config.BroadcastDuration, broadcast, global::Broadcast.BroadcastFlags.Normal, false);
                         response = "Success!";
                         break;
                     case "hint":

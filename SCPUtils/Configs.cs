@@ -221,7 +221,18 @@ namespace SCPUtils
 
         public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
 
-
+        public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.Grenade.Name.ToUpper(), DamageTypes.Grenade.Name.ToUpper() }, { DamageTypes.Wall.Name.ToUpper(), DamageTypes.Wall.Name.ToUpper() }, { DamageTypes.AK.Name.ToUpper(), DamageTypes.AK.Name.ToUpper() },
+           { DamageTypes.Asphyxiation.Name.ToUpper(), DamageTypes.Asphyxiation.Name.ToUpper() }, { DamageTypes.Bleeding.Name.ToUpper(), DamageTypes.Bleeding.Name.ToUpper() }, { DamageTypes.Com15.Name.ToUpper(), DamageTypes.Com15.Name.ToUpper() }, { DamageTypes.Com18.Name.ToUpper(), DamageTypes.Com18.Name.ToUpper() }, { DamageTypes.Contain.Name.ToUpper(), DamageTypes.Contain.Name.ToUpper()},
+           { DamageTypes.CrossVec.Name.ToUpper(), DamageTypes.CrossVec.Name.ToUpper() }, { DamageTypes.Decont.Name.ToUpper(), DamageTypes.Decont.Name.ToUpper() }, { DamageTypes.E11SR.Name.ToUpper(), DamageTypes.E11SR.Name.ToUpper() },
+           { DamageTypes.Falldown.Name.ToUpper(), DamageTypes.Falldown.Name.ToUpper() }, { DamageTypes.Flying.Name.ToUpper(), DamageTypes.Flying.Name.ToUpper() }, { DamageTypes.FriendlyFireDetector.Name.ToUpper(), DamageTypes.FriendlyFireDetector.Name.ToUpper() },
+           { DamageTypes.FSP9.Name.ToUpper(), DamageTypes.FSP9.Name.ToUpper() }, { DamageTypes.Logicer.Name.ToUpper(), DamageTypes.Logicer.Name.ToUpper() }, { DamageTypes.Lure.Name.ToUpper(), DamageTypes.Lure.Name.ToUpper() }, { DamageTypes.MicroHID.Name.ToUpper(), DamageTypes.MicroHID.Name.ToUpper() },
+           { DamageTypes.None.Name.ToUpper(), DamageTypes.None.Name.ToUpper() }, { DamageTypes.Nuke.Name.ToUpper(), DamageTypes.Nuke.Name.ToUpper() }, { DamageTypes.Pocket.Name.ToUpper(), DamageTypes.Pocket.Name.ToUpper() }, { DamageTypes.Poison.Name.ToUpper(), DamageTypes.Poison.Name.ToUpper() },
+           { DamageTypes.RagdollLess.Name.ToUpper(), DamageTypes.RagdollLess.Name.ToUpper() }, { DamageTypes.Recontainment.Name.ToUpper(), DamageTypes.Recontainment.Name.ToUpper() }, { DamageTypes.Revolver.Name.ToUpper(), DamageTypes.Revolver.Name.ToUpper() },
+           { DamageTypes.Scp018.Name.ToUpper(), DamageTypes.Scp018.Name.ToUpper() }, { DamageTypes.Scp049.Name.ToUpper(), DamageTypes.Scp049.Name.ToUpper() }, { DamageTypes.Scp0492.Name.ToUpper(), DamageTypes.Scp0492.Name.ToUpper() }, { DamageTypes.Scp096.Name.ToUpper(), DamageTypes.Scp096.Name.ToUpper() },
+           { DamageTypes.Scp106.Name.ToUpper(), DamageTypes.Scp106.Name.ToUpper() }, { DamageTypes.Scp173.Name.ToUpper(), DamageTypes.Scp173.Name.ToUpper() }, { DamageTypes.Scp207.Name.ToUpper(), DamageTypes.Scp207.Name.ToUpper() }, { DamageTypes.Scp939.Name.ToUpper(), DamageTypes.Scp939.Name.ToUpper() },
+           { DamageTypes.Shotgun.Name.ToUpper(), DamageTypes.Shotgun.Name.ToUpper() }, { DamageTypes.Tesla.Name.ToUpper(), DamageTypes.Tesla.Name.ToUpper() } };
+      
+       
         public void ConfigValidator()
         {
             if (ScpSuicideTollerance < 0)

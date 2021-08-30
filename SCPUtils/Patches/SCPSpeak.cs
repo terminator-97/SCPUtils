@@ -3,14 +3,15 @@ using Exiled.Permissions.Extensions;
 using HarmonyLib;
 using System.Linq;
 
+
 namespace SCPUtils
 {
-    [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.CallCmdAltIsActive))]
+    [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.UserCode_CmdAltIsActive))]
     public class SCPSpeak
     {
 
         public static void Prefix(DissonanceUserSetup __instance, bool value)
-        {
+        {          
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(__instance.gameObject);
             if (string.IsNullOrEmpty(player?.UserId) || player.Team != Team.SCP)
             {

@@ -20,7 +20,7 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 
-            StringBuilder message = new StringBuilder($"Your permissions (Granted):");
+            StringBuilder message = new StringBuilder($"Your permissions (Granted):\n");
             if (sender.CheckPermission("scputils.help")) message.AppendLine("You MAY see SCPUtils Admin commands!");
             if (sender.CheckPermission("scputils.playerinfo")) message.AppendLine("You MAY see player info of other players!");
             if (sender.CheckPermission("scputils.playerlist")) message.AppendLine("You MAY see the player list!");

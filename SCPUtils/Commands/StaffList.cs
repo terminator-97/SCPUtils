@@ -27,7 +27,7 @@ namespace SCPUtils.Commands
 
             foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
             {
-                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff)
+                if (player.IsNorthwoodStaff || player.IsGlobalModerator)
                 {
                     message.AppendLine();
                     message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.GlobalBadge}] [{player.Role}]");

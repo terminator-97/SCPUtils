@@ -30,20 +30,21 @@ namespace SCPUtils
         public EventHandlers(ScpUtils pluginInstance)
         {
             this.pluginInstance = pluginInstance;
-        }
+        }        
 
         internal void OnPlayerDeath(DyingEventArgs ev)
-        {
+        {                  
             if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
-                    if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla || (ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.GetDamageType() == DamageTypes.Grenade && ev.Killer == ev.Target))
+             
+                   if (ev.HitInformation.Tool.Name == "TESLA" || (ev.HitInformation.Tool.Name == "WALL" && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.Tool.Name == "GRENADE" && ev.Killer == ev.Target))
                     {
-                        pluginInstance.Functions.LogWarn(ev.Target, ev.HitInformation.GetDamageName());
+                        pluginInstance.Functions.LogWarn(ev.Target, ev.HitInformation.Tool.Name);
                         pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                     }
-                    else if ((ev.HitInformation.GetDamageType() == DamageTypes.Wall && ev.HitInformation.Amount == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide)
+                    else if ((ev.HitInformation.Tool.Name == "WALL" && ev.HitInformation.Amount == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide)
                     {
                         pluginInstance.Functions.LogWarn(ev.Target, "Disconnect");
                         pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
@@ -66,15 +67,15 @@ namespace SCPUtils
                     }
                 }
             }
-
+            
             if (ev.Target.IsScp || ev.Target.Role == RoleType.Tutorial && pluginInstance.Config.AreTutorialsSCP)
-            {
+            {                
                 if (ev.Target.Nickname != ev.Killer.Nickname)
                 {
                     if (pluginInstance.Config.ScpDeathMessage.Show)
                     {
                         var message = pluginInstance.Config.ScpDeathMessage.Content;
-                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", ev.HitInformation.GetDamageName());
+                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", pluginInstance.Config.DamageTypesTranslations[ev.HitInformation.Tool.Name]);
                         Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration,message,pluginInstance.Config.ScpDeathMessage.Type);
                     }
                 }
@@ -84,12 +85,12 @@ namespace SCPUtils
                     if (pluginInstance.Config.ScpSuicideMessage.Show)
                     {
                         var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", ev.HitInformation.GetDamageName());
+                        message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", pluginInstance.Config.DamageTypesTranslations[ev.HitInformation.Tool.Name]);
                         Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration,message,pluginInstance.Config.ScpSuicideMessage.Type);
                     }
                 }
             }
-        }   
+        }
 
         internal void OnRoundRestart()
         {
@@ -197,7 +198,7 @@ namespace SCPUtils
             {
                 var message = pluginInstance.Config.WelcomeMessage.Content;
                 message = message.Replace("%player%", ev.Player.Nickname);                
-                ev.Player.Broadcast(pluginInstance.Config.WelcomeMessage.Duration, message, pluginInstance.Config.WelcomeMessage.Type);
+                ev.Player.Broadcast(pluginInstance.Config.WelcomeMessage.Duration, message, pluginInstance.Config.WelcomeMessage.Type, false);
             }             
       
             if (pluginInstance.Functions.CheckAsnPlayer(ev.Player))
