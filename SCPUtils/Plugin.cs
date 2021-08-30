@@ -22,7 +22,6 @@ namespace SCPUtils
         public Database DatabasePlayerData { get; private set; }
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
-
         public Harmony Harmony { get; private set; }
 
         private static readonly ScpUtils InstanceValue = new ScpUtils();
