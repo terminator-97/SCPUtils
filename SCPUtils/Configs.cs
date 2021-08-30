@@ -239,6 +239,16 @@ namespace SCPUtils
 
         [Description("The aliases for the unwarn command")]
         public string[] UnwarnCommandAliases {get; set;} = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+        [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
+        
+        public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; }= new Exiled.API.Features.Broadcast(
+            "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has entered with <color=yellow>{accountNumber}</color> accounts</size>\n<size=30>Check console pressing <color=yellow>ò</color></size>",
+            10);
+
+        [Description("Broadcast to send to all online staff when player change IP")]
+        public Exiled.API.Features.Broadcast AlertStaffBroadcastChangeIP { get; private set; }= new Exiled.API.Features.Broadcast(
+            "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has changed IP. <color=yellow>{oldIP}</color> to <color=yellow>{newIP}</color></size>\n<size=35>Check console pressing <color=yellow>ò</color></size>",
+            10);
 
 
         public void ConfigValidator()

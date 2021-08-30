@@ -19,6 +19,7 @@ namespace SCPUtils
         public string ColorPreference { get; set; }
         public string CustomNickName { get; set; }
         public bool HideBadge { get; set; }
+        public bool isMuted { get; set; }
         public string BadgeName { get; set; }
         public DateTime BadgeExpire { get; set; }
         public string PreviousBadge { get; set; }
@@ -83,6 +84,20 @@ namespace SCPUtils
                 {
                     return true;
                 }
+            }
+            return false;
+        }
+        
+        public bool IsBanned()
+        {
+            var bans = BanHandler.GetBans(BanHandler.BanType.UserId);
+            foreach (var playerban in bans)
+            {
+                if (playerban.Id != Id +"@"+Authentication)
+                    return false;
+                if (BanHandler.CheckExpiration(playerban, BanHandler.BanType.UserId))
+                    return true;
+                return false;
             }
             return false;
         }

@@ -189,6 +189,13 @@ namespace SCPUtils
             databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];    
             PreauthTime.Remove(ev.Player.UserId);
             databasePlayer.Name = ev.Player.Nickname;
+            var sameIP = Database.LiteDatabase.GetCollection<Player>().FindAll().Where(x => x.Ip == databasePlayer.Ip).ToList();
+            if (databasePlayer.Ip != ev.Player.IPAddress)
+                pluginInstance.Functions.ChangeIP(ev.Player);
+            
+            if (sameIP.Count > 1)
+                pluginInstance.Functions.CheckAccount(ev.Player);
+            
             if (databasePlayer.FirstJoin == DateTime.MinValue)
             {
                 databasePlayer.FirstJoin = DateTime.Now;
