@@ -11,9 +11,9 @@ namespace SCPUtils.Commands
     internal class Unwarn : ICommand
     {
 
-        public string Command { get; } = Plugin.Singleton.Config.UnwarnCommand;
+        public string Command { get; } = ScpUtils.StaticInstance.Config.UnwarnCommand;
 
-        public string[] Aliases { get; } = Plugin.Singleton.Config.UnwarnCommandAliases;
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.UnwarnCommandAliases;
 
         public string Description { get; } = "Removes a specific warning from a player!";
 
