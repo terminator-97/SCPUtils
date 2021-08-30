@@ -221,6 +221,7 @@ namespace SCPUtils
 
         public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
 
+        [Description("Translations for damage types")]
         public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.Grenade.Name.ToUpper(), DamageTypes.Grenade.Name.ToUpper() }, { DamageTypes.Wall.Name.ToUpper(), DamageTypes.Wall.Name.ToUpper() }, { DamageTypes.AK.Name.ToUpper(), DamageTypes.AK.Name.ToUpper() },
            { DamageTypes.Asphyxiation.Name.ToUpper(), DamageTypes.Asphyxiation.Name.ToUpper() }, { DamageTypes.Bleeding.Name.ToUpper(), DamageTypes.Bleeding.Name.ToUpper() }, { DamageTypes.Com15.Name.ToUpper(), DamageTypes.Com15.Name.ToUpper() }, { DamageTypes.Com18.Name.ToUpper(), DamageTypes.Com18.Name.ToUpper() }, { DamageTypes.Contain.Name.ToUpper(), DamageTypes.Contain.Name.ToUpper()},
            { DamageTypes.CrossVec.Name.ToUpper(), DamageTypes.CrossVec.Name.ToUpper() }, { DamageTypes.Decont.Name.ToUpper(), DamageTypes.Decont.Name.ToUpper() }, { DamageTypes.E11SR.Name.ToUpper(), DamageTypes.E11SR.Name.ToUpper() },
