@@ -435,6 +435,39 @@ namespace SCPUtils
             }   
         }
         
+        public void CheckAccount(Exiled.API.Features.Player player)
+        {
+            Player databasePlayer = player.GetDatabasePlayer();
+            StringBuilder message =
+                new StringBuilder(
+                        $"<color=green>[Accounts associated with the same IP ({databasePlayer.Ip} - {databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>")
+                    .AppendLine();
+            var accounts = Database.LiteDatabase.GetCollection<Player>().FindAll()
+                .Where(ip => ip.Ip == databasePlayer.Ip).ToList();
+            foreach (var ips in accounts)
+            {
+                message.AppendLine();
+                message.Append(
+                        $"Player: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>")
+                    .AppendLine();
+            }
+
+            foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
+            {
+                if (pluginInstance.Config.AlertStaffBroadcastMultiAccount.Show)
+                {
+                    staffer.ClearBroadcasts();
+                    staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastMultiAccount.Duration,
+                        pluginInstance.Config.AlertStaffBroadcastMultiAccount.Content
+                            .Replace("{player}", player.Nickname + " " + player.UserId)
+                            .Replace("{accountNumber}", accounts.Count.ToString()));
+                }
+
+                staffer.SendConsoleMessage(message.ToString(), "default");
+            }
+        }
+        
+        
         public void ChangeIP(Exiled.API.Features.Player player)
         {
             Player databasePlayer = player.GetDatabasePlayer();
