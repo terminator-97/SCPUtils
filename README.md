@@ -25,7 +25,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 2.8.0 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 3.0.0.alpha76 and LiteDB 5.0.9**
 
 
 ### Configs:
@@ -74,6 +74,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | ------------- | ------------- | ------------- | ------------- |
 | scputils_help  | none  | none | Show plugin commands |
 | scputils_info  | none  | none | Show plugin info |
+| scputils_permissions_view  | none  | none | Show your plugin permissions |
 | scputils_change_nickname  | Nickname / None | scputils.changenickname | Change your nickname, changes take effects next round/rejoin |
 | scputils_change_color | Color / None | scputils.changecolor | Change your badge color |
 | scputils_show_badge  | none  | scputils.badgevisibility | Permanently show your badge |
