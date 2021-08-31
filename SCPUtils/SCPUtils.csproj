@@ -103,6 +103,7 @@
     <Compile Include="Commands\AsnWhitelist.cs" />
     <Compile Include="Commands\Broadcast.cs" />
     <Compile Include="Commands\Convert.cs" />
+    <Compile Include="Commands\Dupeip.cs" />
     <Compile Include="Commands\OnlineList.cs" />
     <Compile Include="Commands\PermissionsView.cs" />
     <Compile Include="Commands\PlayerBroadcast.cs" />
