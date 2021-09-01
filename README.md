@@ -25,7 +25,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 3.0.0.alpha76 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 3.0.0.alpha77 and LiteDB 5.0.9**
 
 
 ### Configs:
@@ -67,6 +67,8 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_unwarn | <userid / id> <warn id> | scputils.unwarn | Removes a specific warning from a user |
 | scputils_player_broadcast | <userid / id> <broadcast/hint> <text> | scputils.broadcast | Send an hint or broadcast to a specific player |
 | scputils_broadcast | <broadcast/hint> <text>  | scputils.broadcast | Send an hint or broadcast to all players |
+| scputils_set_round_ban | <id / userid> <amount> | scputils.roundban  | Sets the number of round ban to one player |
+| scputils_dupeip | < id / userid > | scputils.dupeip | Check if player has another account on same IP |
 
 **Console commands**
 

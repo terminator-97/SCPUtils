@@ -60,7 +60,8 @@ namespace SCPUtils.Commands
                 message.AppendLine($"Class: {databasePlayer.SuicideScp[currentindex]}");
                 message.AppendLine($"Punishment: {databasePlayer.SuicidePunishment[currentindex]}");
                 message.AppendLine($"Staffer: {databasePlayer.LogStaffer[currentindex]}");
-                if(databasePlayer.SuicidePunishment[currentindex] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[currentindex]}");            
+                if (databasePlayer.SuicidePunishment[currentindex] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[currentindex]}");
+                if (databasePlayer.SuicidePunishment[currentindex] == "Round-Ban") message.AppendLine($"Round(s) ban: {databasePlayer.RoundsBan[currentindex]}");
                 message.AppendLine($"User Notified: {databasePlayer.UserNotified[currentindex]}");
                 message.AppendLine();
                 currentindex++;

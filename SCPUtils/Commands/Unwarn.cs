@@ -1,13 +1,11 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
-using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    [CommandHandler(typeof(ClientCommandHandler))]
     internal class Unwarn : ICommand
     {
 
@@ -22,7 +20,8 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.unwarn"))
             {
-                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+                response = "You need a higher administration level to use this command!";
+                return false;
             }
             else
             {
@@ -85,7 +84,21 @@ namespace SCPUtils.Commands
                     {
                         BanHandler.RemoveBan($"{databasePlayer.Id}@{databasePlayer.Authentication}", BanHandler.BanType.UserId);
                         BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
-                    }               
+                    }
+                    break;
+                    case "Round-Ban":
+                    databasePlayer.ScpSuicideCount--;
+                    databasePlayer.TotalScpSuicideBans--;
+                    databasePlayer.SuicidePunishment[id] = "REMOVED";
+                    databasePlayer.LogStaffer[id] = sender.LogName;
+                    databasePlayer.UserNotified[id] = true;
+
+                    databasePlayer.RoundBanLeft -= databasePlayer.RoundsBan[id];
+                    if (databasePlayer.RoundBanLeft < 0) databasePlayer.RoundBanLeft = 0;
+                      
+
+                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                   
                     break;
                 case "REMOVED":
                     message = "This sanction has already been removed!";

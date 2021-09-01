@@ -70,6 +70,10 @@ namespace SCPUtils.Commands
                 text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";
             }
 
+            if (databasePlayer.RoundBanLeft >= 1)
+            {
+                text += $"\n<color=red>User account is currently SCP-Banned:</color>\nRound(s) left: [ {databasePlayer.RoundBanLeft} ]";
+            }
             response = text;
 
             return true;

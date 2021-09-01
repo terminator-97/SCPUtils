@@ -1,8 +1,4 @@
-﻿
-
-using System;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
     public static class DatabasePlayer
     {

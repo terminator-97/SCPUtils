@@ -58,7 +58,8 @@ namespace SCPUtils.Commands
             message.AppendLine($"Class: {databasePlayer.SuicideScp[databasePlayer.SuicideScp.Count - 1]}");
             message.AppendLine($"Punishment: {databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count - 1]}");
             message.AppendLine($"Staffer: {databasePlayer.LogStaffer[databasePlayer.LogStaffer.Count - 1]}");
-            if(databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count - 1] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[databasePlayer.Expire.Count - 1]}");
+            if (databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count - 1] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[databasePlayer.Expire.Count - 1]}");
+            if (databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count - 1] == "Round-Ban") message.AppendLine($"Round(s) ban: {databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count - 1]}");
             message.AppendLine($"Expire: {databasePlayer.Expire[databasePlayer.Expire.Count - 1]}");
             message.AppendLine($"User Notified: {databasePlayer.UserNotified[databasePlayer.UserNotified.Count - 1]}");
             message.AppendLine();

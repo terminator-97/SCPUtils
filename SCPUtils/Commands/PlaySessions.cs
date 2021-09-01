@@ -29,18 +29,18 @@ namespace SCPUtils.Commands
             }
 
             if (arguments.Count < 2)
-                {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <number of previous sessions to print(0 prints the last one)> </color>";
-                    return false;
-                }
-                else
-                {
-                    target = arguments.Array[1].ToString();
-                }
+            {
+                response = $"<color=yellow>Usage: {Command} <player name/id> <number of previous sessions to print(0 prints the last one)> </color>";
+                return false;
+            }
+            else
+            {
+                target = arguments.Array[1].ToString();
+            }
 
-                int.TryParse(arguments.Array[2], out range);
+            int.TryParse(arguments.Array[2], out range);
 
-            
+
             Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
@@ -63,15 +63,15 @@ namespace SCPUtils.Commands
             }
             StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]");
             message.AppendLine();
-           
+
 
             for (int i = 0; i <= range; i++)
             {
-                if(databasePlayer.PlaytimeSessionsLog.Count()-i-1>=0)
+                if (databasePlayer.PlaytimeSessionsLog.Count() - i - 1 >= 0)
                 {
-                    var session = databasePlayer.PlaytimeSessionsLog.ElementAt(databasePlayer.PlaytimeSessionsLog.Count()-i-1);
-                    message.AppendLine($"Session Start: [ {session.Key} ] - Session End: [ { session.Value} ] - Duration: [ {(session.Value-session.Key).ToString(@"hh\:mm\:ss")} ]");
-                }               
+                    var session = databasePlayer.PlaytimeSessionsLog.ElementAt(databasePlayer.PlaytimeSessionsLog.Count() - i - 1);
+                    message.AppendLine($"Session Start: [ {session.Key} ] - Session End: [ { session.Value} ] - Duration: [ {(session.Value - session.Key).ToString(@"hh\:mm\:ss")} ]");
+                }
                 else
                 {
                     message.Append($"Limit reached! No more data about this player.");

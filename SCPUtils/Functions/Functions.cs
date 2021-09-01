@@ -45,8 +45,40 @@ namespace SCPUtils
 
         public Dictionary<string, DateTime> LastWarn { get; private set; } = new Dictionary<string, DateTime>();
 
-        public void AutoBanPlayer(Exiled.API.Features.Player player)
+        public void AutoRoundBanPlayer(Exiled.API.Features.Player player)
         {
+            int rounds;
+            Player databasePlayer = player.GetDatabasePlayer();
+            databasePlayer.TotalScpSuicideBans++;            
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Round-Ban";           
+            if (pluginInstance.Config.MultiplyBanDurationEachBan == true)
+            {
+                rounds = databasePlayer.TotalScpSuicideBans * pluginInstance.Config.AutoBanRoundsCount;                
+            }
+            else
+            {
+                rounds = pluginInstance.Config.AutoBanDuration;
+             
+            }         
+            if (pluginInstance.Config.BroadcastSanctions)
+            {              
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
+                if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has suicided while having an active ban!</color>");
+            }          
+            databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count() - 1] = rounds;
+            databasePlayer.RoundBanLeft += rounds;          
+            if (pluginInstance.Config.RoundBanNotification.Show)
+            {
+                player.ClearBroadcasts();
+                var message = pluginInstance.Config.RoundBanNotification.Content;
+                message = message.Replace("%roundnumber%", databasePlayer.RoundBanLeft.ToString());
+                player.Broadcast(pluginInstance.Config.WelcomeMessage.Duration, message, pluginInstance.Config.WelcomeMessage.Type, false);
+            }
+
+        }
+
+        public void AutoBanPlayer(Exiled.API.Features.Player player)
+        {            
             int duration;
             Player databasePlayer = player.GetDatabasePlayer();
             databasePlayer.TotalScpSuicideBans++;
@@ -65,7 +97,7 @@ namespace SCPUtils
             {
                 BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
             }
-            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration/60)* databasePlayer.TotalScpSuicideBans);
+            if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration / 60) * databasePlayer.TotalScpSuicideBans);
             else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);
             player.Ban(duration, $"Auto-Ban: {string.Format(pluginInstance.Config.AutoBanMessage, duration)}", "SCPUtils");
         }
@@ -84,7 +116,7 @@ namespace SCPUtils
         }
 
         public void AutoWarnPlayer(Exiled.API.Features.Player player)
-        {            
+        {
             if (pluginInstance.Config.BroadcastWarns)
             {
                 BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
@@ -108,11 +140,15 @@ namespace SCPUtils
 
             Player databasePlayer = player.GetDatabasePlayer();
             float suicidePercentage = databasePlayer.SuicidePercentage;
-            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";           
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
             AutoWarnPlayer(player);
             if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
             {
                 AutoBanPlayer(player);
+            }
+            else if (pluginInstance.Config.EnableSCPSuicideSoftBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
+            {
+                AutoRoundBanPlayer(player);
             }
             else if (pluginInstance.Config.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Config.AutoKickThreshold && suicidePercentage < pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
             {
@@ -189,7 +225,7 @@ namespace SCPUtils
                 {
                     if (player.CheckPermission("scputils.badgevisibility") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepBadgeVisibilityWithoutPermission)
                     {
-                       player.BadgeHidden = true;                     
+                        player.BadgeHidden = true;
                     }
                     else
                     {
@@ -260,6 +296,7 @@ namespace SCPUtils
             databasePlayer.SuicideType.Add(suicidetype);
             databasePlayer.SuicideScp.Add(player.Role.ToString());
             databasePlayer.Expire.Add(DateTime.Now);
+            databasePlayer.RoundsBan.Add(0);
             databasePlayer.SuicidePunishment.Add("None");
             databasePlayer.LogStaffer.Add("SCPUtils");
             if (suicidetype == "Disconnect")
@@ -323,10 +360,10 @@ namespace SCPUtils
                 if (pluginInstance.Config.BroadcastSanctions)
                 {
                     if (admin.ReferenceHub.serverRoles.RemoteAdmin)
-                    if (admin.Sender.CheckPermission(PlayerPermissions.AdminChat))
-                    {
+                        if (admin.Sender.CheckPermission(PlayerPermissions.AdminChat))
+                        {
                             admin.Broadcast(12, text, Broadcast.BroadcastFlags.AdminChat, false);
-                    }
+                        }
                 }
             }
         }
@@ -425,17 +462,26 @@ namespace SCPUtils
 
 
         public void FixBanTime(SCPUtils.Player databasePlayer)
-        {          
+        {
             if (databasePlayer.SuicideDate.Count() != databasePlayer.Expire.Count())
-            {                
+            {
                 databasePlayer.Expire.Clear();
                 for (var i = 0; i < databasePlayer.SuicideDate.Count(); i++)
                 {
                     databasePlayer.Expire.Add(DateTime.MinValue);
                 }
-            }   
+            }
+
+            if (databasePlayer.SuicideDate.Count() != databasePlayer.RoundsBan.Count())
+            {
+                databasePlayer.RoundsBan.Clear();
+                for (var i = 0; i < databasePlayer.RoundsBan.Count(); i++)
+                {
+                    databasePlayer.RoundsBan.Add(0);
+                }
+            }
         }
-        
+
         public void CheckAccount(Exiled.API.Features.Player player)
         {
             Player databasePlayer = player.GetDatabasePlayer();
@@ -467,8 +513,8 @@ namespace SCPUtils
                 staffer.SendConsoleMessage(message.ToString(), "default");
             }
         }
-        
-        
+
+
         public void ChangeIP(Exiled.API.Features.Player player)
         {
             Player databasePlayer = player.GetDatabasePlayer();
@@ -501,6 +547,45 @@ namespace SCPUtils
             databasePlayer.Ip = player.IPAddress;
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
         }
+        public void ReplacePlayer(Exiled.API.Features.Player player)
+        {
+            Player databasePlayer = player.GetDatabasePlayer();
+
+
+            var list = Exiled.API.Features.Player.List.ToList();
+            list.Remove(player);
+            list.RemoveAll(x => x.IsScp);
+            list.RemoveAll(x => x.Role == RoleType.Tutorial);
+            if (list.Count() == 0)
+            {
+                Log.Info("[SCPUtils] Couldnt find a player to replace the banned one!");
+                return;
+            }
+            var id = UnityEngine.Random.Range(0, list.Count - 1);
+            var role = player.Role;      
+            ReplacePlayerEvent args = new ReplacePlayerEvent();
+            args.BannedPlayer = player;
+            args.ReplacedPlayer = list[id];
+            args.ScpRole = player.Role;
+            args.NormalRole = list[id].Role;          
+            player.SetRole(list[id].Role);
+            list[id].SetRole(role);          
+            pluginInstance.Events.OnReplacePlayerEvent(args);
+
+
+            databasePlayer.RoundBanLeft--;
+            if (pluginInstance.Config.RoundBanNotification.Show)
+            {
+                player.ClearBroadcasts();
+                var message = pluginInstance.Config.RoundBanSpawnNotification.Content;
+                message = message.Replace("%roundnumber%", databasePlayer.RoundBanLeft.ToString());
+                player.Broadcast(pluginInstance.Config.RoundBanSpawnNotification.Duration, message, pluginInstance.Config.RoundBanSpawnNotification.Type, false);
+            }
+
+        }
+
+
+
     }
 
 }

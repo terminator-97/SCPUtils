@@ -1,10 +1,6 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using LiteDB;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 //Command is here in case if you need convert playtime of all players inside database, you must edit the code for your needs. (example: if you change time format in the vps), this this is a DIY, to recompile the plugin you need publicized assembly c# and you must allow unsafe code.
 //Before doing anything make a copy of your database

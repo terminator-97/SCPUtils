@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
-using Exiled.API.Features;
 
 namespace SCPUtils.Commands
 {

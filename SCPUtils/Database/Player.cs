@@ -1,5 +1,4 @@
-﻿using Exiled.API.Features;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SCPUtils
@@ -14,6 +13,7 @@ namespace SCPUtils
         public int TotalScpGamesPlayed { get; set; }
         public int TotalScpSuicideKicks { get; set; }
         public int TotalScpSuicideBans { get; set; }
+        public int RoundBanLeft { get; set; }
         public DateTime FirstJoin { get; set; }
         public DateTime LastSeen { get; set; }
         public string ColorPreference { get; set; }
@@ -39,6 +39,7 @@ namespace SCPUtils
         public List<string> LogStaffer { get; set; } = new List<string>();
         public List<bool> UserNotified { get; set; } = new List<bool>();
         public List<DateTime> Expire { get; set; } = new List<DateTime>();
+        public List<int> RoundsBan { get; set; } = new List<int>();
 
 
         public void SetCurrentDayPlayTime()
@@ -49,7 +50,7 @@ namespace SCPUtils
             }
 
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
-          
+
         }
 
         public void Reset()
@@ -87,13 +88,13 @@ namespace SCPUtils
             }
             return false;
         }
-        
+
         public bool IsBanned()
         {
             var bans = BanHandler.GetBans(BanHandler.BanType.UserId);
             foreach (var playerban in bans)
             {
-                if (playerban.Id != Id +"@"+Authentication)
+                if (playerban.Id != Id + "@" + Authentication)
                     return false;
                 if (BanHandler.CheckExpiration(playerban, BanHandler.BanType.UserId))
                     return true;

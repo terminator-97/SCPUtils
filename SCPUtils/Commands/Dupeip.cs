@@ -1,10 +1,8 @@
-﻿using System;
+﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
+using System;
 using System.Linq;
 using System.Text;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using UnityEngine;
 
 namespace SCPUtils.Commands
 {
@@ -44,7 +42,7 @@ namespace SCPUtils.Commands
             {
                 message.AppendLine();
                 message.Append(
-                        $"Player: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>")
+                        $"Player: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nLast seen: <color=yellow>{ips.LastSeen}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>\nRound(s) ban left: <color=yellow>{ips.RoundBanLeft}</color>")
                     .AppendLine();
 
             }

@@ -14,7 +14,7 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(3, 0, 0);
+        public override Version Version { get; } = new Version(3, 1, 0);
         public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
@@ -50,11 +50,11 @@ namespace SCPUtils
         }
 
         public override void OnEnabled()
-        {       
+        {
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
             DatabasePlayerData = new Database(this);
-            Events = new Events.Events(this);            
+            Events = new Events.Events(this);
             EventHandlers.TemporarilyDisabledWarns = false;
             if (Config.EnableAutoRestart)
             {
@@ -96,7 +96,7 @@ namespace SCPUtils
             Functions = null;
             Functions.LastWarn.Clear();
             Database.LiteDatabase.Dispose();
-            Harmony.UnpatchAll();        
+            Harmony.UnpatchAll();
         }
 
 

@@ -50,7 +50,7 @@ namespace SCPUtils
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to open DB!\n{ex.ToString()}");
+                Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");                
             }
         }
 
@@ -73,6 +73,7 @@ namespace SCPUtils
                     TotalScpGamesPlayed = 0,
                     TotalScpSuicideKicks = 0,
                     TotalScpSuicideBans = 0,
+                    RoundBanLeft = 0,
                     FirstJoin = DateTime.Now,
                     LastSeen = DateTime.Now,
                     ColorPreference = "",

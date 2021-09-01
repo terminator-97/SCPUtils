@@ -63,8 +63,8 @@ namespace SCPUtils.Commands
                 {
                     BadgeSetEvent args = new BadgeSetEvent();
                     args.Player = player;
-                    args.NewBadgeName = badge;                   
-                   
+                    args.NewBadgeName = badge;
+
 
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {

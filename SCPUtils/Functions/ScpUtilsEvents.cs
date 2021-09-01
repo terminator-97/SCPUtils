@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCPUtils.Events
 {
@@ -17,6 +13,8 @@ namespace SCPUtils.Events
 
         public EventHandler<BadgeRemovedEvent> OnBadgeRemove { get; set; }
         public EventHandler<BadgeSetEvent> OnBadgeIsSet { get; set; }
+
+        public EventHandler<ReplacePlayerEvent> OnReplacePlayer { get; set; }
 
         public virtual void OnBadgeRemoved(BadgeRemovedEvent e)
         {
@@ -35,6 +33,15 @@ namespace SCPUtils.Events
                 handler(this, e);
             }
         }
+
+        public virtual void OnReplacePlayerEvent(ReplacePlayerEvent e)
+        {
+            EventHandler<ReplacePlayerEvent> handler = OnReplacePlayer;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
     }
 
     public class BadgeRemovedEvent : EventArgs
@@ -47,5 +54,13 @@ namespace SCPUtils.Events
     {
         public Exiled.API.Features.Player Player { get; set; }
         public string NewBadgeName { get; set; }
+    }
+
+    public class ReplacePlayerEvent : EventArgs
+    {
+        public Exiled.API.Features.Player BannedPlayer { get; set; }
+        public Exiled.API.Features.Player ReplacedPlayer { get; set; }
+        public RoleType ScpRole { get; set; }
+        public RoleType NormalRole { get; set; }
     }
 }

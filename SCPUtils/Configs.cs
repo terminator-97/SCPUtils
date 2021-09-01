@@ -24,7 +24,10 @@ namespace SCPUtils
         public bool AutoKickOnSCPSuicide { get; private set; } = true;
 
         [Description("Should SCPs be banned for quitting or suicide after a certain threshold?")]
-        public bool EnableSCPSuicideAutoBan { get; private set; } = true;
+        public bool EnableSCPSuicideAutoBan { get; private set; } = false;
+
+        [Description("Should SCPs be banned from playing again SCP (except 049-2) for X round after a certain threshold? If this is true EnableSCPSuicideAutoBan must be turned false")]
+        public bool EnableSCPSuicideSoftBan { get; private set; } = true;
 
         [Description("Should ban duration multiply after each ban for quit / suicide as SCP?")]
         public bool MultiplyBanDurationEachBan { get; private set; } = true;
@@ -63,9 +66,9 @@ namespace SCPUtils
         public bool IgnoreDntRequests { get; private set; } = false;
 
         [Description("Enable auto restart module?")]
-        public bool EnableAutoRestart { get; private set; } = false;      
+        public bool EnableAutoRestart { get; private set; } = false;
 
-        [Description("Autowarn message for suiciding as SCP")]     
+        [Description("Autowarn message for suiciding as SCP")]
 
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -107,7 +110,7 @@ namespace SCPUtils
 
         [Description("Which broadcast should be shown when a SCP die?")]
         public Exiled.API.Features.Broadcast ScpSuicideMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
-              
+
         [Description("Auto-restart time if there is only one player in server (if enabled)")]
         public ushort AutoRestartTime { get; private set; } = 15;
 
@@ -128,6 +131,9 @@ namespace SCPUtils
 
         [Description("SCP Suicide / Quit base ban duration (if enabled)")]
         public int AutoBanDuration { get; private set; } = 15;
+
+        [Description("SCP Suicide / Quit base number of auto-ban rounds (if enbaled)")]
+        public int AutoBanRoundsCount { get; private set; } = 2;
 
         [Description("Which is the max length of a nickname using change name command?")]
         public int NicknameMaxLength { get; private set; } = 32;
@@ -162,9 +168,16 @@ namespace SCPUtils
         [Description("Which message should be shown for offline warns when a player rejoin?")]
         public Exiled.API.Features.Broadcast OfflineWarnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
+        [Description("Which message should be shown to a player when he gets banned from playing SCP?")]
+        public Exiled.API.Features.Broadcast RoundBanNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>You have been banned:</color>\n<color=yellow><size=27>You have been banned from playing SCP. You are excluded from playing SCP %roundnumber% rounds due your past offences!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("Which message should be shown to a player when he spawns as SCP while being banned and replaced with another player?")]
+        public Exiled.API.Features.Broadcast RoundBanSpawnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>You're SCP banned:</color>\n<color=yellow><size=27>You have been removed as SCP because you're currently SCP-Banned! You must be replaced other %roundnumber% time(s) before you will be able to play SCP again!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
+
         [Description("Which time of the day the server should autorestart?")]
 
         public string AutoRestartTimeTask { get; private set; } = "1:35:0";
+
 
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
@@ -232,21 +245,21 @@ namespace SCPUtils
            { DamageTypes.Scp018.Name.ToUpper(), DamageTypes.Scp018.Name.ToUpper() }, { DamageTypes.Scp049.Name.ToUpper(), DamageTypes.Scp049.Name.ToUpper() }, { DamageTypes.Scp0492.Name.ToUpper(), DamageTypes.Scp0492.Name.ToUpper() }, { DamageTypes.Scp096.Name.ToUpper(), DamageTypes.Scp096.Name.ToUpper() },
            { DamageTypes.Scp106.Name.ToUpper(), DamageTypes.Scp106.Name.ToUpper() }, { DamageTypes.Scp173.Name.ToUpper(), DamageTypes.Scp173.Name.ToUpper() }, { DamageTypes.Scp207.Name.ToUpper(), DamageTypes.Scp207.Name.ToUpper() }, { DamageTypes.Scp939.Name.ToUpper(), DamageTypes.Scp939.Name.ToUpper() },
            { DamageTypes.Shotgun.Name.ToUpper(), DamageTypes.Shotgun.Name.ToUpper() }, { DamageTypes.Tesla.Name.ToUpper(), DamageTypes.Tesla.Name.ToUpper() } };
-      
-       
+
+
         [Description("The command name for the unwarn command")]
-        public string UnwarnCommand {get; set;} = "scputils_player_unwarn";
+        public string UnwarnCommand { get; set; } = "scputils_player_unwarn";
 
         [Description("The aliases for the unwarn command")]
-        public string[] UnwarnCommandAliases {get; set;} = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+        public string[] UnwarnCommandAliases { get; set; } = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
         [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
-        
-        public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; }= new Exiled.API.Features.Broadcast(
+
+        public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; } = new Exiled.API.Features.Broadcast(
             "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has entered with <color=yellow>{accountNumber}</color> accounts</size>\n<size=30>Check console pressing <color=yellow>ò</color></size>",
             10);
 
         [Description("Broadcast to send to all online staff when player change IP")]
-        public Exiled.API.Features.Broadcast AlertStaffBroadcastChangeIP { get; private set; }= new Exiled.API.Features.Broadcast(
+        public Exiled.API.Features.Broadcast AlertStaffBroadcastChangeIP { get; private set; } = new Exiled.API.Features.Broadcast(
             "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has changed IP. <color=yellow>{oldIP}</color> to <color=yellow>{newIP}</color></size>\n<size=35>Check console pressing <color=yellow>ò</color></size>",
             10);
 
@@ -279,6 +292,12 @@ namespace SCPUtils
             {
                 Log.Warn("You have set in server configs to ignore Do Not Track requests but that's a violation on Verified Server Rules (if your server is verified) and could cause punishement such as delist [Rule 8.11]");
             }
+
+            if (EnableSCPSuicideSoftBan)
+            {
+                EnableSCPSuicideAutoBan = false;
+            }
+
             if (!IsEnabled)
             {
                 Log.Warn("You disabled the plugin in server configs!");

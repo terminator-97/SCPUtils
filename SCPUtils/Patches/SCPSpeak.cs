@@ -11,7 +11,7 @@ namespace SCPUtils
     {
 
         public static void Prefix(DissonanceUserSetup __instance, bool value)
-        {          
+        {
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(__instance.gameObject);
             if (string.IsNullOrEmpty(player?.UserId) || player.Team != Team.SCP)
             {
