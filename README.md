@@ -21,11 +21,12 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
 - **SCP-096 Target:** Players gets notified via hint when they become a SCP-096 Target.
 - **Last Player:** Players gets notified via hint when they are the last player of the Team.
+- **Custom Hints / Broadcast:** You can save hints / broadcasts in the database and use them easily by the ID.
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 3.0.0.alpha77 and LiteDB 5.0.9**
+**Minimum requirements: Exiled version: 3.0.0.alpha80 and LiteDB 5.0.9**
 
 
 ### Configs:
@@ -65,10 +66,13 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_player_warnings | <userid / id> | scputils.showwarns | Show all scputils warnings of a specific player |
 | scputils_player_warning | <userid / id> | scputils.showwarns | Show last scputils warning of a specific player |
 | scputils_player_unwarn | <userid / id> <warn id> | scputils.unwarn | Removes a specific warning from a user |
-| scputils_player_broadcast | <userid / id> <broadcast/hint> <text> | scputils.broadcast | Send an hint or broadcast to a specific player |
-| scputils_broadcast | <broadcast/hint> <text>  | scputils.broadcast | Send an hint or broadcast to all players |
+| scputils_player_broadcast | <userid / id> <broadcast/hint> <id> <duration (optional> | scputils.broadcast | Send an hint or broadcast to a specific player |
+| scputils_broadcast | <broadcast/hint> <id> <duration (optional>  | scputils.broadcast | Send an hint or broadcast to all players |
 | scputils_set_round_ban | <id / userid> <amount> | scputils.roundban  | Sets the number of round ban to one player |
 | scputils_dupeip | < id / userid > | scputils.dupeip | Check if player has another account on same IP |
+| scputils_broadcast_create | <id> <duration> <text> | scputils.broadcastcreate | Create a custom broadcast |
+| scputils_broadcast_delete | <id> | scputils.broadcastdelete | Delete a custom broadcast |
+| scputils_broadcast_list | none | scputils.broadcastlist | List all created broadcast |
 
 **Console commands**
 

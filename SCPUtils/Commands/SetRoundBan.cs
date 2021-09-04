@@ -1,14 +1,13 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
-using System.Collections.Generic;
 
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class SetRoundBan : ICommand
-    {       
+    {
         public string Command { get; } = "scputils_set_round_ban";
 
         public string[] Aliases { get; } = new[] { "srb", "roundban", "su_srb", "su_roundban" };
@@ -18,13 +17,13 @@ namespace SCPUtils.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             string target;
-            
+
             if (!sender.CheckPermission("scputils.roundban"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
 
-             
+
             }
 
             if (arguments.Count < 2)
@@ -32,8 +31,8 @@ namespace SCPUtils.Commands
                 response = $"<color=yellow>Usage: {Command} <player name/id> <Round bans to set> </color>";
                 return false;
             }
-            else target = arguments.Array[1].ToString();                
-            
+            else target = arguments.Array[1].ToString();
+
 
             Player databasePlayer = target.GetDatabasePlayer();
 

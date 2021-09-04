@@ -19,7 +19,7 @@ namespace SCPUtils
         public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.Config.DatabaseFolder), pluginInstance.Config.DatabaseName);
         public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
-
+        public static Dictionary<string, Broadcast> Broadcast = new Dictionary<string, Broadcast>();
 
         public void CreateDatabase()
         {
@@ -46,13 +46,39 @@ namespace SCPUtils
                 LiteDatabase = new LiteDatabase(DatabaseFullPath);
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
+                LiteDatabase.GetCollection<BroadcastDb>().EnsureIndex(x => x.Id);
                 Log.Info("DB Loaded!");
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");                
+                Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");
             }
         }
+
+        public void AddBroadcast(string id, string nickname, int seconds, string text)
+        {
+            try
+            {
+                if (LiteDatabase.GetCollection<BroadcastDb>().Exists(x => x.Id == id))
+                {
+                    return;
+                }
+
+
+                LiteDatabase.GetCollection<BroadcastDb>().Insert(new BroadcastDb()
+                {
+                    Id = id,
+                    CreatedBy = nickname,
+                    Seconds = seconds,
+                    Text = text
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Cannot create the broadcast!\n{ex.ToString()}");
+            }
+        }
+
 
         public void AddPlayer(Exiled.API.Features.Player player)
         {

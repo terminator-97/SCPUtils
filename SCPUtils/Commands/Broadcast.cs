@@ -11,13 +11,12 @@ namespace SCPUtils.Commands
     {
         public string Command { get; } = "scputils_broadcast";
 
-        public string[] Aliases { get; } = new[] { "sbc", "gbc", "su_bc", "scpu_bc" };
+        public string[] Aliases { get; } = new[] { "sbc", "su_bc", "scpu_bc" };
 
         public string Description { get; } = "Allows to send custom broadcastes";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            string broadcast;
             if (!sender.CheckPermission("scputils.broadcast"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
@@ -26,23 +25,39 @@ namespace SCPUtils.Commands
 
             else if (arguments.Count < 2)
             {
-                response = $"<color=yellow>Usage: {Command} <hint/broadcast> <text></color>";
+                response = $"<color=yellow>Usage: {Command} <hint(h)/broadcast(bc)> <id> <duration (optional, if empty will be used the default one set for this broadcast)></color>";
                 return false;
             }
             else
             {
-                broadcast = string.Join(" ", arguments.Array, 2, arguments.Array.Length - 2);
+                var databaseBroadcast = GetBroadcast.FindBroadcast(arguments.Array[2]);
+
+                if (databaseBroadcast == null)
+                {
+                    response = "Invalid broadcast ID!";
+                    return false;
+                }
+                int duration = databaseBroadcast.Seconds;
+                if (arguments.Count == 3)
+                {
+                    if (int.TryParse(arguments.Array[3].ToString(), out duration)) { }
+                    else
+                    {
+                        response = "Broadcast duration must be an integer";
+                        return false;
+                    }
+                }
 
                 switch (arguments.Array[1].ToString())
                 {
                     case "broadcast":
                     case "bc":
-                        Map.Broadcast(ScpUtils.StaticInstance.Config.BroadcastDuration, broadcast);
+                        Map.Broadcast((ushort)duration, databaseBroadcast.Text);
                         response = "Sending broadcast to all the players!";
                         break;
                     case "hint":
                     case "h":
-                        Map.ShowHint(broadcast, ScpUtils.StaticInstance.Config.BroadcastDuration);
+                        Map.ShowHint(databaseBroadcast.Text, duration);
                         response = "Sending hint to all the players!";
                         break;
                     default:

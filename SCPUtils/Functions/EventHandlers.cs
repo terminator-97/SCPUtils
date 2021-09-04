@@ -1,11 +1,11 @@
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
+using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Features = Exiled.API.Features;
 using Round = Exiled.API.Features.Round;
-using MEC;
 
 namespace SCPUtils
 {
@@ -39,10 +39,10 @@ namespace SCPUtils
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
 
-                    if (ev.HitInformation.Tool == DamageTypes.Tesla || (ev.HitInformation.Tool == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.Tool== DamageTypes.Grenade && ev.Killer == ev.Target))
-                    {                      
-                        pluginInstance.Functions.LogWarn(ev.Target, ev.HitInformation.Tool.Name);                       
-                        pluginInstance.Functions.OnQuitOrSuicide(ev.Target);                       
+                    if (ev.HitInformation.Tool == DamageTypes.Tesla || (ev.HitInformation.Tool == DamageTypes.Wall && ev.HitInformation.Amount >= 50000) || (ev.HitInformation.Tool == DamageTypes.Grenade && ev.Killer == ev.Target))
+                    {
+                        pluginInstance.Functions.LogWarn(ev.Target, ev.HitInformation.Tool.Name);
+                        pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                     }
                     else if ((ev.HitInformation.Tool == DamageTypes.Wall && ev.HitInformation.Amount == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide)
                     {
@@ -191,7 +191,7 @@ namespace SCPUtils
                 databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];
                 PreauthTime.Remove(ev.Player.UserId);
             }
-            else databasePlayer.LastSeen = DateTime.Now;           
+            else databasePlayer.LastSeen = DateTime.Now;
             databasePlayer.Name = ev.Player.Nickname;
             var sameIP = Database.LiteDatabase.GetCollection<Player>().FindAll().Where(x => x.Ip == databasePlayer.Ip).ToList();
             if (databasePlayer.Ip != ev.Player.IPAddress)
@@ -234,7 +234,7 @@ namespace SCPUtils
 
                 }
                 else ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
-                
+
 
             }
         }

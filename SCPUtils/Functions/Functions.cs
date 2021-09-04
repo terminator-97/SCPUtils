@@ -49,24 +49,24 @@ namespace SCPUtils
         {
             int rounds;
             Player databasePlayer = player.GetDatabasePlayer();
-            databasePlayer.TotalScpSuicideBans++;            
-            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Round-Ban";           
+            databasePlayer.TotalScpSuicideBans++;
+            databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Round-Ban";
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true)
             {
-                rounds = databasePlayer.TotalScpSuicideBans * pluginInstance.Config.AutoBanRoundsCount;                
+                rounds = databasePlayer.TotalScpSuicideBans * pluginInstance.Config.AutoBanRoundsCount;
             }
             else
             {
                 rounds = pluginInstance.Config.AutoBanDuration;
-             
-            }         
+
+            }
             if (pluginInstance.Config.BroadcastSanctions)
-            {              
+            {
                 BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
                 if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has suicided while having an active ban!</color>");
-            }          
+            }
             databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count() - 1] = rounds;
-            databasePlayer.RoundBanLeft += rounds;          
+            databasePlayer.RoundBanLeft += rounds;
             if (pluginInstance.Config.RoundBanNotification.Show)
             {
                 player.ClearBroadcasts();
@@ -78,7 +78,7 @@ namespace SCPUtils
         }
 
         public void AutoBanPlayer(Exiled.API.Features.Player player)
-        {            
+        {
             int duration;
             Player databasePlayer = player.GetDatabasePlayer();
             databasePlayer.TotalScpSuicideBans++;
@@ -562,14 +562,14 @@ namespace SCPUtils
                 return;
             }
             var id = UnityEngine.Random.Range(0, list.Count - 1);
-            var role = player.Role;      
+            var role = player.Role;
             ReplacePlayerEvent args = new ReplacePlayerEvent();
             args.BannedPlayer = player;
             args.ReplacedPlayer = list[id];
             args.ScpRole = player.Role;
-            args.NormalRole = list[id].Role;          
+            args.NormalRole = list[id].Role;
             player.SetRole(list[id].Role);
-            list[id].SetRole(role);          
+            list[id].SetRole(role);
             pluginInstance.Events.OnReplacePlayerEvent(args);
 
 

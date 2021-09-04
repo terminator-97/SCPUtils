@@ -15,8 +15,7 @@ namespace SCPUtils.Commands
         public string Description { get; } = "Allows to send custom broadcaste";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            string broadcast;
+        {           
             if (!sender.CheckPermission("scputils.broadcast"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
@@ -25,28 +24,47 @@ namespace SCPUtils.Commands
 
             else if (arguments.Count < 3)
             {
-                response = $"<color=yellow>Usage: {Command} <player> <hint/broadcast> <text></color>";
+                response = $"<color=yellow>Usage: {Command} <player> <hint(h)/broadcast(bc)> <id> <duration (optional, if empty will be used the default one set for this broadcast)></color>";
                 return false;
             }
             else
             {
-                broadcast = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
+                var databaseBroadcast = GetBroadcast.FindBroadcast(arguments.Array[3]);
+
+                if (databaseBroadcast == null)
+                {
+                    response = "Invalid broadcast ID!";
+                    return false;
+                }
+
                 Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(arguments.Array[1].ToString());
                 if (player == null)
                 {
                     response = "Invalid player!";
                     return false;
                 }
+
+                int duration = databaseBroadcast.Seconds;
+                if (arguments.Count == 4)
+                {
+                    if (int.TryParse(arguments.Array[4].ToString(), out duration)) { }
+                    else
+                    {
+                        response = "Broadcast duration must be an integer";
+                        return false;
+                    }
+                }
+
                 switch (arguments.Array[2].ToString())
                 {
                     case "broadcast":
                     case "bc":
-                        player.Broadcast(ScpUtils.StaticInstance.Config.BroadcastDuration, broadcast, global::Broadcast.BroadcastFlags.Normal, false);
+                        player.Broadcast((ushort)duration, databaseBroadcast.Text, global::Broadcast.BroadcastFlags.Normal, false);
                         response = "Success!";
                         break;
                     case "hint":
                     case "h":
-                        player.ShowHint(broadcast, ScpUtils.StaticInstance.Config.BroadcastDuration);
+                        player.ShowHint(databaseBroadcast.Text, duration);
                         response = "Success!";
                         break;
                     default:

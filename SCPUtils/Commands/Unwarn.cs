@@ -86,7 +86,7 @@ namespace SCPUtils.Commands
                         BanHandler.RemoveBan(databasePlayer.Ip, BanHandler.BanType.IP);
                     }
                     break;
-                    case "Round-Ban":
+                case "Round-Ban":
                     databasePlayer.ScpSuicideCount--;
                     databasePlayer.TotalScpSuicideBans--;
                     databasePlayer.SuicidePunishment[id] = "REMOVED";
@@ -95,10 +95,10 @@ namespace SCPUtils.Commands
 
                     databasePlayer.RoundBanLeft -= databasePlayer.RoundsBan[id];
                     if (databasePlayer.RoundBanLeft < 0) databasePlayer.RoundBanLeft = 0;
-                      
+
 
                     Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-                   
+
                     break;
                 case "REMOVED":
                     message = "This sanction has already been removed!";

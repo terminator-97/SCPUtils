@@ -50,31 +50,28 @@
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.API, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.API.dll</HintPath>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.API.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Bootstrap, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.Bootstrap.dll</HintPath>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.Bootstrap.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CreditTags, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.CreditTags.dll</HintPath>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.CreditTags.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CustomItems, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.CustomItems.dll</HintPath>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.CustomItems.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Events, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.Events.dll</HintPath>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Loader, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.Loader.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.Loader.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Permissions, Version=3.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.Permissions.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.3.0.0-alpha.77\lib\net472\Exiled.Updater.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EXILED.3.0.0-alpha.80\lib\net472\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="LiteDB, Version=5.0.9.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.9\lib\net45\LiteDB.dll</HintPath>
@@ -105,7 +102,10 @@
     <Compile Include="Commands\AsnUnwhitelist.cs" />
     <Compile Include="Commands\AsnWhitelist.cs" />
     <Compile Include="Commands\Broadcast.cs" />
+    <Compile Include="Commands\BroadcastList.cs" />
     <Compile Include="Commands\Convert.cs" />
+    <Compile Include="Commands\CreateBroadcast.cs" />
+    <Compile Include="Commands\DeleteBroadcast.cs" />
     <Compile Include="Commands\Dupeip.cs" />
     <Compile Include="Commands\OnlineList.cs" />
     <Compile Include="Commands\PermissionsView.cs" />
@@ -136,6 +136,8 @@
     <Compile Include="Commands\StaffList.cs" />
     <Compile Include="Commands\Unwarn.cs" />
     <Compile Include="Configs.cs" />
+    <Compile Include="Database\BroadcastDb.cs" />
+    <Compile Include="Database\GetBroadcast.cs" />
     <Compile Include="Functions\ScpUtilsEvents.cs" />
     <Compile Include="Patches\SCPSpeak.cs" />
     <Compile Include="Database\Database.cs" />
