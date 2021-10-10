@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Text;
 
+//Don't use it when there are players online, it may cause lag for some seconds.
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -26,7 +27,7 @@ namespace SCPUtils.Commands
             }
             if (arguments.Count != 1)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                response = $"<color=yellow>Usage: {Command} <player name/id> [Command may cause lag]</color>";
                 return false;
             }
             string targetName = arguments.Array[1];

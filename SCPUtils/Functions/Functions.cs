@@ -489,8 +489,7 @@ namespace SCPUtils
                 new StringBuilder(
                         $"<color=green>[Accounts associated with the same IP ({databasePlayer.Ip} - {databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>")
                     .AppendLine();
-            var accounts = Database.LiteDatabase.GetCollection<Player>().FindAll()
-                .Where(ip => ip.Ip == databasePlayer.Ip).ToList();
+            var accounts = Database.LiteDatabase.GetCollection<Player>().Find(ip => ip.Ip == databasePlayer.Ip).ToList();
             foreach (var ips in accounts)
             {
                 message.AppendLine();
@@ -513,7 +512,8 @@ namespace SCPUtils
                 staffer.SendConsoleMessage(message.ToString(), "default");
             }
         }
-
+        /*
+        Has to be redone
 
         public void ChangeIP(Exiled.API.Features.Player player)
         {
@@ -547,6 +547,7 @@ namespace SCPUtils
             databasePlayer.Ip = player.IPAddress;
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
         }
+        */
         public void ReplacePlayer(Exiled.API.Features.Player player)
         {
             Player databasePlayer = player.GetDatabasePlayer();

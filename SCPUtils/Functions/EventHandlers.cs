@@ -193,12 +193,17 @@ namespace SCPUtils
             }
             else databasePlayer.LastSeen = DateTime.Now;
             databasePlayer.Name = ev.Player.Nickname;
-            var sameIP = Database.LiteDatabase.GetCollection<Player>().FindAll().Where(x => x.Ip == databasePlayer.Ip).ToList();
-            if (databasePlayer.Ip != ev.Player.IPAddress)
-                pluginInstance.Functions.ChangeIP(ev.Player);
+            databasePlayer.Ip = ev.Player.IPAddress;
 
-            if (sameIP.Count > 1)
-                pluginInstance.Functions.CheckAccount(ev.Player);
+
+            //Disabled that feature, it cause a lot of lag when a player join, will change it in a future update
+
+            /*  var sameIP = Database.LiteDatabase.GetCollection<Player>().FindAll().Where(x => x.Ip == databasePlayer.Ip).ToList();
+              if (databasePlayer.Ip != ev.Player.IPAddress)
+                  pluginInstance.Functions.ChangeIP(ev.Player);
+
+              if (sameIP.Count > 1)
+                  pluginInstance.Functions.CheckAccount(ev.Player);*/
 
             if (databasePlayer.FirstJoin == DateTime.MinValue)
             {

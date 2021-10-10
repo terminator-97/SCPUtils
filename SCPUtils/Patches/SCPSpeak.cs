@@ -2,30 +2,33 @@
 using Exiled.Permissions.Extensions;
 using HarmonyLib;
 using System.Linq;
-
+using PlayableScps;
+using PlayableScps.Messages;
+using Mirror;
 
 namespace SCPUtils
 {
-    [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.UserCode_CmdAltIsActive))]
+    [HarmonyPatch(typeof(Scp939), nameof(Scp939.ServerReceivedVoiceMsg))]
     public class SCPSpeak
     {
 
-        public static void Prefix(DissonanceUserSetup __instance, bool value)
+        public static bool Prefix(NetworkConnection conn, Scp939VoiceMessage msg)
         {
-            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(__instance.gameObject);
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(conn.identity.netId);
             if (string.IsNullOrEmpty(player?.UserId) || player.Team != Team.SCP)
             {
-                return;
+                return false;
             }
-            else if (ScpUtils.StaticInstance.Config.AllowedScps.Contains(player.Role)) { __instance.MimicAs939 = value; return; }
+            else if (ScpUtils.StaticInstance.Config.AllowedScps.Contains(player.Role)) { return player.ReferenceHub.dissonanceUserSetup.MimicAs939 = msg.IsMimicking; }
             else if (string.IsNullOrEmpty(ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.ReferenceHub.serverRoles.Group).Key) && !string.IsNullOrEmpty(player.ReferenceHub.serverRoles.MyText))
             {
-                return;
+                return false;
             }
             else if (player.CheckPermission($"scputils_speak.{player.Role.ToString().ToLower()}"))
             {
-                __instance.MimicAs939 = value;
+                return player.ReferenceHub.dissonanceUserSetup.MimicAs939 = msg.IsMimicking;
             }
+            else return false;
         }
     }
 }
