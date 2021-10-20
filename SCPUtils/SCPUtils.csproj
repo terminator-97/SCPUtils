@@ -91,6 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Mirror.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -150,7 +153,9 @@
     <Compile Include="Database\BroadcastDb.cs" />
     <Compile Include="Database\DatabaseIp.cs" />
     <Compile Include="Database\GetBroadcast.cs" />
+    <Compile Include="Database\GetIp.cs" />
     <Compile Include="Functions\ScpUtilsEvents.cs" />
+    <Compile Include="Functions\Webhook.cs" />
     <Compile Include="Patches\SCPSpeak.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\DatabasePlayer.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SCPUtils.Events
 {
@@ -15,6 +16,8 @@ namespace SCPUtils.Events
         public EventHandler<BadgeSetEvent> OnBadgeIsSet { get; set; }
 
         public EventHandler<ReplacePlayerEvent> OnReplacePlayer { get; set; }
+
+        public EventHandler<MultiAccountEvent> OnMultiAccount { get; set; }
 
         public virtual void OnBadgeRemoved(BadgeRemovedEvent e)
         {
@@ -42,6 +45,15 @@ namespace SCPUtils.Events
                 handler(this, e);
             }
         }
+
+        public virtual void OnMultiAccountEvent(MultiAccountEvent e)
+        {
+            EventHandler<MultiAccountEvent> handler = OnMultiAccount;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
     }
 
     public class BadgeRemovedEvent : EventArgs
@@ -62,5 +74,11 @@ namespace SCPUtils.Events
         public Exiled.API.Features.Player ReplacedPlayer { get; set; }
         public RoleType ScpRole { get; set; }
         public RoleType NormalRole { get; set; }
+    }
+
+    public class MultiAccountEvent : EventArgs
+    {
+        public Exiled.API.Features.Player Player;
+        public List<string> UserIds;
     }
 }

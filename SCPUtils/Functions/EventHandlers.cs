@@ -180,6 +180,13 @@ namespace SCPUtils
             }
 
             Player databasePlayer = ev.Player.GetDatabasePlayer();
+
+            if (!Database.LiteDatabase.GetCollection<DatabaseIp>().Exists(alias => alias.Ip == DatabasePlayer.GetRawUserId(ev.Player.IPAddress)))
+            {
+                pluginInstance.DatabasePlayerData.AddIp(ev.Player.IPAddress, ev.Player.UserId, ev.Player.ReferenceHub.characterClassManager.Asn);
+            }
+           
+
             if (Database.PlayerData.ContainsKey(ev.Player))
             {
                 return;
@@ -225,6 +232,8 @@ namespace SCPUtils
             {
                 pluginInstance.Functions.PostLoadPlayer(ev.Player);
             }
+
+            pluginInstance.Functions.IpCheck(ev.Player);
         }
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)

@@ -16,6 +16,7 @@ namespace SCPUtils
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
+
         public Functions(ScpUtils pluginInstance)
         {
             this.pluginInstance = pluginInstance;
@@ -585,8 +586,62 @@ namespace SCPUtils
 
         }
 
+        public void IpCheck(Exiled.API.Features.Player player)
+        {
+            //    DatabaseIp databaseIp = player.IPAddress.
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
+            databaseIp.Asn = player.ReferenceHub.characterClassManager.Asn;
+            if (!databaseIp.UserIds.Contains(player.UserId))
+            {
+                databaseIp.UserIds.Add(player.UserId);
+                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);
+            }
+            CheckIp(player);
+        }
 
+
+        public void CheckIp(Exiled.API.Features.Player player)
+        {
+
+
+            //   pluginInstance.Discord.SendMessage($"Mute evasion detected! Userid of muted user: 89435734678345745@terminator97 \n Player: {player.Nickname} Id: {player.Id} Userid: {player.UserId}");
+            DiscordWebHook.Message("4656783465546845@terminator97", player);
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
+            if (databaseIp.UserIds.Count() > 1)
+            {
+                MultiAccountEvent args = new MultiAccountEvent();
+                args.Player = player;
+                args.UserIds = databaseIp.UserIds;
+                pluginInstance.Events.OnMultiAccountEvent(args);
+
+                foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
+                {
+                    if (pluginInstance.Config.AlertStaffBroadcastMultiAccount.Show)
+                    {
+                        staffer.ClearBroadcasts();
+                        staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastMultiAccount.Duration,
+                            pluginInstance.Config.AlertStaffBroadcastMultiAccount.Content
+                                .Replace("{player}", player.Nickname + " " + player.UserId + " " + player.Id)
+                                .Replace("{accountNumber}", databaseIp.UserIds.Count().ToString()));
+                    }
+                }
+
+                foreach (var userId in databaseIp.UserIds)
+                {
+
+                    if (MuteHandler.QueryPersistentMute(player.UserId))
+                    {
+                        DiscordWebHook.Message(userId, player);
+                        foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
+                        {
+                            staffer.Broadcast(20, $"<color=red>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}");
+                        }
+                        if (pluginInstance.Config.AutoMute) player.IsMuted = true;
+                    }
+
+                }
+            }
+        }
 
     }
-
 }

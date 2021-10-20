@@ -68,6 +68,9 @@ namespace SCPUtils
         [Description("Enable auto restart module?")]
         public bool EnableAutoRestart { get; private set; } = false;
 
+        [Description("Automute player if evasion is detected?")]
+        public bool AutoMute { get; private set; } = false;
+
         [Description("Autowarn message for suiciding as SCP")]
 
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
@@ -104,6 +107,12 @@ namespace SCPUtils
 
         [Description("In which folder database should be stored?")]
         public string DatabaseFolder { get; private set; } = "EXILED";
+
+        [Description("Discord webhook url for mute evasion reports")]
+        public string WebhookUrl { get; private set; } = "None";
+
+        [Description("Discord webhook bot nickname")]
+        public string WebhookNickname { get; private set; } = "The Frontman";
 
         [Description("Which broadcast should be shown when a SCP die?")]
         public Exiled.API.Features.Broadcast ScpDeathMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);

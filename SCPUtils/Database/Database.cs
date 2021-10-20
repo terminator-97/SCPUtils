@@ -47,6 +47,7 @@ namespace SCPUtils
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
                 LiteDatabase.GetCollection<BroadcastDb>().EnsureIndex(x => x.Id);
+                LiteDatabase.GetCollection<DatabaseIp>().EnsureIndex(x => x.Ip);
                 Log.Info("DB Loaded!");
             }
             catch (Exception ex)
@@ -76,6 +77,29 @@ namespace SCPUtils
             catch (Exception ex)
             {
                 Log.Error($"Cannot create the broadcast!\n{ex.ToString()}");
+            }
+        }
+
+        public void AddIp(string ip, string uid, string asn)
+        {
+            try
+            {
+                if (LiteDatabase.GetCollection<DatabaseIp>().Exists(x => x.Ip == ip))
+                {
+                    return;
+                }
+
+
+                LiteDatabase.GetCollection<DatabaseIp>().Insert(new DatabaseIp()
+                {
+                    Ip = ip,
+                    UserIds = new List<string>() { uid },
+                    Asn = asn
+                }); 
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Cannot add new IP!\n{ex.ToString()}");
             }
         }
 
