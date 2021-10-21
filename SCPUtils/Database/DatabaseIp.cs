@@ -4,11 +4,7 @@ namespace SCPUtils
 {
     public class DatabaseIp
     {
-        public string Ip { get; set; }
-        public List<string> UserIds { get; set; } = new List<string>();      
-        public string Asn;
+        public string Id { get; set; }
+        public List<string> UserIds { get; set; } = new List<string>();       
     }
 }
-
-
-// For future use

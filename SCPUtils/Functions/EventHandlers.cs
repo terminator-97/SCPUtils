@@ -181,11 +181,11 @@ namespace SCPUtils
 
             Player databasePlayer = ev.Player.GetDatabasePlayer();
 
-            if (!Database.LiteDatabase.GetCollection<DatabaseIp>().Exists(alias => alias.Ip == DatabasePlayer.GetRawUserId(ev.Player.IPAddress)))
+            if (!Database.LiteDatabase.GetCollection<DatabaseIp>().Exists(alias => alias.Id == DatabasePlayer.GetRawUserId(ev.Player.IPAddress)))
             {
-                pluginInstance.DatabasePlayerData.AddIp(ev.Player.IPAddress, ev.Player.UserId, ev.Player.ReferenceHub.characterClassManager.Asn);
+                pluginInstance.DatabasePlayerData.AddIp(ev.Player.IPAddress, ev.Player.UserId);
             }
-           
+
 
             if (Database.PlayerData.ContainsKey(ev.Player))
             {
@@ -201,7 +201,6 @@ namespace SCPUtils
             else databasePlayer.LastSeen = DateTime.Now;
             databasePlayer.Name = ev.Player.Nickname;
             databasePlayer.Ip = ev.Player.IPAddress;
-
 
             //Disabled that feature, it cause a lot of lag when a player join, will change it in a future update
 

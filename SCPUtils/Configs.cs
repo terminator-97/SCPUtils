@@ -71,8 +71,10 @@ namespace SCPUtils
         [Description("Automute player if evasion is detected?")]
         public bool AutoMute { get; private set; } = false;
 
-        [Description("Autowarn message for suiciding as SCP")]
+        [Description("Should a broadcast appear in case of multiaccount?")]
+        public bool MultiAccountBroadcast { get; private set; } = false;
 
+        [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Welcome message (if enabled)")]
@@ -164,6 +166,9 @@ namespace SCPUtils
 
         [Description("Which ASNs should be blacklisted? Players to connect from blacklisted ASN should be whitelisted via scputils_whitelist_asn command (50889 is geforce now ASN)")]
         public List<string> ASNBlacklist { get; private set; } = new List<string>() { "50889" };
+
+        [Description("Which ASNs should be ignored in multi-account detector? (50889 is geforce now ASN)")]
+        public List<string> ASNWhiteslistMultiAccount { get; private set; } = new List<string>() { "50889" };
 
         [Description("Which message non-whitelisted players should get while connecting from blacklisted ASN?")]
         public string AsnKickMessage { get; private set; } = "The ASN you are connecting from is blacklisted from this server, please contact server staff to request to being whitelisted";

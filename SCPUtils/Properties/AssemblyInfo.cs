@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SCPUtils")]
-[assembly: AssemblyDescription("SCPUtils 3.3.0 (Alpha) - https://github.com/terminator-97/SCPUtils")]
+[assembly: AssemblyDescription("SCPUtils 3.3.0 - https://github.com/terminator-97/SCPUtils")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SCPUtils")]

@@ -1,10 +1,9 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
-using System.Linq;
 using System.Text;
 
-//Don't use it when there are players online, it may cause lag for some seconds.
+
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -32,20 +31,32 @@ namespace SCPUtils.Commands
             }
             string targetName = arguments.Array[1];
             Player databasePlayer = targetName.GetDatabasePlayer();
+
             if (databasePlayer == null)
             {
                 response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
                 return false;
             }
+            var databaseIp = GetIp.GetIpAddress(databasePlayer.Ip);
+            if (databaseIp == null)
+            {
+                response = "<color=yellow>Invalid IP!</color>";
+                return false;
+            }
 
             StringBuilder message = new StringBuilder($"<color=green>[Accounts associated with the same IP ({databasePlayer.Ip} - {databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>").AppendLine();
-            foreach (var ips in Database.LiteDatabase.GetCollection<Player>().FindAll().Where(ip => ip.Ip == databasePlayer.Ip).ToList())
+            foreach (var userId in databaseIp.UserIds)
             {
-                message.AppendLine();
-                message.Append(
-                        $"Player: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nLast seen: <color=yellow>{ips.LastSeen}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>\nRound(s) ban left: <color=yellow>{ips.RoundBanLeft}</color>")
-                    .AppendLine();
+                var databasePlayer2 = DatabasePlayer.GetDatabasePlayer(userId);
+                if (databasePlayer2 != null)
+                {
 
+                    message.AppendLine();
+                    message.Append(
+                            $"Player: <color=yellow>{databasePlayer2.Name} ({databasePlayer2.Id}@{databasePlayer2.Authentication})</color>\nFirst Join: <color=yellow>{databasePlayer2.FirstJoin}</color>\nLast seen: <color=yellow>{databasePlayer2.LastSeen}</color>\nIsRestricted: <color=yellow>{databasePlayer2.IsRestricted()}</color>\nIsBanned: <color=yellow>{databasePlayer2.IsBanned()}</color>\nMuted: <color=yellow>{MuteHandler.QueryPersistentMute(userId)}</color>\nTotal played as SCP: <color=yellow>{databasePlayer2.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{databasePlayer2.ScpSuicideCount}</color>\nRound(s) ban left: <color=yellow>{databasePlayer2.RoundBanLeft}</color>")
+                        .AppendLine();
+
+                }
             }
             response = message.ToString();
             return true;

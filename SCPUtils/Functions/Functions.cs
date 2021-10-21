@@ -5,7 +5,6 @@ using SCPUtils.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SCPUtils
@@ -369,6 +368,18 @@ namespace SCPUtils
             }
         }
 
+        private void AdminMessage(string text)
+        {
+            foreach (Exiled.API.Features.Player admin in Exiled.API.Features.Player.List)
+            {
+                if (admin.ReferenceHub.serverRoles.RemoteAdmin)
+                    if (admin.Sender.CheckPermission(PlayerPermissions.AdminChat))
+                    {
+                        admin.Broadcast(15, text, Broadcast.BroadcastFlags.AdminChat, false);
+                    }
+            }
+        }
+
         public bool IsTeamImmune(Exiled.API.Features.Player player, Exiled.API.Features.Player attacker)
         {
             if (pluginInstance.Config.CuffedImmunityPlayers[player.Team]?.Any() == true)
@@ -483,72 +494,6 @@ namespace SCPUtils
             }
         }
 
-        public void CheckAccount(Exiled.API.Features.Player player)
-        {
-            Player databasePlayer = player.GetDatabasePlayer();
-            StringBuilder message =
-                new StringBuilder(
-                        $"<color=green>[Accounts associated with the same IP ({databasePlayer.Ip} - {databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>")
-                    .AppendLine();
-            var accounts = Database.LiteDatabase.GetCollection<Player>().Find(ip => ip.Ip == databasePlayer.Ip).ToList();
-            foreach (var ips in accounts)
-            {
-                message.AppendLine();
-                message.Append(
-                        $"Player: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>")
-                    .AppendLine();
-            }
-
-            foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
-            {
-                if (pluginInstance.Config.AlertStaffBroadcastMultiAccount.Show)
-                {
-                    staffer.ClearBroadcasts();
-                    staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastMultiAccount.Duration,
-                        pluginInstance.Config.AlertStaffBroadcastMultiAccount.Content
-                            .Replace("{player}", player.Nickname + " " + player.UserId)
-                            .Replace("{accountNumber}", accounts.Count.ToString()));
-                }
-
-                staffer.SendConsoleMessage(message.ToString(), "default");
-            }
-        }
-        /*
-        Has to be redone
-
-        public void ChangeIP(Exiled.API.Features.Player player)
-        {
-            Player databasePlayer = player.GetDatabasePlayer();
-            var accounts = Database.LiteDatabase.GetCollection<Player>().FindAll()
-                .Where(ip => ip.Ip == databasePlayer.Ip).ToList();
-            StringBuilder message =
-                new StringBuilder(
-                        $"<color=green>[Player {databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) has changed IP ({accounts.Count})]</color>")
-                    .AppendLine();
-            foreach (var ips in accounts)
-            {
-                message.AppendLine();
-                message.Append(
-                        $"Old IP: <color=yellow>{databasePlayer.Ip}</color>\nNew IP: <color=yellow>{player.IPAddress}</color>\nPlayer: <color=yellow>{ips.Name} ({ips.Id}{ips.Authentication})</color>\nFirst Join: <color=yellow>{ips.FirstJoin}</color>\nIsRestricted: <color=yellow>{ips.IsRestricted()}</color>\nIsBanned: <color=yellow>{ips.IsBanned()}</color>\nTotal played as SCP: <color=yellow>{ips.TotalScpGamesPlayed}</color>\nTotal suicide: <color=yellow>{ips.ScpSuicideCount}</color>")
-                    .AppendLine();
-            }
-
-            foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
-            {
-                if (pluginInstance.Config.AlertStaffBroadcastChangeIP.Show)
-                {
-                    staffer.ClearBroadcasts();
-                    staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastChangeIP.Duration,
-                        pluginInstance.Config.AlertStaffBroadcastChangeIP.Content
-                            .Replace("{player}", player.Nickname + " " + player.UserId)
-                            .Replace("{oldIP}", databasePlayer.Ip).Replace("{newIP}", player.IPAddress));
-                    staffer.SendConsoleMessage(message.ToString(), "default");
-                }
-            }
-            databasePlayer.Ip = player.IPAddress;
-            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
-        }
-        */
         public void ReplacePlayer(Exiled.API.Features.Player player)
         {
             Player databasePlayer = player.GetDatabasePlayer();
@@ -588,24 +533,18 @@ namespace SCPUtils
 
         public void IpCheck(Exiled.API.Features.Player player)
         {
-            //    DatabaseIp databaseIp = player.IPAddress.
-            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
-            databaseIp.Asn = player.ReferenceHub.characterClassManager.Asn;
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);           
             if (!databaseIp.UserIds.Contains(player.UserId))
             {
                 databaseIp.UserIds.Add(player.UserId);
                 Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);
             }
-            CheckIp(player);
+            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);        
         }
 
 
         public void CheckIp(Exiled.API.Features.Player player)
-        {
-
-
-            //   pluginInstance.Discord.SendMessage($"Mute evasion detected! Userid of muted user: 89435734678345745@terminator97 \n Player: {player.Nickname} Id: {player.Id} Userid: {player.UserId}");
-            DiscordWebHook.Message("4656783465546845@terminator97", player);
+        {       
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (databaseIp.UserIds.Count() > 1)
             {
@@ -614,28 +553,21 @@ namespace SCPUtils
                 args.UserIds = databaseIp.UserIds;
                 pluginInstance.Events.OnMultiAccountEvent(args);
 
-                foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
+
+                if (pluginInstance.Config.MultiAccountBroadcast)
                 {
-                    if (pluginInstance.Config.AlertStaffBroadcastMultiAccount.Show)
-                    {
-                        staffer.ClearBroadcasts();
-                        staffer.Broadcast(pluginInstance.Config.AlertStaffBroadcastMultiAccount.Duration,
-                            pluginInstance.Config.AlertStaffBroadcastMultiAccount.Content
-                                .Replace("{player}", player.Nickname + " " + player.UserId + " " + player.Id)
-                                .Replace("{accountNumber}", databaseIp.UserIds.Count().ToString()));
-                    }
+
+                    AdminMessage($"Multi-Account detected on {player.Nickname} - ID: {player.Id} Number of accounts: {databaseIp.UserIds.Count()}");
                 }
+
 
                 foreach (var userId in databaseIp.UserIds)
                 {
-
-                    if (MuteHandler.QueryPersistentMute(player.UserId))
+                    if (player.IsMuted) return;
+                    if (MuteHandler.QueryPersistentMute(userId))
                     {
-                        DiscordWebHook.Message(userId, player);
-                        foreach (var staffer in Exiled.API.Features.Player.List.Where(x => x.RemoteAdminAccess))
-                        {
-                            staffer.Broadcast(20, $"<color=red>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}");
-                        }
+                        if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
+                        AdminMessage($"<color=red>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}");
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
                     }
 

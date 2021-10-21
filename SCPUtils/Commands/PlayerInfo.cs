@@ -63,6 +63,7 @@ namespace SCPUtils.Commands
             $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
             $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +
             $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
+            $"MultiAccount Whitelist: [ {databasePlayer.MultiAccountWhiteList} ]\n" +
             $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
 
             if (databasePlayer.IsRestricted())

@@ -47,7 +47,7 @@ namespace SCPUtils
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
                 LiteDatabase.GetCollection<BroadcastDb>().EnsureIndex(x => x.Id);
-                LiteDatabase.GetCollection<DatabaseIp>().EnsureIndex(x => x.Ip);
+                LiteDatabase.GetCollection<DatabaseIp>().EnsureIndex(x => x.Id);
                 Log.Info("DB Loaded!");
             }
             catch (Exception ex)
@@ -80,11 +80,11 @@ namespace SCPUtils
             }
         }
 
-        public void AddIp(string ip, string uid, string asn)
+        public void AddIp(string ip, string uid)
         {
             try
             {
-                if (LiteDatabase.GetCollection<DatabaseIp>().Exists(x => x.Ip == ip))
+                if (LiteDatabase.GetCollection<DatabaseIp>().Exists(x => x.Id == ip))
                 {
                     return;
                 }
@@ -92,10 +92,9 @@ namespace SCPUtils
 
                 LiteDatabase.GetCollection<DatabaseIp>().Insert(new DatabaseIp()
                 {
-                    Ip = ip,
-                    UserIds = new List<string>() { uid },
-                    Asn = asn
-                }); 
+                    Id = ip,
+                    UserIds = new List<string>() { uid }                   
+                });
             }
             catch (Exception ex)
             {
@@ -138,7 +137,8 @@ namespace SCPUtils
                     KeepPreferences = false,
                     IgnoreDNT = false,
                     PlaytimeSessionsLog = null,
-                    Expire = null
+                    Expire = null,
+                    MultiAccountWhiteList = false
                 });
 
             }

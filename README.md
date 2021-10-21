@@ -1,8 +1,6 @@
 
 
-**SCPUtils Plugin**<br />
-
-Welcome to SCPUtils, overtime i implemented many features so i decided to rework the documentation.
+### SCPUtils Plugin:<br />
 
 This is the list of SCPUtils features with a brief description, i recomend to read configs:
 
@@ -22,16 +20,19 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **SCP-096 Target:** Players gets notified via hint when they become a SCP-096 Target.
 - **Last Player:** Players gets notified via hint when they are the last player of the Team.
 - **Custom Hints / Broadcast:** You can save hints / broadcasts in the database and use them easily by the ID.
+- **Multi account detector:** Auto-detects multi accounts and based on plugin settings it informs the administrators, you can also set a webhook for reports about mute evaders (you can also remute them automatically by changing configs), you can also exclude specific asns or players from the detector
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
-**You must add LiteDB.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 3.0.4 and LiteDB 5.0.9**
+**You must add LiteDB.dll and Newtonsoft.Json.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
+**Minimum requirements: Exiled version: 3.0.5 Dependencies: LiteDB 5.0.9 and Newtonsoft.Json 13.0.1**
 
 
 ### Configs:
 
 You can see settings and edit them inside Exiled/port-config.yml file(example Exiled/7777-config.yml)
+
+### Commands
 
 **Admin commands and Game console commands**
 
@@ -73,6 +74,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_broadcast_create | <id> <duration> <text> | scputils.broadcastcreate | Create a custom broadcast |
 | scputils_broadcast_delete | <id> | scputils.broadcastdelete | Delete a custom broadcast |
 | scputils_broadcast_list | none | scputils.broadcastlist | List all created broadcast |
+| scputils_multiaccount_whitelist | <userid / id> | scputils.whitelistma | Whitelists / unwhitelist an account from multiaccount detector |
 
 **Console commands**
 
@@ -212,4 +214,4 @@ Note: you must add every group in permissionsm don't forget default one<br /><br
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 
-Thanks to iopietro for his advices<br />
+Thanks to iopietro and Exiled community for the advices<br />
