@@ -286,8 +286,6 @@ namespace SCPUtils
             }
             return false;
         }
-
-
         public void LogWarn(Exiled.API.Features.Player player, string suicidetype)
         {
             Player databasePlayer = player.GetDatabasePlayer();
