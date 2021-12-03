@@ -366,7 +366,7 @@ namespace SCPUtils
             }
         }
 
-        private void AdminMessage(string text)
+        public void AdminMessage(string text)
         {
             foreach (Exiled.API.Features.Player admin in Exiled.API.Features.Player.List)
             {
@@ -542,7 +542,7 @@ namespace SCPUtils
 
 
         public void CheckIp(Exiled.API.Features.Player player)
-        {       
+        {          
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (databaseIp.UserIds.Count() > 1)
             {
@@ -565,7 +565,7 @@ namespace SCPUtils
                     if (MuteHandler.QueryPersistentMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
-                        AdminMessage($"<color=red>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}");
+                        AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
                     }
 
