@@ -25,7 +25,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll and Newtonsoft.Json.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 3.4.0.beta Dependencies: LiteDB 5.0.9 and Newtonsoft.Json 13.0.1**
+**Minimum requirements: Exiled version: 4.1.2 Dependencies: LiteDB 5.0.9 and Newtonsoft.Json 13.0.1**
 
 
 ### Configs:
@@ -75,6 +75,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_broadcast_delete | <id> | scputils.broadcastdelete | Delete a custom broadcast |
 | scputils_broadcast_list | none | scputils.broadcastlist | List all created broadcast |
 | scputils_multiaccount_whitelist | <userid / id> | scputils.whitelistma | Whitelists / unwhitelist an account from multiaccount detector |
+| scputils_badge_playtime | <badge> <days> | scputils.playtime | Show playtime for a specific badge |
 
 **Console commands**
 
