@@ -23,7 +23,7 @@ namespace SCPUtils.Commands
                 player = Exiled.API.Features.Server.Host;
             }
 
-            if (!sender.CheckPermission("scputils.roundinfo.execute") && !ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team) && !ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))
+            if (!sender.CheckPermission("scputils.roundinfo.execute") && !ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team) && !ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
             {
                 response = "You need a higher administration level to use this command!";
                 return false;
@@ -42,30 +42,30 @@ namespace SCPUtils.Commands
                     message.AppendLine();
                     message.AppendLine($"Round time: {Exiled.API.Features.Round.ElapsedTime.ToString(@"hh\:mm\:ss")}");
                 }
-                if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Number of Chaos Tickets: {Exiled.API.Features.Respawn.ChaosTickets}");
                 }
-                if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Number of MTF Tickets: {Exiled.API.Features.Respawn.NtfTickets}");
                 }
 
-                if (sender.CheckPermission("scputils.roundinfo.nextrespawnteam") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team) || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.nextrespawnteam") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team) || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Next known Respawn Team: {Exiled.API.Features.Respawn.NextKnownTeam}");
                     message.AppendLine($"Time until respawn: {TimeSpan.FromSeconds(Exiled.API.Features.Respawn.TimeUntilRespawn).ToString(@"hh\:mm\:ss")}");
                 }
 
-                if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Number of Chaos Respawn Waves: {ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount}");
                 }
-                if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Number of Mtf Respawn Waves: {ScpUtils.StaticInstance.EventHandlers.MtfRespawnCount}");
                 }
-                if (sender.CheckPermission("scputils.roundinfo.lastrespawn") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.lastrespawn") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
                     if (ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount >= 1)
                     {
@@ -74,7 +74,7 @@ namespace SCPUtils.Commands
 
                     }
                 }
-                if (sender.CheckPermission("scputils.roundinfo.lastrespawn") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Team))
+                if (sender.CheckPermission("scputils.roundinfo.lastrespawn") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
                     if (ScpUtils.StaticInstance.EventHandlers.MtfRespawnCount >= 1)
                     {

@@ -36,17 +36,17 @@ namespace SCPUtils
            internal void OnPlayerDeath(DyingEventArgs ev)
             {
             if (ev.Target == null) return;           
-                if ((ev.Target.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
+                if ((ev.Target.Role.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Role.Team == Team.TUT)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
                 {
                     if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                     {
 
-                        if (ev.Handler.Type == DamageTypes.Tesla || (ev.Handler.Type == DamageTypes.Unknown && ev.Handler.Amount >= 50000) || (ev.Handler.Type == DamageTypes.Explosion && ev.Killer == ev.Target))
+                        if (ev.Handler.Type == DamageTypes.Tesla || (ev.Handler.Type == DamageTypes.Unknown && ev.Handler.Damage >= 50000) || (ev.Handler.Type == DamageTypes.Explosion && ev.Killer == ev.Target))
                         {
                             pluginInstance.Functions.LogWarn(ev.Target, ev.Handler.Type.ToString());
                             pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
                         }
-                        else if ((ev.Handler.Type == DamageTypes.Unknown && ev.Handler.Amount == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide)
+                        else if ((ev.Handler.Type == DamageTypes.Unknown && ev.Handler.Damage == -1f) && ev.Killer == ev.Target && pluginInstance.Config.QuitEqualsSuicide)
                         {
                            pluginInstance.Functions.LogWarn(ev.Target, "Disconnect");
                            pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
@@ -56,7 +56,7 @@ namespace SCPUtils
 
                 if (pluginInstance.Config.NotifyLastPlayerAlive)
                 {
-                    List<Features.Player> team = Features.Player.Get(ev.Target.Team).ToList();
+                    List<Features.Player> team = Features.Player.Get(ev.Target.Role.Team).ToList();
                     if (team.Count - 1 == 1)
                     {
                         if (team[0] == ev.Target)
@@ -77,7 +77,7 @@ namespace SCPUtils
                         if (pluginInstance.Config.ScpDeathMessage.Show && ev.Target.Role != RoleType.Scp0492)
                         {
                             var message = pluginInstance.Config.ScpDeathMessage.Content;
-                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", pluginInstance.Config.DamageTypesTranslations[ev.Handler.Type.ToString()]);
+                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%killername%", ev.Killer.Nickname).Replace("%reason%", ev.Handler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration, message, pluginInstance.Config.ScpDeathMessage.Type);
                         }
                     }
@@ -87,7 +87,7 @@ namespace SCPUtils
                         if (pluginInstance.Config.ScpSuicideMessage.Show)
                         {
                             var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", pluginInstance.Config.DamageTypesTranslations[ev.Handler.Type.ToString()]);
+                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.ToString()).Replace("%reason%", ev.Handler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
                         }
                     }
@@ -169,7 +169,7 @@ namespace SCPUtils
         internal void OnPlayerHurt(HurtingEventArgs ev)
         {           
             if(ev.Attacker == null || ev.Target == null) return;
-            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Target.Team) == true)
+            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Target.Role.Team) == true)
             {              
                 ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
             }
@@ -233,7 +233,7 @@ namespace SCPUtils
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
             Player databasePlayer = ev.Player.GetDatabasePlayer();
-            if (ev.Player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Team == Team.TUT))
+            if (ev.Player.Role.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role.Team == Team.TUT))
             {
 
                 if (databasePlayer.RoundBanLeft >= 1 && ev.Player.Role != RoleType.Scp0492)

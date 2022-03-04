@@ -310,7 +310,7 @@ namespace SCPUtils
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
-                if ((player.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
+                if ((player.Role.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Role.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
                 {
                     if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide)
                     {
@@ -380,10 +380,10 @@ namespace SCPUtils
 
         public bool IsTeamImmune(Exiled.API.Features.Player player, Exiled.API.Features.Player attacker)
         {
-            if (pluginInstance.Config.CuffedImmunityPlayers[player.Team]?.Any() == true)
+            if (pluginInstance.Config.CuffedImmunityPlayers[player.Role.Team]?.Any() == true)
             {
 
-                if (pluginInstance.Config.CuffedImmunityPlayers[player.Team].Contains(attacker.Team))
+                if (pluginInstance.Config.CuffedImmunityPlayers[player.Role.Team].Contains(attacker.Role.Team))
                 {
                     return true;
                 }
@@ -394,7 +394,7 @@ namespace SCPUtils
             }
             else
             {
-                Log.Error($"Detected invalid setting on cuffed_immunity_players! Key: {player.Team}, List cannot be null!");
+                Log.Error($"Detected invalid setting on cuffed_immunity_players! Key: {player.Role.Team}, List cannot be null!");
                 return false;
             }
 
@@ -404,11 +404,11 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.CuffedProtectedTeams?.Any() == true)
             {
-                if (pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team) && player.IsCuffed)
+                if (pluginInstance.Config.CuffedProtectedTeams.Contains(player.Role.Team) && player.IsCuffed)
                 {
                     return true;
                 }
-                else if (!pluginInstance.Config.CuffedProtectedTeams.Contains(player.Team))
+                else if (!pluginInstance.Config.CuffedProtectedTeams.Contains(player.Role.Team))
                 {
                     return true;
                 }
@@ -432,9 +432,9 @@ namespace SCPUtils
                 return false;
             }
 
-            else if (pluginInstance.Config.CuffedSafeZones[player.Team]?.Any() == true)
+            else if (pluginInstance.Config.CuffedSafeZones[player.Role.Team]?.Any() == true)
             {
-                if (pluginInstance.Config.CuffedSafeZones[player.Team].Contains(player.CurrentRoom.Zone))
+                if (pluginInstance.Config.CuffedSafeZones[player.Role.Team].Contains(player.CurrentRoom.Zone))
                 {
                     return true;
                 }
@@ -446,7 +446,7 @@ namespace SCPUtils
 
             else
             {
-                Log.Error($"Detected invalid setting on cuffed_safe_zones! Key: {player.Team}, List cannot be null!");
+                Log.Error($"Detected invalid setting on cuffed_safe_zones! Key: {player.Role.Team}, List cannot be null!");
                 return false;
             }
 
