@@ -22,6 +22,7 @@ namespace SCPUtils.Commands
         {
             string target;
             int range;
+            int playtime;
             if (!sender.CheckPermission("scputils.ownplaytime") && !sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
                 response = "<color=red>You need a higher administration level to use this command!</color>";
@@ -90,6 +91,7 @@ namespace SCPUtils.Commands
 
 
 
+            playtime = 0;
             for (int i = 0; i <= range; i++)
             {
                 databasePlayer.PlayTimeRecords.Count();
@@ -98,13 +100,14 @@ namespace SCPUtils.Commands
                 if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
                 {
                     message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");
+                    playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
                 }
                 else
                 {
                     message.Append($"{date.Date.ToShortDateString()} Playtime: [ No activity ]");
                 }
             }
-
+            message.AppendLine($"\nSpecified Period PlayTime: [ { new TimeSpan(0, 0, playtime).ToString() } ]");
             response = $"{message}";
 
             return true;

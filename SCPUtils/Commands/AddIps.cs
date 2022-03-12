@@ -35,7 +35,7 @@ namespace SCPUtils.Commands
                 if (!string.IsNullOrEmpty(a.Ip))
                 {
                     string ipaddress = a.Ip;
-                    string userId = string.Concat(a.Id, "@", a.Authentication);                   
+                    string userId = string.Concat(a.Id, "@", a.Authentication);
                     if (!Database.LiteDatabase.GetCollection<DatabaseIp>().Exists(ip => ip.Id == ipaddress))
                     {
                         ScpUtils.StaticInstance.DatabasePlayerData.AddIp(ipaddress, userId);

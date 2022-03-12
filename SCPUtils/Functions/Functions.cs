@@ -480,15 +480,21 @@ namespace SCPUtils
                 {
                     databasePlayer.Expire.Add(DateTime.MinValue);
                 }
+                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             }
+        }
 
-            if (databasePlayer.SuicideDate.Count() != databasePlayer.RoundsBan.Count())
+        public void FixBanRounds(SCPUtils.Player databasePlayer)
+        {
+
+            if (databasePlayer.SuicideDate.Count() != databasePlayer.SuicideDate.Count())
             {
                 databasePlayer.RoundsBan.Clear();
-                for (var i = 0; i < databasePlayer.RoundsBan.Count(); i++)
+                for (var i = 0; i < databasePlayer.SuicideDate.Count(); i++)
                 {
                     databasePlayer.RoundsBan.Add(0);
                 }
+                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             }
         }
 
@@ -531,18 +537,18 @@ namespace SCPUtils
 
         public void IpCheck(Exiled.API.Features.Player player)
         {
-            var databaseIp = GetIp.GetIpAddress(player.IPAddress);           
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (!databaseIp.UserIds.Contains(player.UserId))
             {
                 databaseIp.UserIds.Add(player.UserId);
                 Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);
             }
-            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);        
+            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
 
         public void CheckIp(Exiled.API.Features.Player player)
-        {          
+        {
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (databaseIp.UserIds.Count() > 1)
             {

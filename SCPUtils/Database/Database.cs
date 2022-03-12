@@ -93,7 +93,7 @@ namespace SCPUtils
                 LiteDatabase.GetCollection<DatabaseIp>().Insert(new DatabaseIp()
                 {
                     Id = ip,
-                    UserIds = new List<string>() { uid }                   
+                    UserIds = new List<string>() { uid }
                 });
             }
             catch (Exception ex)

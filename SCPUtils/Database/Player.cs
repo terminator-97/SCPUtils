@@ -18,7 +18,7 @@ namespace SCPUtils
         public DateTime LastSeen { get; set; }
         public string ColorPreference { get; set; }
         public string CustomNickName { get; set; }
-        public bool HideBadge { get; set; }      
+        public bool HideBadge { get; set; }
         public bool MultiAccountWhiteList { get; set; }
         public string BadgeName { get; set; }
         public DateTime BadgeExpire { get; set; }

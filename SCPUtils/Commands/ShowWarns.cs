@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace SCPUtils.Commands
@@ -60,8 +61,16 @@ namespace SCPUtils.Commands
                 message.AppendLine($"Class: {databasePlayer.SuicideScp[currentindex]}");
                 message.AppendLine($"Punishment: {databasePlayer.SuicidePunishment[currentindex]}");
                 message.AppendLine($"Staffer: {databasePlayer.LogStaffer[currentindex]}");
-                if (databasePlayer.SuicidePunishment[currentindex] == "Ban") message.AppendLine($"Expire: {databasePlayer.Expire[currentindex]}");
-                if (databasePlayer.SuicidePunishment[currentindex] == "Round-Ban") message.AppendLine($"Round(s) ban: {databasePlayer.RoundsBan[currentindex]}");
+                if (databasePlayer.SuicidePunishment[currentindex] == "Ban")
+                {
+                    if (currentindex <= databasePlayer.Expire.Count()) message.AppendLine($"Expire: {databasePlayer.Expire[currentindex]}");
+                    else message.AppendLine($"Expire: Unknown");
+                }
+                if (databasePlayer.SuicidePunishment[currentindex] == "Round-Ban")
+                {
+                    if (currentindex <= databasePlayer.RoundsBan.Count()) message.AppendLine($"Round(s) ban: {databasePlayer.RoundsBan[currentindex]}");
+                    else message.AppendLine($"Round(s) ban: Unknown");
+                }
                 message.AppendLine($"User Notified: {databasePlayer.UserNotified[currentindex]}");
                 message.AppendLine();
                 currentindex++;

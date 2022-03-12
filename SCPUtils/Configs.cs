@@ -1,9 +1,9 @@
 ﻿using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using DamageTypes = Exiled.API.Enums.DamageType;
 using Log = Exiled.API.Features.Log;
 using ZoneType = Exiled.API.Enums.ZoneType;
-using DamageTypes = Exiled.API.Enums.DamageType;
 
 namespace SCPUtils
 {
@@ -257,7 +257,7 @@ namespace SCPUtils
            { DamageTypes.Recontainment.ToString().ToUpper(), DamageTypes.Recontainment.ToString().ToUpper() }, { DamageTypes.Scp.ToString().ToUpper(), DamageTypes.Scp.ToString().ToUpper() }, { DamageTypes.Scp018.ToString().ToUpper(), DamageTypes.Scp018.ToString().ToUpper() },
            { DamageTypes.Scp207.ToString().ToUpper(), DamageTypes.Scp207.ToString().ToUpper() }, { DamageTypes.SeveredHands.ToString().ToUpper(), DamageTypes.SeveredHands.ToString().ToUpper() }, { DamageTypes.Tesla.ToString().ToUpper(), DamageTypes.Tesla.ToString().ToUpper() }, { DamageTypes.Unknown.ToString().ToUpper(), DamageTypes.Unknown.ToString().ToUpper() },
            { DamageTypes.Warhead.ToString().ToUpper(), DamageTypes.Warhead.ToString().ToUpper() }, { DamageTypes.Firearm.ToString().ToUpper(), DamageTypes.Firearm.ToString().ToUpper() } };
-     
+
 
         [Description("The command name for the unwarn command")]
         public string UnwarnCommand { get; set; } = "scputils_player_unwarn";
