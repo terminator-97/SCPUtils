@@ -7,6 +7,7 @@ using MapEvents = Exiled.Events.Handlers.Map;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using ServerEvents = Exiled.Events.Handlers.Server;
 
+
 namespace SCPUtils
 {
 
@@ -14,7 +15,7 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(4, 0, 0);
+        public override Version Version { get; } = new Version(4, 0, 1);
         public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }

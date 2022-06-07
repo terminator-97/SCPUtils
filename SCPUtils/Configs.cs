@@ -152,6 +152,9 @@ namespace SCPUtils
         [Description("If 079 trigger tesla for how many seconds player shouldn't get warned for suicide? (2 is enough for most of servers)")]
         public int Scp079TeslaEventWait { get; private set; } = 2;
 
+        [Description("For bpt command, min seconds of gameplay to be considered the day as complete")]
+        public int BptMinSeconds { get; private set; } = 1200;
+
         [Description("Which quit / suicide percentage as SCP a player require before getting banned? (You can add tollerence in settings)")]
         public float AutoBanThreshold { get; private set; } = 30.5f;
 

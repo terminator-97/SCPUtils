@@ -163,7 +163,6 @@ namespace SCPUtils
 
             Player databasePlayer = player.GetDatabasePlayer();
 
-
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
                 UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
