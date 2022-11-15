@@ -62,7 +62,7 @@ namespace SCPUtils
             }
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
                 if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has suicided while having an active ban!</color>");
             }
             databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count() - 1] = rounds;
@@ -95,7 +95,7 @@ namespace SCPUtils
 
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
             }
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration / 60) * databasePlayer.TotalScpSuicideBans);
             else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);
@@ -106,7 +106,7 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
             }
 
             Player databasePlayer = player.GetDatabasePlayer();
@@ -119,7 +119,7 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastWarns)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
+                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
             }
 
             player.GetDatabasePlayer().ScpSuicideCount++;
@@ -291,7 +291,7 @@ namespace SCPUtils
             FixBanTime(databasePlayer);
             databasePlayer.SuicideDate.Add(DateTime.Now);
             databasePlayer.SuicideType.Add(suicidetype);
-            databasePlayer.SuicideScp.Add(player.Role.ToString());
+            databasePlayer.SuicideScp.Add(player.Role.Type.ToString());
             databasePlayer.Expire.Add(DateTime.Now);
             databasePlayer.RoundsBan.Add(0);
             databasePlayer.SuicidePunishment.Add("None");
@@ -322,18 +322,23 @@ namespace SCPUtils
                 if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT)
                 {
                     databasePlayer.PlayTimeRecords.Clear();
-                    databasePlayer.PlaytimeSessionsLog.Clear();
+                    //   databasePlayer.PlaytimeSessionsLog.Clear();
                     databasePlayer.ResetPreferences();
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
                 }
-                else if (!player.DoNotTrack)
+                else if (!player.DoNotTrack && pluginInstance.EventHandlers.ptEnabled)
                 {
                     databasePlayer.SetCurrentDayPlayTime();
+                    databasePlayer.LastSeen = DateTime.Now;
                 }
                 else
                 {
-                    databasePlayer.SetCurrentDayPlayTime();
+                    if (pluginInstance.EventHandlers.ptEnabled)
+                    {
+                        databasePlayer.SetCurrentDayPlayTime();
+                        databasePlayer.LastSeen = DateTime.Now;
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
@@ -349,6 +354,18 @@ namespace SCPUtils
                 Database.PlayerData.Remove(player);
             }
         }
+
+        public void SavePlaytime(Exiled.API.Features.Player player)
+        {
+            if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
+            {                
+                Player databasePlayer = player.GetDatabasePlayer();                
+                databasePlayer.SetCurrentDayPlayTime();
+                databasePlayer.LastSeen = DateTime.Now;
+                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);            
+            }
+        }
+
 
         private void BroadcastSuicideQuitAction(string text)
         {

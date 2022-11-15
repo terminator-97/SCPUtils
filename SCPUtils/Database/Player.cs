@@ -22,6 +22,7 @@ namespace SCPUtils
         public bool MultiAccountWhiteList { get; set; }
         public string BadgeName { get; set; }
         public DateTime BadgeExpire { get; set; }
+        public DateTime NicknameCooldown { get; set; }
         public string PreviousBadge { get; set; }
         public Dictionary<string, int> PlayTimeRecords { get; set; } = new Dictionary<string, int>();
         public bool ASNWhitelisted { get; set; }
@@ -29,7 +30,7 @@ namespace SCPUtils
         public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         public bool IgnoreDNT { get; set; }
-        public Dictionary<DateTime, DateTime> PlaytimeSessionsLog { get; set; } = new Dictionary<DateTime, DateTime>();
+        //    public Dictionary<DateTime, DateTime> PlaytimeSessionsLog { get; set; } = new Dictionary<DateTime, DateTime>();
 
         //Suicide logs
         public List<DateTime> SuicideDate { get; set; } = new List<DateTime>();
@@ -66,7 +67,7 @@ namespace SCPUtils
             PreviousBadge = "";
             KeepPreferences = false;
             PlayTimeRecords.Clear();
-            PlaytimeSessionsLog.Clear();
+            // PlaytimeSessionsLog.Clear();
         }
 
         public void ResetPreferences()

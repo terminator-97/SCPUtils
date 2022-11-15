@@ -42,7 +42,7 @@ namespace SCPUtils.Commands
 
                 if (sender.CheckPermission("scputils.onlinelist.role"))
                 {
-                    message.Append($" [{player.Role}]");
+                    message.Append($" [{player.Role.Type}]");
                 }
 
                 if (sender.CheckPermission("scputils.onlinelist.health"))

@@ -48,6 +48,11 @@ namespace SCPUtils.Commands
                         response = "<color=red>You are banned from executing this command!</color>";
                         return false;
                     }
+                    if (target.GetDatabasePlayer().NicknameCooldown > DateTime.Now)
+                    {
+                        response = ScpUtils.StaticInstance.Config.NicknameCooldownMessage;
+                        return false;
+                    }
                     nickname = string.Join(" ", arguments.Array, 1, arguments.Array.Length - 1);
                     bool allowChange = true;
                     foreach (Exiled.API.Features.Player playerList in Exiled.API.Features.Player.List)
@@ -106,6 +111,7 @@ namespace SCPUtils.Commands
 
 
             databasePlayer.CustomNickName = nickname;
+            databasePlayer.NicknameCooldown = DateTime.Now.AddSeconds(ScpUtils.StaticInstance.Config.ChangeNicknameCooldown);
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);

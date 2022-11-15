@@ -41,7 +41,12 @@ namespace SCPUtils.Commands
 
                 else
                 {
-                    int.TryParse(arguments.Array[1], out range);
+                   if( !int.TryParse(arguments.Array[1], out range))
+                    {
+                        response = "<color=red>Number is not an integer</color>";
+                        return false;
+                    }
+                    
                 }
 
                 if (range > 120)
@@ -62,7 +67,11 @@ namespace SCPUtils.Commands
                     target = arguments.Array[1].ToString();
                 }
 
-                int.TryParse(arguments.Array[2], out range);
+                if (!int.TryParse(arguments.Array[2], out range))
+                {
+                    response = "<color=red>Number is not an integer</color>";
+                    return false;
+                }
 
             }
             Player databasePlayer = target.GetDatabasePlayer();
@@ -74,9 +83,9 @@ namespace SCPUtils.Commands
             }
 
 
-            if (range < 0)
+            if (range <= 0)
             {
-                response = "<color=red>You have to specify a positive number!</color>";
+                response = "<color=red>You have to specify a number higher than 0!</color>";
                 return false;
             }
 

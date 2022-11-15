@@ -30,7 +30,7 @@ namespace SCPUtils.Commands
                 if (player.IsNorthwoodStaff || player.IsGlobalModerator)
                 {
                     message.AppendLine();
-                    message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.GlobalBadge}] [{player.Role}]");
+                    message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.GlobalBadge}] [{player.Role.Type}]");
                     if (player.IsOverwatchEnabled)
                     {
                         message.Append(" [OVERWATCH]");
@@ -49,7 +49,7 @@ namespace SCPUtils.Commands
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
                     message.AppendLine();
-                    message.Append($"{player.Nickname} ({player.UserId}) [{player.Group.BadgeText}] [{player.Role}]");
+                    message.Append($"{player.Nickname} ({player.UserId}) [{player.Group.BadgeText}] [{player.Role.Type}]");
                     if (player.IsOverwatchEnabled)
                     {
                         message.Append(" [OVERWATCH]");

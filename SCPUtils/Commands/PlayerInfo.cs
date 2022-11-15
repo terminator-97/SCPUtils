@@ -64,7 +64,8 @@ namespace SCPUtils.Commands
             $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +
             $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
             $"MultiAccount Whitelist: [ {databasePlayer.MultiAccountWhiteList} ]\n" +
-            $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]</color>";
+            $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n" +
+            $"Nickname cooldown: [ { databasePlayer.NicknameCooldown } ]</color>";
 
             if (databasePlayer.IsRestricted())
             {

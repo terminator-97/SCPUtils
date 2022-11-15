@@ -20,6 +20,7 @@ namespace SCPUtils
         public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
         public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
         public static Dictionary<string, Broadcast> Broadcast = new Dictionary<string, Broadcast>();
+        public static Dictionary<string, PlaySession> PlaySession = new Dictionary<string, PlaySession>();
 
         public void CreateDatabase()
         {
@@ -48,6 +49,7 @@ namespace SCPUtils
                 LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
                 LiteDatabase.GetCollection<BroadcastDb>().EnsureIndex(x => x.Id);
                 LiteDatabase.GetCollection<DatabaseIp>().EnsureIndex(x => x.Id);
+                LiteDatabase.GetCollection<PlaySession>().EnsureIndex(x => x.Id);
                 Log.Info("DB Loaded!");
             }
             catch (Exception ex)
@@ -55,7 +57,26 @@ namespace SCPUtils
                 Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");
             }
         }
+        public void NewSession(Exiled.API.Features.Player player)
+        {
+            try
+            {
+                if (LiteDatabase.GetCollection<PlaySession>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
 
+                LiteDatabase.GetCollection<PlaySession>().Insert(new PlaySession()
+                {
+                    Id = DatabasePlayer.GetRawUserId(player),
+                    Authentication = DatabasePlayer.GetAuthentication(player),
+                    PlaytimeSessionsLog = null
+                });
+
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error occurred in PlayTimeSession!\n{ex}");
+            }
+        }
         public void AddBroadcast(string id, string nickname, int seconds, string text)
         {
             try
@@ -136,9 +157,10 @@ namespace SCPUtils
                     Restricted = null,
                     KeepPreferences = false,
                     IgnoreDNT = false,
-                    PlaytimeSessionsLog = null,
+                    // PlaytimeSessionsLog = null,
                     Expire = null,
-                    MultiAccountWhiteList = false
+                    MultiAccountWhiteList = false,
+                    NicknameCooldown = DateTime.Now
                 });
 
             }

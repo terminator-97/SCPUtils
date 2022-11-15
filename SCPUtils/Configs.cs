@@ -74,6 +74,9 @@ namespace SCPUtils
         [Description("Should a broadcast appear in case of multiaccount?")]
         public bool MultiAccountBroadcast { get; private set; } = false;
 
+        [Description("Should only the owner of the handcuff (and the allies of the handcuffed players) be able to unhandcull?")]
+        public bool HandCuffOwnership { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -101,6 +104,9 @@ namespace SCPUtils
         [Description("Message if player is not authorized to use this command")]
         public string UnauthorizedBadgeChangeVisibility { get; private set; } = "<color=red>Permission denied.</color>";
 
+        [Description("Message if player is not authorized to use this command")]
+        public string NicknameCooldownMessage { get; private set; } = "<color=red>This command is in user cooldown, try again in few minutes.</color>";
+
         [Description("Message if player try to change his nickname to a restricted one")]
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
 
@@ -121,6 +127,9 @@ namespace SCPUtils
 
         [Description("Which broadcast should be shown when a SCP die?")]
         public Exiled.API.Features.Broadcast ScpSuicideMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("Text shown if a player doesn't own the handcuffed player")]
+        public Exiled.API.Features.Broadcast UnhandCuffDenied { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You do not have the ownership of this player therefore you can't un-handcuff him!</color>", 8, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Auto-restart time if there is only one player in server (if enabled)")]
         public ushort AutoRestartTime { get; private set; } = 15;
@@ -154,6 +163,12 @@ namespace SCPUtils
 
         [Description("For bpt command, min seconds of gameplay to be considered the day as complete")]
         public int BptMinSeconds { get; private set; } = 1200;
+
+        [Description("Change nickname cooldown in seconds")]
+        public int ChangeNicknameCooldown { get; private set; } = 120;
+
+        [Description("Min players required on server for PT to be counted")]
+        public int MinPlayersPtCount { get; private set; } = 1;
 
         [Description("Which quit / suicide percentage as SCP a player require before getting banned? (You can add tollerence in settings)")]
         public float AutoBanThreshold { get; private set; } = 30.5f;
