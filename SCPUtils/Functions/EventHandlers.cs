@@ -18,11 +18,13 @@ namespace SCPUtils
 
         public static bool TemporarilyDisabledWarns;
 
-        public bool ptEnabled;
+     //   public bool ptEnabled;
 
         private static Dictionary<string, DateTime> PreauthTime { get; set; } = new Dictionary<string, DateTime>();
 
         private static Dictionary<Exiled.API.Features.Player, string> Cuffed { get; set; } = new Dictionary<Exiled.API.Features.Player, string>();
+
+        public List<Features.Player> KickedList { get; set; } = new List<Features.Player>();
         public int ChaosRespawnCount { get; set; }
 
         public int MtfRespawnCount { get; set; }
@@ -105,25 +107,24 @@ namespace SCPUtils
             }
         }
 
-        internal void OnPlayerJoined(JoinedEventArgs ev)
+        internal void OnKicking(KickingEventArgs ev)
         {
-            if((Features.Player.Dictionary.Count >= pluginInstance.Config.MinPlayersPtCount) && (!ptEnabled))
-            {
-                foreach(var player in Exiled.API.Features.Player.List)
-                {
-                    var databasePlayer = player.GetDatabasePlayer();
-                    databasePlayer.LastSeen = DateTime.Now;                    
-                }
-                ptEnabled = true;
-            }
-            else if ((Features.Player.Dictionary.Count >= pluginInstance.Config.MinPlayersPtCount) && (ptEnabled))
-            {
-                foreach (var player in Exiled.API.Features.Player.List)
-                {
-                    pluginInstance.Functions.SavePlaytime(player);
-                }
-                ptEnabled = false;
-            }
+            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
+        }
+
+        internal void OnBanned(BanningEventArgs ev)
+        {
+            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
+        }
+
+        internal void OnRoundStarted()
+        {
+           // pluginInstance.Functions.CheckPtStatus();
+        }
+
+        internal void OnPlayerJoined(JoinedEventArgs ev)
+        {           
+          //  pluginInstance.Functions.CheckPtStatus();
         }
 
         internal void OnPlayerUnhandCuff(RemovingHandcuffsEventArgs ev)
@@ -327,14 +328,12 @@ namespace SCPUtils
 
                 }
                 else ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
-
-
-            }
+            }         
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
-            pluginInstance.Functions.SaveData(ev.Player);
+            pluginInstance.Functions.SaveData(ev.Player);            
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)

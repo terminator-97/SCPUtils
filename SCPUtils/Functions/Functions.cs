@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Features = Exiled.API.Features;
+using Mirror;
 
 namespace SCPUtils
 {
@@ -129,6 +131,11 @@ namespace SCPUtils
 
         public void OnQuitOrSuicide(Exiled.API.Features.Player player)
         {
+
+            if (!pluginInstance.Config.EnableSCPSuicideAutoWarn || pluginInstance.EventHandlers.KickedList.Contains(player) || EventHandlers.TemporarilyDisabledWarns)
+            {
+                return;
+            }
             if (!LastWarn.ContainsKey(player.UserId))
             {
                 LastWarn.Add(player.UserId, DateTime.MinValue);
@@ -137,7 +144,6 @@ namespace SCPUtils
             {
                 return;
             }
-
             Player databasePlayer = player.GetDatabasePlayer();
             float suicidePercentage = databasePlayer.SuicidePercentage;
             databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
@@ -262,9 +268,16 @@ namespace SCPUtils
 
             if (databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] == false)
             {
-                player.ClearBroadcasts();
-                player.Broadcast(pluginInstance.Config.OfflineWarnNotification);
-                databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
+                if (databasePlayer.SuicidePunishment[databasePlayer.UserNotified.Count() - 1] == "None")
+                {
+                    databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
+                }
+                else
+                {
+                    player.ClearBroadcasts();
+                    player.Broadcast(pluginInstance.Config.OfflineWarnNotification);
+                    databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
+                }
             }
 
         }
@@ -306,12 +319,12 @@ namespace SCPUtils
             }
         }
         public void SaveData(Exiled.API.Features.Player player)
-        {
+        {            
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
                 if ((player.Role.Team == Team.SCP || (pluginInstance.Config.AreTutorialsSCP && player.Role.Team == Team.TUT)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
                 {
-                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide)
+                    if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide && !pluginInstance.EventHandlers.KickedList.Contains(player))
                     {
                         pluginInstance.Functions.OnQuitOrSuicide(player);
                     }
@@ -327,18 +340,13 @@ namespace SCPUtils
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
                 }
-                else if (!player.DoNotTrack && pluginInstance.EventHandlers.ptEnabled)
+                else if (!player.DoNotTrack)
                 {
-                    databasePlayer.SetCurrentDayPlayTime();
-                    databasePlayer.LastSeen = DateTime.Now;
+                    databasePlayer.SetCurrentDayPlayTime();               
                 }
                 else
-                {
-                    if (pluginInstance.EventHandlers.ptEnabled)
-                    {
-                        databasePlayer.SetCurrentDayPlayTime();
-                        databasePlayer.LastSeen = DateTime.Now;
-                    }
+                {                   
+                    databasePlayer.SetCurrentDayPlayTime();                                       
                 }
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
@@ -353,6 +361,7 @@ namespace SCPUtils
                 Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
                 Database.PlayerData.Remove(player);
             }
+            if (pluginInstance.EventHandlers.KickedList.Contains(player)) pluginInstance.EventHandlers.KickedList.Remove(player);
         }
 
         public void SavePlaytime(Exiled.API.Features.Player player)
@@ -594,6 +603,27 @@ namespace SCPUtils
                 }
             }
         }
+
+   /*     public void CheckPtStatus()
+        {
+            if ((Features.Player.Dictionary.Count >= pluginInstance.Config.MinPlayersPtCount) && (!pluginInstance.EventHandlers.ptEnabled))
+            {
+                foreach (var player in Features.Player.List)
+                {
+                    var databasePlayer = player.GetDatabasePlayer();
+                    databasePlayer.LastSeen = DateTime.Now;
+                }
+                pluginInstance.EventHandlers.ptEnabled = true;
+            }
+            else if ((Features.Player.Dictionary.Count >= pluginInstance.Config.MinPlayersPtCount) && (pluginInstance.EventHandlers.ptEnabled))
+            {
+                foreach (var player in Features.Player.List)
+                {
+                    pluginInstance.Functions.SavePlaytime(player);
+                }
+                pluginInstance.EventHandlers.ptEnabled = false;
+            }
+        } */
 
     }
 }

@@ -50,7 +50,8 @@ namespace SCPUtils
             ServerEvents.RestartingRound += EventHandlers.OnRoundRestart;
             PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
-            PlayerEvents.Joined += EventHandlers.OnPlayerJoined;
+            PlayerEvents.Banning += EventHandlers.OnBanned;
+            PlayerEvents.Kicking += EventHandlers.OnKicking; 
         }
 
         public override void OnEnabled()
@@ -100,7 +101,8 @@ namespace SCPUtils
             ServerEvents.RestartingRound -= EventHandlers.OnRoundRestart;
             PlayerEvents.Handcuffing -= EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs -= EventHandlers.OnPlayerUnhandCuff;
-            PlayerEvents.Joined -= EventHandlers.OnPlayerJoined;
+            PlayerEvents.Banning -= EventHandlers.OnBanned;
+            PlayerEvents.Kicking -= EventHandlers.OnKicking;
             EventHandlers = null;
             Functions = null;
             Functions.LastWarn.Clear();
