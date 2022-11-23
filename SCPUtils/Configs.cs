@@ -75,7 +75,7 @@ namespace SCPUtils
         public bool MultiAccountBroadcast { get; private set; } = false;
 
         [Description("Should only the owner of the handcuff (and the allies of the handcuffed players) be able to unhandcull?")]
-        public bool HandCuffOwnership { get; private set; } = true;
+        public bool HandCuffOwnership { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
