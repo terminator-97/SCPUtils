@@ -72,8 +72,8 @@ namespace SCPUtils.Events
     {
         public Exiled.API.Features.Player BannedPlayer { get; set; }
         public Exiled.API.Features.Player ReplacedPlayer { get; set; }
-        public RoleType ScpRole { get; set; }
-        public RoleType NormalRole { get; set; }
+        public PlayerRoles.RoleTypeId ScpRole { get; set; }
+        public PlayerRoles.RoleTypeId NormalRole { get; set; }
     }
 
     public class MultiAccountEvent : EventArgs

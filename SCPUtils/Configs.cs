@@ -217,10 +217,10 @@ namespace SCPUtils
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
 
         [Description("Allowed classes to see MTF and Next respawn info")]
-        public List<Team> AllowedMtfInfoTeam { get; private set; } = new List<Team>() { Team.MTF, Team.RSC, Team.RIP };
+        public List<PlayerRoles.Team> AllowedMtfInfoTeam { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.FoundationForces, PlayerRoles.Team.Scientists, PlayerRoles.Team.Dead };
 
         [Description("Allowed classes to see Chaos info and Next respawn info")]
-        public List<Team> AllowedChaosInfoTeam { get; private set; } = new List<Team>() { Team.CDP, Team.CHI, Team.RIP };
+        public List<PlayerRoles.Team> AllowedChaosInfoTeam { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.ClassD, PlayerRoles.Team.ChaosInsurgency, PlayerRoles.Team.Dead };
 
         /*
 
@@ -253,20 +253,54 @@ namespace SCPUtils
 
         [Description("You have to add the team you want to protect from the target as key and enemy teams on the list as value, on github documentation you can see all the teams.")]
 
-        public Dictionary<Team, List<Team>> CuffedImmunityPlayers { get; private set; } = new Dictionary<Team, List<Team>>();
+        public Dictionary<PlayerRoles.Team, List<PlayerRoles.Team>> CuffedImmunityPlayers { get; private set; } = new Dictionary<PlayerRoles.Team, List<PlayerRoles.Team>>()
+        {
+            { 
+                PlayerRoles.Team.ClassD, 
+                new List<PlayerRoles.Team>
+                {
+                    PlayerRoles.Team.Scientists, PlayerRoles.Team.FoundationForces 
+                }
+            },
+               {
+                PlayerRoles.Team.Scientists,
+                new List<PlayerRoles.Team>
+                {
+                    PlayerRoles.Team.ClassD, PlayerRoles.Team.ChaosInsurgency
+                }
+            },
+
+        };
 
 
         [Description("Indicates if the protected teams should be cuffed to get the protection, if you don't add a team it will get protection regardless")]
 
-        public List<Team> CuffedProtectedTeams { get; private set; } = new List<Team>();
+        public List<PlayerRoles.Team> CuffedProtectedTeams { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.ClassD, PlayerRoles.Team.Scientists };
 
         [Description("Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified")]
 
-        public Dictionary<Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<Team, List<ZoneType>>();
+        public Dictionary<PlayerRoles.Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<PlayerRoles.Team, List<ZoneType>>()
+        {
+            {
+                PlayerRoles.Team.ClassD,
+                new List<ZoneType>
+                {
+                   ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Unspecified
+                }
+            },
+               {
+                PlayerRoles.Team.Scientists,
+                new List<ZoneType>
+                {
+                    ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Unspecified
+                }
+            },
+
+        };
 
         [Description("With which SCPs users are allowed to speak using V to humans without any badge (remove the disallowed SCPs)? (This will bypass permissions check so everyone will be able to speak with those SCPs regardless rank)")]
 
-        public List<RoleType> AllowedScps { get; private set; } = new List<RoleType>() { RoleType.Scp049, RoleType.Scp0492, RoleType.Scp079, RoleType.Scp096, RoleType.Scp106, RoleType.Scp173, RoleType.Scp93953, RoleType.Scp93989 };
+        public List<PlayerRoles.RoleTypeId> AllowedScps { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp049, PlayerRoles.RoleTypeId.Scp0492, PlayerRoles.RoleTypeId.Scp079, PlayerRoles.RoleTypeId.Scp096, PlayerRoles.RoleTypeId.Scp106, PlayerRoles.RoleTypeId.Scp173, PlayerRoles.RoleTypeId.Scp939 };
 
         [Description("Translations for damage types")]
         public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.Explosion.ToString().ToUpper(), DamageTypes.Explosion.ToString().ToUpper() }, { DamageTypes.Asphyxiation.ToString().ToUpper(), DamageTypes.Asphyxiation.ToString().ToUpper() }, { DamageTypes.Bleeding.ToString().ToUpper(), DamageTypes.Bleeding.ToString().ToUpper() },

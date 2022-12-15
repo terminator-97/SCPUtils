@@ -36,7 +36,7 @@ namespace SCPUtils.Commands
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.NoClipEnabled)
+                    if (player.IsNoClipEnabled)
                     {
                         message.Append(" [NOCLIP]");
                     }
@@ -55,7 +55,7 @@ namespace SCPUtils.Commands
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.NoClipEnabled)
+                    if (player.IsNoClipEnabled)
                     {
                         message.Append(" [NOCLIP]");
                     }

@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace SCPUtils.Commands
@@ -54,7 +55,7 @@ namespace SCPUtils.Commands
                 if (sender.CheckPermission("scputils.roundinfo.nextrespawnteam") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team) || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
                     message.AppendLine($"Next known Respawn Team: {Exiled.API.Features.Respawn.NextKnownTeam}");
-                    message.AppendLine($"Time until respawn: {TimeSpan.FromSeconds(Exiled.API.Features.Respawn.TimeUntilRespawn).ToString(@"hh\:mm\:ss")}");
+                    message.AppendLine($"Time until respawn: {TimeSpan.FromSeconds(Exiled.API.Features.Respawn.TimeUntilSpawnWave.TotalSeconds).ToString(@"hh\:mm\:ss")}");
                 }
 
                 if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))

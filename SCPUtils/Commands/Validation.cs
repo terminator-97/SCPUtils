@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
             int invalid = 0;
            foreach( var a in Database.LiteDatabase.GetCollection<Player>().FindAll())
             {
-                try
+              /*  try
                 {
                     var x = a.Name;
                     valid++;
@@ -34,7 +34,7 @@ namespace SCPUtils.Commands
                 catch (Exception e)
                 {
                     invalid++;
-                }
+                }*/
             }
             
             response = $"Invalid: {invalid}, Valid: {valid}";

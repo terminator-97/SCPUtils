@@ -15,8 +15,8 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(4, 1, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
+        public override Version Version { get; } = new Version(5, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -34,7 +34,7 @@ namespace SCPUtils
         public static ScpUtils StaticInstance => InstanceValue;
 
         public void LoadEvents()
-        {
+        {          
             MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
             PlayerEvents.Verified += EventHandlers.OnPlayerVerify;
             PlayerEvents.Destroying += EventHandlers.OnPlayerDestroy;
@@ -51,7 +51,9 @@ namespace SCPUtils
             PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning += EventHandlers.OnBanned;
-            PlayerEvents.Kicking += EventHandlers.OnKicking; 
+            PlayerEvents.Kicking += EventHandlers.OnKicking;
+           
+      
         }
 
         public override void OnEnabled()
