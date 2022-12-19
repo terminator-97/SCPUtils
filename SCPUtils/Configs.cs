@@ -77,6 +77,11 @@ namespace SCPUtils
         [Description("Should only the owner of the handcuff (and the allies of the handcuffed players) be able to unhandcull?")]
         public bool HandCuffOwnership { get; private set; } = false;
 
+        [Description("Allow SCP swap?")]
+        public bool AllowSCPSwap { get; private set; } = true;
+        [Description("Allow SCP swap only if both SCPs are at full health? You must enable also allow_scp_swap option.")]
+        public bool AllowSCPSwapOnlyFullHealth { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -170,6 +175,12 @@ namespace SCPUtils
         [Description("Min players required on server for PT to be counted")]
         public int MinPlayersPtCount { get; private set; } = 1;
 
+        [Description("Max allowed time in seconds from start of round to send a SCP Swap request")]
+        public int MaxAllowedTimeScpSwapRequest { get; private set; } = 35;
+
+        [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
+        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 55;
+
         [Description("Which quit / suicide percentage as SCP a player require before getting banned? (You can add tollerence in settings)")]
         public float AutoBanThreshold { get; private set; } = 30.5f;
 
@@ -205,6 +216,18 @@ namespace SCPUtils
 
         [Description("Which message should be shown to a player when he spawns as SCP while being banned and replaced with another player?")]
         public Exiled.API.Features.Broadcast RoundBanSpawnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>You're SCP banned:</color>\n<color=yellow><size=27>You have been removed as SCP because you're currently SCP-Banned! You must be replaced other %roundnumber% time(s) before you will be able to play SCP again!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("SCP swap request broadcast")]
+        public Exiled.API.Features.Broadcast SwapRequestBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>%player% (%scp%) wants to swap their role with you, to accept open the console with ò key and type .accept otherwise type .deny, you have %seconds% seconds left to accept this request.</color>", 20, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("SCP swap request canceled broadcast")]
+        public Exiled.API.Features.Broadcast SwapRequestCanceledBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>The swap request has been canceled</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("SCP swap request denied broadcast")]
+        public Exiled.API.Features.Broadcast SwapRequestDeniedBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>The swap request has been denied</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("SCP swap request informative broadcast")]
+        public Exiled.API.Features.Broadcast SwapRequestInfoBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You are an SCP, for %seconds% seconds you can exchange your role with other SCP player using swap command on ò</color>", 15, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which time of the day the server should autorestart?")]
         public string AutoRestartTimeTask { get; private set; } = "1:35:0";
@@ -316,6 +339,31 @@ namespace SCPUtils
 
         [Description("The aliases for the unwarn command")]
         public string[] UnwarnCommandAliases { get; set; } = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
+
+        [Description("The command name for the swap request command")]
+        public string SwapRequestCommand { get; set; } = "scputils_swap_request";
+
+        [Description("The aliases for the swap request command")]
+        public string[] SwapRequestCommandAliases { get; set; } = new[] { "swap", "swapr", "su_sr", "scpu_sr", "swap_request" };
+
+        [Description("The command name for the swap request cancel command")]
+        public string SwapRequestCancelCommand { get; set; } = "scputils_swap_request_cancel";
+
+        [Description("The aliases for the swap request cancel command")]
+        public string[] SwapRequestCancelCommandAliases { get; set; } = new[] { "cancel", "su_src", "swaprc", "scpu_src", "swap_request_cancel" };
+
+        [Description("The command name for the swap request accept command")]
+        public string SwapRequestAcceptCommand { get; set; } = "scputils_swap_request_accept";
+
+        [Description("The aliases for the swap request accept command")]
+        public string[] SwapRequestAcceptCommandAliases { get; set; } = new[] { "accept", "su_sra", "swapra", "scpu_sra", "swap_request_accept" };
+
+        [Description("The command name for the swap request deny command")]
+        public string SwapRequestDenyCommand { get; set; } = "scputils_swap_request_deny";
+
+        [Description("The aliases for the swap request deny command")]
+        public string[] SwapRequestDenyCommandAliases { get; set; } = new[] { "deny", "su_srd", "swaprd", "scpu_srd", "swap_request_deny" };
+
         [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
 
         public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; } = new Exiled.API.Features.Broadcast(
@@ -326,7 +374,7 @@ namespace SCPUtils
         public Exiled.API.Features.Broadcast AlertStaffBroadcastChangeIP { get; private set; } = new Exiled.API.Features.Broadcast(
             "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has changed IP. <color=yellow>{oldIP}</color> to <color=yellow>{newIP}</color></size>\n<size=35>Check console pressing <color=yellow>ò</color></size>",
             10);
-
+        public bool Debug { get; set; } = true;
 
         public void ConfigValidator()
         {

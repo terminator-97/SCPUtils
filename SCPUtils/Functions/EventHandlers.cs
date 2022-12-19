@@ -30,6 +30,7 @@ namespace SCPUtils
         private static Dictionary<Features.Player, string> Cuffed { get; set; } = new Dictionary<Features.Player, string>();
 
         public List<Features.Player> KickedList { get; set; } = new List<Features.Player>();
+        public Dictionary<Features.Player, Features.Player> SwapRequest { get; set; } = new Dictionary<Features.Player, Features.Player>();
         public int ChaosRespawnCount { get; set; }
 
         public int MtfRespawnCount { get; set; }
@@ -45,21 +46,21 @@ namespace SCPUtils
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
-            if (ev.Target == null) return;
-            if (Cuffed.ContainsKey(ev.Target)) Cuffed.Remove(ev.Target);
-            if ((ev.Target.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Target.Role == PlayerRoles.RoleTypeId.Tutorial)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
+            if (ev.Player == null) return;
+            if (Cuffed.ContainsKey(ev.Player)) Cuffed.Remove(ev.Player);
+            if ((ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
                 if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
                 {
                     if (ev.DamageHandler.Type == DamageTypes.Tesla || ev.DamageHandler.Type == DamageTypes.Crushed || (ev.DamageHandler.Type == DamageTypes.Unknown && ev.DamageHandler.Damage >= 50000) || (ev.DamageHandler.Type == DamageTypes.Explosion && ev.DamageHandler.IsSuicide))
                     {
-                        pluginInstance.Functions.LogWarn(ev.Target, ev.DamageHandler.Type.ToString());
-                        pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                        pluginInstance.Functions.LogWarn(ev.Player, ev.DamageHandler.Type.ToString());
+                        pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
                     }
                     else if ((ev.DamageHandler.Type == DamageTypes.Unknown && ev.DamageHandler.Damage == -1f) && pluginInstance.Config.QuitEqualsSuicide)
                     {
-                        pluginInstance.Functions.LogWarn(ev.Target, "Disconnect");
-                        pluginInstance.Functions.OnQuitOrSuicide(ev.Target);
+                        pluginInstance.Functions.LogWarn(ev.Player, "Disconnect");
+                        pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
                     }
                 }
             }
@@ -67,10 +68,10 @@ namespace SCPUtils
             if (pluginInstance.Config.NotifyLastPlayerAlive)
             {
 
-                List<Features.Player> team = Features.Player.Get(ev.Target.Role.Team).ToList();
+                List<Features.Player> team = Features.Player.Get(ev.Player.Role.Team).ToList();
                 if (team.Count - 1 == 1)
                 {
-                    if (team[0] == ev.Target)
+                    if (team[0] == ev.Player)
                     {
                         team[1].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
                     }
@@ -82,12 +83,12 @@ namespace SCPUtils
             }
 
 
-            if (ev.Target.IsScp || ev.Target.Role == PlayerRoles.RoleTypeId.Tutorial && pluginInstance.Config.AreTutorialsSCP)
+            if (ev.Player.IsScp || ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial && pluginInstance.Config.AreTutorialsSCP)
             {
                 if (ev.DamageHandler.IsSuicide)
                 {
                     var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                    message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
+                    message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
                     Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
                 }
 
@@ -95,27 +96,21 @@ namespace SCPUtils
                 {
                     if (pluginInstance.Config.ScpSuicideMessage.Show)
                     {
-                        if (ev.Player == null)
+                        if (ev.Attacker == null)
                         {
                             var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
+                            message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
                         }
                         else
                         {
                             var message = pluginInstance.Config.ScpDeathMessage.Content;
-                            message = message.Replace("%playername%", ev.Target.Nickname).Replace("%scpname%", ev.Target.Role.Type.ToString()).Replace("%killername%", ev.Player.Nickname).Replace("%reason%", ev.DamageHandler.Type.ToString());
+                            message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%killername%", ev.Attacker.Nickname).Replace("%reason%", ev.DamageHandler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration, message, pluginInstance.Config.ScpDeathMessage.Type);
                         }
                     }
                 }
             }
-        }
-
-        internal void OnVoiceChat(VoiceChattingEventArgs ev)
-        {
-            Log.Info("a");
-            ev.VoiceModule.CurrentChannel = VoiceChat.VoiceChatChannel.Proximity;
         }
 
         internal void OnKicking(KickingEventArgs ev)
@@ -244,6 +239,7 @@ namespace SCPUtils
             TemporarilyDisabledWarns = false;
             ChaosRespawnCount = 0;
             MtfRespawnCount = 0;
+            SwapRequest.Clear();
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs _)
@@ -253,12 +249,11 @@ namespace SCPUtils
 
         internal void OnPlayerHurt(HurtingEventArgs ev)
         {            
-            if (ev.Player == null || ev.Target == null) return;
+            if (ev.Player == null || ev.Attacker== null) return;
        
-            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Target.Role.Team) == true)
-            {
-                Log.Info("event3");
-                ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Target, ev.Player) && pluginInstance.Functions.CuffedCheck(ev.Target) && pluginInstance.Functions.CheckSafeZones(ev.Target));
+            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Player.Role.Team) == true)
+            {                
+                ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Player, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Player) && pluginInstance.Functions.CheckSafeZones(ev.Player));
             }
         }
 
@@ -330,7 +325,18 @@ namespace SCPUtils
 
                 }
                 else ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
-            }         
+            }  
+            if(ev.Player.IsScp && pluginInstance.Config.AllowSCPSwap)
+            {                
+                if (Round.ElapsedTime.TotalSeconds < ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequest)
+                {
+                    var seconds = Math.Round(pluginInstance.Config.MaxAllowedTimeScpSwapRequest - Round.ElapsedTime.TotalSeconds + 1);
+                    var message = pluginInstance.Config.SwapRequestInfoBroadcast.Content;
+                    message = message.Replace("%seconds%", seconds.ToString());
+                    ev.Player.Broadcast(pluginInstance.Config.SwapRequestInfoBroadcast.Duration, message, pluginInstance.Config.SwapRequestInfoBroadcast.Type, false);
+                  
+                }
+            }
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)

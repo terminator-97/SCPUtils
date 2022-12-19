@@ -51,9 +51,8 @@ namespace SCPUtils
             PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning += EventHandlers.OnBanned;
-            PlayerEvents.Kicking += EventHandlers.OnKicking;
-           
-      
+            PlayerEvents.Kicking += EventHandlers.OnKicking;          
+                 
         }
 
         public override void OnEnabled()
@@ -73,7 +72,7 @@ namespace SCPUtils
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
             DatabasePlayerData.OpenDatabase();
-            try
+        /*    try
             {
                 Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");
                 Harmony.PatchAll();
@@ -83,7 +82,7 @@ namespace SCPUtils
                 Log.Error($"Patching failed!, " + e);
             }
 
-            Log.Debug("Events patched successfully!");
+            Log.Debug("Events patched successfully!");*/
         }
 
         public override void OnDisabled()
