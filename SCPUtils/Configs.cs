@@ -176,10 +176,13 @@ namespace SCPUtils
         public int MinPlayersPtCount { get; private set; } = 1;
 
         [Description("Max allowed time in seconds from start of round to send a SCP Swap request")]
-        public int MaxAllowedTimeScpSwapRequest { get; private set; } = 35;
+        public int MaxAllowedTimeScpSwapRequest { get; private set; } = 50;
 
         [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
-        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 55;
+        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 65;       
+
+        [Description("List of session variables for custom SCPs, putting the id there will deny the swap")]
+        public List<string> DeniedSwapCustomInfo { get; private set; } = new List<string>() { "<color=#960018>SCP-20743</color>", "SCP-20743", "SCP-20743-1", "<color=#960018>SCP-20743-1</color>" };
 
         [Description("Which quit / suicide percentage as SCP a player require before getting banned? (You can add tollerence in settings)")]
         public float AutoBanThreshold { get; private set; } = 30.5f;
@@ -187,7 +190,7 @@ namespace SCPUtils
         [Description("Which quit / suicide percentage as SCP a player require before getting kicked? (You can add tollerence in settings)")]
         public float AutoKickThreshold { get; private set; } = 15.5f;
 
-        [Description("Which colors are restricted on .scputils_change_color command?")]
+        [Description("Which colors are restricted on .scputils_change_color command? Use command colors in game console to see them")]
         public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1", "Color2" };
 
         [Description("Which nicknames are restricted on .scputils_change_nickname command?")]
@@ -229,9 +232,8 @@ namespace SCPUtils
         [Description("SCP swap request informative broadcast")]
         public Exiled.API.Features.Broadcast SwapRequestInfoBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You are an SCP, for %seconds% seconds you can exchange your role with other SCP player using swap command on ò</color>", 15, true, Broadcast.BroadcastFlags.Normal);
 
-        [Description("Which time of the day the server should autorestart?")]
+        [Description("Which time of the day the server should perform autorestart task?")]
         public string AutoRestartTimeTask { get; private set; } = "1:35:0";
-
 
         [Description("Which text should be shown outside discord embed?")]
         public string ExtraText { get; private set; } = "@everyone";
@@ -319,19 +321,16 @@ namespace SCPUtils
                 }
             },
 
-        };
-
-        [Description("With which SCPs users are allowed to speak using V to humans without any badge (remove the disallowed SCPs)? (This will bypass permissions check so everyone will be able to speak with those SCPs regardless rank)")]
-
-        public List<PlayerRoles.RoleTypeId> AllowedScps { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp049, PlayerRoles.RoleTypeId.Scp0492, PlayerRoles.RoleTypeId.Scp079, PlayerRoles.RoleTypeId.Scp096, PlayerRoles.RoleTypeId.Scp106, PlayerRoles.RoleTypeId.Scp173, PlayerRoles.RoleTypeId.Scp939 };
+        };       
 
         [Description("Translations for damage types")]
         public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.Explosion.ToString().ToUpper(), DamageTypes.Explosion.ToString().ToUpper() }, { DamageTypes.Asphyxiation.ToString().ToUpper(), DamageTypes.Asphyxiation.ToString().ToUpper() }, { DamageTypes.Bleeding.ToString().ToUpper(), DamageTypes.Bleeding.ToString().ToUpper() },
-           { DamageTypes.Crushed.ToString().ToUpper(), DamageTypes.Crushed.ToString().ToUpper() }, { DamageTypes.Decontamination.ToString().ToUpper(), DamageTypes.Decontamination.ToString().ToUpper() }, { DamageTypes.Falldown.ToString().ToUpper(), DamageTypes.Falldown.ToString().ToUpper() }, { DamageTypes.FemurBreaker.ToString().ToUpper(), DamageTypes.FemurBreaker.ToString().ToUpper() }, { DamageTypes.FriendlyFireDetector.ToString().ToUpper(), DamageTypes.FriendlyFireDetector.ToString().ToUpper()},
+           { DamageTypes.Crushed.ToString().ToUpper(), DamageTypes.Crushed.ToString().ToUpper() }, { DamageTypes.Decontamination.ToString().ToUpper(), DamageTypes.Decontamination.ToString().ToUpper() }, { DamageTypes.Falldown.ToString().ToUpper(), DamageTypes.Falldown.ToString().ToUpper() }, { DamageTypes.FriendlyFireDetector.ToString().ToUpper(), DamageTypes.FriendlyFireDetector.ToString().ToUpper()},
            { DamageTypes.MicroHid.ToString().ToUpper(), DamageTypes.MicroHid.ToString().ToUpper() }, { DamageTypes.PocketDimension.ToString().ToUpper(), DamageTypes.PocketDimension.ToString().ToUpper() }, { DamageTypes.Poison.ToString().ToUpper(), DamageTypes.Poison.ToString().ToUpper() },
            { DamageTypes.Recontainment.ToString().ToUpper(), DamageTypes.Recontainment.ToString().ToUpper() }, { DamageTypes.Scp.ToString().ToUpper(), DamageTypes.Scp.ToString().ToUpper() }, { DamageTypes.Scp018.ToString().ToUpper(), DamageTypes.Scp018.ToString().ToUpper() },
            { DamageTypes.Scp207.ToString().ToUpper(), DamageTypes.Scp207.ToString().ToUpper() }, { DamageTypes.SeveredHands.ToString().ToUpper(), DamageTypes.SeveredHands.ToString().ToUpper() }, { DamageTypes.Tesla.ToString().ToUpper(), DamageTypes.Tesla.ToString().ToUpper() }, { DamageTypes.Unknown.ToString().ToUpper(), DamageTypes.Unknown.ToString().ToUpper() },
            { DamageTypes.Warhead.ToString().ToUpper(), DamageTypes.Warhead.ToString().ToUpper() }, { DamageTypes.Firearm.ToString().ToUpper(), DamageTypes.Firearm.ToString().ToUpper() } };
+
 
 
         [Description("The command name for the unwarn command")]
@@ -378,6 +377,10 @@ namespace SCPUtils
 
         public void ConfigValidator()
         {
+            if(MaxAllowedTimeScpSwapRequest>MaxAllowedTimeScpSwapRequestAccept)
+            {
+                Log.Warn("MaxAllowedTimeScpSwapRequest is higher than MaxAllowedTimeScpSwapRequestAccept, players might not be able to accept some requests doublecheck config!");
+            }
             if (ScpSuicideTollerance < 0)
             {
                 Log.Warn("Invalid config scputils_scp_suicide_tollerance, loading dafault one!");

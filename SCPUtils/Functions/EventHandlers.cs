@@ -113,6 +113,7 @@ namespace SCPUtils
             }
         }
 
+
         internal void OnKicking(KickingEventArgs ev)
         {
             if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);            
@@ -195,11 +196,12 @@ namespace SCPUtils
 
         internal void OnRoundEnded(RoundEndedEventArgs _)
         {
+            TemporarilyDisabledWarns = true;
+
             foreach (Features.Player player in Exiled.API.Features.Player.List)
             {
                 pluginInstance.Functions.SaveData(player);
-            }
-            TemporarilyDisabledWarns = true;
+            }            
             Cuffed.Clear();
         }
 

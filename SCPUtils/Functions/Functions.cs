@@ -243,7 +243,7 @@ namespace SCPUtils
                 {
                     if (player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepNameWithoutPermission)
                     {
-                        player.DisplayNickname = databasePlayer.CustomNickName;
+                        player.DisplayNickname = databasePlayer.CustomNickName;                        
                     }
                     else
                     {
@@ -300,6 +300,8 @@ namespace SCPUtils
         }
         public void LogWarn(Exiled.API.Features.Player player, string suicidetype)
         {
+
+            if(Round.IsEnded) return;
             Player databasePlayer = player.GetDatabasePlayer();
             FixBanTime(databasePlayer);
             databasePlayer.SuicideDate.Add(DateTime.Now);
@@ -317,12 +319,13 @@ namespace SCPUtils
             {
                 databasePlayer.UserNotified.Add(true);
             }
+            
         }
         public void SaveData(Exiled.API.Features.Player player)
         {            
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
-                if ((player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Config.QuitEqualsSuicide && Round.IsStarted)
+                if ((player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Config.QuitEqualsSuicide && !Round.IsEnded)
                 {
                     if (pluginInstance.Config.EnableSCPSuicideAutoWarn && pluginInstance.Config.QuitEqualsSuicide && !pluginInstance.EventHandlers.KickedList.Contains(player))
                     {
@@ -544,8 +547,8 @@ namespace SCPUtils
             args.ReplacedPlayer = list[id];
             args.ScpRole = player.Role;
             args.NormalRole = list[id].Role;
-            player.SetRole(list[id].Role);
-            list[id].SetRole(role);
+            player.Role.Set(list[id].Role);
+            list[id].Role.Set(role);
             pluginInstance.Events.OnReplacePlayerEvent(args);
 
 

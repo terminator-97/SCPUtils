@@ -49,10 +49,22 @@ namespace SCPUtils.Commands
                 return false;
             }
 
+            if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(target.CustomInfo.ToString()))
+            {
+                response = $"<color=red>Target is using a custom SCP therefore swap is denied!</color>";
+                return false;
+            }
+
+            if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(player.CustomInfo.ToString()))
+            {
+                response = $"<color=red>You are using a custom SCP therefore swap is denied!</color>";
+                return false;
+            }
+
             var scp = player.Role.Type;
 
-            player.SetRole(target.Role.Type);
-            target.SetRole(scp);
+            player.Role.Set(target.Role.Type);
+            target.Role.Set(scp);
             ScpUtils.StaticInstance.EventHandlers.SwapRequest.Remove(target);
             response = $"<color=green>Swap request has been accepted</color>";
             return true;             

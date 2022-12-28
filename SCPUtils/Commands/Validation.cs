@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -22,11 +23,16 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("scputils.dev"))
+            {
+                response = "<color=red>You need a higher administration level to use this command!</color>";
+                return false;
+            }
             int valid = 0;
             int invalid = 0;
            foreach( var a in Database.LiteDatabase.GetCollection<Player>().FindAll())
             {
-              /*  try
+                try
                 {
                     var x = a.Name;
                     valid++;
@@ -34,7 +40,7 @@ namespace SCPUtils.Commands
                 catch (Exception e)
                 {
                     invalid++;
-                }*/
+                }
             }
             
             response = $"Invalid: {invalid}, Valid: {valid}";

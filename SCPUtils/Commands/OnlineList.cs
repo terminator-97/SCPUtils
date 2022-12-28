@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.API.Features.Roles;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Text;
@@ -57,9 +58,16 @@ namespace SCPUtils.Commands
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.IsNoClipEnabled)
+                    if (player.Role.Is(out FpcRole role))
                     {
-                        message.Append(" [NOCLIP]");
+                        if (role.IsNoclipEnabled)
+                        {
+                            message.Append(" [NOCLIP]");
+                        }
+                    }
+                    else
+                    {
+                        message.Append(" [NOT-FCPROLE]");
                     }
 
                     if (player.IsGodModeEnabled)

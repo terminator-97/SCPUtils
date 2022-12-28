@@ -58,13 +58,7 @@ namespace SCPUtils.Commands
             if (sender.CheckPermission("scputils.onlinelist.badge")) message.AppendLine("You MAY see online info badges!");
             if (sender.CheckPermission("scputils.onlinelist.role")) message.AppendLine("You MAY see online info roles!");
             if (sender.CheckPermission("scputils.onlinelist.health")) message.AppendLine("You MAY see online info health!");
-            if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");
-            if (sender.CheckPermission("scputils_speak.scp049") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp049)) message.AppendLine("You MAY speak with SCP-049!");
-            if (sender.CheckPermission("scputils_speak.scp0492") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp0492)) message.AppendLine("You MAY speak with SCP-0492!");
-            if (sender.CheckPermission("scputils_speak.scp079") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp079)) message.AppendLine("You MAY speak with SCP-079!");
-            if (sender.CheckPermission("scputils_speak.scp096") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp096)) message.AppendLine("You MAY speak with SCP-096!");
-            if (sender.CheckPermission("scputils_speak.scp106") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp106)) message.AppendLine("You MAY speak with SCP-106!");
-            if (sender.CheckPermission("scputils_speak.scp173") || ScpUtils.StaticInstance.Config.AllowedScps.Contains(PlayerRoles.RoleTypeId.Scp173)) message.AppendLine("You MAY speak with SCP-173!");
+            if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");            
             message.AppendLine("Permissions not listed here means they are denied, more info about permissions on github.com/terminator-97/SCPUtils");
 
 

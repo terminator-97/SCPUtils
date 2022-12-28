@@ -48,7 +48,7 @@ namespace SCPUtils.Commands
                 }
                 else
                 {
-                    target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+                    target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
                     color = arguments.Array[1].ToString().ToLower();
 
                     if (target.GetDatabasePlayer().IsRestricted())

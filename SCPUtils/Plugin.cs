@@ -1,4 +1,3 @@
-using HarmonyLib;
 using System;
 using Features = Exiled.API.Features;
 using Handlers = Exiled.Events.Handlers;
@@ -22,8 +21,7 @@ namespace SCPUtils
         public Player Player { get; private set; }
         public Database DatabasePlayerData { get; private set; }
         public Events.Events Events { get; private set; }
-        public int PatchesCounter { get; private set; }
-        public Harmony Harmony { get; private set; }
+        public int PatchesCounter { get; private set; }  
 
         private static readonly ScpUtils InstanceValue = new ScpUtils();
         private ScpUtils()
@@ -51,7 +49,9 @@ namespace SCPUtils
             PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning += EventHandlers.OnBanned;
-            PlayerEvents.Kicking += EventHandlers.OnKicking;          
+            PlayerEvents.Kicking += EventHandlers.OnKicking;
+      
+            
                  
         }
 
@@ -72,17 +72,6 @@ namespace SCPUtils
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
             DatabasePlayerData.OpenDatabase();
-        /*    try
-            {
-                Harmony = new Harmony($"com.terminator97.scputils.{PatchesCounter++}");
-                Harmony.PatchAll();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Patching failed!, " + e);
-            }
-
-            Log.Debug("Events patched successfully!");*/
         }
 
         public override void OnDisabled()
@@ -104,11 +93,11 @@ namespace SCPUtils
             PlayerEvents.RemovingHandcuffs -= EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning -= EventHandlers.OnBanned;
             PlayerEvents.Kicking -= EventHandlers.OnKicking;
+        
             EventHandlers = null;
             Functions = null;
             Functions.LastWarn.Clear();
-            Database.LiteDatabase.Dispose();
-            Harmony.UnpatchAll();
+            Database.LiteDatabase.Dispose();         
         }
 
 

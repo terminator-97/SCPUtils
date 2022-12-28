@@ -89,7 +89,17 @@ namespace SCPUtils.Commands
                         response = $"<color=red>You have the same role of another player!</color>";
                         return false;
                     }
+                    if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(target.CustomInfo.ToString()))
+                    {
+                        response = $"<color=red>Target is using a custom SCP therefore swap is denied!</color>";
+                        return false;
+                    }
 
+                    if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(player.CustomInfo.ToString()))
+                    {
+                        response = $"<color=red>You are using a custom SCP therefore swap is denied!</color>";
+                        return false;
+                    }
                     ScpUtils.StaticInstance.EventHandlers.SwapRequest.Add(player, target);
                     target.ClearBroadcasts();
                     var message = ScpUtils.StaticInstance.Config.SwapRequestBroadcast.Content;
