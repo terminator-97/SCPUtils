@@ -31,6 +31,7 @@ namespace SCPUtils.Commands
             {
                 message.AppendLine();
                 message.Append($"({player.Id}) {player.Nickname}");
+
                 if (sender.CheckPermission("scputils.onlinelist.userid"))
                 {
                     message.Append($" ({player.UserId})");

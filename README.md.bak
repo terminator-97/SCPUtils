@@ -13,7 +13,6 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Nickname Blacklist:** You can prevent players joining with blacklisted nicknames and preventing them to change nicknames to restricted ones, users with bypassnickname permission bypass this limit!
 - **Badge colors:** Admins can assign a color to every person, users with permissions can assign any color to themselves if it's not in restricted list!
 - **Permanently show/hide badges:** Users with permission can permanently show or hide badge using a simple command (in user console)
-- **SCPSpeak features:** Playing with permissions you can decide which badge (even default one) can speak with that SCP like 939 using V!
 - **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
@@ -22,11 +21,12 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Custom Hints / Broadcast:** You can save hints / broadcasts in the database and use them easily by the ID.
 - **Multi account detector:** Auto-detects multi accounts and based on plugin settings it informs the administrators, you can also set a webhook for reports about mute evaders (you can also remute them automatically by changing configs), you can also exclude specific asns or players from the detector
 - **Handcuff ownership:** By simply updating a config only who cuff the player will be able to uncuff it.
+- **SCP-Swap:** By setting a config you can decide the max allowed time for SCP-Swap requests and if the SCP has to be full health for swap to be allowed.
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll and Newtonsoft.Json.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 4.3.1 Dependencies: LiteDB 5.0.12 and Newtonsoft.Json 13.0.1**
+**Minimum requirements: Exiled version: 6.0.0 Dependencies: LiteDB 5.0.15 and Newtonsoft.Json 13.0.2**
 
 
 ### Configs:
@@ -91,18 +91,10 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
 | scputils_my_info  | none | none | Show your preferences and temporarily badges info |
 | scputils_play_time | none | scputils.ownplaytime | Show your own playtime with a max range of 120 days |
-
-**Speak permissions**
-
-| Permisssion  | Description | 
-| ------------- | ------------- | 
-| scputils_speak.scp049  | Allows to speak with V using this scp |
-| scputils_speak.scp0492  | Allows to speak with V using this scp |
-| scputils_speak.scp079 | Allows to speak with V using this scp |
-| scputils_speak.scp096 | Allows to speak with V using this scp |
-| scputils_speak.scp106  | Allows to speak with V using this scp |
-| scputils_speak.scp173  | Allows to speak with V using this scp |
-
+| swap_request (configurable) | <player> | none | Sends a SCP swap request
+| swap_request_accept (configurable) | none | none | Accept a SCP swap request
+| swap_request_deny (configurable) | none | none | Deny a SCP swap request
+| swap_request_cancel (configurable) | none | none | Cancel a SCP swap request
 
 **Generic permissions**
 
@@ -181,13 +173,13 @@ To edit your configs you must go into EXILED folder and edit port-config.yml fil
 
 **Team protection**
 
-CDP = Class-D  <br />
-CHI = Chaos Insurgency <br />
-MTF = MTF Team (included guards) <br />
-RIP = Spectators <br />
-RSC = Scientist <br />
-SCP = SCP <br />
-TUT = Tutorial <br />
+ClassD = Class-D  <br />
+ChaosInsurgency = Chaos Insurgency <br />
+FoundationForces = MTF Team (included guards) <br />
+Dead = Spectators <br />
+Scientists = Scientist <br />
+SCPs = SCP <br />
+Tutorial = Tutorial <br />
 
 *Sample Config for team protection:*<br />
 

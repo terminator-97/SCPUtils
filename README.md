@@ -91,10 +91,11 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_hide_badge  | none | scputils.badgevisibility | Permanently hide your badge |
 | scputils_my_info  | none | none | Show your preferences and temporarily badges info |
 | scputils_play_time | none | scputils.ownplaytime | Show your own playtime with a max range of 120 days |
-| swap_request (configurable) | <player> | none | Sends a SCP swap request
-| swap_request_accept (configurable) | none | none | Accept a SCP swap request
-| swap_request_deny (configurable) | none | none | Deny a SCP swap request
-| swap_request_cancel (configurable) | none | none | Cancel a SCP swap request
+| scputils_swap_request (configurable) | <player> | none | Sends a SCP swap request
+| scputils_swap_request_accept (configurable) | none | none | Accept a SCP swap request
+| scputils_swap_request_deny (configurable) | none | none | Deny a SCP swap request
+| scputils_swap_request_cancel (configurable) | none | none | Cancel a SCP swap request
+| scputils_scp_list  | none | Requires to be scp and swap module enabled | Show SCP list
 
 **Generic permissions**
 
