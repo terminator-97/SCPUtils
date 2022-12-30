@@ -46,7 +46,7 @@ namespace SCPUtils.Commands
                     }
                     else
                     {
-                        message.Append(" [NOT-FCPROLE]");
+                        message.Append(" [NOT-FPCROLE]");
                     }
 
                     if (player.IsGodModeEnabled)

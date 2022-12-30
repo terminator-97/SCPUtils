@@ -176,10 +176,10 @@ namespace SCPUtils
         public int MinPlayersPtCount { get; private set; } = 1;
 
         [Description("Max allowed time in seconds from start of round to send a SCP Swap request")]
-        public int MaxAllowedTimeScpSwapRequest { get; private set; } = 50;
+        public int MaxAllowedTimeScpSwapRequest { get; private set; } = 60;
 
         [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
-        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 65;       
+        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 75;       
 
         [Description("List of session variables for custom SCPs, putting the id there will deny the swap")]
         public List<string> DeniedSwapCustomInfo { get; private set; } = new List<string>() { "<color=#960018>SCP-20743</color>", "SCP-20743", "SCP-20743-1", "<color=#960018>SCP-20743-1</color>" };
