@@ -650,7 +650,7 @@ namespace SCPUtils
         }
 
         public bool CheckCommandCooldown(ICommandSender sender)
-        {            
+        {
             if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
             {
                 return false;
@@ -672,7 +672,7 @@ namespace SCPUtils
             else
             {
                 pluginInstance.EventHandlers.LastCommand[player] = DateTime.Now.AddSeconds(pluginInstance.Config.CommandCooldownSeconds);
-                return false;               
+                return false;
             }
         }
 

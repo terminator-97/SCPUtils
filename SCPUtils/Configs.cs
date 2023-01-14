@@ -246,7 +246,7 @@ namespace SCPUtils
 
         [Description("Command cooldown text")]
         public string CooldownMessage { get; private set; } = "<color=red>Command execution failed! You are under cooldown or command banned, wait 5 seconds and try again, if the error persist you might have been banned from using commands, to see the reason and duration open the console after joining the server, this abusive action has been reported to the staff for futher punishments</color>";
-       // public string CooldownMessage { get; private set; } = "<color=red>Esecuzione del comando fallita! Attualmente sei sotto cooldown oppure bannato, attendi 5 secondi e riprova, se l'errore è persistente significa che sei bannato, per vedere durata e motivazione apri la console appena entri nel server, questa azione illecita è stata segnalata allo staff.</color>";
+        // public string CooldownMessage { get; private set; } = "<color=red>Esecuzione del comando fallita! Attualmente sei sotto cooldown oppure bannato, attendi 5 secondi e riprova, se l'errore è persistente significa che sei bannato, per vedere durata e motivazione apri la console appena entri nel server, questa azione illecita è stata segnalata allo staff.</color>";
 
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };

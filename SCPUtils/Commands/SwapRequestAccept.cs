@@ -52,6 +52,12 @@ namespace SCPUtils.Commands
                 return false;
             }
 
+            if(!target.IsScp)
+            {
+                response = $"<color=red>Target is not an SCP</color>";
+                return false;
+            }
+
             if (target.CustomInfo != null && ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo?.Any() == true)
             {
                 if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(target.CustomInfo.ToString()))
