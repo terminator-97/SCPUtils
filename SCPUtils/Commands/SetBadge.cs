@@ -15,9 +15,13 @@ namespace SCPUtils.Commands
         public string[] Aliases { get; } = new[] { "setb", "issue_badge", "su_setb", "su_setbadge", "scpu_setb", "scpu_setbadge" };
 
         public string Description { get; } = "With this command you can set temporary badge, by their name for example: scpu_setb 2 owner 60";
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
             string target;
             string badge;
             if (!sender.CheckPermission("scputils.handlebadges"))

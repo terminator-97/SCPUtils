@@ -19,6 +19,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             string color;
             if (sender.CheckPermission("scputils.playersetcolor"))

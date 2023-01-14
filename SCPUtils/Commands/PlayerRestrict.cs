@@ -17,6 +17,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             string reason;
             if (!sender.CheckPermission("scputils.moderatecommands"))
@@ -54,7 +60,32 @@ namespace SCPUtils.Commands
                 databasePlayer.Restricted.Add(DateTime.Now.AddMinutes(minutes), reason);
                 if (minutes == 0)
                 {
-                    databasePlayer.Restricted.Add(DateTime.Now.AddDays(20000), reason);
+                    databasePlayer.Restricted.Add(DateTime.MaxValue, reason);
+                }
+                if (target != null)
+                {
+                    if (!ScpUtils.StaticInstance.EventHandlers.LastCommand.ContainsKey(player))
+                    {
+                        if (minutes != 0)
+                        {
+                            ScpUtils.StaticInstance.EventHandlers.LastCommand.Add(player, DateTime.Now.AddMinutes(minutes));
+                        }
+                        else
+                        {
+                            ScpUtils.StaticInstance.EventHandlers.LastCommand.Add(player, DateTime.MaxValue);
+                        }
+                    }
+                    else
+                    {
+                        if (minutes != 0)
+                        {
+                            ScpUtils.StaticInstance.EventHandlers.LastCommand[player] = DateTime.Now.AddMinutes(minutes);
+                        }
+                        else
+                        {
+                            ScpUtils.StaticInstance.EventHandlers.LastCommand[player] = DateTime.MaxValue;
+                        }
+                    }
                 }
 
                 Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);

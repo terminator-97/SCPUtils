@@ -18,6 +18,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             string nickname = "";
             if (sender.CheckPermission("scputils.playersetname"))
@@ -115,9 +121,9 @@ namespace SCPUtils.Commands
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
-         
+
             if (player != null)
-            {                   
+            {
                 player.DisplayNickname = nickname;
             }
 

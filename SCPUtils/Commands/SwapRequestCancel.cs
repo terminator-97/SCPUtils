@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandSystem;
+﻿using CommandSystem;
+using System;
 
 namespace SCPUtils.Commands
 {
@@ -19,7 +15,13 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);          
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
             if (!ScpUtils.StaticInstance.EventHandlers.SwapRequest.ContainsKey(player))
             {
                 response = $"<color=red>You haven't sent any swap request!</color>";

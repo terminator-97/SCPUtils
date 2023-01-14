@@ -82,6 +82,9 @@ namespace SCPUtils
         [Description("Allow SCP swap only if both SCPs are at full health? You must enable also allow_scp_swap option.")]
         public bool AllowSCPSwapOnlyFullHealth { get; private set; } = true;
 
+        [Description("Report command abuse in console?")]
+        public bool CommandAbuseReport { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -179,7 +182,10 @@ namespace SCPUtils
         public int MaxAllowedTimeScpSwapRequest { get; private set; } = 60;
 
         [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
-        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 75;       
+        public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 75;
+
+        [Description("Command cooldown in seconds")]
+        public double CommandCooldownSeconds { get; private set; } = 5;
 
         [Description("List of session variables for custom SCPs, putting the id there will deny the swap")]
         public List<string> DeniedSwapCustomInfo { get; private set; } = new List<string>() { "<color=#960018>SCP-20743</color>", "SCP-20743", "SCP-20743-1", "<color=#960018>SCP-20743-1</color>" };
@@ -238,6 +244,10 @@ namespace SCPUtils
         [Description("Which text should be shown outside discord embed?")]
         public string ExtraText { get; private set; } = "@everyone";
 
+        [Description("Command cooldown text")]
+        public string CooldownMessage { get; private set; } = "<color=red>Command execution failed! You are under cooldown or command banned, wait 5 seconds and try again, if the error persist you might have been banned from using commands, to see the reason and duration open the console after joining the server, this abusive action has been reported to the staff for futher punishments</color>";
+       // public string CooldownMessage { get; private set; } = "<color=red>Esecuzione del comando fallita! Attualmente sei sotto cooldown oppure bannato, attendi 5 secondi e riprova, se l'errore è persistente significa che sei bannato, per vedere durata e motivazione apri la console appena entri nel server, questa azione illecita è stata segnalata allo staff.</color>";
+
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
 
@@ -280,11 +290,11 @@ namespace SCPUtils
 
         public Dictionary<PlayerRoles.Team, List<PlayerRoles.Team>> CuffedImmunityPlayers { get; private set; } = new Dictionary<PlayerRoles.Team, List<PlayerRoles.Team>>()
         {
-            { 
-                PlayerRoles.Team.ClassD, 
+            {
+                PlayerRoles.Team.ClassD,
                 new List<PlayerRoles.Team>
                 {
-                    PlayerRoles.Team.Scientists, PlayerRoles.Team.FoundationForces 
+                    PlayerRoles.Team.Scientists, PlayerRoles.Team.FoundationForces
                 }
             },
                {
@@ -321,7 +331,7 @@ namespace SCPUtils
                 }
             },
 
-        };       
+        };
 
         [Description("Translations for damage types")]
 
@@ -378,7 +388,7 @@ namespace SCPUtils
 
         public void ConfigValidator()
         {
-            if(MaxAllowedTimeScpSwapRequest>MaxAllowedTimeScpSwapRequestAccept)
+            if (MaxAllowedTimeScpSwapRequest > MaxAllowedTimeScpSwapRequestAccept)
             {
                 Log.Warn("MaxAllowedTimeScpSwapRequest is higher than MaxAllowedTimeScpSwapRequestAccept, players might not be able to accept some requests doublecheck config!");
             }

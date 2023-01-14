@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
 using System;
-using System.Linq;
 using System.Text;
 
 namespace SCPUtils.Commands
@@ -18,6 +17,11 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
 
             if (!(Exiled.API.Features.Player.Get((CommandSender)sender) is Exiled.API.Features.Player player))
             {

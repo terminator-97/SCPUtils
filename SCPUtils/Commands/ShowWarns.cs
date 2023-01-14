@@ -20,10 +20,16 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             if (!sender.CheckPermission("scputils.showwarns"))
             {
-                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
             }
             else
             {

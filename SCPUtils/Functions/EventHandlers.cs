@@ -1,5 +1,4 @@
 using Exiled.API.Features;
-using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp079;
@@ -23,8 +22,9 @@ namespace SCPUtils
 
         public static bool TemporarilyDisabledWarns;
 
-     //   public bool ptEnabled;
+        //   public bool ptEnabled;
 
+        public Dictionary<Features.Player, DateTime> LastCommand { get; set; } = new Dictionary<Features.Player, DateTime>();
         private static Dictionary<string, DateTime> PreauthTime { get; set; } = new Dictionary<string, DateTime>();
 
         private static Dictionary<Features.Player, string> Cuffed { get; set; } = new Dictionary<Features.Player, string>();
@@ -113,10 +113,43 @@ namespace SCPUtils
             }
         }
 
+        internal void OnRoundStarted()
+        {
+            Timing.CallDelayed(6f, () =>
+            {
+                foreach (var player in Features.Player.List)
+                {
+                    if (player.Role == PlayerRoles.RoleTypeId.None) player.Role.Set(PlayerRoles.RoleTypeId.ClassD, Exiled.API.Enums.SpawnReason.ForceClass);
+                }
+            });
+        }
+
+        internal void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            //    Log.Info($"{ev.Player.Nickname} - {ev.Reason}");
+            if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
+            {
+                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.SCPs)
+                {
+                    pluginInstance.Functions.RandomScp(ev.Player, ev.NewRole);
+                }
+                ev.IsAllowed = false;
+                return;
+            }
+            if (ev.Player.Role == PlayerRoles.RoleTypeId.Overwatch || ev.NewRole == PlayerRoles.RoleTypeId.Overwatch)
+            {
+                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
+                {
+                    ev.IsAllowed = false;
+                }
+                Player databasePlayer = ev.Player.GetDatabasePlayer();
+                databasePlayer.OverwatchActive = ev.NewRole == PlayerRoles.RoleTypeId.Overwatch;
+            }
+        }
 
         internal void OnKicking(KickingEventArgs ev)
         {
-            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);            
+            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
         }
 
         internal void OnBanned(BanningEventArgs ev)
@@ -124,7 +157,7 @@ namespace SCPUtils
             if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
         }
         internal void OnPlayerUnhandCuff(RemovingHandcuffsEventArgs ev)
-        {           
+        {
             if (pluginInstance.Config.HandCuffOwnership)
             {
                 if (!Cuffed.ContainsKey(ev.Target)) ev.IsAllowed = true;
@@ -186,10 +219,6 @@ namespace SCPUtils
             {
                 PreauthTime.Remove(ev.UserId);
             }
-
-
-
-
             PreauthTime.Add(ev.UserId, DateTime.Now);
         }
 
@@ -201,7 +230,7 @@ namespace SCPUtils
             foreach (Features.Player player in Exiled.API.Features.Player.List)
             {
                 pluginInstance.Functions.SaveData(player);
-            }            
+            }
             Cuffed.Clear();
         }
 
@@ -250,11 +279,11 @@ namespace SCPUtils
         }
 
         internal void OnPlayerHurt(HurtingEventArgs ev)
-        {            
-            if (ev.Player == null || ev.Attacker== null) return;
-       
+        {
+            if (ev.Player == null || ev.Attacker == null) return;
+
             if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Player.Role.Team) == true)
-            {                
+            {
                 ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Player, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Player) && pluginInstance.Functions.CheckSafeZones(ev.Player));
             }
         }
@@ -313,11 +342,13 @@ namespace SCPUtils
             }
 
             pluginInstance.Functions.IpCheck(ev.Player);
+            //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
             Player databasePlayer = ev.Player.GetDatabasePlayer();
+            //   if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
             if (ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial))
             {
 
@@ -327,23 +358,23 @@ namespace SCPUtils
 
                 }
                 else ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
-            }  
-            if(ev.Player.IsScp && pluginInstance.Config.AllowSCPSwap)
-            {                
+            }
+            if (ev.Player.IsScp && pluginInstance.Config.AllowSCPSwap)
+            {
                 if (Round.ElapsedTime.TotalSeconds < ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequest)
                 {
                     var seconds = Math.Round(pluginInstance.Config.MaxAllowedTimeScpSwapRequest - Round.ElapsedTime.TotalSeconds + 1);
                     var message = pluginInstance.Config.SwapRequestInfoBroadcast.Content;
                     message = message.Replace("%seconds%", seconds.ToString());
                     ev.Player.Broadcast(pluginInstance.Config.SwapRequestInfoBroadcast.Duration, message, pluginInstance.Config.SwapRequestInfoBroadcast.Type, false);
-                  
+
                 }
             }
         }
 
         internal void OnPlayerLeave(LeftEventArgs ev)
         {
-            pluginInstance.Functions.SaveData(ev.Player);            
+            pluginInstance.Functions.SaveData(ev.Player);
         }
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)

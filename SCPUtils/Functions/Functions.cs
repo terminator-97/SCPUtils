@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using CommandSystem;
+using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using MEC;
 using SCPUtils.Events;
@@ -6,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Features = Exiled.API.Features;
-using Mirror;
 
 namespace SCPUtils
 {
@@ -243,7 +242,7 @@ namespace SCPUtils
                 {
                     if (player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepNameWithoutPermission)
                     {
-                        player.DisplayNickname = databasePlayer.CustomNickName;                        
+                        player.DisplayNickname = databasePlayer.CustomNickName;
                     }
                     else
                     {
@@ -280,6 +279,8 @@ namespace SCPUtils
                 }
             }
 
+            SetCommandBan(player);
+
         }
 
         public bool CheckNickname(string name)
@@ -301,7 +302,7 @@ namespace SCPUtils
         public void LogWarn(Exiled.API.Features.Player player, string suicidetype)
         {
 
-            if(Round.IsEnded) return;
+            if (Round.IsEnded) return;
             Player databasePlayer = player.GetDatabasePlayer();
             FixBanTime(databasePlayer);
             databasePlayer.SuicideDate.Add(DateTime.Now);
@@ -319,10 +320,10 @@ namespace SCPUtils
             {
                 databasePlayer.UserNotified.Add(true);
             }
-            
+
         }
         public void SaveData(Exiled.API.Features.Player player)
-        {            
+        {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
                 if ((player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Config.QuitEqualsSuicide && !Round.IsEnded)
@@ -345,11 +346,11 @@ namespace SCPUtils
                 }
                 else if (!player.DoNotTrack)
                 {
-                    databasePlayer.SetCurrentDayPlayTime();               
+                    databasePlayer.SetCurrentDayPlayTime();
                 }
                 else
-                {                   
-                    databasePlayer.SetCurrentDayPlayTime();                                       
+                {
+                    databasePlayer.SetCurrentDayPlayTime();
                 }
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
@@ -370,11 +371,11 @@ namespace SCPUtils
         public void SavePlaytime(Exiled.API.Features.Player player)
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
-            {                
-                Player databasePlayer = player.GetDatabasePlayer();                
+            {
+                Player databasePlayer = player.GetDatabasePlayer();
                 databasePlayer.SetCurrentDayPlayTime();
                 databasePlayer.LastSeen = DateTime.Now;
-                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);            
+                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
             }
         }
 
@@ -563,6 +564,47 @@ namespace SCPUtils
 
         }
 
+        public void RandomScp(Exiled.API.Features.Player player, PlayerRoles.RoleTypeId role)
+        {
+            if (role == PlayerRoles.RoleTypeId.None) return;
+            Player databasePlayer = player.GetDatabasePlayer();
+            var list = Exiled.API.Features.Player.List.ToList();
+            list.RemoveAll(x => x.Role != PlayerRoles.RoleTypeId.ClassD);
+            if (list.Count == 0)
+            {
+                RandomScp2(player, role);
+                return;
+            }
+
+            var id = UnityEngine.Random.Range(0, list.Count - 1);
+
+            Timing.CallDelayed(2f, () =>
+            {
+                if (list[id] != null)
+                {
+                    list[id].Role.Set(role);
+                }
+                else RandomScp2(player, role);
+            });
+        }
+
+        public void RandomScp2(Exiled.API.Features.Player player, PlayerRoles.RoleTypeId role)
+        {
+            Player databasePlayer = player.GetDatabasePlayer();
+            var list = Exiled.API.Features.Player.List.ToList();
+            list.Remove(player);
+            list.RemoveAll(x => x.IsScp);
+            list.RemoveAll(x => x.Role == PlayerRoles.RoleTypeId.Tutorial);
+            if (list.Count == 0) return;
+            var id = UnityEngine.Random.Range(0, list.Count - 1);
+
+            if (list[id] != null)
+            {
+                list[id].Role.Set(role);
+            }
+
+        }
+
         public void IpCheck(Exiled.API.Features.Player player)
         {
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
@@ -596,7 +638,7 @@ namespace SCPUtils
                 foreach (var userId in databaseIp.UserIds)
                 {
                     if (player.IsMuted) return;
-                    if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId)) 
+                    if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
                         AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
@@ -605,7 +647,57 @@ namespace SCPUtils
 
                 }
             }
-        }   
+        }
+
+        public bool CheckCommandCooldown(ICommandSender sender)
+        {            
+            if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
+            {
+                return false;
+            }
+            var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
+            {
+                pluginInstance.EventHandlers.LastCommand.Add(player, DateTime.Now.AddSeconds(pluginInstance.Config.CommandCooldownSeconds));
+                return false;
+            }
+            else if (DateTime.Now <= pluginInstance.EventHandlers.LastCommand[player])
+            {
+                if (pluginInstance.Config.CommandAbuseReport)
+                {
+                    Log.Info($"[ABUSE-REPORT] {player.Nickname} - {player.UserId}@{player.AuthenticationType} tried to spam commands!");
+                }
+                return true;
+            }
+            else
+            {
+                pluginInstance.EventHandlers.LastCommand[player] = DateTime.Now.AddSeconds(pluginInstance.Config.CommandCooldownSeconds);
+                return false;               
+            }
+        }
+
+        public void SetCommandBan(Exiled.API.Features.Player player)
+        {
+            var databasePlayer = player.GetDatabasePlayer();
+
+            foreach (KeyValuePair<DateTime, string> a in databasePlayer.Restricted)
+            {
+                if (a.Key >= DateTime.Now)
+                {
+                    player.SendConsoleMessage($"You are banned from using commands until {a.Key} for the following reason {a.Value}", "red");
+                    if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
+                    {
+                        pluginInstance.EventHandlers.LastCommand.Add(player, a.Key);
+                        return;
+                    }
+                    else
+                    {
+                        pluginInstance.EventHandlers.LastCommand[player] = a.Key;
+                        return;
+                    }
+                }
+            }
+        }
 
         /*     public void CheckPtStatus()
              {

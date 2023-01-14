@@ -19,6 +19,11 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
 
             StringBuilder message = new StringBuilder($"Your permissions (Granted):\n");
             if (sender.CheckPermission("scputils.help")) message.AppendLine("You MAY see SCPUtils Admin commands!");
@@ -58,7 +63,7 @@ namespace SCPUtils.Commands
             if (sender.CheckPermission("scputils.onlinelist.badge")) message.AppendLine("You MAY see online info badges!");
             if (sender.CheckPermission("scputils.onlinelist.role")) message.AppendLine("You MAY see online info roles!");
             if (sender.CheckPermission("scputils.onlinelist.health")) message.AppendLine("You MAY see online info health!");
-            if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");            
+            if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");
             message.AppendLine("Permissions not listed here means they are denied, more info about permissions on github.com/terminator-97/SCPUtils");
 
 

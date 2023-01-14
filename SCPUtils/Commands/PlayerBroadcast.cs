@@ -16,6 +16,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             if (!sender.CheckPermission("scputils.broadcast"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";

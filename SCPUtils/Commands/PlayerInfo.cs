@@ -19,10 +19,16 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             if (!sender.CheckPermission("scputils.playerinfo"))
             {
-                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
             }
             else
             {
@@ -65,7 +71,8 @@ namespace SCPUtils.Commands
             $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
             $"MultiAccount Whitelist: [ {databasePlayer.MultiAccountWhiteList} ]\n" +
             $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n" +
-            $"Nickname cooldown: [ { databasePlayer.NicknameCooldown } ]</color>";
+            $"Nickname cooldown: [ { databasePlayer.NicknameCooldown } ]\n" +
+            $"Overwatch active: [ { databasePlayer.OverwatchActive } ]</color>";
 
             if (databasePlayer.IsRestricted())
             {

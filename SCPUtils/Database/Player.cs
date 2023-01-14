@@ -31,7 +31,7 @@ namespace SCPUtils
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         public bool IgnoreDNT { get; set; }
         //    public Dictionary<DateTime, DateTime> PlaytimeSessionsLog { get; set; } = new Dictionary<DateTime, DateTime>();
-
+        public bool OverwatchActive { get; set; }
         //Suicide logs
         public List<DateTime> SuicideDate { get; set; } = new List<DateTime>();
         public List<string> SuicideType { get; set; } = new List<string>();
@@ -41,6 +41,8 @@ namespace SCPUtils
         public List<bool> UserNotified { get; set; } = new List<bool>();
         public List<DateTime> Expire { get; set; } = new List<DateTime>();
         public List<int> RoundsBan { get; set; } = new List<int>();
+
+
 
 
         public void SetCurrentDayPlayTime()

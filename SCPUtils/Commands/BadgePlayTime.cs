@@ -26,6 +26,14 @@ namespace SCPUtils.Commands
             int playtime;
             int completedays;
             // TimeSpan playtime;
+
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
+
             if (!sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
                 response = "<color=red>You need a higher administration level to use this command!</color>";

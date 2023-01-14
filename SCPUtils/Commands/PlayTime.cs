@@ -20,6 +20,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             string target;
             int range;
             int playtime;
@@ -31,7 +37,7 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playtime"))
             {
-                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).ToString().Split(new string[] { " " }, StringSplitOptions.None)[2];
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
 
                 if (arguments.Count < 1)
                 {
@@ -41,12 +47,12 @@ namespace SCPUtils.Commands
 
                 else
                 {
-                   if( !int.TryParse(arguments.Array[1], out range))
+                    if (!int.TryParse(arguments.Array[1], out range))
                     {
                         response = "<color=red>Number is not an integer</color>";
                         return false;
                     }
-                    
+
                 }
 
                 if (range > 120)

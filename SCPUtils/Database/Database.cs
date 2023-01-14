@@ -160,7 +160,8 @@ namespace SCPUtils
                     // PlaytimeSessionsLog = null,
                     Expire = null,
                     MultiAccountWhiteList = false,
-                    NicknameCooldown = DateTime.Now
+                    NicknameCooldown = DateTime.Now,
+                    OverwatchActive = false
                 });
 
             }

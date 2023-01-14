@@ -19,6 +19,12 @@ namespace SCPUtils.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                return false;
+            }
+
             if (!sender.CheckPermission("scputils.alias"))
             {
                 response = "<color=red> You need a higher administration level to use this command!</color>";
@@ -46,12 +52,12 @@ namespace SCPUtils.Commands
 
             StringBuilder message = new StringBuilder($"<color=green>[Accounts associated with the following account ({databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>").AppendLine();
             foreach (var userId in databaseIp.UserIds)
-            {               
+            {
 
-                    message.AppendLine();
-                    message.Append(
-                            $"<color=yellow>User-ID: {userId}</color>\n<color=yellow>Muted: {VoiceChat.VoiceChatMutes.QueryLocalMute(userId)}</color>")
-                        .AppendLine();
+                message.AppendLine();
+                message.Append(
+                        $"<color=yellow>User-ID: {userId}</color>\n<color=yellow>Muted: {VoiceChat.VoiceChatMutes.QueryLocalMute(userId)}</color>")
+                    .AppendLine();
             }
             response = message.ToString();
             return true;

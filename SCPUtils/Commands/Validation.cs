@@ -30,7 +30,7 @@ namespace SCPUtils.Commands
             }
             int valid = 0;
             int invalid = 0;
-           foreach( var a in Database.LiteDatabase.GetCollection<Player>().FindAll())
+            foreach (var a in Database.LiteDatabase.GetCollection<Player>().FindAll())
             {
                 try
                 {
@@ -42,7 +42,7 @@ namespace SCPUtils.Commands
                     invalid++;
                 }
             }
-            
+
             response = $"Invalid: {invalid}, Valid: {valid}";
             return true;
         }
