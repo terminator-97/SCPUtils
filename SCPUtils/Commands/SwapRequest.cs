@@ -65,10 +65,10 @@ namespace SCPUtils.Commands
                         case "SCP939":
                         case "939":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp939);                            
+                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp939);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                                
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;
@@ -80,7 +80,7 @@ namespace SCPUtils.Commands
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp049);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                                
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;
@@ -92,7 +92,7 @@ namespace SCPUtils.Commands
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp0492);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                               
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;
@@ -104,7 +104,7 @@ namespace SCPUtils.Commands
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp106);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                                
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;
@@ -116,7 +116,7 @@ namespace SCPUtils.Commands
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp096);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                           
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;
@@ -140,7 +140,7 @@ namespace SCPUtils.Commands
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp173);
                             if (target == null)
                             {
-                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";                                
+                                response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
                                 return false;
                             }
                             break;

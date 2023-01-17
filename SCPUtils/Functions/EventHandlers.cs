@@ -94,21 +94,26 @@ namespace SCPUtils
 
                 else if (!ev.DamageHandler.IsSuicide)
                 {
-                    if (pluginInstance.Config.ScpSuicideMessage.Show)
+
+                    if (ev.Attacker == null)
                     {
-                        if (ev.Attacker == null)
+                        if (pluginInstance.Config.ScpSuicideMessage.Show)
                         {
                             var message = pluginInstance.Config.ScpSuicideMessage.Content;
                             message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (pluginInstance.Config.ScpDeathMessage.Show)
                         {
                             var message = pluginInstance.Config.ScpDeathMessage.Content;
                             message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%killername%", ev.Attacker.Nickname).Replace("%reason%", ev.DamageHandler.Type.ToString());
                             Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration, message, pluginInstance.Config.ScpDeathMessage.Type);
                         }
                     }
+
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            if(!target.IsScp)
+            if (!target.IsScp)
             {
                 response = $"<color=red>Target is not an SCP</color>";
                 return false;
