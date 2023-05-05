@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 
 namespace SCPUtils.Commands
@@ -18,7 +19,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 

@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace SCPUtils.Commands
         {
             if (!sender.CheckPermission("scputils.dev"))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = "<color=red>You need a higher administration level to use this command!</color>";
                 return false;
             }
             int valid = 0;

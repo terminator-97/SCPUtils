@@ -1,7 +1,8 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
-using PluginAPI.Core;
+using Log = Exiled.API.Features.Log;
 
 //Command is here in case if you need convert playtime of all players inside database, you must edit the code for your needs. (example: if you change time format in the vps), this this is a DIY, to recompile the plugin you need publicized assembly c# and you must allow unsafe code.
 //Before doing anything make a copy of your database
@@ -24,7 +25,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 

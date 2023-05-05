@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Linq;
 using System.Text;
@@ -28,14 +29,14 @@ namespace SCPUtils.Commands
 
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
 
             if (!sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = "<color=red>You need a higher administration level to use this command!</color>";
                 return false;
             }
             if (arguments.Count < 2)
@@ -78,7 +79,7 @@ namespace SCPUtils.Commands
                         if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
                         {
                             playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
-                            if (databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()] >= ScpUtils.StaticInstance.configs.BptMinSeconds) completedays++;
+                            if (databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()] >= ScpUtils.StaticInstance.Config.BptMinSeconds) completedays++;
                         }
                     }
                     if (playtime == 0) message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ No activity ]");

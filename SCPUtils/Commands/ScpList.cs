@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
 using System;
 using System.Text;
-using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -21,7 +20,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
@@ -32,21 +31,21 @@ namespace SCPUtils.Commands
             }
 
 
-            PluginAPI.Core.Player csender = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId);
-            if (!csender.IsSCP || !ScpUtils.StaticInstance.configs.AllowSCPSwap)
+            Exiled.API.Features.Player csender = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            if (!csender.IsScp || !ScpUtils.StaticInstance.Config.AllowSCPSwap)
             {
                 response = "You are not SCP or Swap module is disabled by the server admin!";
                 return false;
             }
 
-            StringBuilder message = new StringBuilder($"Online Players ({PluginAPI.Core.Player.Count})").AppendLine();
+            StringBuilder message = new StringBuilder($"Online Players ({Exiled.API.Features.Player.Dictionary.Count})").AppendLine();
             message.Append($"[SCPs LIST]");
-            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
+            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
             {
-                if (player.IsSCP)
+                if (player.IsScp)
                 {
                     message.AppendLine();
-                    message.Append($"({player.PlayerId}) {player.Nickname} {player.Role}");
+                    message.Append($"({player.Id}) {player.Nickname} {player.Role.Type}");
                 }
             }
             response = message.ToString();

@@ -2,17 +2,16 @@
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using PluginAPI.Core;
 
 namespace SCPUtils
 {
     public static class DiscordWebHook
     {
-        public static async Task<WebResponse> Message(string userid, PluginAPI.Core.Player player)
+        public static async Task<WebResponse> Message(string userid, Exiled.API.Features.Player player)
         {
             WebResponse response = null;
 
-            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.configs.WebhookUrl);
+            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.Config.WebhookUrl);
 
             wr.ContentType = "application/json";
             wr.Method = "POST";
@@ -22,7 +21,7 @@ namespace SCPUtils
             {
                 string json = JsonConvert.SerializeObject(new
                 {
-                    username = ScpUtils.StaticInstance.configs.WebhookNickname,
+                    username = ScpUtils.StaticInstance.Config.WebhookNickname,
                     embeds = new[]
                     {
                         new
@@ -33,7 +32,7 @@ namespace SCPUtils
                             $"Player info:\n" +
                             $"Username: {player.Nickname}\n" +
                             $"User-ID: {player.UserId}\n" +
-                            $"Temporary ID: {player.PlayerId}",
+                            $"Temporary ID: {player.Id}",
                             color = "25233"
                         }
                     }

@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using PluginAPI.Core;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +21,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
@@ -54,7 +54,7 @@ namespace SCPUtils.Commands
                 }
                 else
                 {
-                    target = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId).UserId;
+                    target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
                     color = arguments.Array[1].ToString().ToLower();
 
                     if (target.GetDatabasePlayer().IsRestricted())
@@ -69,7 +69,7 @@ namespace SCPUtils.Commands
                         return false;
                     }
 
-                    else if (ScpUtils.StaticInstance.configs.RestrictedRoleColors.Contains(color))
+                    else if (ScpUtils.StaticInstance.Config.RestrictedRoleColors.Contains(color))
                     {
 
                         response = "<color=red>This color has been restricted by server owner, please use another color!</color>";
@@ -80,7 +80,7 @@ namespace SCPUtils.Commands
             }
             else
             {
-                response = $"{ScpUtils.StaticInstance.configs.UnauthorizedColorChange} ";
+                response = $"{ScpUtils.StaticInstance.Config.UnauthorizedColorChange} ";
                 return false;
             }
 
@@ -103,10 +103,10 @@ namespace SCPUtils.Commands
             databasePlayer.ColorPreference = color;
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
-            PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(target);
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
             if (player != null)
             {
-                player.ReferenceHub.serverRoles.SetColor(color);
+                player.RankColor = color;
             }
 
             return true;

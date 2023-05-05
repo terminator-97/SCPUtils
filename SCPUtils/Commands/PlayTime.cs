@@ -1,8 +1,8 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Linq;
 using System.Text;
-using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -22,7 +22,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
@@ -31,13 +31,13 @@ namespace SCPUtils.Commands
             int playtime;
             if (!sender.CheckPermission("scputils.ownplaytime") && !sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = "<color=red>You need a higher administration level to use this command!</color>";
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.playtime"))
             {
-                target = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId).UserId;
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
 
                 if (arguments.Count < 1)
                 {

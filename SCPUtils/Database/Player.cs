@@ -30,7 +30,6 @@ namespace SCPUtils
         public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         public bool IgnoreDNT { get; set; }
-        public DateTime LastRespawn { get; set; }
         //    public Dictionary<DateTime, DateTime> PlaytimeSessionsLog { get; set; } = new Dictionary<DateTime, DateTime>();
         public bool OverwatchActive { get; set; }
         //Suicide logs

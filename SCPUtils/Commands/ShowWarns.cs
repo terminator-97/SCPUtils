@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 using System.Linq;
 using System.Text;
@@ -21,14 +22,14 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
             string target;
             if (!sender.CheckPermission("scputils.showwarns"))
             {
-                target = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId).UserId;
+                target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
             }
             else
             {

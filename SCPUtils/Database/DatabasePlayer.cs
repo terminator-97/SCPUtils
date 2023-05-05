@@ -1,15 +1,13 @@
-﻿using PluginAPI.Core;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
     public static class DatabasePlayer
     {
-        public static string GetAuthentication(this PluginAPI.Core.Player player)
+        public static string GetAuthentication(this Exiled.API.Features.Player player)
         {
             return player.UserId.Split('@')[1];
         }
 
-        public static string GetRawUserId(this PluginAPI.Core.Player player)
+        public static string GetRawUserId(this Exiled.API.Features.Player player)
         {
             return player.UserId.GetRawUserId();
         }
@@ -21,11 +19,11 @@ namespace SCPUtils
 
         public static Player GetDatabasePlayer(this string player)
         {
-            return PluginAPI.Core.Player.Get(player)?.GetDatabasePlayer() ??
+            return Exiled.API.Features.Player.Get(player)?.GetDatabasePlayer() ??
                 Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId() || queryPlayer.Name == player);
         }
 
-        public static Player GetDatabasePlayer(this PluginAPI.Core.Player player)
+        public static Player GetDatabasePlayer(this Exiled.API.Features.Player player)
         {
             if (player == null)
             {

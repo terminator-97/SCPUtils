@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PluginAPI.Core;
 
 namespace SCPUtils.Events
 {
@@ -59,27 +58,27 @@ namespace SCPUtils.Events
 
     public class BadgeRemovedEvent : EventArgs
     {
-        public PluginAPI.Core.Player Player { get; set; }
+        public Exiled.API.Features.Player Player { get; set; }
         public string BadgeName { get; set; }
     }
 
     public class BadgeSetEvent : EventArgs
     {
-        public PluginAPI.Core.Player Player { get; set; }
+        public Exiled.API.Features.Player Player { get; set; }
         public string NewBadgeName { get; set; }
     }
 
     public class ReplacePlayerEvent : EventArgs
     {
-        public PluginAPI.Core.Player BannedPlayer { get; set; }
-        public PluginAPI.Core.Player ReplacedPlayer { get; set; }
+        public Exiled.API.Features.Player BannedPlayer { get; set; }
+        public Exiled.API.Features.Player ReplacedPlayer { get; set; }
         public PlayerRoles.RoleTypeId ScpRole { get; set; }
         public PlayerRoles.RoleTypeId NormalRole { get; set; }
     }
 
     public class MultiAccountEvent : EventArgs
     {
-        public PluginAPI.Core.Player Player;
+        public Exiled.API.Features.Player Player;
         public List<string> UserIds;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-
+using Exiled.Permissions.Extensions;
 using System;
 using System.Text;
 
@@ -21,7 +21,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
@@ -64,7 +64,6 @@ namespace SCPUtils.Commands
             if (sender.CheckPermission("scputils.onlinelist.role")) message.AppendLine("You MAY see online info roles!");
             if (sender.CheckPermission("scputils.onlinelist.health")) message.AppendLine("You MAY see online info health!");
             if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");
-            if (sender.CheckPermission("scputils.bypass")) message.AppendLine("You MAY bypass variuous restrictions!");
             message.AppendLine("Permissions not listed here means they are denied, more info about permissions on github.com/terminator-97/SCPUtils");
 
 

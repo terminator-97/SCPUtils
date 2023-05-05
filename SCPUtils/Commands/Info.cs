@@ -17,13 +17,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
             response = $"<color=blue>Plugin Info: </color>\n" +
                             "<color=blue>SCPUtils is a public plugin created by Terminator_97#0507, you can download this plugin at: github.com/terminator-97/SCPUtils </color>\n" +
-                            $"<color=blue>This server is running SCPUtils version 6.0.0 [NwApi]</color>";
+                            $"<color=blue>This server is running SCPUtils version {ScpUtils.StaticInstance.Version}</color>";
             return true;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.Permissions.Extensions;
 using System;
 
 namespace SCPUtils.Commands
@@ -16,13 +17,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.warnmanagement"))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
             }
             else if (SCPUtils.EventHandlers.TemporarilyDisabledWarns)
@@ -30,7 +31,7 @@ namespace SCPUtils.Commands
                 response = "Warns are already disabled";
                 return false;
             }
-            else if (!ScpUtils.StaticInstance.configs.EnableSCPSuicideAutoWarn)
+            else if (!ScpUtils.StaticInstance.Config.EnableSCPSuicideAutoWarn)
             {
                 response = "Suicides / Quits warns are already disabled by server config!";
                 return false;

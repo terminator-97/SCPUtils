@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using PluginAPI.Core;
+using Exiled.Permissions.Extensions;
 using SCPUtils.Events;
 using System;
 
@@ -19,14 +19,14 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Config.CooldownMessage;
                 return false;
             }
             string target;
             string badge;
             if (!sender.CheckPermission("scputils.handlebadges"))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = "<color=red> You need a higher administration level to use this command!</color>";
                 return false;
             }
 
@@ -38,7 +38,7 @@ namespace SCPUtils.Commands
 
             target = arguments.Array[1].ToString();
             badge = arguments.Array[2].ToString();
-            PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(target);
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
             Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
