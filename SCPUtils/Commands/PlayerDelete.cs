@@ -1,5 +1,4 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
 using System;
 
 namespace SCPUtils.Commands
@@ -19,13 +18,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.playerdelete"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
             else if (arguments.Count < 1)

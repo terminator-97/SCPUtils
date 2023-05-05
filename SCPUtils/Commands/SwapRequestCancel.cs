@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using System;
+using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -7,9 +8,9 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class SwapRequestCancel : ICommand
     {
-        public string Command => ScpUtils.StaticInstance.Config.SwapRequestCancelCommand;
+        public string Command => ScpUtils.StaticInstance.configs.SwapRequestCancelCommand;
 
-        public string[] Aliases => ScpUtils.StaticInstance.Config.SwapRequestCancelCommandAliases;
+        public string[] Aliases => ScpUtils.StaticInstance.configs.SwapRequestCancelCommandAliases;
 
         public string Description => "Cancel a swap request sent by you";
 
@@ -17,11 +18,11 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
-            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId);
             if (!ScpUtils.StaticInstance.EventHandlers.SwapRequest.ContainsKey(player))
             {
                 response = $"<color=red>You haven't sent any swap request!</color>";
@@ -29,7 +30,7 @@ namespace SCPUtils.Commands
             }
             var target = ScpUtils.StaticInstance.EventHandlers.SwapRequest[player];
             target.ClearBroadcasts();
-            target.Broadcast(ScpUtils.StaticInstance.Config.SwapRequestCanceledBroadcast);
+            target.SendBroadcast(ScpUtils.StaticInstance.configs.SwapRequestCanceledBroadcast.Content, ScpUtils.StaticInstance.configs.SwapRequestCanceledBroadcast.Duration);
             ScpUtils.StaticInstance.EventHandlers.SwapRequest.Remove(player);
             response = $"<color=green>Swap request has been canceled</color>";
             return true;

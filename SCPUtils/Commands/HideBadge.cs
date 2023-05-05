@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
+using PluginAPI.Core;
 using System;
 
 namespace SCPUtils.Commands
@@ -18,13 +18,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.badgevisibility"))
             {
-                response = $"{ScpUtils.StaticInstance.Config.UnauthorizedBadgeChangeVisibility} ";
+                response = $"{ScpUtils.StaticInstance.configs.UnauthorizedBadgeChangeVisibility} ";
                 return false;
             }
             else if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
@@ -34,8 +34,8 @@ namespace SCPUtils.Commands
             }
             else
             {
-                Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
-                player.BadgeHidden = true;
+                PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId);
+                player.ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 player.GetDatabasePlayer().HideBadge = true;
                 response = "<color=green>Your badge has been hidden!</color>";
                 return true;

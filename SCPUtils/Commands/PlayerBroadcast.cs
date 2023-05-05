@@ -1,6 +1,6 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
 using System;
+using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -18,13 +18,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.broadcast"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
 
@@ -43,7 +43,7 @@ namespace SCPUtils.Commands
                     return false;
                 }
 
-                Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(arguments.Array[1].ToString());
+                PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(arguments.Array[1].ToString());
                 if (player == null)
                 {
                     response = "Invalid player!";
@@ -65,12 +65,12 @@ namespace SCPUtils.Commands
                 {
                     case "broadcast":
                     case "bc":
-                        player.Broadcast((ushort)duration, databaseBroadcast.Text, global::Broadcast.BroadcastFlags.Normal, false);
+                        player.SendBroadcast(databaseBroadcast.Text, (ushort)duration, global::Broadcast.BroadcastFlags.Normal, false);
                         response = "Success!";
                         break;
                     case "hint":
                     case "h":
-                        player.ShowHint(databaseBroadcast.Text, duration);
+                        player.ReceiveHint(databaseBroadcast.Text, duration);
                         response = "Success!";
                         break;
                     default:

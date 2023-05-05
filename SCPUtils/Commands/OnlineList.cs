@@ -1,8 +1,7 @@
 ﻿using CommandSystem;
-using Exiled.API.Features.Roles;
-using Exiled.Permissions.Extensions;
 using System;
 using System.Text;
+using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -22,40 +21,41 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.onlinelist.basic"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
-            StringBuilder message = new StringBuilder($"Online Players ({Exiled.API.Features.Player.Dictionary.Count})");
+            StringBuilder message = new StringBuilder($"Online Players ({PluginAPI.Core.Player.Count})");
 
-            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
             {
                 message.AppendLine();
-                message.Append($"({player.Id}) {player.Nickname}");
+                message.Append($"({player.PlayerId}) {player.Nickname}");
 
                 if (sender.CheckPermission("scputils.onlinelist.userid"))
                 {
                     message.Append($" ({player.UserId})");
                 }
 
-                if (sender.CheckPermission("scputils.onlinelist.badge") && player.Group?.BadgeText != null)
+                if (sender.CheckPermission("scputils.onlinelist.badge") && player.ReferenceHub.serverRoles.Group.BadgeText != null)
                 {
-                    message.Append($" [{player.Group.BadgeText}]");
+                    message.Append($" [{player.ReferenceHub.serverRoles.Group.BadgeText}]");
                 }
 
                 if (sender.CheckPermission("scputils.onlinelist.role"))
                 {
-                    message.Append($" [{player.Role.Type}]");
+                    message.Append($" [{player.Role}]");
                 }
 
                 if (sender.CheckPermission("scputils.onlinelist.health"))
                 {
                     message.Append($" [HP {player.Health} / {player.MaxHealth}]");
+                    if (player.ArtificialHealth >= 1) message.Append($" [AHP {player.ArtificialHealth}]");
                 }
 
                 if (sender.CheckPermission("scputils.onlinelist.flags"))
@@ -63,26 +63,19 @@ namespace SCPUtils.Commands
                     if (player.IsOverwatchEnabled)
                     {
                         message.Append(" [OVERWATCH]");
-                    }
-
-                    if (player.Role.Is(out FpcRole role))
+                    }                            
+                        
+                    if (player.IsNoclipEnabled)
                     {
-                        if (role.IsNoclipEnabled)
-                        {
-                            message.Append(" [NOCLIP]");
-                        }
-                    }
-                    else
-                    {
-                        message.Append(" [NOT-FPCROLE]");
-                    }
+                        message.Append(" [NOCLIP]");
+                    }                  
 
                     if (player.IsGodModeEnabled)
                     {
                         message.Append(" [GODMODE]");
                     }
 
-                    if (player.IsStaffBypassEnabled)
+                    if (player.IsBypassEnabled)
                     {
                         message.Append(" [BYPASS MODE]");
                     }
@@ -108,7 +101,7 @@ namespace SCPUtils.Commands
                     }
                 }
             }
-            if (Exiled.API.Features.Player.Dictionary.Count == 0)
+            if (PluginAPI.Core.Player.Count == 0)
             {
                 response = "No players online!";
                 return true;

@@ -1,8 +1,9 @@
-﻿using Exiled.API.Features;
+﻿
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using PluginAPI.Core;
 
 namespace SCPUtils
 {
@@ -16,9 +17,9 @@ namespace SCPUtils
         }
 
         public static LiteDatabase LiteDatabase { get; private set; }
-        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.Config.DatabaseFolder), pluginInstance.Config.DatabaseName);
-        public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
-        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
+        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.configs.DatabaseFolder), pluginInstance.configs.DatabaseName);
+        public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.configs.DatabaseName}.db");
+        public static Dictionary<PluginAPI.Core.Player, Player> PlayerData = new Dictionary<PluginAPI.Core.Player, Player>();
         public static Dictionary<string, Broadcast> Broadcast = new Dictionary<string, Broadcast>();
         public static Dictionary<string, PlaySession> PlaySession = new Dictionary<string, PlaySession>();
 
@@ -32,7 +33,7 @@ namespace SCPUtils
             try
             {
                 Directory.CreateDirectory(DatabaseDirectory);
-                Log.Warn("Database not found, Creating new DB");
+                Log.Warning("Database not found, Creating new DB");
             }
             catch (Exception ex)
             {
@@ -57,7 +58,7 @@ namespace SCPUtils
                 Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");
             }
         }
-        public void NewSession(Exiled.API.Features.Player player)
+        public void NewSession(PluginAPI.Core.Player player)
         {
             try
             {
@@ -124,7 +125,7 @@ namespace SCPUtils
         }
 
 
-        public void AddPlayer(Exiled.API.Features.Player player)
+        public void AddPlayer(PluginAPI.Core.Player player)
         {
             try
             {
@@ -161,7 +162,8 @@ namespace SCPUtils
                     Expire = null,
                     MultiAccountWhiteList = false,
                     NicknameCooldown = DateTime.Now,
-                    OverwatchActive = false
+                    OverwatchActive = false,
+                    LastRespawn = DateTime.MinValue
                 });
 
             }

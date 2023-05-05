@@ -1,5 +1,5 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
+using PluginAPI.Core;
 using System;
 
 namespace SCPUtils.Commands
@@ -20,7 +20,7 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
@@ -48,7 +48,7 @@ namespace SCPUtils.Commands
                 }
                 else
                 {
-                    target = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId).UserId;
+                    target = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId).UserId;
                     if (target.GetDatabasePlayer().IsRestricted())
                     {
                         response = "<color=red>You are banned from executing this command!</color>";
@@ -56,12 +56,12 @@ namespace SCPUtils.Commands
                     }
                     if (target.GetDatabasePlayer().NicknameCooldown > DateTime.Now)
                     {
-                        response = ScpUtils.StaticInstance.Config.NicknameCooldownMessage;
+                        response = ScpUtils.StaticInstance.configs.NicknameCooldownMessage;
                         return false;
                     }
                     nickname = string.Join(" ", arguments.Array, 1, arguments.Array.Length - 1);
                     bool allowChange = true;
-                    foreach (Exiled.API.Features.Player playerList in Exiled.API.Features.Player.List)
+                    foreach (PluginAPI.Core.Player playerList in PluginAPI.Core.Player.GetPlayers())
                     {
                         if (playerList.Nickname.ToLower() == nickname.ToLower())
                         {
@@ -79,7 +79,7 @@ namespace SCPUtils.Commands
                     else if (ScpUtils.StaticInstance.Functions.CheckNickname(nickname) && !sender.CheckPermission("scputils.bypassnickrestriction"))
                     {
 
-                        response = $"{ScpUtils.StaticInstance.Config.InvalidNicknameText} ";
+                        response = $"{ScpUtils.StaticInstance.configs.InvalidNicknameText} ";
                         return false;
                     }
 
@@ -88,7 +88,7 @@ namespace SCPUtils.Commands
             }
             else
             {
-                response = $"{ScpUtils.StaticInstance.Config.UnauthorizedNickNameChange} ";
+                response = $"{ScpUtils.StaticInstance.configs.UnauthorizedNickNameChange} ";
                 return false;
             }
 
@@ -109,7 +109,7 @@ namespace SCPUtils.Commands
                 return true;
             }
 
-            if (nickname.Length > ScpUtils.StaticInstance.Config.NicknameMaxLength)
+            if (nickname.Length > ScpUtils.StaticInstance.configs.NicknameMaxLength)
             {
                 response = "<color=red>Nickname is too long!</color>";
                 return false;
@@ -117,10 +117,10 @@ namespace SCPUtils.Commands
 
 
             databasePlayer.CustomNickName = nickname;
-            databasePlayer.NicknameCooldown = DateTime.Now.AddSeconds(ScpUtils.StaticInstance.Config.ChangeNicknameCooldown);
+            databasePlayer.NicknameCooldown = DateTime.Now.AddSeconds(ScpUtils.StaticInstance.configs.ChangeNicknameCooldown);
             Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
             response = "<color=green>Success, choice has been saved!</color>";
-            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+            PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(target);
 
             if (player != null)
             {

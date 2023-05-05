@@ -1,7 +1,7 @@
 ﻿using CommandSystem;
 using System;
 using System.Linq;
-using Eplayer = Exiled.API.Features.Player;
+using Eplayer = PluginAPI.Core.Player;
 
 namespace SCPUtils.Commands
 {
@@ -9,9 +9,9 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class SwapRequest : ICommand
     {
-        public string Command { get; } = ScpUtils.StaticInstance.Config.SwapRequestCommand;
+        public string Command { get; } = ScpUtils.StaticInstance.configs.SwapRequestCommand;
 
-        public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.SwapRequestCommandAliases;
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.configs.SwapRequestCommandAliases;
 
         public string Description { get; } = "Send a SCP swap request to a player";
 
@@ -20,19 +20,19 @@ namespace SCPUtils.Commands
 
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
-            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId);
 
-            if (!ScpUtils.StaticInstance.Config.AllowSCPSwap)
+            if (!ScpUtils.StaticInstance.configs.AllowSCPSwap)
             {
                 response = $"<color=yellow>SCP swap module is disabled on this server!</color>";
                 return false;
             }
 
-            if (!player.IsScp)
+            if (!player.IsSCP)
             {
                 response = $"<color=yellow>Only SCPs are allowed to use this command!</color>";
                 return false;
@@ -46,12 +46,12 @@ namespace SCPUtils.Commands
                     response = $"<color=yellow>Usage: {Command} <player id/nickname or SCP-NUMBER (example: swap SCP-939)></color>";
                     return false;
                 }
-                else if (Exiled.API.Features.Round.ElapsedTime.TotalSeconds >= ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequest)
+                else if (PluginAPI.Core.Round.Duration.TotalSeconds >= ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequest)
                 {
                     response = $"<color=red>The round has been started from too much time due this reason our system decided to deny this SCP swap request, you are too slow next time try to be faster</color>";
                     return false;
                 }
-                else if (ScpUtils.StaticInstance.Config.AllowSCPSwapOnlyFullHealth && player.Health < player.MaxHealth)
+                else if (ScpUtils.StaticInstance.configs.AllowSCPSwapOnlyFullHealth && player.Health < player.MaxHealth)
                 {
                     response = $"<color=red>You have taken damage due this reason our system decided to deny this SCP swap request, next time be more careful and play better</color>";
                     return false;
@@ -65,7 +65,7 @@ namespace SCPUtils.Commands
                         case "SCP939":
                         case "939":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp939);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp939);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -77,7 +77,7 @@ namespace SCPUtils.Commands
                         case "SCP049":
                         case "049":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp049);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp049);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -89,7 +89,7 @@ namespace SCPUtils.Commands
                         case "SCP0492":
                         case "0492":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp0492);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp0492);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -101,7 +101,7 @@ namespace SCPUtils.Commands
                         case "SCP106":
                         case "106":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp106);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp106);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -113,7 +113,7 @@ namespace SCPUtils.Commands
                         case "SCP096":
                         case "096":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp096);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp096);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -125,7 +125,7 @@ namespace SCPUtils.Commands
                         case "SCP079":
                         case "079":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp079);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp079);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -137,7 +137,7 @@ namespace SCPUtils.Commands
                         case "SCP173":
                         case "173":
 
-                            target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp173);
+                            target = Eplayer.GetPlayers().FirstOrDefault(x => x.Role == PlayerRoles.RoleTypeId.Scp173);
                             if (target == null)
                             {
                                 response = $"<color=red>{arguments.Array[1].ToString().ToUpper() } didn't spawned!</color>";
@@ -151,7 +151,7 @@ namespace SCPUtils.Commands
 
                     }
 
-                    var seconds = Math.Round(ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequestAccept - Exiled.API.Features.Round.ElapsedTime.TotalSeconds);
+                    var seconds = Math.Round(ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequestAccept - PluginAPI.Core.Round.Duration.TotalSeconds);
 
                     if (target == null)
                     {
@@ -159,7 +159,7 @@ namespace SCPUtils.Commands
                         return false;
                     }
 
-                    if (ScpUtils.StaticInstance.Config.AllowSCPSwapOnlyFullHealth && target.Health < target.MaxHealth)
+                    if (ScpUtils.StaticInstance.configs.AllowSCPSwapOnlyFullHealth && target.Health < target.MaxHealth)
                     {
                         response = $"<color=red>Target has not full health!</color>";
                         return false;
@@ -183,7 +183,7 @@ namespace SCPUtils.Commands
                         return false;
                     }
 
-                    if (!target.IsScp)
+                    if (!target.IsSCP)
                     {
                         response = $"<color=red>Target is not SCP!</color>";
                         return false;
@@ -194,18 +194,18 @@ namespace SCPUtils.Commands
                         response = $"<color=red>You have the same role of another player!</color>";
                         return false;
                     }
-                    if (target.CustomInfo != null && ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo?.Any() == true)
+                    if (target.CustomInfo != null && ScpUtils.StaticInstance.configs.DeniedSwapCustomInfo?.Any() == true)
                     {
-                        if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(target.CustomInfo.ToString()))
+                        if (ScpUtils.StaticInstance.configs.DeniedSwapCustomInfo.Contains(target.CustomInfo.ToString()))
                         {
                             response = $"<color=red>Target is using a custom SCP therefore swap is denied!</color>";
                             return false;
                         }
                     }
 
-                    if (player.CustomInfo != null && ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo?.Any() == true)
+                    if (player.CustomInfo != null && ScpUtils.StaticInstance.configs.DeniedSwapCustomInfo?.Any() == true)
                     {
-                        if (ScpUtils.StaticInstance.Config.DeniedSwapCustomInfo.Contains(player.CustomInfo.ToString()))
+                        if (ScpUtils.StaticInstance.configs.DeniedSwapCustomInfo.Contains(player.CustomInfo.ToString()))
                         {
                             response = $"<color=red>You are using a custom SCP therefore swap is denied!</color>";
                             return false;
@@ -216,10 +216,10 @@ namespace SCPUtils.Commands
 
                     target.ClearBroadcasts();
 
-                    var message = ScpUtils.StaticInstance.Config.SwapRequestBroadcast.Content;
+                    var message = ScpUtils.StaticInstance.configs.SwapRequestBroadcast.Content;
 
-                    message = message.Replace("%player%", player.DisplayNickname).Replace("%scp%", player.Role.Name).Replace("%seconds%", seconds.ToString());
-                    target.Broadcast(ScpUtils.StaticInstance.Config.SwapRequestBroadcast.Duration, message, ScpUtils.StaticInstance.Config.SwapRequestBroadcast.Type, false);
+                    message = message.Replace("%player%", player.DisplayNickname).Replace("%scp%", player.RoleName).Replace("%seconds%", seconds.ToString());
+                    target.SendBroadcast(message, ScpUtils.StaticInstance.configs.SwapRequestBroadcast.Duration, ScpUtils.StaticInstance.configs.SwapRequestBroadcast.Type, false);
 
                     response = $"<color=green>Request has been sent successfully to {target.DisplayNickname}, player has {seconds} seconds to accept the request. Use .cancel to cancel the request</color>";
 

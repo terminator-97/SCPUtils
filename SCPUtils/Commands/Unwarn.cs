@@ -1,5 +1,4 @@
 ﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
 using System;
 
 namespace SCPUtils.Commands
@@ -9,9 +8,9 @@ namespace SCPUtils.Commands
     internal class Unwarn : ICommand
     {
 
-        public string Command { get; } = ScpUtils.StaticInstance.Config.UnwarnCommand;
+        public string Command { get; } = ScpUtils.StaticInstance.configs.UnwarnCommand;
 
-        public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.UnwarnCommandAliases;
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.configs.UnwarnCommandAliases;
 
         public string Description { get; } = "Removes a specific warning from a player!";
 
@@ -19,14 +18,14 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             string target;
             if (!sender.CheckPermission("scputils.unwarn"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
             else

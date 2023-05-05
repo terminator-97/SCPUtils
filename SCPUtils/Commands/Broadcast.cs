@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
 using System;
+using PluginAPI.Core;
 
 namespace SCPUtils.Commands
 {
@@ -19,13 +18,13 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.broadcast"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
 
@@ -57,13 +56,17 @@ namespace SCPUtils.Commands
                 switch (arguments.Array[1].ToString())
                 {
                     case "broadcast":
-                    case "bc":
-                        Map.Broadcast((ushort)duration, databaseBroadcast.Text);
+                    case "bc":                     
+                        PluginAPI.Core.Server.SendBroadcast(databaseBroadcast.Text, (ushort)duration);
                         response = "Sending broadcast to all the players!";
                         break;
                     case "hint":
-                    case "h":
-                        Map.ShowHint(databaseBroadcast.Text, duration);
+                    case "h":                       
+                        foreach(var player in PluginAPI.Core.Player.GetPlayers())
+                        {
+                            player.ReceiveHint(databaseBroadcast.Text, duration);
+;                        }
+                       
                         response = "Sending hint to all the players!";
                         break;
                     default:

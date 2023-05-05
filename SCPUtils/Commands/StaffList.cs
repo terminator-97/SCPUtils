@@ -1,6 +1,4 @@
 ﻿using CommandSystem;
-using Exiled.API.Features.Roles;
-using Exiled.Permissions.Extensions;
 using System;
 using System.Text;
 
@@ -21,38 +19,31 @@ namespace SCPUtils.Commands
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.Config.CooldownMessage;
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
                 return false;
             }
 
             if (!sender.CheckPermission("scputils.stafflist"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
                 return false;
             }
             StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");
 
-            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
             {
                 if (player.IsNorthwoodStaff || player.IsGlobalModerator)
                 {
                     message.AppendLine();
-                    message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.GlobalBadge}] [{player.Role.Type}]");
+                    message.Append($"(SCP:SL Staff) {player.Nickname} ({player.UserId}) [{player.ReferenceHub.serverRoles.GlobalBadge}] [{player.Role}]");
                     if (player.IsOverwatchEnabled)
                     {
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.Role.Is(out FpcRole role))
+                    if (player.IsNoclipEnabled)
                     {
-                        if (role.IsNoclipEnabled)
-                        {
-                            message.Append(" [NOCLIP]");
-                        }
-                    }
-                    else
-                    {
-                        message.Append(" [NOT-FPCROLE]");
+                        message.Append(" [NOCLIP]");
                     }
 
                     if (player.IsGodModeEnabled)
@@ -63,22 +54,15 @@ namespace SCPUtils.Commands
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
                     message.AppendLine();
-                    message.Append($"{player.Nickname} ({player.UserId}) [{player.Group.BadgeText}] [{player.Role.Type}]");
+                    message.Append($"{player.Nickname} ({player.UserId}) [{player.ReferenceHub.serverRoles.Group.BadgeText}] [{player.Role}]");
                     if (player.IsOverwatchEnabled)
                     {
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.Role.Is(out Exiled.API.Features.Roles.FpcRole role))
+                    if (player.IsNoclipEnabled)
                     {
-                        if (role.IsNoclipEnabled)
-                        {
-                            message.Append(" [NOCLIP]");
-                        }
-                    }
-                    else
-                    {
-                        message.Append(" [NOT-FPCROLE]");
+                        message.Append(" [NOCLIP]");
                     }
 
                     if (player.IsGodModeEnabled)
@@ -86,7 +70,7 @@ namespace SCPUtils.Commands
                         message.Append(" [GODMODE]");
                     }
 
-                    if (player.IsStaffBypassEnabled)
+                    if (player.IsBypassEnabled)
                     {
                         message.Append(" [BYPASS MODE]");
                     }
@@ -104,7 +88,7 @@ namespace SCPUtils.Commands
         private static int CountStaffMembers()
         {
             int value = 0;
-            foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
             {
                 if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess)
                 {
