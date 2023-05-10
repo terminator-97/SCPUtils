@@ -21,12 +21,12 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Custom Hints / Broadcast:** You can save hints / broadcasts in the database and use them easily by the ID.
 - **Multi account detector:** Auto-detects multi accounts and based on plugin settings it informs the administrators, you can also set a webhook for reports about mute evaders (you can also remute them automatically by changing configs), you can also exclude specific asns or players from the detector
 - **Handcuff ownership:** By simply updating a config only who cuff the player will be able to uncuff it.
-- **SCP-Swap:** By setting a config you can decide the max allowed time for SCP-Swap requests and if the SCP has to be full health for swap to be allowed.
+- **SCP-Swap:** By setting a config you can decide the max allowed time for SCP-Swap requests and if the SCP has to be full health for swap to be allowed, you can configure swap even for scps that are not spawned.
 
 **Database will get created inside Exiled/SCPUtils folder.**<br /><br />
 **Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
 **You must add LiteDB.dll and Newtonsoft.Json.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 6.0.0 Dependencies: LiteDB 5.0.15 and Newtonsoft.Json 13.0.2**
+**Minimum requirements: Exiled version: 7.0.0 Dependencies: LiteDB 5.0.15 and Newtonsoft.Json 13.0.2**
 
 
 ### Configs:

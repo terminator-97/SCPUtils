@@ -312,6 +312,12 @@ namespace SCPUtils
 
         public List<PlayerRoles.Team> CuffedProtectedTeams { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.ClassD, PlayerRoles.Team.Scientists };
 
+        [Description("Set the allowed list that players can chose to swap if said SCP is not spawned, the request will be granted immediately.")]
+        public List<PlayerRoles.RoleTypeId> AllowedSwapGenerationList { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp049, PlayerRoles.RoleTypeId.Scp079, PlayerRoles.RoleTypeId.Scp096, PlayerRoles.RoleTypeId.Scp106, PlayerRoles.RoleTypeId.Scp173, PlayerRoles.RoleTypeId.Scp939 };
+
+        [Description("Set disallowed SCPs to use swap if said scp is not spawned, players can still use normal swap (for example 079 cannot become 173 if 173 is not spawned)")]
+        public List<PlayerRoles.RoleTypeId> DisallowedScpsSwapGenerationList { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp0492, PlayerRoles.RoleTypeId.Scp079 };
+
         [Description("Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified")]
 
         public Dictionary<PlayerRoles.Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<PlayerRoles.Team, List<ZoneType>>()
