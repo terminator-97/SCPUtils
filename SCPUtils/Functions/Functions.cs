@@ -606,18 +606,20 @@ namespace SCPUtils
         }
 
         public void IpCheck(Exiled.API.Features.Player player)
-        {
-            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
+        {            
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);            
             if (!databaseIp.UserIds.Contains(player.UserId))
-            {
-                databaseIp.UserIds.Add(player.UserId);
-                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);
+            {               
+                databaseIp.UserIds.Add(player.UserId);               
+                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);                
             }
-            if(pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? false)
-            {
-                CheckIp(player);              
-            }
-            else if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
+            if(pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
+            {               
+                if (player.GetDatabasePlayer().MultiAccountWhiteList) return;                
+                CheckIp(player);                
+                return;
+            }            
+           if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
 
