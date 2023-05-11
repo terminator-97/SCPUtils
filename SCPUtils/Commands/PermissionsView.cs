@@ -64,6 +64,7 @@ namespace SCPUtils.Commands
             if (sender.CheckPermission("scputils.onlinelist.role")) message.AppendLine("You MAY see online info roles!");
             if (sender.CheckPermission("scputils.onlinelist.health")) message.AppendLine("You MAY see online info health!");
             if (sender.CheckPermission("scputils.onlinelist.flags")) message.AppendLine("You MAY see online info flags!");
+            if (sender.CheckPermission("scputils.bypasscooldown")) message.AppendLine("You MAY bypass command cooldown!");
             message.AppendLine("Permissions not listed here means they are denied, more info about permissions on github.com/terminator-97/SCPUtils");
 
 
