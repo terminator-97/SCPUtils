@@ -77,6 +77,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_broadcast_list | none | scputils.broadcastlist | List all created broadcast |
 | scputils_multiaccount_whitelist | <userid / id> | scputils.whitelistma | Whitelists / unwhitelist an account from multiaccount detector |
 | scputils_badge_playtime | <badge> <days> | scputils.playtime | Show playtime for a specific badge |
+| scputils_reports | use help paramenter | scputils.reports | See many stats |
 
 **Console commands**
 
@@ -103,6 +104,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | ------------- | ------------- | 
 | scputils.bypassnickrestriction | Allows to bypass nickname restrictions |
 | scputils.help | Show also admin command list in scputils_help command, without this permission only user commands are shown |
+| scputils.bypasscooldown | Bypass command cooldown |
 
 Pro tip: use scputils_speak.* to allow someone to speak with all the SCPs, set permission to default role to allow everyone to speak with that scp.
 
