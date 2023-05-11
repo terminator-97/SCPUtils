@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Text;
@@ -55,7 +56,7 @@ namespace SCPUtils.Commands
 
             if (report == "totalusers")
             {
-                response = $"Total users: {Database.LiteDatabase.GetCollection<Player>().Count()}";
+                response = $"Total users: {Database.MongoDatabase.GetCollection<Player>("players").EstimatedDocumentCount()}";
                 return true;
             }
 
@@ -66,12 +67,12 @@ namespace SCPUtils.Commands
                     if (arguments.Array[2].ToLower().ToString() == "show") showarg = true;
                 }
 
-                if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= 1).Count() >= 1)
+                if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= 1).CountDocuments() >= 1)
                 {
-                    StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= 1).Count()} users SCP-Banend, use argument show after scpbanned to see the banned users.").AppendLine();
+                    StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= 1).CountDocuments() } users SCP-Banend, use argument show after scpbanned to see the banned users.").AppendLine();
                     if (showarg)
                     {
-                        foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= 1).OrderByDescending(x => x.RoundBanLeft))
+                        foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= 1).ToList().OrderByDescending(x => x.RoundBanLeft))
                         {
                             message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Round bans left: {player.RoundBanLeft}");
                         }
@@ -98,12 +99,12 @@ namespace SCPUtils.Commands
                 }
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).CountDocuments() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).Count()} users Suicide-Banned, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).CountDocuments() } users Suicide-Banned, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).OrderByDescending(x => x.TotalScpSuicideBans))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).ToList().OrderByDescending(x => x.TotalScpSuicideBans))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Suicide bans: {player.TotalScpSuicideBans}");
                             }
@@ -134,12 +135,12 @@ namespace SCPUtils.Commands
 
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideKicks >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).Count() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideKicks >= num).Count()} users Kicked due suicide/disconnect, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).CountDocuments() } users Kicked due suicide/disconnect, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideKicks >= num).OrderByDescending(x => x.TotalScpSuicideKicks))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).ToList().OrderByDescending(x => x.TotalScpSuicideKicks))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Suicide kicks: {player.TotalScpSuicideKicks}");
                             }
@@ -169,12 +170,12 @@ namespace SCPUtils.Commands
                 }
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= num).CountDocuments() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= num).Count()} users are Round-Banned, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= num).CountDocuments() } users are Round-Banned, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.RoundBanLeft >= num).OrderByDescending(x => x.RoundBanLeft))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.RoundBanLeft >= num).ToList().OrderByDescending(x => x.RoundBanLeft))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Round bans left: {player.RoundBanLeft}");
                             }
@@ -205,12 +206,12 @@ namespace SCPUtils.Commands
 
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.ScpSuicideCount >= num).CountDocuments() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= num).Count()} users have {num} suicides, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.ScpSuicideCount >= num).CountDocuments() } users have {num} suicides, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= num).OrderByDescending(x => x.ScpSuicideCount))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.ScpSuicideCount >= num).ToList().OrderByDescending(x => x.ScpSuicideCount))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Suicide/Disconnect count: {player.ScpSuicideCount}");
                             }
@@ -240,12 +241,12 @@ namespace SCPUtils.Commands
 
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpGamesPlayed >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpGamesPlayed >= num).CountDocuments() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpGamesPlayed >= num).Count()} users have played SCP {num} times, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpGamesPlayed >= num).CountDocuments() } users have played SCP {num} times, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpGamesPlayed >= num).OrderByDescending(x => x.TotalScpGamesPlayed))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpGamesPlayed >= num).ToList().OrderByDescending(x => x.TotalScpGamesPlayed))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Total games played as SCP: {player.TotalScpGamesPlayed}");
                             }
@@ -276,12 +277,12 @@ namespace SCPUtils.Commands
 
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).CountDocuments() >= 1)
                     {
-                        StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).Count()} users have been banned {num} times for suicides/quits as SCP, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
+                        StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).CountDocuments() } users have been banned {num} times for suicides/quits as SCP, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)
                         {
-                            foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.TotalScpSuicideBans >= num).OrderByDescending(x => x.TotalScpSuicideBans))
+                            foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideBans >= num).ToList().OrderByDescending(x => x.TotalScpSuicideBans))
                             {
                                 message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Ban count: {player.TotalScpSuicideBans }");
                             }
@@ -309,12 +310,12 @@ namespace SCPUtils.Commands
                 {
                     if (arguments.Array[2].ToLower().ToString() == "show") showarg = true;
                 }
-                if (Database.LiteDatabase.GetCollection<Player>().Find(x => x.BadgeExpire >= DateTime.Now).Count() >= 1)
+                if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.BadgeExpire >= DateTime.Now).CountDocuments() >= 1)
                 {
-                    StringBuilder message = new StringBuilder($"There are currenly {Database.LiteDatabase.GetCollection<Player>().Find(x => x.BadgeExpire >= DateTime.Now).Count()} have an active temporarily badge, use argument show after {report} to see the specific users.").AppendLine();
+                    StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.BadgeExpire >= DateTime.Now).CountDocuments() } have an active temporarily badge, use argument show after {report} to see the specific users.").AppendLine();
                     if (showarg)
                     {
-                        foreach (var player in Database.LiteDatabase.GetCollection<Player>().Find(x => x.BadgeExpire >= DateTime.Now).OrderByDescending(x => x.BadgeExpire))
+                        foreach (var player in Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.BadgeExpire >= DateTime.Now).ToList().OrderByDescending(x => x.BadgeExpire))
                         {
                             message.AppendLine($"[{player.Name}({player.Id}@{player.Authentication})] - Badge name: {player.BadgeName} - Badge expire {player.BadgeExpire}");
                         }

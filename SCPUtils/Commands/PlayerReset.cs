@@ -46,7 +46,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.Reset();
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Player has been reset!";
 
                 return true;

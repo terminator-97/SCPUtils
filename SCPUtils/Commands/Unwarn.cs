@@ -69,7 +69,7 @@ namespace SCPUtils.Commands
                     databasePlayer.SuicidePunishment[id] = "REMOVED";
                     databasePlayer.LogStaffer[id] = sender.LogName;
                     databasePlayer.UserNotified[id] = true;
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
                     break;
                 case "Kick":
                     databasePlayer.ScpSuicideCount--;
@@ -77,7 +77,7 @@ namespace SCPUtils.Commands
                     databasePlayer.SuicidePunishment[id] = "REMOVED";
                     databasePlayer.LogStaffer[id] = sender.LogName;
                     databasePlayer.UserNotified[id] = true;
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
                     break;
                 case "Ban":
                     databasePlayer.ScpSuicideCount--;
@@ -85,7 +85,7 @@ namespace SCPUtils.Commands
                     databasePlayer.SuicidePunishment[id] = "REMOVED";
                     databasePlayer.LogStaffer[id] = sender.LogName;
                     databasePlayer.UserNotified[id] = true;
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
                     if (DateTime.Now < databasePlayer.Expire[id])
                     {
                         BanHandler.RemoveBan($"{databasePlayer.Id}@{databasePlayer.Authentication}", BanHandler.BanType.UserId);
@@ -103,7 +103,7 @@ namespace SCPUtils.Commands
                     if (databasePlayer.RoundBanLeft < 0) databasePlayer.RoundBanLeft = 0;
 
 
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
 
                     break;
                 case "REMOVED":

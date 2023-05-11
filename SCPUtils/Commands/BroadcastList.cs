@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 using System.Text;
 
@@ -30,7 +31,7 @@ namespace SCPUtils.Commands
             }
             StringBuilder broadcastList = new StringBuilder("[Broadcast List]");
             broadcastList.AppendLine();
-            foreach (BroadcastDb databaseBroadcast in Database.LiteDatabase.GetCollection<BroadcastDb>().FindAll())
+            foreach (BroadcastDb databaseBroadcast in Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").AsQueryable().ToList())
             {
                 broadcastList.AppendLine($"ID: {databaseBroadcast.Id}");
                 broadcastList.AppendLine($"Created by: {databaseBroadcast.CreatedBy}");

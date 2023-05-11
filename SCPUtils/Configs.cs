@@ -9,6 +9,25 @@ namespace SCPUtils
 {
     public class Configs : IConfig
     {
+        [Description("DATABASE CONFIGS - Database name")]
+        public string DatabaseName { get; private set; } = "ScpUtils";
+
+        [Description("Database IP")]
+        public string DatabaseIp { get; private set; } = "localhost";
+
+        [Description("Database port")]
+        public ushort DatabasePort { get; private set; } = 27017;
+
+        [Description("Database user")]
+        public string DatabaseUser { get; private set; } = "user";
+
+        [Description("Database password")]
+        public string DatabasePassword { get; private set; } = "StrongPassword";
+
+        [Description("Database auth type")]
+        public string DatabaseAuthType { get; private set; } = "SCRAM-SHA-256";
+
+        [Description("PLUGIN CONFIGS")]
         public bool IsEnabled { get; set; } = true;
 
         [Description("Should SCPs be warned for quitting or suicide?")]
@@ -121,11 +140,12 @@ namespace SCPUtils
         [Description("Message if player try to change his nickname to a restricted one")]
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
 
-        [Description("Database name, change it only if you are running multiple servers")]
+        /*[Description("Database name, change it only if you are running multiple servers")]
         public string DatabaseName { get; private set; } = "SCPUtils";
 
         [Description("In which folder database should be stored?")]
-        public string DatabaseFolder { get; private set; } = "EXILED";
+        public string DatabaseFolder { get; private set; } = "EXILED";*/
+
 
         [Description("Discord webhook url for mute evasion reports")]
         public string WebhookUrl { get; private set; } = "None";
@@ -434,6 +454,11 @@ namespace SCPUtils
             if (EnableSCPSuicideSoftBan)
             {
                 EnableSCPSuicideAutoBan = false;
+            }
+
+            if (DatabasePassword == "StrongPassword")
+            {
+                Log.Warn("You are using a weak database password (default one), everyone on github can see it, change it, please remember that it's important to use a strong password to avoid hackers!");
             }
 
             if (!IsEnabled)

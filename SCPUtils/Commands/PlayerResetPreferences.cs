@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.ResetPreferences();
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Player preferences have been resetted!";
 
                 return true;

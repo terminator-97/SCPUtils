@@ -52,13 +52,13 @@ namespace SCPUtils.Commands
             if (databasePlayer.IgnoreDNT == false)
             {
                 databasePlayer.IgnoreDNT = true;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success, ignore DNT has been enabled!";
             }
             else
             {
                 databasePlayer.IgnoreDNT = false;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success, ignore DNT has been disabled!";
             }
 

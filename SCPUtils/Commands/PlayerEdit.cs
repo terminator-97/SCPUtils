@@ -53,7 +53,7 @@ namespace SCPUtils.Commands
                     databasePlayer.ScpSuicideCount = totalSCPSuicides;
                     databasePlayer.TotalScpSuicideKicks = totalSCPKicks;
                     databasePlayer.TotalScpSuicideBans = totalSCPBans;
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
                 }
 
                 else

@@ -1,175 +1,71 @@
-﻿using Exiled.API.Features;
-using LiteDB;
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
-    public class Database
+    using Exiled.API.Features;
+    using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+
+
+    public static class Database
     {
-        private readonly ScpUtils pluginInstance;
+        public static IMongoClient MongoClient { get; private set; }
 
-        public Database(ScpUtils pluginInstance)
-        {
-            this.pluginInstance = pluginInstance;
-        }
+        public static IMongoDatabase MongoDatabase { get; private set; }
 
-        public static LiteDatabase LiteDatabase { get; private set; }
-        public string DatabaseDirectory => Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), pluginInstance.Config.DatabaseFolder), pluginInstance.Config.DatabaseName);
-        public string DatabaseFullPath => Path.Combine(DatabaseDirectory, $"{pluginInstance.Config.DatabaseName}.db");
-        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
-        public static Dictionary<string, Broadcast> Broadcast = new Dictionary<string, Broadcast>();
-        public static Dictionary<string, PlaySession> PlaySession = new Dictionary<string, PlaySession>();
-
-        public void CreateDatabase()
-        {
-            if (Directory.Exists(DatabaseDirectory))
-            {
-                return;
-            }
-
-            try
-            {
-                Directory.CreateDirectory(DatabaseDirectory);
-                Log.Warn("Database not found, Creating new DB");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot create new DB!\n{ex.ToString()}");
-            }
-        }
-
-        public void OpenDatabase()
+        public static void OpenDatabase()
         {
             try
             {
-                LiteDatabase = new LiteDatabase(DatabaseFullPath);
-                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Id);
-                LiteDatabase.GetCollection<Player>().EnsureIndex(x => x.Name);
-                LiteDatabase.GetCollection<BroadcastDb>().EnsureIndex(x => x.Id);
-                LiteDatabase.GetCollection<DatabaseIp>().EnsureIndex(x => x.Id);
-                LiteDatabase.GetCollection<PlaySession>().EnsureIndex(x => x.Id);
-                Log.Info("DB Loaded!");
+                var connectionString = string.IsNullOrEmpty(ScpUtils.StaticInstance.Config.DatabasePassword)
+                 ? $"mongodb://{ScpUtils.StaticInstance.Config.DatabaseIp}:{ScpUtils.StaticInstance.Config.DatabasePort}"
+                 : $"mongodb://{ScpUtils.StaticInstance.Config.DatabaseUser}:{ScpUtils.StaticInstance.Config.DatabasePassword}@{ScpUtils.StaticInstance.Config.DatabaseIp}:{ScpUtils.StaticInstance.Config.DatabasePort}/?authMechanism={ScpUtils.StaticInstance.Config.DatabaseAuthType}";
+
+                MongoClient = new MongoClient(connectionString);
+                MongoDatabase = MongoClient.GetDatabase(ScpUtils.StaticInstance.Config.DatabaseUser);
+
+                var player = new List<CreateIndexModel<Player>>()
+                {
+                    new CreateIndexModel<Player>(Builders<Player>.IndexKeys.Ascending(x => x.Id)),
+                    new CreateIndexModel<Player>(Builders<Player>.IndexKeys.Ascending(x => x.Name)),
+                    new CreateIndexModel<Player>(Builders<Player>.IndexKeys.Ascending(x => x.Ip)),
+                };
+
+                var ips = new List<CreateIndexModel<DatabaseIp>>
+                {
+                    new CreateIndexModel<DatabaseIp>(Builders<DatabaseIp>.IndexKeys.Ascending(x => x.Id)),                    
+                };
+
+                var broadcast = new List<CreateIndexModel<BroadcastDb>>
+                {
+                    new CreateIndexModel<BroadcastDb>(Builders<BroadcastDb>.IndexKeys.Ascending(x => x.Id)),
+                };
+
+
+                MongoDatabase.GetCollection<Player>("players").Indexes.CreateMany(player);
+                MongoDatabase.GetCollection<DatabaseIp>("ipaddresses").Indexes.CreateMany(ips);
+                MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Indexes.CreateMany(broadcast);
+
+                Log.Info("You have been connected!");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error($"Failed to open DB!\nPlease make sure that there is only 1 server open on same database, check that there are no ghost proccess, if the error still occurrs check LITEDB version and if there are the proper permissions. Bellow you can see the error. \n \n {ex.ToString()}");
+                Log.Error(string.Format("Failed to connect Database! ", e));
             }
         }
-        public void NewSession(Exiled.API.Features.Player player)
+
+        public static void Close()
         {
             try
             {
-                if (LiteDatabase.GetCollection<PlaySession>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player))) return;
+                MongoClient = null;
+                MongoDatabase = null;
 
-                LiteDatabase.GetCollection<PlaySession>().Insert(new PlaySession()
-                {
-                    Id = DatabasePlayer.GetRawUserId(player),
-                    Authentication = DatabasePlayer.GetAuthentication(player),
-                    PlaytimeSessionsLog = null
-                });
-
-
+                Log.Info("You have been disconnected!");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error($"Error occurred in PlayTimeSession!\n{ex}");
+                Log.Error(string.Format("Failed to disconnect Database! ", e));
             }
         }
-        public void AddBroadcast(string id, string nickname, int seconds, string text)
-        {
-            try
-            {
-                if (LiteDatabase.GetCollection<BroadcastDb>().Exists(x => x.Id == id))
-                {
-                    return;
-                }
-
-
-                LiteDatabase.GetCollection<BroadcastDb>().Insert(new BroadcastDb()
-                {
-                    Id = id,
-                    CreatedBy = nickname,
-                    Seconds = seconds,
-                    Text = text
-                });
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot create the broadcast!\n{ex.ToString()}");
-            }
-        }
-
-        public void AddIp(string ip, string uid)
-        {
-            try
-            {
-                if (LiteDatabase.GetCollection<DatabaseIp>().Exists(x => x.Id == ip))
-                {
-                    return;
-                }
-
-
-                LiteDatabase.GetCollection<DatabaseIp>().Insert(new DatabaseIp()
-                {
-                    Id = ip,
-                    UserIds = new List<string>() { uid }
-                });
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot add new IP!\n{ex.ToString()}");
-            }
-        }
-
-
-        public void AddPlayer(Exiled.API.Features.Player player)
-        {
-            try
-            {
-                if (LiteDatabase.GetCollection<Player>().Exists(x => x.Id == DatabasePlayer.GetRawUserId(player)))
-                {
-                    return;
-                }
-
-                LiteDatabase.GetCollection<Player>().Insert(new Player()
-                {
-                    Id = DatabasePlayer.GetRawUserId(player),
-                    Name = player.Nickname,
-                    Ip = "None",
-                    Authentication = DatabasePlayer.GetAuthentication(player),
-                    ScpSuicideCount = 0,
-                    TotalScpGamesPlayed = 0,
-                    TotalScpSuicideKicks = 0,
-                    TotalScpSuicideBans = 0,
-                    RoundBanLeft = 0,
-                    FirstJoin = DateTime.Now,
-                    LastSeen = DateTime.Now,
-                    ColorPreference = "",
-                    CustomNickName = "",
-                    BadgeName = "",
-                    BadgeExpire = DateTime.MinValue,
-                    PreviousBadge = "",
-                    HideBadge = false,
-                    PlayTimeRecords = null,
-                    ASNWhitelisted = false,
-                    Restricted = null,
-                    KeepPreferences = false,
-                    IgnoreDNT = false,
-                    // PlaytimeSessionsLog = null,
-                    Expire = null,
-                    MultiAccountWhiteList = false,
-                    NicknameCooldown = DateTime.Now,
-                    OverwatchActive = false
-                });
-
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Cannot add new user to Database: {player.Nickname} ({player.UserId.Split('@')[0]})!\n{ex.ToString()}");
-            }
-        }
-
     }
 }

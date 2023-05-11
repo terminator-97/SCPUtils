@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 
 namespace SCPUtils.Commands
@@ -36,9 +37,10 @@ namespace SCPUtils.Commands
             else
             {
 
-                if (Database.LiteDatabase.GetCollection<BroadcastDb>().Exists(broadcast => broadcast.Id == arguments.Array[1].ToString()))
+                if (Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Find(broadcast => broadcast.Id == arguments.Array[1].ToString()).Any())
                 {
-                    Database.LiteDatabase.GetCollection<BroadcastDb>().Delete(arguments.Array[1].ToString());
+                    
+                    Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(arguments.Array[1].ToString());                   
                     response = "Success!";
                     return true;
                 }

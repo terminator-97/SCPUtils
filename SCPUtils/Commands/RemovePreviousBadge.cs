@@ -46,7 +46,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.PreviousBadge = "";
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = $"{target}'s previous badge removed!";
 
                 return true;

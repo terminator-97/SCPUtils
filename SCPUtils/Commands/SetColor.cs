@@ -95,13 +95,13 @@ namespace SCPUtils.Commands
             if (color == "none")
             {
                 databasePlayer.ColorPreference = "";
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "<color=green>Success, changes will take effect next round!</color>";
                 return true;
             }
 
             databasePlayer.ColorPreference = color;
-            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+            databasePlayer.SaveData();
             response = "<color=green>Success, choice has been saved!</color>";
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
             if (player != null)

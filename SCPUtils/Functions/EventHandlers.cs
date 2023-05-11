@@ -11,6 +11,9 @@ using System.Linq;
 using DamageTypes = Exiled.API.Enums.DamageType;
 using Features = Exiled.API.Features;
 using Round = Exiled.API.Features.Round;
+using ExiledPlayer = Exiled.API.Features.Player;
+using Exiled.Events.EventArgs.Player;
+using MongoDB.Driver;
 
 namespace SCPUtils
 {
@@ -298,27 +301,11 @@ namespace SCPUtils
 
 
         internal void OnPlayerVerify(VerifiedEventArgs ev)
-        {
-            if (!Database.LiteDatabase.GetCollection<Player>().Exists(player => player.Id == DatabasePlayer.GetRawUserId(ev.Player)))
-            {
-                pluginInstance.DatabasePlayerData.AddPlayer(ev.Player);
-            }
+        {    
+            
+            var databasePlayer = ev.Player.GetDatabasePlayer();
 
-            Player databasePlayer = ev.Player.GetDatabasePlayer();
-
-            if (!Database.LiteDatabase.GetCollection<DatabaseIp>().Exists(alias => alias.Id == DatabasePlayer.GetRawUserId(ev.Player.IPAddress)))
-            {
-                pluginInstance.DatabasePlayerData.AddIp(ev.Player.IPAddress, ev.Player.UserId);
-            }
-
-
-
-
-            if (Database.PlayerData.ContainsKey(ev.Player))
-            {
-                return;
-            }
-            Database.PlayerData.Add(ev.Player, databasePlayer);
+            
             if (PreauthTime.ContainsKey(ev.Player.UserId))
             {
                 databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];

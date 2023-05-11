@@ -39,7 +39,7 @@ namespace SCPUtils.Commands
                 response = $"<color=yellow>Only SCPs are allowed to use this command!</color>";
                 return false;
             }
-         
+
 
             else
             {
@@ -60,7 +60,7 @@ namespace SCPUtils.Commands
                     return false;
                 }
                 else
-                {                   
+                {
 
                     switch (arguments.Array[1].ToString().ToUpper())
                     {
@@ -69,7 +69,7 @@ namespace SCPUtils.Commands
                         case "939":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp939);
-                            role = PlayerRoles.RoleTypeId.Scp939;                                                                
+                            role = PlayerRoles.RoleTypeId.Scp939;
                             break;
 
                         case "SCP-049":
@@ -77,7 +77,7 @@ namespace SCPUtils.Commands
                         case "049":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp049);
-                            role = PlayerRoles.RoleTypeId.Scp049;                         
+                            role = PlayerRoles.RoleTypeId.Scp049;
                             break;
 
                         case "SCP-0492":
@@ -85,7 +85,7 @@ namespace SCPUtils.Commands
                         case "0492":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp0492);
-                            role = PlayerRoles.RoleTypeId.Scp0492;                      
+                            role = PlayerRoles.RoleTypeId.Scp0492;
                             break;
 
                         case "SCP-106":
@@ -93,7 +93,7 @@ namespace SCPUtils.Commands
                         case "106":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp106);
-                            role = PlayerRoles.RoleTypeId.Scp106;                                           
+                            role = PlayerRoles.RoleTypeId.Scp106;
                             break;
 
                         case "SCP-096":
@@ -101,7 +101,7 @@ namespace SCPUtils.Commands
                         case "096":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp096);
-                            role = PlayerRoles.RoleTypeId.Scp096;                                             
+                            role = PlayerRoles.RoleTypeId.Scp096;
                             break;
 
                         case "SCP-079":
@@ -109,16 +109,16 @@ namespace SCPUtils.Commands
                         case "079":
 
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp079);
-                            role = PlayerRoles.RoleTypeId.Scp079;                                             
+                            role = PlayerRoles.RoleTypeId.Scp079;
                             break;
 
                         case "SCP-173":
                         case "SCP173":
                         case "173":
                             target = Eplayer.List.FirstOrDefault(x => x.Role.Type == PlayerRoles.RoleTypeId.Scp173);
-                            role = PlayerRoles.RoleTypeId.Scp173;                                                 
+                            role = PlayerRoles.RoleTypeId.Scp173;
                             break;
-                        
+
 
                         default:
                             target = Eplayer.Get(arguments.Array[1].ToString());
@@ -154,10 +154,10 @@ namespace SCPUtils.Commands
                             else
                             {
                                 ScpUtils.StaticInstance.EventHandlers.SwapCount.Add(player, 1);
-                            }          
-                           
-                       
-                            player.Role.Set(role);                 
+                            }
+
+
+                            player.Role.Set(role);
                             response = $"<color=green>Swap request has been granted by system</color>";
                             return true;
                         }
@@ -167,7 +167,7 @@ namespace SCPUtils.Commands
                     {
                         response = $"<color=red>Invalid player nickname/id or invalid SCP name!</color>";
                         return false;
-                    }              
+                    }
 
 
                     if (ScpUtils.StaticInstance.Config.AllowSCPSwapOnlyFullHealth && target.Health < target.MaxHealth)

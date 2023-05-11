@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 
 namespace SCPUtils.Commands
@@ -45,7 +46,13 @@ namespace SCPUtils.Commands
                     else
                     {
                         var broadcast = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
+                        BroadcastDb = new Broadcast
+                        {
+                            Aliases 
+
+                        }
                         ScpUtils.StaticInstance.DatabasePlayerData.AddBroadcast(arguments.Array[1].ToString(), sender.LogName, duration, broadcast.ToString());
+                        Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").InsertOne(arguments.Array[1].ToString(), sender.LogName, duration, broadcast.ToString());
                         response = "Success!";
                         return true;
                     }

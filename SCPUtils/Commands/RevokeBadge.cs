@@ -50,7 +50,7 @@ namespace SCPUtils.Commands
             }
 
             databasePlayer.BadgeExpire = DateTime.MinValue;
-            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+            databasePlayer.SaveData();
             if (player != null)
             {
                 player.BadgeHidden = false;

@@ -53,13 +53,13 @@ namespace SCPUtils.Commands
             if (databasePlayer.KeepPreferences == false)
             {
                 databasePlayer.KeepPreferences = true;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success, keep mode has been enabled!";
             }
             else
             {
                 databasePlayer.KeepPreferences = false;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success, keep mode has been disabled!";
             }
 

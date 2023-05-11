@@ -51,7 +51,7 @@ namespace SCPUtils.Commands
             if (int.TryParse(arguments.Array[2].ToString(), out int rounds))
             {
                 databasePlayer.RoundBanLeft = rounds;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success!";
                 return true;
             }

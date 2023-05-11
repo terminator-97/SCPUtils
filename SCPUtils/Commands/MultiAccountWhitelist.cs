@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.MultiAccountWhiteList = !databasePlayer.MultiAccountWhiteList;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Success!";
                 return true;
             }

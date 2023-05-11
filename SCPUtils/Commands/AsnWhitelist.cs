@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.ASNWhitelisted = true;
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "Player has been whitelisted!";
                 return true;
             }

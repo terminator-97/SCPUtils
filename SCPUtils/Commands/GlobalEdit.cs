@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 
 namespace SCPUtils.Commands
@@ -39,7 +40,7 @@ namespace SCPUtils.Commands
 
             if (int.TryParse(arguments.Array[1].ToString(), out int scpGamesToRemove) && int.TryParse(arguments.Array[2].ToString(), out int suicidesToRemove) && int.TryParse(arguments.Array[3].ToString(), out int kicksToRemove) && int.TryParse(arguments.Array[4].ToString(), out int bansToRemove))
             {
-                foreach (Player databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.ScpSuicideCount >= 1))
+                foreach (Player databasePlayer in Database.MongoDatabase.GetCollection<Player>("players").AsQueryable().ToList().FindAll(x => x.ScpSuicideCount >= 1))
                 {
                     if (databasePlayer.TotalScpGamesPlayed >= scpGamesToRemove)
                     {
@@ -77,7 +78,7 @@ namespace SCPUtils.Commands
                         databasePlayer.TotalScpSuicideBans = 0;
                     }
 
-                    Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                    databasePlayer.SaveData();
                 }
             }
 

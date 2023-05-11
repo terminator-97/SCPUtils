@@ -324,7 +324,7 @@ namespace SCPUtils
         }
         public void SaveData(Exiled.API.Features.Player player)
         {
-            if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
+            if (player.Nickname != "Dedicated Server" && player != null)
             {
                 if ((player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Config.QuitEqualsSuicide && !Round.IsEnded)
                 {
@@ -362,20 +362,19 @@ namespace SCPUtils
                 }
 
                 databasePlayer.Ip = player.IPAddress;
-                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
-                Database.PlayerData.Remove(player);
+                databasePlayer.SaveData();         
             }
             if (pluginInstance.EventHandlers.KickedList.Contains(player)) pluginInstance.EventHandlers.KickedList.Remove(player);
         }
 
         public void SavePlaytime(Exiled.API.Features.Player player)
         {
-            if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
+            if (player.Nickname != "Dedicated Server" && player != null)
             {
                 Player databasePlayer = player.GetDatabasePlayer();
                 databasePlayer.SetCurrentDayPlayTime();
                 databasePlayer.LastSeen = DateTime.Now;
-                Database.LiteDatabase.GetCollection<Player>().Update(Database.PlayerData[player]);
+                databasePlayer.SaveData();               
             }
         }
 
@@ -509,7 +508,8 @@ namespace SCPUtils
                 {
                     databasePlayer.Expire.Add(DateTime.MinValue);
                 }
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+               
+                databasePlayer.SaveData();
             }
         }
 
@@ -523,7 +523,7 @@ namespace SCPUtils
                 {
                     databasePlayer.RoundsBan.Add(0);
                 }
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
             }
         }
 
@@ -606,49 +606,50 @@ namespace SCPUtils
         }
 
         public void IpCheck(Exiled.API.Features.Player player)
-        {            
-            var databaseIp = GetIp.GetIpAddress(player.IPAddress);            
+        {
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (!databaseIp.UserIds.Contains(player.UserId))
-            {               
-                databaseIp.UserIds.Add(player.UserId);               
-                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);                
+            {
+                databaseIp.UserIds.Add(player.UserId);
+                databaseIp.SaveIp();
+                
             }
-            if(pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
-            {               
-                if (player.GetDatabasePlayer().MultiAccountWhiteList) return;                
-                CheckIp(player);                
+            if (pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
+            {
+                if (player.GetDatabasePlayer().MultiAccountWhiteList) return;
+                CheckIp(player);
                 return;
-            }            
-           if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
+            }
+            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
 
         public void CheckIp(Exiled.API.Features.Player player)
-        {       
+        {
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (databaseIp.UserIds.Count() > 1)
-            {               
+            {
                 MultiAccountEvent args = new MultiAccountEvent();
                 args.Player = player;
                 args.UserIds = databaseIp.UserIds;
-                pluginInstance.Events.OnMultiAccountEvent(args);                
+                pluginInstance.Events.OnMultiAccountEvent(args);
 
                 if (pluginInstance.Config.MultiAccountBroadcast)
                 {
 
                     AdminMessage($"Multi-Account detected on {player.Nickname} - ID: {player.Id} Number of accounts: {databaseIp.UserIds.Count()}");
-                }             
+                }
 
                 foreach (var userId in databaseIp.UserIds)
                 {
-                    if (player.IsMuted) return;                    
+                    if (player.IsMuted) return;
                     if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
                         AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
                     }
-                }                
+                }
             }
         }
 
@@ -657,9 +658,9 @@ namespace SCPUtils
             if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
             {
                 return false;
-            }            
-            var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);    
-            if(player.CheckPermission("scputils.bypasscooldown"))
+            }
+            var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            if (player.CheckPermission("scputils.bypasscooldown"))
             {
                 return false;
             }

@@ -1,7 +1,17 @@
-﻿namespace SCPUtils
+﻿using Exiled.API.Extensions;
+using MongoDB.Driver;
+using System.Linq;
+using ExiledPlayer = Exiled.API.Features.Player;
+
+namespace SCPUtils
 {
     public static class DatabasePlayer
     {
+        public static IMongoClient MongoClient { get; private set; }
+
+        public static IMongoDatabase MongoDatabase { get; private set; }
+
+
         public static string GetAuthentication(this Exiled.API.Features.Player player)
         {
             return player.UserId.Split('@')[1];
@@ -12,32 +22,20 @@
             return player.UserId.GetRawUserId();
         }
 
-        public static string GetRawUserId(this string player)
-        {
-            return player.Split('@')[0];
-        }
+    
 
         public static Player GetDatabasePlayer(this string player)
         {
-            return Exiled.API.Features.Player.Get(player)?.GetDatabasePlayer() ??
-                Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId() || queryPlayer.Name == player);
+             return ExiledPlayer.Get(player)?.GetDatabasePlayer() ?? MongoDatabase.GetCollection<Player>("players")
+                .Find(x => x.Id == player.GetRawUserId() || x.Name.Contains(player)).FirstOrDefault(); 
+         
         }
 
-        public static Player GetDatabasePlayer(this Exiled.API.Features.Player player)
+        public static Player GetDatabasePlayer(this ExiledPlayer player)
         {
-            if (player == null)
-            {
-                return null;
-            }
-            else if (Database.PlayerData.TryGetValue(player, out Player databasePlayer))
-            {
-                return databasePlayer;
-            }
-            else
-            {
-                return Database.LiteDatabase.GetCollection<Player>().FindOne(queryPlayer => queryPlayer.Id == player.GetRawUserId());
-            }
-        }
+            if (player == null) return null;
+            return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == x.Id.GetRawUserId()).FirstOrDefault();
+        }   
 
     }
 }

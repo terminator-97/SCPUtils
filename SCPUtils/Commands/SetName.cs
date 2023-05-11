@@ -104,7 +104,7 @@ namespace SCPUtils.Commands
             if (nickname.ToLower() == "none")
             {
                 databasePlayer.CustomNickName = "";
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = "<color=green>Success, changes will take effect next round!</color>";
                 return true;
             }
@@ -118,7 +118,7 @@ namespace SCPUtils.Commands
 
             databasePlayer.CustomNickName = nickname;
             databasePlayer.NicknameCooldown = DateTime.Now.AddSeconds(ScpUtils.StaticInstance.Config.ChangeNicknameCooldown);
-            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+            databasePlayer.SaveData();
             response = "<color=green>Success, choice has been saved!</color>";
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
 

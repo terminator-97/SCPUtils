@@ -88,7 +88,7 @@ namespace SCPUtils.Commands
                     }
                 }
 
-                Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+                databasePlayer.SaveData();
                 response = $"Player suspended!";
 
             }

@@ -1,5 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class Validation : ICommand
-    {
-
+    {     
         public string Command { get; } = "scputils_validation";
 
         public string[] Aliases { get; } = new[] { "scv", "su_v", "scpu_v" };
@@ -31,7 +32,7 @@ namespace SCPUtils.Commands
             }
             int valid = 0;
             int invalid = 0;
-            foreach (var a in Database.LiteDatabase.GetCollection<Player>().FindAll())
+            foreach (var a in Database.MongoDatabase.GetCollection<Player>("players").AsQueryable().ToList())
             {
                 try
                 {
@@ -87,44 +88,44 @@ namespace SCPUtils.Commands
                         Database.LiteDatabase.GetCollection<Player>().Update(a);
                     }
 
-                        if (a.SuicideDate.Count() != a.SuicidePunishment.Count())
+                    if (a.SuicideDate.Count() != a.SuicidePunishment.Count())
+                    {
+                        a.SuicidePunishment.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicidePunishment.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicidePunishment.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
+                            a.SuicidePunishment.Add("Unknown");
                         }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
-                        if (a.SuicideDate.Count() != a.SuicideScp.Count())
+                    if (a.SuicideDate.Count() != a.SuicideScp.Count())
+                    {
+                        a.SuicideDate.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicideDate.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicideScp.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
+                            a.SuicideScp.Add("Unknown");
                         }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
-                        if (a.SuicideDate.Count() != a.SuicideType.Count())
+                    if (a.SuicideDate.Count() != a.SuicideType.Count())
+                    {
+                        a.SuicideType.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicideType.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicideType.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
+                            a.SuicideType.Add("Unknown");
                         }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
 
-                        valid++;
+                    valid++;
                 }
                 catch (Exception e)
                 {
                     invalid++;
                     Exiled.API.Features.Log.Info($"Invalid player: {a.Id} - {a.Name}");
-                }            
+                }
             }
 
             response = $"Invalid: {invalid}, Valid: {valid}";

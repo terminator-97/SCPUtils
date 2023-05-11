@@ -58,7 +58,7 @@ namespace SCPUtils.Commands
             }
 
             databasePlayer.Restricted.Remove(databasePlayer.Restricted.Keys.Last());
-            Database.LiteDatabase.GetCollection<Player>().Update(databasePlayer);
+            databasePlayer.SaveData();
 
             if (target != null)
             {
