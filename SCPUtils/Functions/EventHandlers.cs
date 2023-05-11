@@ -28,7 +28,7 @@ namespace SCPUtils
         private static Dictionary<string, DateTime> PreauthTime { get; set; } = new Dictionary<string, DateTime>();
 
         private static Dictionary<Features.Player, string> Cuffed { get; set; } = new Dictionary<Features.Player, string>();
-
+        public Dictionary<Features.Player, int> SwapCount { get; set; } = new Dictionary<Features.Player, int>();
         public List<Features.Player> KickedList { get; set; } = new List<Features.Player>();
         public Dictionary<Features.Player, Features.Player> SwapRequest { get; set; } = new Dictionary<Features.Player, Features.Player>();
         public int ChaosRespawnCount { get; set; }
@@ -85,6 +85,8 @@ namespace SCPUtils
 
             if (ev.Player.IsScp || ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial && pluginInstance.Config.AreTutorialsSCP)
             {
+                if (!pluginInstance.Config.Scp0492DeathBroadcast && ev.Player.Role == PlayerRoles.RoleTypeId.Scp0492) return;
+
                 if (ev.DamageHandler.IsSuicide)
                 {
                     var message = pluginInstance.Config.ScpSuicideMessage.Content;
@@ -276,6 +278,7 @@ namespace SCPUtils
             ChaosRespawnCount = 0;
             MtfRespawnCount = 0;
             SwapRequest.Clear();
+            SwapCount.Clear();
         }
 
         internal void On079TeslaEvent(InteractingTeslaEventArgs _)

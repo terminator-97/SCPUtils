@@ -85,6 +85,9 @@ namespace SCPUtils
         [Description("Report command abuse in console?")]
         public bool CommandAbuseReport { get; private set; } = true;
 
+        [Description("Should SCP-049-2 deaths should be broadcasted?")]
+        public bool Scp0492DeathBroadcast { get; private set; } = false;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -183,6 +186,9 @@ namespace SCPUtils
 
         [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
         public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 75;
+
+        [Description("Max allowed swaps")]
+        public int MaxAllowedSwaps { get; private set; } = 1;
 
         [Description("Command cooldown in seconds")]
         public double CommandCooldownSeconds { get; private set; } = 5;

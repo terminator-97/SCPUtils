@@ -657,8 +657,12 @@ namespace SCPUtils
             if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
             {
                 return false;
-            }
+            }            
             var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);    
+            if(player.CheckPermission("scputils.bypasscooldown"))
+            {
+                return false;
+            }
             if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
             {
                 pluginInstance.EventHandlers.LastCommand.Add(player, DateTime.Now.AddSeconds(pluginInstance.Config.CommandCooldownSeconds));

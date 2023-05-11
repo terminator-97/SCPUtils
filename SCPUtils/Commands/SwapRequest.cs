@@ -39,6 +39,7 @@ namespace SCPUtils.Commands
                 response = $"<color=yellow>Only SCPs are allowed to use this command!</color>";
                 return false;
             }
+         
 
             else
             {
@@ -140,7 +141,23 @@ namespace SCPUtils.Commands
                     {
                         if (target == null && ScpUtils.StaticInstance.Config.AllowedSwapGenerationList.Contains(role))
                         {
-                            player.Role.Set(role);
+
+                            if (ScpUtils.StaticInstance.EventHandlers.SwapCount.ContainsKey(player))
+                            {
+                                if (ScpUtils.StaticInstance.EventHandlers.SwapCount[player] >= ScpUtils.StaticInstance.Config.MaxAllowedSwaps)
+                                {
+                                    response = $"<color=red>You have reached swaps requests limit for this round, another player should send it to you if he wish to swap!</color>";
+                                    return false;
+                                }
+                                ScpUtils.StaticInstance.EventHandlers.SwapCount[player]++;
+                            }
+                            else
+                            {
+                                ScpUtils.StaticInstance.EventHandlers.SwapCount.Add(player, 1);
+                            }          
+                           
+                       
+                            player.Role.Set(role);                 
                             response = $"<color=green>Swap request has been granted by system</color>";
                             return true;
                         }
