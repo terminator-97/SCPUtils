@@ -22,7 +22,7 @@ namespace SCPUtils.Commands
             }
 
             response = $"<color=blue>Plugin Info: </color>\n" +
-                            "<color=blue>SCPUtils is a public plugin created by Terminator_97#0507, you can download this plugin at: github.com/terminator-97/SCPUtils </color>\n" +
+                            "<color=blue>SCPUtils [MongoDB Edition] is a public plugin created by Terminator_97#0507, you can download this plugin at: github.com/terminator-97/SCPUtils on ScpUtils-MongoDb branch</color>\n" +
                             $"<color=blue>This server is running SCPUtils version {ScpUtils.StaticInstance.Version}</color>";
             return true;
         }

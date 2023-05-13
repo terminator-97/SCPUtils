@@ -18,7 +18,7 @@ namespace SCPUtils
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-      //  public Database DatabasePlayerData { get; private set; }
+        //  public Database DatabasePlayerData { get; private set; }
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
 
@@ -58,7 +58,7 @@ namespace SCPUtils
         {
             Functions = new Functions(this);
             EventHandlers = new EventHandlers(this);
-        
+
             Events = new Events.Events(this);
 
             EventHandlers.TemporarilyDisabledWarns = false;

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace SCPUtils
 {
@@ -36,7 +35,7 @@ namespace SCPUtils
         public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
         public bool KeepPreferences { get; set; }
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
-        public bool IgnoreDNT { get; set; }        
+        public bool IgnoreDNT { get; set; }
         public bool OverwatchActive { get; set; }
         //Suicide logs
         public List<DateTime> SuicideDate { get; set; } = new List<DateTime>();
@@ -53,6 +52,10 @@ namespace SCPUtils
 
         public void SetCurrentDayPlayTime()
         {
+            if (PlayTimeRecords == null)
+            {
+                PlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
+            }
             if (!PlayTimeRecords.ContainsKey(DateTime.Now.Date.ToShortDateString()))
             {
                 PlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
@@ -114,7 +117,8 @@ namespace SCPUtils
 
         public ReplaceOneResult SaveData()
         {
-            return Database.MongoDatabase.GetCollection<Player>("players").ReplaceOne(x => x.Id == Id, this, new ReplaceOptions() { IsUpsert = true });            
+
+            return Database.MongoDatabase.GetCollection<Player>("players").ReplaceOne(x => x.Id == Id, this, new ReplaceOptions() { IsUpsert = true });
         }
 
 

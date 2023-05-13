@@ -5,15 +5,13 @@ using Exiled.Events.EventArgs.Scp079;
 using Exiled.Events.EventArgs.Scp096;
 using Exiled.Events.EventArgs.Server;
 using MEC;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using DamageTypes = Exiled.API.Enums.DamageType;
 using Features = Exiled.API.Features;
 using Round = Exiled.API.Features.Round;
-using ExiledPlayer = Exiled.API.Features.Player;
-using Exiled.Events.EventArgs.Player;
-using MongoDB.Driver;
 
 namespace SCPUtils
 {
@@ -301,16 +299,28 @@ namespace SCPUtils
 
 
         internal void OnPlayerVerify(VerifiedEventArgs ev)
-        {    
-            
+        {
             var databasePlayer = ev.Player.GetDatabasePlayer();
+            if (databasePlayer == null)
+            {
+                ev.Player.AddPlayer();
+                databasePlayer = ev.Player.GetDatabasePlayer();
+            }
 
-            
+            if(Database.PlayerData.ContainsKey(ev.Player))
+            {
+                Database.PlayerData.Remove(ev.Player);
+            }
+            Database.PlayerData.Add(ev.Player, databasePlayer);
+
+            databasePlayer = Database.PlayerData[ev.Player];
+
             if (PreauthTime.ContainsKey(ev.Player.UserId))
             {
                 databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];
                 PreauthTime.Remove(ev.Player.UserId);
             }
+
             else databasePlayer.LastSeen = DateTime.Now;
             databasePlayer.Name = ev.Player.Nickname;
             databasePlayer.Ip = ev.Player.IPAddress;
@@ -337,6 +347,7 @@ namespace SCPUtils
             }
 
             pluginInstance.Functions.IpCheck(ev.Player);
+            databasePlayer.SaveData();
             //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 

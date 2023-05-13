@@ -38,7 +38,7 @@ namespace SCPUtils.Commands
             {
                 if (int.TryParse(arguments.Array[2].ToString(), out int duration))
                 {
-                    if (Database.LiteDatabase.GetCollection<BroadcastDb>().Exists(broadcast => broadcast.Id == arguments.Array[1].ToString()))
+                    if (GetBroadcast.FindBroadcast(arguments.Array[1].ToString()) != null)
                     {
                         response = "Id already exist!";
                         return false;
@@ -46,13 +46,7 @@ namespace SCPUtils.Commands
                     else
                     {
                         var broadcast = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
-                        BroadcastDb = new Broadcast
-                        {
-                            Aliases 
-
-                        }
-                        ScpUtils.StaticInstance.DatabasePlayerData.AddBroadcast(arguments.Array[1].ToString(), sender.LogName, duration, broadcast.ToString());
-                        Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").InsertOne(arguments.Array[1].ToString(), sender.LogName, duration, broadcast.ToString());
+                        GetBroadcast.AddBroadcast(arguments.Array[1].ToString(), duration, broadcast.ToString(), sender.LogName);                
                         response = "Success!";
                         return true;
                     }

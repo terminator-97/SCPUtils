@@ -39,8 +39,8 @@ namespace SCPUtils.Commands
 
                 if (Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Find(broadcast => broadcast.Id == arguments.Array[1].ToString()).Any())
                 {
-                    
-                    Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(arguments.Array[1].ToString());                   
+
+                    Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(arguments.Array[1].ToString());
                     response = "Success!";
                     return true;
                 }

@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.ASNWhitelisted = false;
-                databasePlayer.SaveData();           
+                databasePlayer.SaveData();
                 response = "Player has been removed from whitelist!";
                 return true;
             }

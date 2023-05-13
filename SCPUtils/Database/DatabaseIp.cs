@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using System.Collections.Generic;
 
 namespace SCPUtils
 {
@@ -14,5 +14,8 @@ namespace SCPUtils
         {
             return Database.MongoDatabase.GetCollection<DatabaseIp>("ipaddresses").ReplaceOne(x => x.Id == Id, this, new ReplaceOptions() { IsUpsert = true });
         }
+
+
+
     }
 }

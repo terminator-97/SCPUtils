@@ -1,10 +1,11 @@
 ﻿namespace SCPUtils
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using MongoDB.Driver;
     using System;
     using System.Collections.Generic;
-
+    using static ScpUtils;
 
     public static class Database
     {
@@ -12,16 +13,21 @@
 
         public static IMongoDatabase MongoDatabase { get; private set; }
 
+        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
+
         public static void OpenDatabase()
         {
             try
             {
-                var connectionString = string.IsNullOrEmpty(ScpUtils.StaticInstance.Config.DatabasePassword)
-                 ? $"mongodb://{ScpUtils.StaticInstance.Config.DatabaseIp}:{ScpUtils.StaticInstance.Config.DatabasePort}"
-                 : $"mongodb://{ScpUtils.StaticInstance.Config.DatabaseUser}:{ScpUtils.StaticInstance.Config.DatabasePassword}@{ScpUtils.StaticInstance.Config.DatabaseIp}:{ScpUtils.StaticInstance.Config.DatabasePort}/?authMechanism={ScpUtils.StaticInstance.Config.DatabaseAuthType}";
+
+
+                var connectionString = string.IsNullOrEmpty(StaticInstance.Config.DatabasePassword)
+                  ? $"mongodb://{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}"
+                  : $"mongodb://{StaticInstance.Config.DatabaseUser}:{StaticInstance.Config.DatabasePassword}@{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}/?authMechanism={StaticInstance.Config.DatabaseAuthType}";
+
 
                 MongoClient = new MongoClient(connectionString);
-                MongoDatabase = MongoClient.GetDatabase(ScpUtils.StaticInstance.Config.DatabaseUser);
+                MongoDatabase = MongoClient.GetDatabase(StaticInstance.Config.DatabaseName.ToSnakeCase());
 
                 var player = new List<CreateIndexModel<Player>>()
                 {
@@ -32,7 +38,7 @@
 
                 var ips = new List<CreateIndexModel<DatabaseIp>>
                 {
-                    new CreateIndexModel<DatabaseIp>(Builders<DatabaseIp>.IndexKeys.Ascending(x => x.Id)),                    
+                    new CreateIndexModel<DatabaseIp>(Builders<DatabaseIp>.IndexKeys.Ascending(x => x.Id)),
                 };
 
                 var broadcast = new List<CreateIndexModel<BroadcastDb>>
@@ -49,7 +55,7 @@
             }
             catch (Exception e)
             {
-                Log.Error(string.Format("Failed to connect Database! ", e));
+                Log.Error($"Failed to connect Database! Error: {e}");
             }
         }
 
@@ -64,7 +70,7 @@
             }
             catch (Exception e)
             {
-                Log.Error(string.Format("Failed to disconnect Database! ", e));
+                Log.Error($"Failed to disconnect Database! Error: {e}");
             }
         }
     }

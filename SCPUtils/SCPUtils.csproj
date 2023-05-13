@@ -311,6 +311,7 @@
     <Compile Include="Commands\Broadcast.cs" />
     <Compile Include="Commands\BroadcastList.cs" />
     <Compile Include="Commands\Convert.cs" />
+    <Compile Include="Commands\CreateBroadcast.cs" />
     <Compile Include="Commands\DeleteBroadcast.cs" />
     <Compile Include="Commands\Dupeip.cs" />
     <Compile Include="Commands\MultiAccountWhitelist.cs" />

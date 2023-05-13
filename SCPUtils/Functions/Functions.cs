@@ -362,7 +362,8 @@ namespace SCPUtils
                 }
 
                 databasePlayer.Ip = player.IPAddress;
-                databasePlayer.SaveData();         
+                databasePlayer.SaveData();
+                Database.PlayerData.Remove(player);
             }
             if (pluginInstance.EventHandlers.KickedList.Contains(player)) pluginInstance.EventHandlers.KickedList.Remove(player);
         }
@@ -374,7 +375,7 @@ namespace SCPUtils
                 Player databasePlayer = player.GetDatabasePlayer();
                 databasePlayer.SetCurrentDayPlayTime();
                 databasePlayer.LastSeen = DateTime.Now;
-                databasePlayer.SaveData();               
+                databasePlayer.SaveData();
             }
         }
 
@@ -508,7 +509,7 @@ namespace SCPUtils
                 {
                     databasePlayer.Expire.Add(DateTime.MinValue);
                 }
-               
+
                 databasePlayer.SaveData();
             }
         }
@@ -608,11 +609,17 @@ namespace SCPUtils
         public void IpCheck(Exiled.API.Features.Player player)
         {
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
+            if (databaseIp == null)
+            {
+                player.AddIp();
+                databaseIp = GetIp.GetIpAddress(player.IPAddress);
+            }
+
             if (!databaseIp.UserIds.Contains(player.UserId))
             {
                 databaseIp.UserIds.Add(player.UserId);
                 databaseIp.SaveIp();
-                
+
             }
             if (pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
             {
