@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using System;
 using Features = Exiled.API.Features;
 using Handlers = Exiled.Events.Handlers;
@@ -48,7 +49,9 @@ namespace SCPUtils
             PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning += EventHandlers.OnBanned;
-            PlayerEvents.Kicking += EventHandlers.OnKicking;
+            PlayerEvents.Kicking += EventHandlers.OnKicking;           
+
+   
             //  PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
             //  ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;
             //PlayerEvents.TogglingOverwatch += EventHandlers.OnOverwatchToggle;                
