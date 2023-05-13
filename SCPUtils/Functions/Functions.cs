@@ -144,7 +144,7 @@ namespace SCPUtils
                 return;
             }
             Player databasePlayer = player.GetDatabasePlayer();
-            float suicidePercentage = databasePlayer.SuicidePercentage;
+            float suicidePercentage = (float)databasePlayer.ScpSuicideCount == 0 ? 0 : (databasePlayer.ScpSuicideCount / (float)databasePlayer.TotalScpGamesPlayed) * 100;
             databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
             AutoWarnPlayer(player);
             if (pluginInstance.Config.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Config.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Config.ScpSuicideTollerance)
