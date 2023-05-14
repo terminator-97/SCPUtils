@@ -13,7 +13,7 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(5, 2, 2);
+        public override Version Version { get; } = new Version(5, 2, 3);
         public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
@@ -71,7 +71,7 @@ namespace SCPUtils
             LoadEvents();
             DatabasePlayerData.CreateDatabase();
             DatabasePlayerData.OpenDatabase();
-            Log.Warn($"[NOTICE] LiteDB edition of SCPUtils (v. {Version}) has limited support, it will receive fixes only for critical bugs and won't receive any new feature, please upgrade to version 6.0.0 or higher which uses MongoDB, for more info read the pinned message on SCPUtils channel on Exiled server.");            
+            Log.Warn($"[NOTICE] LiteDB edition of SCPUtils (v. {Version}) has limited support, it will receive fixes only for critical bugs and won't receive any new feature, please upgrade to version 6.x which uses MongoDB, for more info read the pinned message on SCPUtils channel on Exiled server.");            
         }
 
         public override void OnDisabled()
