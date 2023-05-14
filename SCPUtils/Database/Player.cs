@@ -64,6 +64,8 @@ namespace SCPUtils
 
             PlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - LastSeen).TotalSeconds;
 
+            LastSeen = DateTime.Now;
+
         }
 
         public void Reset()

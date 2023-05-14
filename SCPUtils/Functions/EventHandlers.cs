@@ -212,14 +212,6 @@ namespace SCPUtils
             }
         }
 
-        internal void OnRoundRestart()
-        {
-            foreach (Features.Player player in Features.Player.List)
-            {
-                pluginInstance.Functions.SaveData(player);
-            }
-        }
-
 
         internal void OnPlayerPreauth(PreAuthenticatingEventArgs ev)
         {
@@ -234,11 +226,7 @@ namespace SCPUtils
         internal void OnRoundEnded(RoundEndedEventArgs _)
         {
             TemporarilyDisabledWarns = true;
-
-            foreach (Features.Player player in Exiled.API.Features.Player.List)
-            {
-                pluginInstance.Functions.SaveData(player);
-            }
+ 
             Cuffed.Clear();
         }
 
@@ -347,7 +335,7 @@ namespace SCPUtils
             }
 
             pluginInstance.Functions.IpCheck(ev.Player);
-            databasePlayer.SaveData();
+            
             //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 
@@ -378,10 +366,7 @@ namespace SCPUtils
             }
         }
 
-        internal void OnPlayerLeave(LeftEventArgs ev)
-        {
-            pluginInstance.Functions.SaveData(ev.Player);
-        }
+  
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
         {
