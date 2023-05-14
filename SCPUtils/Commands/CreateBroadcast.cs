@@ -1,6 +1,5 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
-using MongoDB.Driver;
 using System;
 
 namespace SCPUtils.Commands
@@ -46,7 +45,7 @@ namespace SCPUtils.Commands
                     else
                     {
                         var broadcast = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
-                        GetBroadcast.AddBroadcast(arguments.Array[1].ToString(), duration, broadcast.ToString(), sender.LogName);                
+                        GetBroadcast.AddBroadcast(arguments.Array[1].ToString(), duration, broadcast.ToString(), sender.LogName);
                         response = "Success!";
                         return true;
                     }

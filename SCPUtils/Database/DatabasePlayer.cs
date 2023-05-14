@@ -1,5 +1,4 @@
-﻿using Exiled.API.Extensions;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +16,25 @@ namespace SCPUtils
             return player.UserId.Split('@')[1];
         }
 
+
         public static string GetRawUserId(this Exiled.API.Features.Player player)
         {
             return player.UserId.GetRawUserId();
         }
 
+        public static string GetRawUserId(this string player)
+        {
+            return player.Split('@')[0];
+        }
 
         public static Player GetDatabasePlayer(this string player)
         {
 
-            //  if(ExiledPlayer.Get(player)?.RawUserId is not ExiledPlayer exiledPlayer)
+
             var onlinePlayer = ExiledPlayer.Get(player);
             if (onlinePlayer == null)
             {
-                return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == player || x.Name.ToLower() == player.ToLower()).FirstOrDefault();
+                return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == player.GetRawUserId() || x.Name.ToLower() == player.ToLower()).FirstOrDefault();
             }
             else
             {

@@ -2,7 +2,6 @@
 using Exiled.Permissions.Extensions;
 using System;
 using System.Linq;
-using Log = Exiled.API.Features.Log;
 
 namespace SCPUtils.Commands
 {
@@ -42,13 +41,13 @@ namespace SCPUtils.Commands
                 {
                     target = arguments.Array[1].ToString();
                 }
-            }           
-            Player databasePlayer = target.GetDatabasePlayer();            
+            }
+            Player databasePlayer = target.GetDatabasePlayer();
             if (databasePlayer == null)
             {
                 response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
                 return false;
-            }      
+            }
 
             string text = $"<color=green>\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
             $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +

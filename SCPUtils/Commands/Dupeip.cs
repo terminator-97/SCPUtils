@@ -3,7 +3,6 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Text;
 
-
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -53,7 +52,9 @@ namespace SCPUtils.Commands
             StringBuilder message = new StringBuilder($"<color=green>[Accounts associated with the same IP ({databasePlayer.Ip} - {databasePlayer.Name} {databasePlayer.Id}@{databasePlayer.Authentication})]</color>").AppendLine();
             foreach (var userId in databaseIp.UserIds)
             {
+                //Log.Info(userId);
                 var databasePlayer2 = DatabasePlayer.GetDatabasePlayer(userId);
+
                 if (databasePlayer2 != null)
                 {
 

@@ -307,7 +307,7 @@ namespace SCPUtils
                 databasePlayer = ev.Player.GetDatabasePlayer();
             }
 
-            if(Database.PlayerData.ContainsKey(ev.Player))
+            if (Database.PlayerData.ContainsKey(ev.Player))
             {
                 Database.PlayerData.Remove(ev.Player);
             }
