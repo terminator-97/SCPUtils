@@ -115,7 +115,7 @@ namespace SCPUtils.Commands
                                 a.SuicideType.Add("Unknown");
                             }
                             Database.LiteDatabase.GetCollection<Player>().Update(a);
-                        }
+                        }                        
 
 
                         valid++;
