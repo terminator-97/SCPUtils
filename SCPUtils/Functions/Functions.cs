@@ -58,7 +58,7 @@ namespace SCPUtils
             }
             else
             {
-                rounds = pluginInstance.Config.AutoBanDuration;
+                rounds = pluginInstance.Config.AutoBanRoundsCount;
 
             }
             if (pluginInstance.Config.BroadcastSanctions)
