@@ -299,9 +299,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>G:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>..\packages\EXILED.7.0.0-rc.2-1\lib\net48\YamlDotNet.dll</HintPath>
-    </Reference>
     <Reference Include="ZstdSharp, Version=0.6.2.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>..\packages\ZstdSharp.Port.0.6.2\lib\net461\ZstdSharp.dll</HintPath>
     </Reference>
