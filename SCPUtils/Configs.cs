@@ -12,19 +12,19 @@ namespace SCPUtils
         [Description("DATABASE CONFIGS - Database name")]
         public string DatabaseName { get; private set; } = "ScpUtils";
 
-        [Description("Database IP")]
+        [Description("Database IP - IP Address where you host the database")]
         public string DatabaseIp { get; private set; } = "localhost";
 
-        [Description("Database port")]
+        [Description("Database port - Don't change unless you need it")]
         public ushort DatabasePort { get; private set; } = 27017;
 
         [Description("Database user")]
         public string DatabaseUser { get; private set; } = "user";
 
-        [Description("Database password")]
+        [Description("Database password - If you are using it locally password might be empty")]
         public string DatabasePassword { get; private set; } = "StrongPassword";
 
-        [Description("Database auth type")]
+        [Description("Database auth mechanism")]
         public string DatabaseAuthType { get; private set; } = "SCRAM-SHA-256";
 
         [Description("PLUGIN CONFIGS")]

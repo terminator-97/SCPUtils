@@ -1,6 +1,6 @@
 
 
-### SCPUtils Plugin:<br />
+### SCPUtils [Mongo DB Edition] Plugin:<br />
 
 This is the list of SCPUtils features with a brief description, i recomend to read configs:
 
@@ -23,10 +23,9 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Handcuff ownership:** By simply updating a config only who cuff the player will be able to uncuff it.
 - **SCP-Swap:** By setting a config you can decide the max allowed time for SCP-Swap requests and if the SCP has to be full health for swap to be allowed, you can configure swap even for scps that are not spawned.
 
-**Database will get created inside Exiled/SCPUtils folder.**<br /><br />
-**Each server must have it's own database, you cannot use one database on multiple servers!**<br /><br />
-**You must add LiteDB.dll and Newtonsoft.Json.dll into Plugins/dependencies folder or plugin won't work**<br /><br />
-**Minimum requirements: Exiled version: 7.0.0 Dependencies: LiteDB 5.0.15 and Newtonsoft.Json 13.0.2**
+**To use this plugin you will have to install MongoDB and MongoDB Compass (the last one only if you want to manage your database).**<br /><br />
+**LiteDb SCP-Utils version is still avaible but with limited support, check releases tab. It's advisable to use this version, for more info check pinned message in SCPUtils channel on Exiled.**<br /><br />
+**Minimum requirements: Exiled version: 7.0.0-rc2-1 and MongoDB (depedencies are already included by base)**
 
 
 ### Configs:
