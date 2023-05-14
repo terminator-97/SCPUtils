@@ -44,7 +44,7 @@ namespace SCPUtils.Commands
                 foreach (Player databasePlayer in Database.LiteDatabase.GetCollection<Player>().Find(x => x.SuicidePercentage >= minpercentage))
                 {
                     playerListString.AppendLine();
-                    playerListString.Append($"{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round((float)databasePlayer.ScpSuicideCount == 0 ? 0 : (databasePlayer.ScpSuicideCount / (float)databasePlayer.TotalScpGamesPlayed) * 100, 2)}% ]");
+                    playerListString.Append($"{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication}) -[ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]");
                 }
                 response = $"{playerListString}";
             }

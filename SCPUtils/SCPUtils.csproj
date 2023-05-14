@@ -126,7 +126,6 @@
     <Compile Include="Commands\PermissionsView.cs" />
     <Compile Include="Commands\PlayerBroadcast.cs" />
     <Compile Include="Commands\PlayerDnt.cs" />
-    <Compile Include="Commands\PlayerList.cs" />
     <Compile Include="Commands\PlaySessions.cs" />
     <Compile Include="Commands\RemovePreviousBadge.cs" />
     <Compile Include="Commands\PlayerRestrict.cs" />
@@ -182,6 +181,7 @@
     <Compile Include="Commands\HideBadge.cs" />
     <Compile Include="Commands\Info.cs" />
     <Compile Include="Commands\PlayerInfo.cs" />
+    <Compile Include="Commands\PlayerList.cs" />
     <Compile Include="Commands\ShowBadge.cs" />
   </ItemGroup>
   <ItemGroup>

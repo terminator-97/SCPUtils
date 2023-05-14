@@ -57,7 +57,7 @@ namespace SCPUtils.Commands
             $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
             $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
             $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-            $"Total Suicides/Quits Percentage: [ {Math.Round((float)databasePlayer.ScpSuicideCount == 0 ? 0 : (databasePlayer.ScpSuicideCount / (float)databasePlayer.TotalScpGamesPlayed) * 100, 2)}% ]\n" +
+            $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
             $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
             $"Last Seen: [ {databasePlayer.LastSeen} ]\n" +
             $"Custom Color: [ {databasePlayer.ColorPreference} ]\n" +
