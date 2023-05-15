@@ -1,9 +1,9 @@
-﻿using MongoDB.Driver;
-using System.Linq;
-using static SCPUtils.Database;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using MongoDB.Driver;
+    using System.Linq;
+    using static SCPUtils.Database;
+
     public static class GetBroadcast
     {
 

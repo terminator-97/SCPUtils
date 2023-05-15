@@ -1,10 +1,10 @@
-﻿using MongoDB.Driver;
-using System.Collections.Generic;
-using static SCPUtils.Database;
-using ExiledPlayer = Exiled.API.Features.Player;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using MongoDB.Driver;
+    using System.Collections.Generic;
+    using static SCPUtils.Database;
+    using NWPlayer = PluginAPI.Core.Player;
+
     public static class GetIp
     {
         public static DatabaseIp GetIpAddress(string ip)
@@ -17,11 +17,11 @@ namespace SCPUtils
 
 
 
-        public static void AddIp(this ExiledPlayer player)
+        public static void AddIp(this NWPlayer player)
         {
             var newIp = new DatabaseIp
             {
-                Id = player.IPAddress,
+                Id = player.IpAddress,
                 UserIds = new List<string>() { player.UserId }
             };
 

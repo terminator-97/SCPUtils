@@ -1,34 +1,15 @@
-﻿using Exiled.API.Interfaces;
-using System.Collections.Generic;
-using System.ComponentModel;
-using DamageTypes = Exiled.API.Enums.DamageType;
-using Log = Exiled.API.Features.Log;
-using ZoneType = Exiled.API.Enums.ZoneType;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
-    public class Configs : IConfig
+    using PluginAPI.Core;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using ZoneType = MapGeneration.FacilityZone;
+
+    public class Configs
     {
-        [Description("DATABASE CONFIGS - Database name")]
-        public string DatabaseName { get; private set; } = "ScpUtils";
-
-        [Description("Database IP - IP Address where you host the database")]
-        public string DatabaseIp { get; private set; } = "localhost";
-
-        [Description("Database port - Don't change unless you need it")]
-        public ushort DatabasePort { get; private set; } = 27017;
-
-        [Description("Database user")]
-        public string DatabaseUser { get; private set; } = "user";
-
-        [Description("Database password - If you are using it locally password might be empty")]
-        public string DatabasePassword { get; private set; } = "StrongPassword";
-
-        [Description("Database auth mechanism")]
-        public string DatabaseAuthType { get; private set; } = "SCRAM-SHA-256";
-
-        [Description("PLUGIN CONFIGS")]
         public bool IsEnabled { get; set; } = true;
+
+        public bool IsDebugEnabled { get; set; } = false;
 
         [Description("Should SCPs be warned for quitting or suicide?")]
         public bool EnableSCPSuicideAutoWarn { get; private set; } = true;
@@ -104,17 +85,17 @@ namespace SCPUtils
         [Description("Report command abuse in console?")]
         public bool CommandAbuseReport { get; private set; } = true;
 
-        [Description("Should SCP-049-2 deaths should be broadcasted?")]
-        public bool Scp0492DeathBroadcast { get; private set; } = false;
+        [Description("Show death message for SCP-049-2?")]
+        public bool ShowDeathMessage0492 { get; private set; } = false;
 
         [Description("Autowarn message for suiciding as SCP")]
-        public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast SuicideWarnMessage { get; private set; } = new Extensions.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Welcome message (if enabled)")]
-        public Exiled.API.Features.Broadcast WelcomeMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=green>Welcome to the server %player%!</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast WelcomeMessage { get; private set; } = new Extensions.Broadcast("<color=green>Welcome to the server %player%!</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Decontamination message (if enabled)")]
-        public Exiled.API.Features.Broadcast DecontaminationMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=yellow>Decontamination has started</color>", 12, false, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast DecontaminationMessage { get; private set; } = new Extensions.Broadcast("<color=yellow>Decontamination has started</color>", 12, false, Broadcast.BroadcastFlags.Normal);
 
         [Description("Suicide auto-kick reason (if enabled)")]
         public string SuicideKickMessage { get; private set; } = "Suicide as SCP";
@@ -140,13 +121,6 @@ namespace SCPUtils
         [Description("Message if player try to change his nickname to a restricted one")]
         public string InvalidNicknameText { get; private set; } = "This nickname has been restricted by server owner, please use another nickname!";
 
-        /*[Description("Database name, change it only if you are running multiple servers")]
-        public string DatabaseName { get; private set; } = "SCPUtils";
-
-        [Description("In which folder database should be stored?")]
-        public string DatabaseFolder { get; private set; } = "EXILED";*/
-
-
         [Description("Discord webhook url for mute evasion reports")]
         public string WebhookUrl { get; private set; } = "None";
 
@@ -154,13 +128,13 @@ namespace SCPUtils
         public string WebhookNickname { get; private set; } = "The Frontman";
 
         [Description("Which broadcast should be shown when a SCP die?")]
-        public Exiled.API.Features.Broadcast ScpDeathMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast ScpDeathMessage { get; private set; } = new Extensions.Broadcast("<color=blue>SCP %playername% (%scpname%) was killed by %killername%. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which broadcast should be shown when a SCP die?")]
-        public Exiled.API.Features.Broadcast ScpSuicideMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast ScpSuicideMessage { get; private set; } = new Extensions.Broadcast("<color=blue>SCP %playername% (%scpname%) has killed by themselves. Cause of death: %reason%</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Text shown if a player doesn't own the handcuffed player")]
-        public Exiled.API.Features.Broadcast UnhandCuffDenied { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You do not have the ownership of this player therefore you can't un-handcuff him!</color>", 8, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast UnhandCuffDenied { get; private set; } = new Extensions.Broadcast("<color=blue>You do not have the ownership of this player therefore you can't un-handcuff him!</color>", 8, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Auto-restart time if there is only one player in server (if enabled)")]
         public ushort AutoRestartTime { get; private set; } = 15;
@@ -207,8 +181,8 @@ namespace SCPUtils
         [Description("Max allowed time in seconds from start of round to accept a scp swap request")]
         public int MaxAllowedTimeScpSwapRequestAccept { get; private set; } = 75;
 
-        [Description("Max allowed swaps")]
-        public int MaxAllowedSwaps { get; private set; } = 1;
+        [Description("Auto-warn tesla immunity time after respawn")]
+        public int WarnImmunityTeslaRespawn { get; private set; } = 2;
 
         [Description("Command cooldown in seconds")]
         public double CommandCooldownSeconds { get; private set; } = 5;
@@ -244,25 +218,25 @@ namespace SCPUtils
         public string LastPlayerAliveNotificationText { get; private set; } = "<color=red>Attention:</color>\n<color=purple>You are the last player alive of your team!</color>";
 
         [Description("Which message should be shown for offline warns when a player rejoin?")]
-        public Exiled.API.Features.Broadcast OfflineWarnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast OfflineWarnNotification { get; private set; } = new Extensions.Broadcast("<color=red>Post-Warning notification:</color>\n<color=yellow>You've been recently warned for your recent quit as SCP in game, continuing this behaviour may cause a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which message should be shown to a player when he gets banned from playing SCP?")]
-        public Exiled.API.Features.Broadcast RoundBanNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>You have been banned:</color>\n<color=yellow><size=27>You have been banned from playing SCP. You are excluded from playing SCP %roundnumber% rounds due your past offences!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast RoundBanNotification { get; private set; } = new Extensions.Broadcast("<color=red>You have been banned:</color>\n<color=yellow><size=27>You have been banned from playing SCP. You are excluded from playing SCP %roundnumber% rounds due your past offences!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which message should be shown to a player when he spawns as SCP while being banned and replaced with another player?")]
-        public Exiled.API.Features.Broadcast RoundBanSpawnNotification { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>You're SCP banned:</color>\n<color=yellow><size=27>You have been removed as SCP because you're currently SCP-Banned! You must be replaced other %roundnumber% time(s) before you will be able to play SCP again!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast RoundBanSpawnNotification { get; private set; } = new Extensions.Broadcast("<color=red>You're SCP banned:</color>\n<color=yellow><size=27>You have been removed as SCP because you're currently SCP-Banned! You must be replaced other %roundnumber% time(s) before you will be able to play SCP again!</size></color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("SCP swap request broadcast")]
-        public Exiled.API.Features.Broadcast SwapRequestBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>%player% (%scp%) wants to swap their role with you, to accept open the console with ò key and type .accept otherwise type .deny, you have %seconds% seconds left to accept this request.</color>", 20, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast SwapRequestBroadcast { get; private set; } = new Extensions.Broadcast("<color=blue>%player% (%scp%) wants to swap their role with you, to accept open the console with ò key and type .accept otherwise type .deny, you have %seconds% seconds left to accept this request.</color>", 20, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("SCP swap request canceled broadcast")]
-        public Exiled.API.Features.Broadcast SwapRequestCanceledBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>The swap request has been canceled</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast SwapRequestCanceledBroadcast { get; private set; } = new Extensions.Broadcast("<color=blue>The swap request has been canceled</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("SCP swap request denied broadcast")]
-        public Exiled.API.Features.Broadcast SwapRequestDeniedBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>The swap request has been denied</color>", 12, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast SwapRequestDeniedBroadcast { get; private set; } = new Extensions.Broadcast("<color=blue>The swap request has been denied</color>", 12, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("SCP swap request informative broadcast")]
-        public Exiled.API.Features.Broadcast SwapRequestInfoBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You are an SCP, for %seconds% seconds you can exchange your role with other SCP player using swap command on ò, you can use .scplist to see who is scp</color>", 15, true, Broadcast.BroadcastFlags.Normal);
+        public Extensions.Broadcast SwapRequestInfoBroadcast { get; private set; } = new Extensions.Broadcast("<color=blue>You are an SCP, for %seconds% seconds you can exchange your role with other SCP player using swap command on ò, you can use .scplist to see who is scp</color>", 15, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which time of the day the server should perform autorestart task?")]
         public string AutoRestartTimeTask { get; private set; } = "1:35:0";
@@ -272,7 +246,6 @@ namespace SCPUtils
 
         [Description("Command cooldown text")]
         public string CooldownMessage { get; private set; } = "<color=red>Command execution failed! You are under cooldown or command banned, wait 5 seconds and try again, if the error persist you might have been banned from using commands, to see the reason and duration open the console after joining the server, this abusive action has been reported to the staff for futher punishments</color>";
-        // public string CooldownMessage { get; private set; } = "<color=red>Esecuzione del comando fallita! Attualmente sei sotto cooldown oppure bannato, attendi 5 secondi e riprova, se l'errore è persistente significa che sei bannato, per vedere durata e motivazione apri la console appena entri nel server, questa azione illecita è stata segnalata allo staff.</color>";
 
         [Description("From which groups plugin should ignore DNT flag?")]
         public List<string> DntIgnoreList { get; private set; } = new List<string>() { "testusergroup1", "testusergroup2" };
@@ -323,147 +296,94 @@ namespace SCPUtils
                     PlayerRoles.Team.Scientists, PlayerRoles.Team.FoundationForces
                 }
             },
-               {
+            {
                 PlayerRoles.Team.Scientists,
                 new List<PlayerRoles.Team>
                 {
                     PlayerRoles.Team.ClassD, PlayerRoles.Team.ChaosInsurgency
                 }
             },
-
         };
 
-
         [Description("Indicates if the protected teams should be cuffed to get the protection, if you don't add a team it will get protection regardless")]
-
         public List<PlayerRoles.Team> CuffedProtectedTeams { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.ClassD, PlayerRoles.Team.Scientists };
 
-        [Description("Set the allowed list that players can chose to swap if said SCP is not spawned, the request will be granted immediately.")]
-        public List<PlayerRoles.RoleTypeId> AllowedSwapGenerationList { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp049, PlayerRoles.RoleTypeId.Scp079, PlayerRoles.RoleTypeId.Scp096, PlayerRoles.RoleTypeId.Scp106, PlayerRoles.RoleTypeId.Scp173, PlayerRoles.RoleTypeId.Scp939 };
-
-        [Description("Set disallowed SCPs to use swap if said scp is not spawned, players can still use normal swap (for example 079 cannot become 173 if 173 is not spawned)")]
-        public List<PlayerRoles.RoleTypeId> DisallowedScpsSwapGenerationList { get; private set; } = new List<PlayerRoles.RoleTypeId>() { PlayerRoles.RoleTypeId.Scp0492, PlayerRoles.RoleTypeId.Scp079 };
-
         [Description("Indicates in which zones the protected team is protected, Zone list: Surface, Entrance, HeavyContainment, LightContainment, Unspecified")]
-
         public Dictionary<PlayerRoles.Team, List<ZoneType>> CuffedSafeZones { get; private set; } = new Dictionary<PlayerRoles.Team, List<ZoneType>>()
         {
             {
                 PlayerRoles.Team.ClassD,
                 new List<ZoneType>
                 {
-                   ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Unspecified
+                   ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Other
                 }
             },
-               {
+            {
                 PlayerRoles.Team.Scientists,
                 new List<ZoneType>
                 {
-                    ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Unspecified
+                    ZoneType.Entrance, ZoneType.Surface, ZoneType.HeavyContainment, ZoneType.LightContainment, ZoneType.Other, ZoneType.Other
                 }
             },
-
         };
 
-        [Description("Translations for damage types")]
-
-        public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.AK.ToString().ToUpper(), DamageTypes.AK.ToString().ToUpper() }, { DamageTypes.Asphyxiation.ToString().ToUpper(), DamageTypes.Asphyxiation.ToString().ToUpper() }, { DamageTypes.Bleeding.ToString().ToUpper(), DamageTypes.Bleeding.ToString().ToUpper() },
-        { DamageTypes.Com15.ToString().ToUpper(), DamageTypes.Com15.ToString().ToUpper() }, { DamageTypes.Com18.ToString().ToUpper(), DamageTypes.Com18.ToString().ToUpper() }, { DamageTypes.Crossvec.ToString().ToUpper(), DamageTypes.Crossvec.ToString().ToUpper() }, { DamageTypes.Crushed.ToString().ToUpper(), DamageTypes.Crushed.ToString().ToUpper() }, { DamageTypes.Custom.ToString().ToUpper(), DamageTypes.Custom.ToString().ToUpper() },
+        //[Description("Translations for damage types")]
+        /*public Dictionary<string, string> DamageTypesTranslations { get; private set; } = new Dictionary<string, string>() { { DamageTypes.AK.ToString().ToUpper(), DamageTypes.AK.ToString().ToUpper() }, { DamageTypes.Asphyxiation.ToString().ToUpper(), DamageTypes.Asphyxiation.ToString().ToUpper() }, { DamageTypes.Bleeding.ToString().ToUpper(), DamageTypes.Bleeding.ToString().ToUpper() },
+        { DeathTranslations.Scp207.Id.ToString().ToUpper(), DamageTypes.Com15.ToString().ToUpper() }, { DamageTypes.Com18.ToString().ToUpper(), DamageTypes.Com18.ToString().ToUpper() }, { DamageTypes.Crossvec.ToString().ToUpper(), DamageTypes.Crossvec.ToString().ToUpper() }, { DamageTypes.Crushed.ToString().ToUpper(), DamageTypes.Crushed.ToString().ToUpper() }, { DamageTypes.Custom.ToString().ToUpper(), DamageTypes.Custom.ToString().ToUpper() },
         { DamageTypes.Decontamination.ToString().ToUpper(), DamageTypes.Decontamination.ToString().ToUpper() }, { DamageTypes.E11Sr.ToString().ToUpper(), DamageTypes.E11Sr.ToString().ToUpper() }, { DamageTypes.Explosion.ToString().ToUpper(), DamageTypes.Explosion.ToString().ToUpper() }, { DamageTypes.Falldown.ToString().ToUpper(), DamageTypes.Falldown.ToString().ToUpper() }, { DamageTypes.FemurBreaker.ToString().ToUpper(), DamageTypes.FemurBreaker.ToString().ToUpper() },
         { DamageTypes.Firearm.ToString().ToUpper(), DamageTypes.Firearm.ToString().ToUpper() }, { DamageTypes.FriendlyFireDetector.ToString().ToUpper(), DamageTypes.FriendlyFireDetector.ToString().ToUpper() }, { DamageTypes.Fsp9.ToString().ToUpper(), DamageTypes.Fsp9.ToString().ToUpper() }, { DamageTypes.Hypothermia.ToString().ToUpper(), DamageTypes.Hypothermia.ToString().ToUpper() }, { DamageTypes.Logicer.ToString().ToUpper(), DamageTypes.Logicer.ToString().ToUpper() },
         { DamageTypes.MicroHid.ToString().ToUpper(), DamageTypes.MicroHid.ToString().ToUpper() }, { DamageTypes.ParticleDisruptor.ToString().ToUpper(), DamageTypes.ParticleDisruptor.ToString().ToUpper() }, { DamageTypes.PocketDimension.ToString().ToUpper(), DamageTypes.PocketDimension.ToString().ToUpper() }, { DamageTypes.Poison.ToString().ToUpper(), DamageTypes.Poison.ToString().ToUpper() }, { DamageTypes.Recontainment.ToString().ToUpper(), DamageTypes.Recontainment.ToString().ToUpper() },
         { DamageTypes.Scp.ToString().ToUpper(), DamageTypes.Scp.ToString().ToUpper() }, { DamageTypes.Scp018.ToString().ToUpper(), DamageTypes.Scp018.ToString().ToUpper() }, { DamageTypes.Scp049.ToString().ToUpper(), DamageTypes.Scp049.ToString().ToUpper() }, { DamageTypes.Scp0492.ToString().ToUpper(), DamageTypes.Scp0492.ToString().ToUpper() }, { DamageTypes.Scp096.ToString().ToUpper(), DamageTypes.Scp096.ToString().ToUpper() }, { DamageTypes.Scp106.ToString().ToUpper(), DamageTypes.Scp106.ToString().ToUpper() },
         { DamageTypes.Scp173.ToString().ToUpper(), DamageTypes.Scp173.ToString().ToUpper() }, { DamageTypes.Scp207.ToString().ToUpper(), DamageTypes.Scp207.ToString().ToUpper() }, { DamageTypes.Scp939.ToString().ToUpper(), DamageTypes.Scp939.ToString().ToUpper() }, { DamageTypes.SeveredHands.ToString().ToUpper(), DamageTypes.SeveredHands.ToString().ToUpper() },
-        { DamageTypes.Shotgun.ToString().ToUpper(), DamageTypes.Shotgun.ToString().ToUpper() }, { DamageTypes.Tesla.ToString().ToUpper(), DamageTypes.Tesla.ToString().ToUpper() }, { DamageTypes.Unknown.ToString().ToUpper(), DamageTypes.Unknown.ToString().ToUpper() }, { DamageTypes.Warhead.ToString().ToUpper(), DamageTypes.Warhead.ToString().ToUpper() }};
-
-        [Description("The command name for the unwarn command")]
-        public string UnwarnCommand { get; set; } = "scputils_player_unwarn";
-
-        [Description("The aliases for the unwarn command")]
-        public string[] UnwarnCommandAliases { get; set; } = new[] { "unwarn", "sunwarn", "su_player_unw", "su_punw", "su_puw", "scpu_player_unw", "scpu_punw", "scpu_puw" };
-
-        [Description("The command name for the swap request command")]
-        public string SwapRequestCommand { get; set; } = "scputils_swap_request";
-
-        [Description("The aliases for the swap request command")]
-        public string[] SwapRequestCommandAliases { get; set; } = new[] { "swap", "swapr", "su_sr", "scpu_sr", "swap_request" };
-
-        [Description("The command name for the swap request cancel command")]
-        public string SwapRequestCancelCommand { get; set; } = "scputils_swap_request_cancel";
-
-        [Description("The aliases for the swap request cancel command")]
-        public string[] SwapRequestCancelCommandAliases { get; set; } = new[] { "cancel", "su_src", "swaprc", "scpu_src", "swap_request_cancel" };
-
-        [Description("The command name for the swap request accept command")]
-        public string SwapRequestAcceptCommand { get; set; } = "scputils_swap_request_accept";
-
-        [Description("The aliases for the swap request accept command")]
-        public string[] SwapRequestAcceptCommandAliases { get; set; } = new[] { "accept", "su_sra", "swapra", "scpu_sra", "swap_request_accept" };
-
-        [Description("The command name for the swap request deny command")]
-        public string SwapRequestDenyCommand { get; set; } = "scputils_swap_request_deny";
-
-        [Description("The aliases for the swap request deny command")]
-        public string[] SwapRequestDenyCommandAliases { get; set; } = new[] { "deny", "su_srd", "swaprd", "scpu_srd", "swap_request_deny" };
+        { ItemType.GunShotgun.ToString().ToUpper(), DamageTypes.Shotgun.ToString().ToUpper() }, { DamageTypes.Tesla.ToString().ToUpper(), DamageTypes.Tesla.ToString().ToUpper() }, { DamageTypes.Unknown.ToString().ToUpper(), DamageTypes.Unknown.ToString().ToUpper() }, { DamageTypes.Warhead.ToString().ToUpper(), DamageTypes.Warhead.ToString().ToUpper() }};
+        */
 
         [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
-
-        public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; } = new Exiled.API.Features.Broadcast(
-            "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has entered with <color=yellow>{accountNumber}</color> accounts</size>\n<size=30>Check console pressing <color=yellow>ò</color></size>",
-            10);
+        public Extensions.Broadcast AlertStaffBroadcastMultiAccount { get; private set; } = new Extensions.Broadcast("<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has entered with <color=yellow>{accountNumber}</color> accounts</size>\n<size=30>Check console pressing <color=yellow>ò</color></size>", 10);
 
         [Description("Broadcast to send to all online staff when player change IP")]
-        public Exiled.API.Features.Broadcast AlertStaffBroadcastChangeIP { get; private set; } = new Exiled.API.Features.Broadcast(
-            "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has changed IP. <color=yellow>{oldIP}</color> to <color=yellow>{newIP}</color></size>\n<size=35>Check console pressing <color=yellow>ò</color></size>",
-            10);
-        public bool Debug { get; set; } = true;
+        public Extensions.Broadcast AlertStaffBroadcastChangeIP { get; private set; } = new Extensions.Broadcast("<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has changed IP. <color=yellow>{oldIP}</color> to <color=yellow>{newIP}</color></size>\n<size=35>Check console pressing <color=yellow>ò</color></size>", 10);
 
+        public Extensions.Broadcast AutoBanPlayerMessage { get; private set; } = new Extensions.Broadcast("<color=#4169E1>[SCPUTILS: ADMINISTRATION BROADCAST]</color>\n\n%player.Nickname% (%player.Role%) has been <color=#FF0000>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit.\nDuration: %duration% mitutes", 12, true, Broadcast.BroadcastFlags.AdminChat);
         public void ConfigValidator()
         {
             if (MaxAllowedTimeScpSwapRequest > MaxAllowedTimeScpSwapRequestAccept)
             {
-                Log.Warn("MaxAllowedTimeScpSwapRequest is higher than MaxAllowedTimeScpSwapRequestAccept, players might not be able to accept some requests doublecheck config!");
+                Log.Warning("MaxAllowedTimeScpSwapRequest is higher than MaxAllowedTimeScpSwapRequestAccept, players might not be able to accept some requests doublecheck config!");
             }
+
             if (ScpSuicideTollerance < 0)
             {
-                Log.Warn("Invalid config scputils_scp_suicide_tollerance, loading dafault one!");
+                Log.Warning("Invalid config scputils_scp_suicide_tollerance, loading dafault one!");
                 ScpSuicideTollerance = 5;
-
             }
+
             if (AutoKickThreshold >= AutoBanThreshold)
             {
-                Log.Warn("Invalid config scputils_auto_kick_threshold OR scputils_auto_ban_threshold, loading dafault one!");
+                Log.Warning("Invalid config scputils_auto_kick_threshold OR scputils_auto_ban_threshold, loading dafault one!");
                 AutoBanThreshold = 30.5f;
-
             }
+
             if (AutoRestartTime < 0)
             {
-                Log.Warn("Invalid config scputils_auto_restart_time, loading dafault one!");
+                Log.Warning("Invalid config scputils_auto_restart_time, loading dafault one!");
                 AutoRestartTime = 15;
             }
+
             if (Scp079TeslaEventWait < 0)
             {
-                Log.Warn("Invalid config scputils_scp_079_tesla_event_wait, loading dafault one!");
+                Log.Warning("Invalid config scputils_scp_079_tesla_event_wait, loading dafault one!");
                 Scp079TeslaEventWait = 2;
             }
+
             if (IgnoreDntRequests)
             {
-                Log.Warn("You have set in server configs to ignore Do Not Track requests but that's a violation on Verified Server Rules (if your server is verified) and could cause punishement such as delist [Rule 8.11]");
+                Log.Warning("You have set in server configs to ignore Do Not Track requests but that's a violation on Verified Server Rules (if your server is verified) and could cause punishement such as delist [Rule 8.11]");
             }
 
             if (EnableSCPSuicideSoftBan)
             {
                 EnableSCPSuicideAutoBan = false;
-            }
-
-            if (DatabasePassword == "StrongPassword")
-            {
-                Log.Warn("You are using a weak database password (default one), everyone on github can see it, change it, please remember that it's important to use a strong password to avoid hackers!");
-            }
-
-            if (!IsEnabled)
-            {
-                Log.Warn("You disabled the plugin in server configs!");
             }
         }
     }

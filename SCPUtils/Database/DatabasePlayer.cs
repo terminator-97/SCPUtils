@@ -1,23 +1,23 @@
-﻿using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static SCPUtils.Database;
-using ExiledPlayer = Exiled.API.Features.Player;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using static SCPUtils.Database;
+    using NWPlayer = PluginAPI.Core.Player;
+
     public static class DatabasePlayer
     {
 
 
-        public static string GetAuthentication(this Exiled.API.Features.Player player)
+        public static string GetAuthentication(this NWPlayer player)
         {
             return player.UserId.Split('@')[1];
         }
 
 
-        public static string GetRawUserId(this Exiled.API.Features.Player player)
+        public static string GetRawUserId(this NWPlayer player)
         {
             return player.UserId.GetRawUserId();
         }
@@ -31,25 +31,25 @@ namespace SCPUtils
         {
 
 
-            var onlinePlayer = ExiledPlayer.Get(player);
+            var onlinePlayer = NWPlayer.Get(player);
             if (onlinePlayer == null)
             {
                 return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == player.GetRawUserId() || x.Name.ToLower() == player.ToLower()).FirstOrDefault();
             }
             else
             {
-                if (Database.PlayerData.TryGetValue(onlinePlayer, out Player databasePlayer))
+                if (PlayerData.TryGetValue(onlinePlayer, out Player databasePlayer))
                 {
                     return databasePlayer;
                 }
                 else
                 {
-                    return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == onlinePlayer.RawUserId).FirstOrDefault();
+                    return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == onlinePlayer.GetRawUserId()).FirstOrDefault();
                 }
             }
         }
 
-        public static Player GetDatabasePlayer(this ExiledPlayer player)
+        public static Player GetDatabasePlayer(this NWPlayer player)
         {
             if (player == null) return null;
             if (Database.PlayerData.TryGetValue(player, out Player databasePlayer))
@@ -58,18 +58,18 @@ namespace SCPUtils
             }
             else
             {
-                return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == player.RawUserId).FirstOrDefault();
+                return MongoDatabase.GetCollection<Player>("players").Find(x => x.Id == player.GetRawUserId()).FirstOrDefault();
             }
         }
 
-        public static void AddPlayer(this ExiledPlayer player)
+        public static void AddPlayer(this NWPlayer player)
         {
             var newPlayer = new Player
             {
-                Id = DatabasePlayer.GetRawUserId(player),
+                Id = GetRawUserId(player),
                 Name = player.Nickname,
                 Ip = "None",
-                Authentication = DatabasePlayer.GetAuthentication(player),
+                Authentication = GetAuthentication(player),
                 ScpSuicideCount = 0,
                 TotalScpGamesPlayed = 0,
                 TotalScpSuicideKicks = 0,

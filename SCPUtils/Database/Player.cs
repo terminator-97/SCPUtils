@@ -1,11 +1,11 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Options;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson.Serialization.Options;
+    using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+
     public class Player
     {
         [BsonId]
@@ -47,9 +47,6 @@ namespace SCPUtils
         public List<bool> UserNotified { get; set; } = new List<bool>();
         public List<DateTime> Expire { get; set; } = new List<DateTime>();
         public List<int> RoundsBan { get; set; } = new List<int>();
-
-
-
 
         public void SetCurrentDayPlayTime()
         {
@@ -123,8 +120,5 @@ namespace SCPUtils
 
             return Database.MongoDatabase.GetCollection<Player>("players").ReplaceOne(x => x.Id == Id, this, new ReplaceOptions() { IsUpsert = true });
         }
-
-
-
     }
 }

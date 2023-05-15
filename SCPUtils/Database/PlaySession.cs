@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using System;
+    using System.Collections.Generic;
+
     public class PlaySession
     {
         public string Id { get; set; }

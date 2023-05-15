@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SCPUtils.Events
+﻿namespace SCPUtils.Events
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Events
     {
         private readonly ScpUtils pluginInstance;
@@ -58,27 +58,27 @@ namespace SCPUtils.Events
 
     public class BadgeRemovedEvent : EventArgs
     {
-        public Exiled.API.Features.Player Player { get; set; }
+        public PluginAPI.Core.Player Player { get; set; }
         public string BadgeName { get; set; }
     }
 
     public class BadgeSetEvent : EventArgs
     {
-        public Exiled.API.Features.Player Player { get; set; }
+        public PluginAPI.Core.Player Player { get; set; }
         public string NewBadgeName { get; set; }
     }
 
     public class ReplacePlayerEvent : EventArgs
     {
-        public Exiled.API.Features.Player BannedPlayer { get; set; }
-        public Exiled.API.Features.Player ReplacedPlayer { get; set; }
+        public PluginAPI.Core.Player BannedPlayer { get; set; }
+        public PluginAPI.Core.Player ReplacedPlayer { get; set; }
         public PlayerRoles.RoleTypeId ScpRole { get; set; }
         public PlayerRoles.RoleTypeId NormalRole { get; set; }
     }
 
     public class MultiAccountEvent : EventArgs
     {
-        public Exiled.API.Features.Player Player;
+        public PluginAPI.Core.Player Player;
         public List<string> UserIds;
     }
 }

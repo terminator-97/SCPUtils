@@ -1,37 +1,32 @@
-using Exiled.API.Features;
-using Exiled.Events.EventArgs.Map;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Scp079;
-using Exiled.Events.EventArgs.Scp096;
-using Exiled.Events.EventArgs.Server;
-using MEC;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DamageTypes = Exiled.API.Enums.DamageType;
-using Features = Exiled.API.Features;
-using Round = Exiled.API.Features.Round;
-
 namespace SCPUtils
 {
+    using MEC;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using PluginAPI.Core.Attributes;
+    using CommandSystem;
+    using ServerEvent = PluginAPI.Enums.ServerEventType;
+    using PlayerRoles;
+    using LiteNetLib;
+    using Respawning;
+    using PlayerRoles.PlayableScps.Scp079;
+    using PlayerStatsSystem;
     public class EventHandlers
     {
-        private readonly ScpUtils pluginInstance;
-
         public DateTime lastTeslaEvent;
 
         public static bool TemporarilyDisabledWarns;
 
         //   public bool ptEnabled;
 
-        public Dictionary<Features.Player, DateTime> LastCommand { get; set; } = new Dictionary<Features.Player, DateTime>();
+        public Dictionary<PluginAPI.Core.Player, DateTime> LastCommand { get; set; } = new Dictionary<PluginAPI.Core.Player, DateTime>();
         private static Dictionary<string, DateTime> PreauthTime { get; set; } = new Dictionary<string, DateTime>();
 
-        private static Dictionary<Features.Player, string> Cuffed { get; set; } = new Dictionary<Features.Player, string>();
-        public Dictionary<Features.Player, int> SwapCount { get; set; } = new Dictionary<Features.Player, int>();
-        public List<Features.Player> KickedList { get; set; } = new List<Features.Player>();
-        public Dictionary<Features.Player, Features.Player> SwapRequest { get; set; } = new Dictionary<Features.Player, Features.Player>();
+        private static Dictionary<PluginAPI.Core.Player, string> Cuffed { get; set; } = new Dictionary<PluginAPI.Core.Player, string>();
+
+        public List<PluginAPI.Core.Player> KickedList { get; set; } = new List<PluginAPI.Core.Player>();
+        public Dictionary<PluginAPI.Core.Player, PluginAPI.Core.Player> SwapRequest { get; set; } = new Dictionary<PluginAPI.Core.Player, PluginAPI.Core.Player>();
         public int ChaosRespawnCount { get; set; }
 
         public int MtfRespawnCount { get; set; }
@@ -39,207 +34,254 @@ namespace SCPUtils
         public DateTime LastChaosRespawn { get; set; }
 
         public DateTime LastMtfRespawn { get; set; }
+        
+        UniversalDamageHandler DamageType { get; set; }
 
-        public EventHandlers(ScpUtils pluginInstance)
+        [PluginEvent(ServerEvent.PlayerDeath)]
+        public void OnPlayerDeath(PluginAPI.Core.Player player, PluginAPI.Core.Player attacker, DamageHandlerBase damageHandler)
         {
-            this.pluginInstance = pluginInstance;
-        }
-
-        internal void OnPlayerDeath(DyingEventArgs ev)
-        {
-            if (ev.Player == null) return;
-            if (Cuffed.ContainsKey(ev.Player)) Cuffed.Remove(ev.Player);
-            if ((ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
+            //To test: check if player is null while suiciding
+            //PluginAPI.Core.Log.Info("NULL");
+            //if (player is null) return;
+            PluginAPI.Core.Log.Info("TEST 20");
+            if (damageHandler is UniversalDamageHandler damage)
             {
-                if ((DateTime.Now - lastTeslaEvent).Seconds >= pluginInstance.Config.Scp079TeslaEventWait)
+                DamageType = (UniversalDamageHandler)damageHandler;
+            }
+            else return;
+            PluginAPI.Core.Log.Info("TEST 21");
+            if (Cuffed.ContainsKey(player)) Cuffed.Remove(player);
+            /*if ((player.Team == Team.SCPs || (ScpUtils.StaticInstance.configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial)) && PluginAPI.Core.Round.IsRoundStarted && ScpUtils.StaticInstance.configs.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
+            {
+                PluginAPI.Core.Log.Info("TEST 22");
+                if (DatabasePlayer.GetDatabasePlayer(player).LastRespawn.AddSeconds(ScpUtils.StaticInstance.configs.WarnImmunityTeslaRespawn) <= DateTime.Now && DamageType.TranslationId == DeathTranslations.Tesla.Id)
                 {
-                    if (ev.DamageHandler.Type == DamageTypes.Tesla || ev.DamageHandler.Type == DamageTypes.Crushed || (ev.DamageHandler.Type == DamageTypes.Unknown && ev.DamageHandler.Damage >= 50000) || (ev.DamageHandler.Type == DamageTypes.Explosion && ev.DamageHandler.IsSuicide))
+                    return;
+                }
+                PluginAPI.Core.Log.Info("TEST 23");
+                if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.configs.Scp079TeslaEventWait)
+                {
+                    PluginAPI.Core.Log.Info("TEST 24");
+                    //if (DamageType.TranslationId == DeathTranslations.Tesla.Id || DamageType.TranslationId == DeathTranslations.Crushed.Id || (DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage >= 50000) || (DamageType.TranslationId == DeathTranslations.Explosion.Id && player.UserId == attacker.UserId))
+                    if (DamageType.TranslationId == DeathTranslations.Crushed.Id)
                     {
-                        pluginInstance.Functions.LogWarn(ev.Player, ev.DamageHandler.Type.ToString());
-                        pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
+                        PluginAPI.Core.Log.Info("TEST 25");
+                        ScpUtils.StaticInstance.Functions.LogWarn(player, DamageType.TranslationId.ToString());
+                        ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
                     }
-                    else if ((ev.DamageHandler.Type == DamageTypes.Unknown && ev.DamageHandler.Damage == -1f) && pluginInstance.Config.QuitEqualsSuicide)
+                    else if ((DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage == -1f) && ScpUtils.StaticInstance.configs.QuitEqualsSuicide)
                     {
-                        pluginInstance.Functions.LogWarn(ev.Player, "Disconnect");
-                        pluginInstance.Functions.OnQuitOrSuicide(ev.Player);
+                        PluginAPI.Core.Log.Info("TEST 26");
+                        ScpUtils.StaticInstance.Functions.LogWarn(player, "Disconnect");
+                        ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
                     }
                 }
-            }
+                PluginAPI.Core.Log.Info("TEST 27");
+            }*/
+            //if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.configs.Scp079TeslaEventWait)
+            //{
+                PluginAPI.Core.Log.Info("TEST 24");
+                if (DamageType.TranslationId == DeathTranslations.Tesla.Id || DamageType.TranslationId == DeathTranslations.Crushed.Id || (DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage >= 50000) || (DamageType.TranslationId == DeathTranslations.Explosion.Id && player.UserId == attacker.UserId))
+                //if (DamageType.TranslationId == DeathTranslations.Crushed.Id)
+                {
+                    PluginAPI.Core.Log.Info("TEST 25");
+                    ScpUtils.StaticInstance.Functions.LogWarn(player, DamageType.TranslationId.ToString());
+                    ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
+                }
+                else if (DamageType.TranslationId == DeathTranslations.Unknown.Id && ScpUtils.StaticInstance.configs.QuitEqualsSuicide)
+                {
+                    PluginAPI.Core.Log.Info("TEST 26");
+                    ScpUtils.StaticInstance.Functions.LogWarn(player, "Disconnect");
+                    ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
+                }
+            //}
 
-            if (pluginInstance.Config.NotifyLastPlayerAlive)
-            {
+            if (ScpUtils.StaticInstance.configs.NotifyLastPlayerAlive)
+            {           
 
-                List<Features.Player> team = Features.Player.Get(ev.Player.Role.Team).ToList();
+                List<PluginAPI.Core.Player> team = PluginAPI.Core.Player.GetPlayers().FindAll(x => x.Team == player.Team);
+
+             
+              
                 if (team.Count - 1 == 1)
                 {
-                    if (team[0] == ev.Player)
+                    if (team[0] == player)
                     {
-                        team[1].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
+                        team[1].ReceiveHint(ScpUtils.StaticInstance.configs.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.configs.LastPlayerAliveMessageDuration);
                     }
                     else
                     {
-                        team[0].ShowHint(pluginInstance.Config.LastPlayerAliveNotificationText, pluginInstance.Config.LastPlayerAliveMessageDuration);
+                        team[0].ReceiveHint(ScpUtils.StaticInstance.configs.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.configs.LastPlayerAliveMessageDuration);
                     }
                 }
             }
 
 
-            if (ev.Player.IsScp || ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial && pluginInstance.Config.AreTutorialsSCP)
+            if (player.IsSCP || player.Role == PlayerRoles.RoleTypeId.Tutorial && ScpUtils.StaticInstance.configs.AreTutorialsSCP)
             {
-                if (!pluginInstance.Config.Scp0492DeathBroadcast && ev.Player.Role == PlayerRoles.RoleTypeId.Scp0492) return;
-
-                if (ev.DamageHandler.IsSuicide)
+                if (!ScpUtils.StaticInstance.configs.ShowDeathMessage0492 && player.Role == PlayerRoles.RoleTypeId.Scp0492) return;
+                if (player.UserId == attacker.UserId)
                 {
-                    var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                    message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
-                    Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
+                    var message = ScpUtils.StaticInstance.configs.ScpSuicideMessage.Content;
+                    message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%reason%", DamageType.TranslationId.ToString());
+                    PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Type);
                 }
 
-                else if (!ev.DamageHandler.IsSuicide)
+                else if (player.UserId != attacker.UserId)
+                {                  
+                        if (ScpUtils.StaticInstance.configs.ScpSuicideMessage.Show)
+                        {
+                            var message = ScpUtils.StaticInstance.configs.ScpSuicideMessage.Content;
+                            message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%reason%", DamageType.TranslationId.ToString());
+                          
+                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Type);
+                        }                    
+                }
+                else
                 {
-
-                    if (ev.Attacker == null)
+                    if (ScpUtils.StaticInstance.configs.ScpDeathMessage.Show)
                     {
-                        if (pluginInstance.Config.ScpSuicideMessage.Show)
-                        {
-                            var message = pluginInstance.Config.ScpSuicideMessage.Content;
-                            message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%reason%", ev.DamageHandler.Type.ToString());
-                            Map.Broadcast(pluginInstance.Config.ScpSuicideMessage.Duration, message, pluginInstance.Config.ScpSuicideMessage.Type);
-                        }
+                        var message = ScpUtils.StaticInstance.configs.ScpDeathMessage.Content;
+                        message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%killername%", attacker.Nickname).Replace("%reason%", DamageType.TranslationId.ToString());
+                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpDeathMessage.Duration, ScpUtils.StaticInstance.configs.ScpDeathMessage.Type);
                     }
-                    else
-                    {
-                        if (pluginInstance.Config.ScpDeathMessage.Show)
-                        {
-                            var message = pluginInstance.Config.ScpDeathMessage.Content;
-                            message = message.Replace("%playername%", ev.Player.Nickname).Replace("%scpname%", ev.Player.Role.Type.ToString()).Replace("%killername%", ev.Attacker.Nickname).Replace("%reason%", ev.DamageHandler.Type.ToString());
-                            Map.Broadcast(pluginInstance.Config.ScpDeathMessage.Duration, message, pluginInstance.Config.ScpDeathMessage.Type);
-                        }
-                    }
+                }
 
                 }
             }
-        }
+        
 
-        internal void OnRoundStarted()
+        [PluginEvent(ServerEvent.RoundStart)]
+        public void OnRoundStarted()
         {
-            Timing.CallDelayed(6f, () =>
+            Timing.CallDelayed(7f, () =>
             {
-                foreach (var player in Features.Player.List)
+                foreach (var player in PluginAPI.Core.Player.GetPlayers())
                 {
-                    if (player.Role == PlayerRoles.RoleTypeId.None) player.Role.Set(PlayerRoles.RoleTypeId.ClassD, Exiled.API.Enums.SpawnReason.ForceClass);
+                    if (player.Role == PlayerRoles.RoleTypeId.None) player.SetRole(PlayerRoles.RoleTypeId.ClassD, PlayerRoles.RoleChangeReason.RemoteAdmin);
                 }
             });
         }
 
-        internal void OnChangingRole(ChangingRoleEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerChangeRole)]
+        public void OnChangingRole(PluginAPI.Core.Player player, PlayerRoleBase oldRole, RoleTypeId newRole, RoleChangeReason changeReason)
         {
-            //    Log.Info($"{ev.Player.Nickname} - {ev.Reason}");
-            if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
+            Player databasePlayer = player.GetDatabasePlayer();
+            //databasePlayer.LastRespawn = DateTime.Now;
+            PluginAPI.Core.Log.Info($"{player.Nickname} - {changeReason}");
+            if (newRole is RoleTypeId.Overwatch && player.RemoteAdminAccess && changeReason is RoleChangeReason.RemoteAdmin)
             {
-                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.SCPs)
-                {
-                    pluginInstance.Functions.RandomScp(ev.Player, ev.NewRole);
-                }
-                ev.IsAllowed = false;
-                return;
+                databasePlayer.OverwatchActive = true;
             }
-            if (ev.Player.Role == PlayerRoles.RoleTypeId.Overwatch || ev.NewRole == PlayerRoles.RoleTypeId.Overwatch)
+            else if (newRole is RoleTypeId.Spectator)
             {
-                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
-                {
-                    ev.IsAllowed = false;
-                }
-                Player databasePlayer = ev.Player.GetDatabasePlayer();
-                databasePlayer.OverwatchActive = ev.NewRole == PlayerRoles.RoleTypeId.Overwatch;
+                databasePlayer.OverwatchActive = false;
             }
         }
 
-        internal void OnKicking(KickingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerKicked)]
+        public void OnKicking(PluginAPI.Core.Player player, ICommandSender sender, string reason)
         {
-            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
+            if (!KickedList.Contains(player)) KickedList.Add(player);
         }
 
-        internal void OnBanned(BanningEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerBanned)]
+        public void OnBanned(PluginAPI.Core.Player player, ICommandSender issuer, string reason, long duration)
         {
-            if (!KickedList.Contains(ev.Target)) KickedList.Add(ev.Target);
+            if (!KickedList.Contains(player)) KickedList.Add(player);
         }
-        internal void OnPlayerUnhandCuff(RemovingHandcuffsEventArgs ev)
+
+        [PluginEvent(ServerEvent.PlayerRemoveHandcuffs)]
+        public void OnPlayerUnhandCuff(PluginAPI.Core.Player player, PluginAPI.Core.Player target)
         {
-            if (pluginInstance.Config.HandCuffOwnership)
+            if (ScpUtils.StaticInstance.configs.HandCuffOwnership)
             {
-                if (!Cuffed.ContainsKey(ev.Target)) ev.IsAllowed = true;
+                if (!Cuffed.ContainsKey(target)) return;
 
-                else if (Cuffed.FirstOrDefault(x => x.Key == ev.Target).Key.Role.Team == PlayerRoles.Team.ClassD && ev.Player.Role.Team == PlayerRoles.Team.ChaosInsurgency)
+                else if (Cuffed.FirstOrDefault(x => x.Key == target).Key.Role == PlayerRoles.RoleTypeId.ClassD && player.Role.GetTeam() == Team.ChaosInsurgency)
                 {
-                    ev.IsAllowed = true;
-                    Cuffed.Remove(ev.Target);
+                    Cuffed.Remove(target);
                 }
 
-                else if (Cuffed.FirstOrDefault(x => x.Key == ev.Target).Key.Role.Team == PlayerRoles.Team.Scientists && ev.Player.Role.Team == PlayerRoles.Team.FoundationForces)
+                else if (Cuffed.FirstOrDefault(x => x.Key == target).Key.Role == PlayerRoles.RoleTypeId.Scientist && player.Role.GetTeam() == Team.FoundationForces)
                 {
-                    ev.IsAllowed = true;
-                    Cuffed.Remove(ev.Target);
+                    Cuffed.Remove(target);
                 }
 
-                else if (Cuffed.FirstOrDefault(x => x.Key == ev.Target).Key.Role.Team == ev.Player.Role.Team)
+                else if (Cuffed.FirstOrDefault(x => x.Key == target).Key.Role == player.Role)
                 {
-                    ev.IsAllowed = true;
-                    Cuffed.Remove(ev.Target);
+                    Cuffed.Remove(target);
                 }
 
 
-                else if (Cuffed[ev.Target] == ev.Player.UserId)
+                else if (Cuffed[target] == player.UserId)
                 {
-                    ev.IsAllowed = true;
-                    Cuffed.Remove(ev.Target);
+                    Cuffed.Remove(target);
                 }
 
                 else
                 {
-                    if (pluginInstance.Config.UnhandCuffDenied.Show) ev.Player.ShowHint(pluginInstance.Config.UnhandCuffDenied.Content, pluginInstance.Config.UnhandCuffDenied.Duration);
-                    ev.IsAllowed = false;
+                    if (ScpUtils.StaticInstance.configs.UnhandCuffDenied.Show) player.ReceiveHint(ScpUtils.StaticInstance.configs.UnhandCuffDenied.Content, ScpUtils.StaticInstance.configs.UnhandCuffDenied.Duration);
+                    // Let's try to disallow player cuffing 
+                    return;
                 }
             }
         }
 
-        internal void OnPlayerHandcuff(HandcuffingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerHandcuff)]
+        public void OnPlayerHandcuff(PluginAPI.Core.Player player, PluginAPI.Core.Player target)
         {
-            if (pluginInstance.Config.HandCuffOwnership)
+            if (ScpUtils.StaticInstance.configs.HandCuffOwnership)
             {
-                if (Cuffed.ContainsKey(ev.Target)) Cuffed.Remove(ev.Target);
-                Cuffed.Add(ev.Target, ev.Player.UserId);
+                if (Cuffed.ContainsKey(target)) Cuffed.Remove(target);
+                Cuffed.Add(target, player.UserId);
+            }
+        }
+
+        [PluginEvent(ServerEvent.RoundStart)]
+        public void OnRoundRestart()
+        {
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
+            {
+                ScpUtils.StaticInstance.Functions.SaveData(player);
             }
         }
 
 
-        internal void OnPlayerPreauth(PreAuthenticatingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerPreauth)]
+        public void OnPlayerPreauth(string userId, string ipAddress, long expiration, CentralAuthPreauthFlags centralFlags, string region, byte[] signature, ConnectionRequest connectionRequest, int readerStartPosition)
         {
-            if (PreauthTime.ContainsKey(ev.UserId))
+            if (PreauthTime.ContainsKey(userId))
             {
-                PreauthTime.Remove(ev.UserId);
+                PreauthTime.Remove(userId);
             }
-            PreauthTime.Add(ev.UserId, DateTime.Now);
+            PreauthTime.Add(userId, DateTime.Now);
         }
 
 
-        internal void OnRoundEnded(RoundEndedEventArgs _)
+        [PluginEvent(ServerEvent.RoundEnd)]
+        public void OnRoundEnded(RoundSummary.LeadingTeam leadingTeam)
         {
             TemporarilyDisabledWarns = true;
- 
+
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
+            {
+                ScpUtils.StaticInstance.Functions.SaveData(player);
+            }
             Cuffed.Clear();
         }
 
-        internal void OnTeamRespawn(RespawningTeamEventArgs ev)
+        [PluginEvent(ServerEvent.TeamRespawn)]
+        public void OnTeamRespawn(SpawnableTeamType team)
         {
 
-            if (ev.NextKnownTeam.ToString() == "ChaosInsurgency")
+            if (team == SpawnableTeamType.ChaosInsurgency)
             {
                 ChaosRespawnCount++;
                 LastChaosRespawn = DateTime.Now;
             }
 
-            else if (ev.NextKnownTeam.ToString() == "NineTailedFox")
+            else if (team == SpawnableTeamType.NineTailedFox)
             {
                 MtfRespawnCount++;
                 LastMtfRespawn = DateTime.Now;
@@ -247,132 +289,141 @@ namespace SCPUtils
 
         }
 
-        internal void OnPlayerDestroy(DestroyingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerLeft)]
+        public void OnPlayerDestroy(PluginAPI.Core.Player player)
         {
-            pluginInstance.Functions.SaveData(ev.Player);
-            if (!Cuffed.ContainsKey(ev.Player)) Cuffed.Remove(ev.Player);
+            ScpUtils.StaticInstance.Functions.SaveData(player);
+            if (!Cuffed.ContainsKey(player)) Cuffed.Remove(player);
         }
 
-        internal void On096AddTarget(AddingTargetEventArgs ev)
+        [PluginEvent(ServerEvent.Scp096AddingTarget)]
+        public void On096AddTarget(PluginAPI.Core.Player player, PluginAPI.Core.Player target, bool isForLook)
         {
-            if (pluginInstance.Config.Scp096TargetNotifyEnabled)
+            if (ScpUtils.StaticInstance.configs.Scp096TargetNotifyEnabled)
             {
-                ev.Target.ShowHint(pluginInstance.Config.Scp096TargetNotifyText, pluginInstance.Config.Scp096TargetMessageDuration);
+                target.ReceiveHint(ScpUtils.StaticInstance.configs.Scp096TargetNotifyText, ScpUtils.StaticInstance.configs.Scp096TargetMessageDuration);
             }
         }
 
-        internal void OnWaitingForPlayers()
+        [PluginEvent(ServerEvent.WaitingForPlayers)]
+        public void OnWaitingForPlayers()
         {
             TemporarilyDisabledWarns = false;
             ChaosRespawnCount = 0;
             MtfRespawnCount = 0;
             SwapRequest.Clear();
-            SwapCount.Clear();
         }
 
-        internal void On079TeslaEvent(InteractingTeslaEventArgs _)
+        [PluginEvent(ServerEvent.Scp079UseTesla)]
+        public void On079TeslaEvent(PluginAPI.Core.Player player, TeslaGate teslaGate)
         {
             lastTeslaEvent = DateTime.Now;
         }
 
-        internal void OnPlayerHurt(HurtingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerDamage)]
+        public bool OnPlayerHurt(PluginAPI.Core.Player player, PluginAPI.Core.Player attacker, DamageHandlerBase damageHandler)
         {
-            if (ev.Player == null || ev.Attacker == null) return;
+            if ( player == null || attacker == null) return true;
 
-            if (pluginInstance.Config.CuffedImmunityPlayers?.ContainsKey(ev.Player.Role.Team) == true)
-            {
-                ev.IsAllowed = !(pluginInstance.Functions.IsTeamImmune(ev.Player, ev.Attacker) && pluginInstance.Functions.CuffedCheck(ev.Player) && pluginInstance.Functions.CheckSafeZones(ev.Player));
+            if (ScpUtils.StaticInstance.configs.CuffedImmunityPlayers?.ContainsKey(player.Role.GetTeam()) == true)
+            {            
+                return !(ScpUtils.StaticInstance.Functions.IsTeamImmune(player, attacker) && ScpUtils.StaticInstance.Functions.CuffedCheck(player) && ScpUtils.StaticInstance.Functions.CheckSafeZones(player));
             }
+            else return true;
         }
 
-
-        internal void OnPlayerVerify(VerifiedEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerJoined)]
+        public void OnPlayerVerify(PluginAPI.Core.Player joinedPlayer)
         {
-            var databasePlayer = ev.Player.GetDatabasePlayer();
+            var databasePlayer = joinedPlayer.GetDatabasePlayer();
             if (databasePlayer == null)
             {
-                ev.Player.AddPlayer();
-                databasePlayer = ev.Player.GetDatabasePlayer();
+                joinedPlayer.AddPlayer();
+                databasePlayer = joinedPlayer.GetDatabasePlayer();
             }
 
-            if (Database.PlayerData.ContainsKey(ev.Player))
+            if (Database.PlayerData.ContainsKey(joinedPlayer))
             {
-                Database.PlayerData.Remove(ev.Player);
+                Database.PlayerData.Remove(joinedPlayer);
             }
-            Database.PlayerData.Add(ev.Player, databasePlayer);
+            Database.PlayerData.Add(joinedPlayer, databasePlayer);
 
-            databasePlayer = Database.PlayerData[ev.Player];
+            databasePlayer = Database.PlayerData[joinedPlayer];
 
-            if (PreauthTime.ContainsKey(ev.Player.UserId))
+            if (PreauthTime.ContainsKey(joinedPlayer.UserId))
             {
-                databasePlayer.LastSeen = PreauthTime[ev.Player.UserId];
-                PreauthTime.Remove(ev.Player.UserId);
+                databasePlayer.LastSeen = PreauthTime[joinedPlayer.UserId];
+                PreauthTime.Remove(joinedPlayer.UserId);
             }
 
             else databasePlayer.LastSeen = DateTime.Now;
-            databasePlayer.Name = ev.Player.Nickname;
-            databasePlayer.Ip = ev.Player.IPAddress;
+            databasePlayer.Name = joinedPlayer.Nickname;
+            databasePlayer.Ip = joinedPlayer.IpAddress;
 
             if (databasePlayer.FirstJoin == DateTime.MinValue)
             {
                 databasePlayer.FirstJoin = DateTime.Now;
             }
 
-            if (pluginInstance.Config.WelcomeMessage.Show)
+            if (ScpUtils.StaticInstance.configs.WelcomeMessage.Show)
             {
-                var message = pluginInstance.Config.WelcomeMessage.Content;
-                message = message.Replace("%player%", ev.Player.Nickname);
-                ev.Player.Broadcast(pluginInstance.Config.WelcomeMessage.Duration, message, pluginInstance.Config.WelcomeMessage.Type, false);
+                var message = ScpUtils.StaticInstance.configs.WelcomeMessage.Content;
+                message = message.Replace("%player%", joinedPlayer.Nickname);
+                joinedPlayer.SendBroadcast(message, ScpUtils.StaticInstance.configs.WelcomeMessage.Duration, ScpUtils.StaticInstance.configs.WelcomeMessage.Type, false);
             }
 
-            if (pluginInstance.Functions.CheckAsnPlayer(ev.Player))
+            if (ScpUtils.StaticInstance.Functions.CheckAsnPlayer(joinedPlayer))
             {
-                ev.Player.Kick($"Auto-Kick: {pluginInstance.Config.AsnKickMessage}");
+                joinedPlayer.Kick($"Auto-Kick: {ScpUtils.StaticInstance.configs.AsnKickMessage}");
             }
             else
             {
-                pluginInstance.Functions.PostLoadPlayer(ev.Player);
+                ScpUtils.StaticInstance.Functions.PostLoadPlayer(joinedPlayer);
             }
 
-            pluginInstance.Functions.IpCheck(ev.Player);
-            
-            //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
+            ScpUtils.StaticInstance.Functions.IpCheck(joinedPlayer);
         }
 
-        internal void OnPlayerSpawn(SpawningEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerSpawn)]
+        public void OnPlayerSpawn(PluginAPI.Core.Player player, RoleTypeId role)
         {
-            Player databasePlayer = ev.Player.GetDatabasePlayer();
-            //   if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
-            if (ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial))
+            if (player.IsServer || !player.IsSCP || player == null) return;
+            PluginAPI.Core.Log.Info("TEST 11");
+
+            Player databasePlayer = player.GetDatabasePlayer();
+            if (player.Team == Team.SCPs || (ScpUtils.StaticInstance.configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial))
             {
+                PluginAPI.Core.Log.Info("TEST 12");
 
-                if (databasePlayer.RoundBanLeft >= 1 && ev.Player.Role != PlayerRoles.RoleTypeId.Scp0492)
+                if (databasePlayer.RoundBanLeft >= 1 && player.Role != RoleTypeId.Scp0492)
                 {
-                    Timing.CallDelayed(1.5f, () => pluginInstance.Functions.ReplacePlayer(ev.Player));
-
+                    Timing.CallDelayed(1.5f, () => ScpUtils.StaticInstance.Functions.ReplacePlayer(player));
                 }
-                else ev.Player.GetDatabasePlayer().TotalScpGamesPlayed++;
+                else player.GetDatabasePlayer().TotalScpGamesPlayed++;
+                PluginAPI.Core.Log.Info("TEST 13");
             }
-            if (ev.Player.IsScp && pluginInstance.Config.AllowSCPSwap)
+            if (player.IsSCP && ScpUtils.StaticInstance.configs.AllowSCPSwap)
             {
-                if (Round.ElapsedTime.TotalSeconds < ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequest)
+                PluginAPI.Core.Log.Info("TEST 14");
+                if (PluginAPI.Core.Round.Duration.TotalSeconds < ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequest)
                 {
-                    var seconds = Math.Round(pluginInstance.Config.MaxAllowedTimeScpSwapRequest - Round.ElapsedTime.TotalSeconds + 1);
-                    var message = pluginInstance.Config.SwapRequestInfoBroadcast.Content;
+                    PluginAPI.Core.Log.Info("TEST 15");
+                    var seconds = Math.Round(ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequest - PluginAPI.Core.Round.Duration.TotalSeconds + 1);
+                    var message = ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Content;
+                    PluginAPI.Core.Log.Info("TEST 16");
                     message = message.Replace("%seconds%", seconds.ToString());
-                    ev.Player.Broadcast(pluginInstance.Config.SwapRequestInfoBroadcast.Duration, message, pluginInstance.Config.SwapRequestInfoBroadcast.Type, false);
-
+                    player.SendBroadcast(message, ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Duration, ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Type, false);
                 }
             }
         }
 
-  
-
-        internal void OnDecontaminate(DecontaminatingEventArgs ev)
+        [PluginEvent(ServerEvent.PlayerLeft)]
+        public void OnPlayerLeave(PluginAPI.Core.Player player)
         {
-            Map.Broadcast(pluginInstance.Config.DecontaminationMessage);
+            ScpUtils.StaticInstance.Functions.SaveData(player);
         }
 
+        [PluginEvent(ServerEvent.LczDecontaminationStart)]
+        public void OnDecontaminate() => PluginAPI.Core.Server.SendBroadcast(ScpUtils.StaticInstance.configs.DecontaminationMessage.Content, ScpUtils.StaticInstance.configs.DecontaminationMessage.Duration, ScpUtils.StaticInstance.configs.DecontaminationMessage.Type);
     }
-
 }

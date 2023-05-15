@@ -1,9 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
-using System.Collections.Generic;
-
-namespace SCPUtils
+﻿namespace SCPUtils
 {
+    using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Driver;
+    using System.Collections.Generic;
+
     public class DatabaseIp
     {
         [BsonId]
@@ -14,8 +14,5 @@ namespace SCPUtils
         {
             return Database.MongoDatabase.GetCollection<DatabaseIp>("ipaddresses").ReplaceOne(x => x.Id == Id, this, new ReplaceOptions() { IsUpsert = true });
         }
-
-
-
     }
 }

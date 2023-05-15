@@ -1,105 +1,65 @@
-using System;
-using Features = Exiled.API.Features;
-using Handlers = Exiled.Events.Handlers;
-using MapEvents = Exiled.Events.Handlers.Map;
-using PlayerEvents = Exiled.Events.Handlers.Player;
-using ServerEvents = Exiled.Events.Handlers.Server;
-
-
 namespace SCPUtils
 {
+    using PluginAPI.Core;
+    using PluginAPI.Core.Attributes;
+    using PluginAPI.Events;
+    using SCPUtils.Commands;
 
-    public class ScpUtils : Features.Plugin<Configs>
+    public class ScpUtils
     {
-        public override string Author { get; } = "Terminator_97#0507";
-        public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(6, 0, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
-        //  public Database DatabasePlayerData { get; private set; }
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
+        public static ScpUtils StaticInstance;
 
-        private static readonly ScpUtils InstanceValue = new ScpUtils();
-        private ScpUtils()
+        [PluginPriority(PluginAPI.Enums.LoadPriority.Medium)]
+        [PluginEntryPoint("SCPUtils", "0.4.6", "The most famous plugin that offers many additions to the servers.", "Terminator_97")]
+        public void LoadPlugin()
         {
-
-        }
-
-        public static ScpUtils StaticInstance => InstanceValue;
-
-        public void LoadEvents()
-        {
-            MapEvents.Decontaminating += EventHandlers.OnDecontaminate;
-            PlayerEvents.Verified += EventHandlers.OnPlayerVerify;
-            PlayerEvents.Destroying += EventHandlers.OnPlayerDestroy;
-            PlayerEvents.Spawning += EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying += EventHandlers.OnPlayerDeath;
-            PlayerEvents.Hurting += EventHandlers.OnPlayerHurt;
-            PlayerEvents.PreAuthenticating += EventHandlers.OnPlayerPreauth;
-            Handlers.Scp079.InteractingTesla += EventHandlers.On079TeslaEvent;
-            ServerEvents.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-            ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
-            Handlers.Scp096.AddingTarget += EventHandlers.On096AddTarget;
-            ServerEvents.RespawningTeam += EventHandlers.OnTeamRespawn;       
-            PlayerEvents.Handcuffing += EventHandlers.OnPlayerHandcuff;
-            PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
-            PlayerEvents.Banning += EventHandlers.OnBanned;
-            PlayerEvents.Kicking += EventHandlers.OnKicking;
-
-
-            //  PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
-            //  ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;
-            //PlayerEvents.TogglingOverwatch += EventHandlers.OnOverwatchToggle;                
-        }
-
-        public override void OnEnabled()
-        {
-            Functions = new Functions(this);
-            EventHandlers = new EventHandlers(this);
-
-            Events = new Events.Events(this);
-
-            EventHandlers.TemporarilyDisabledWarns = false;
-
-            if (Config.EnableAutoRestart)
+            if (configs.IsEnabled is false)
             {
-                Functions.CoroutineRestart();
+                StaticInstance = null;
+
+                Functions = null;
+                EventHandlers = null;
+                Events = null;
+
+                EventManager.UnregisterEvents<EventHandlers>(this);
+
+                Database.Close();
+
+                Log.Error("SCPUtils has been disabled by server administration. Check configs if is an error.");
+
+                return;
             }
 
-            LoadEvents();
+            StaticInstance = this;
+
+            Functions = new Functions(this);
+            EventHandlers = new EventHandlers();
+            //DatabasePlayerData = new Database(this);
+            Events = new Events.Events(this);
+
+            EventManager.RegisterEvents<EventHandlers>(this);
+
+            var handler = PluginHandler.Get(this);
+
+            handler.SaveConfig(this, nameof(Configs));
+            //handler.SaveConfig(this, nameof(Permissions));
+            handler.SaveConfig(this, nameof(CommandTranslation));
+            handler.SaveConfig(this, nameof(DatabaseConfig));
+
             Database.OpenDatabase();
         }
 
-        public override void OnDisabled()
-        {
-            MapEvents.Decontaminating -= EventHandlers.OnDecontaminate;
-            PlayerEvents.Verified -= EventHandlers.OnPlayerVerify;
-            PlayerEvents.Destroying -= EventHandlers.OnPlayerDestroy;
-            PlayerEvents.Spawning -= EventHandlers.OnPlayerSpawn;
-            PlayerEvents.Dying -= EventHandlers.OnPlayerDeath;
-            PlayerEvents.Hurting -= EventHandlers.OnPlayerHurt;
-            PlayerEvents.PreAuthenticating -= EventHandlers.OnPlayerPreauth;
-            Handlers.Scp079.InteractingTesla -= EventHandlers.On079TeslaEvent;
-            ServerEvents.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
-            ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
-            Handlers.Scp096.AddingTarget -= EventHandlers.On096AddTarget;
-            ServerEvents.RespawningTeam -= EventHandlers.OnTeamRespawn;           
-            PlayerEvents.Handcuffing -= EventHandlers.OnPlayerHandcuff;
-            PlayerEvents.RemovingHandcuffs -= EventHandlers.OnPlayerUnhandCuff;
-            PlayerEvents.Banning -= EventHandlers.OnBanned;
-            PlayerEvents.Kicking -= EventHandlers.OnKicking;
-            // PlayerEvents.TogglingOverwatch -= EventHandlers.OnOverwatchToggle;
-            // PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
-            //  ServerEvents.RoundStarted -= EventHandlers.OnRoundStarted;
-            EventHandlers = null;
-            Functions = null;
-            Functions.LastWarn.Clear();
-            Database.Close();
-        }
+        [PluginConfig] public Configs configs;
 
+        //[PluginConfig("permissions.yml")] public Permissions perms;
 
+        [PluginConfig("commands.yml")] public CommandTranslation commandTranslation;
+
+        [PluginConfig("database.yml")] public DatabaseConfig databaseConfig;
     }
 }

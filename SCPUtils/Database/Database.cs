@@ -1,8 +1,7 @@
 ﻿namespace SCPUtils
 {
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using MongoDB.Driver;
+    using PluginAPI.Core;
     using System;
     using System.Collections.Generic;
     using static ScpUtils;
@@ -13,21 +12,18 @@
 
         public static IMongoDatabase MongoDatabase { get; private set; }
 
-        public static Dictionary<Exiled.API.Features.Player, Player> PlayerData = new Dictionary<Exiled.API.Features.Player, Player>();
+        public static Dictionary<PluginAPI.Core.Player, Player> PlayerData = new Dictionary<PluginAPI.Core.Player, Player>();
 
         public static void OpenDatabase()
         {
             try
             {
-
-
-                var connectionString = string.IsNullOrEmpty(StaticInstance.Config.DatabasePassword)
-                  ? $"mongodb://{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}"
-                  : $"mongodb://{StaticInstance.Config.DatabaseUser}:{StaticInstance.Config.DatabasePassword}@{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}/?authMechanism={StaticInstance.Config.DatabaseAuthType}";
-
+                var connectionString = string.IsNullOrEmpty(StaticInstance.databaseConfig.DatabasePassword)
+                  ? $"mongodb://{StaticInstance.databaseConfig.DatabaseIp}:{StaticInstance.databaseConfig.DatabasePort}"
+                  : $"mongodb://{StaticInstance.databaseConfig.DatabaseUser}:{StaticInstance.databaseConfig.DatabasePassword}@{StaticInstance.databaseConfig.DatabaseIp}:{StaticInstance.databaseConfig.DatabasePort}/?authMechanism={StaticInstance.databaseConfig.DatabaseAuthType}";
 
                 MongoClient = new MongoClient(connectionString);
-                MongoDatabase = MongoClient.GetDatabase(StaticInstance.Config.DatabaseName.ToSnakeCase());
+                MongoDatabase = MongoClient.GetDatabase(StaticInstance.databaseConfig.DatabaseName.ToLower());
 
                 var player = new List<CreateIndexModel<Player>>()
                 {
