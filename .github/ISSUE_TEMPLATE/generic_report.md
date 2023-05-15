@@ -1,7 +1,8 @@
 name: Generic bug
 description: Create a report to help us improve
 title: "[Generic bug]: Insert Title Here"
-labels: ["Generic bug"]
+labels: "Generic bug"
+assignees: terminator_97
 body:
   - type: markdown
     attributes:
