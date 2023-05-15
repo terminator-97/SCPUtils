@@ -2,12 +2,11 @@ name: Generic bug
 description: Create a report to help us improve
 title: "[Generic bug]: Insert Title Here"
 labels: "Generic bug"
-assignees: terminator_97
+assignees: terminator_97, Bay62
 body:
   - type: markdown
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug-report!
+      value: # Thanks for taking the time to fill out this bug-report!
   - type: textarea
     id: description
     attributes:
