@@ -1,0 +1,5 @@
+"Commands": 
+ - SCPUtils/Commands/*
+
+"Generic bug":
+ - SCPUtils/*
