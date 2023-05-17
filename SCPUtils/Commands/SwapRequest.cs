@@ -122,51 +122,68 @@ namespace SCPUtils.Commands
 
                         default:
                             target = Eplayer.Get(arguments.Array[1].ToString());
+                            role = PlayerRoles.RoleTypeId.None;
                             break;
 
                     }
 
                     var seconds = Math.Round(ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequestAccept - Exiled.API.Features.Round.ElapsedTime.TotalSeconds);
 
-                    if (ScpUtils.StaticInstance.Config.DisallowedScpsSwapGenerationList?.Any() ?? false)
+                    if (target == null)
                     {
-                        if (ScpUtils.StaticInstance.Config.DisallowedScpsSwapGenerationList.Contains(player.Role.Type))
-                        {
-                            response = $"<color=red>This SCP cannot become {role.ToString()} using this feature because it's disabled by server owner.</color>";
-                            return false;
-                        }
-                    }
 
-                    if (ScpUtils.StaticInstance.Config.AllowedSwapGenerationList?.Any() ?? false)
-                    {
-                        if (target == null && ScpUtils.StaticInstance.Config.AllowedSwapGenerationList.Contains(role))
+                        if (role != PlayerRoles.RoleTypeId.None)
                         {
-
-                            if (ScpUtils.StaticInstance.EventHandlers.SwapCount.ContainsKey(player))
+                            if (ScpUtils.StaticInstance.Config.DisallowedScpsSwapGenerationList?.Any() ?? false)
                             {
-                                if (ScpUtils.StaticInstance.EventHandlers.SwapCount[player] >= ScpUtils.StaticInstance.Config.MaxAllowedSwaps)
+                                if (ScpUtils.StaticInstance.Config.DisallowedScpsSwapGenerationList.Contains(player.Role.Type))
                                 {
-                                    response = $"<color=red>You have reached swaps requests limit for this round, another player should send it to you if he wish to swap!</color>";
+                                    response = $"<color=red>This SCP cannot become {role.ToString()} using this feature because it's disabled by server owner.</color>";
                                     return false;
                                 }
-                                ScpUtils.StaticInstance.EventHandlers.SwapCount[player]++;
+                            }
+
+                            if (ScpUtils.StaticInstance.Config.AllowedSwapGenerationList?.Any() ?? false)
+                            {
+                                if (ScpUtils.StaticInstance.Config.AllowedSwapGenerationList.Any(x => x == role))
+                                {
+                                    if (ScpUtils.StaticInstance.EventHandlers.SwapCount.ContainsKey(player))
+                                    {
+                                        if (ScpUtils.StaticInstance.EventHandlers.SwapCount[player] >= ScpUtils.StaticInstance.Config.MaxAllowedSwaps)
+                                        {
+                                            response = $"<color=red>You have reached swaps requests limit for this round, another player should send it to you if he wish to swap!</color>";
+                                            return false;
+                                        }
+                                        ScpUtils.StaticInstance.EventHandlers.SwapCount[player]++;
+                                    }
+                                    else
+                                    {
+                                        ScpUtils.StaticInstance.EventHandlers.SwapCount.Add(player, 1);
+                                    }
+
+
+                                    player.Role.Set(role);
+                                    response = $"<color=green>Swap request has been granted by system</color>";
+                                    return true;
+                                }
+                                else
+                                {
+                                    response = $"<color=red>This SCP is not allowed to auto-swap and no player is currently playing this SCP, please choose another SCP.</color>";
+                                    return false;
+                                }
                             }
                             else
                             {
-                                ScpUtils.StaticInstance.EventHandlers.SwapCount.Add(player, 1);
+                                response = $"<color=red>Invalid player nickname/id or invalid SCP name!</color>";
+                                return false;
                             }
-
-
-                            player.Role.Set(role);
-                            response = $"<color=green>Swap request has been granted by system</color>";
-                            return true;
                         }
-                    }
+                        else
+                        {
+                            response = $"<color=red>Invalid player nickname/id or invalid SCP name!</color>";
+                            return false;
+                        }
 
-                    if (target == null)
-                    {
-                        response = $"<color=red>Invalid player nickname/id or invalid SCP name!</color>";
-                        return false;
                     }
 
 

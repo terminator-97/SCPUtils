@@ -226,7 +226,7 @@ namespace SCPUtils
         internal void OnRoundEnded(RoundEndedEventArgs _)
         {
             TemporarilyDisabledWarns = true;
- 
+
             Cuffed.Clear();
         }
 
@@ -335,7 +335,7 @@ namespace SCPUtils
             }
 
             pluginInstance.Functions.IpCheck(ev.Player);
-            
+
             //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 
@@ -366,7 +366,7 @@ namespace SCPUtils
             }
         }
 
-  
+
 
         internal void OnDecontaminate(DecontaminatingEventArgs ev)
         {
