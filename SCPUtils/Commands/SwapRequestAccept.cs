@@ -78,8 +78,8 @@ namespace SCPUtils.Commands
 
             var scp = player.Role.Type;
 
-            player.Role.Set(target.Role.Type, PlayerRoles.RoleSpawnFlags.None);
-            target.Role.Set(scp, PlayerRoles.RoleSpawnFlags.None);
+            player.Role.Set(target.Role.Type);
+            target.Role.Set(scp);
             ScpUtils.StaticInstance.EventHandlers.SwapRequest.Remove(target);
             response = $"<color=green>Swap request has been accepted</color>";
             return true;
