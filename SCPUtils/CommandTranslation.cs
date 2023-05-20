@@ -7,6 +7,12 @@
         public string SenderError { get; set; } = "<color=red>You need \"<b>%permission%</b>\" to use this command!</color>";
         public string PlayerDatabaseError { get; set; } = "Player not found on Database!";
         public string Integer { get; set; } = "This argument (%argument%) is not an integer!";
+        
+        [Description("Parent command")]
+        public string ParentCommands { get; set; } = "Please specify a valid subcommand:";
+        public string CommandName { get; set; } = "Command name: ";
+        public string CommandDescription { get; set; } = "Command description: ";
+        public string CommandAliases { get; set; } = "Command alias: ";
 
         [Description("Announce command")]
         public string IdExist { get; set; } = "Id already exist!";
@@ -20,12 +26,26 @@
         public string AsnWhitelistError { get; set; } = "%player% is already in Whitelist.";
         public string AsnUnwhitelist { get; set; } = "%player% has been removed to Whitelist.";
         public string AsnUnwhitelistError { get; set; } = "%player% is not in Whitelist.";
+        
         [Description("Badge command")]
         public string BadgeSet { get; set; } = "Successfully set <color=%badgeColor%>%badgeName%<color> to %player%.\n\tDuration: %time%";
         public string BadgeRevoke { get; set; } = "Badge revoked!";
         public string BadgeNameError { get; set; } = "Invalid role name, check it on 'groups' in console.";
         public string BadgeDurationInvalid { get; set; } = "Argument \"[Time in day:minutes:seconds]\" is invalid! Check it.";
         public string BadgeKickPower { get; set; } = "You need a higher administration level to use this command: the group you are trying to set has more kick power than yours.\n\tYour 'Kick Power': %kickPower%\n\tRequired: %groupKickPower%)";
+
+        [Description("Ip command")]
+        public string IpResponse { get; set; } = "[Accounts associated with the same IP: %ip% (%player%)]";
+        public string IpPlayer { get; set; } = "Player: <color=#FADA5E>%player%</color>";
+        public string IpFirstJoin { get; set; } = "First join: <color=#FADA5E>%firstJoin%</color>";
+        public string IpLastJoin { get; set; } = "Last join: <color=#FADA5E>%lastJoin%</color>";
+        public string IpRestricted { get; set; } = "Restricted: <color=#FADA5E>%restricted%</color>";
+        public string IpBanned { get; set; } = "Banned: <color=#FADA5E>%banned%</color>";
+        public string IpMuted { get; set; } = "Muted: <color=#FADA5E>%muted%</color>";
+        public string IpTotalGames { get; set; } = "Total played as SCP: <color=#FADA5E>%games%</color>";
+        public string IpTotalSuicide { get; set; } = "Total suicide: <color=#FADA5E>%suicide%</color>";
+        public string IpRoundBans { get; set; } = "nRound(s) ban left: <color=#FADA5E>%rounds%</color>";
+        public string IpInvalid { get; set; } = "<color=#FADA5E>Invalid IP!</color>";
 
         [Description("PlayTime command")]
         public string DaysInteger { get; set; } = "<color=red>You have to specify a number higher than 0 or is not an integer</color>";

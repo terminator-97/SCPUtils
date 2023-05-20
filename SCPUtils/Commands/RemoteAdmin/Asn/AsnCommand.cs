@@ -3,9 +3,9 @@
     using CommandSystem;
     using System;
 
-    public class ASN : ParentCommand
+    public class AsnCommand : ParentCommand
     {
-        public ASN() => LoadGeneratedCommands();
+        public AsnCommand() => LoadGeneratedCommands();
 
         public override string Command { get; } = "asn";
         public override string[] Aliases { get; }
@@ -31,17 +31,21 @@
                 return false;
             }
 
-            response = "Please specify a valid subcommand:";
+            response = ScpUtils.StaticInstance.commandTranslation.ParentCommands;
             foreach (ICommand command in AllCommands)
             {
                 response = string.Concat(new string[]
                 {
                     response,
+                    "\n\n",
+                    ScpUtils.StaticInstance.commandTranslation.CommandName+command.Command,
                     "\n",
-                    command.Command,
-                    " - ",
-                    command.Description
+                    ScpUtils.StaticInstance.commandTranslation.CommandDescription+command.Description,
                 });
+                if (command.Aliases != null && command.Aliases.Length != 0)
+                {
+                    response = response + "\n" + ScpUtils.StaticInstance.commandTranslation.CommandAliases + string.Join(", ", command.Aliases);
+                }
             }
             return false;
         }

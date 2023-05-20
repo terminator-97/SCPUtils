@@ -3,21 +3,21 @@
     using CommandSystem;
     using System;
 
-    public class Announce : ParentCommand
+    public class AnnounceCommand : ParentCommand
     {
-        public Announce() => LoadGeneratedCommands();
+        public AnnounceCommand() => LoadGeneratedCommands();
 
         public override string Command { get; } = "announce";
         public override string[] Aliases { get; } = new[]
         {
-            "a"
+            "a", "broadcast", "bc"
         };
         public override string Description { get; } = "Announce base command.";
 
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new CreateAnnouncementCommand());
-            //RegisterCommand(new DeleteBroadcastCommand());
+            RegisterCommand(new DeleteAnnouncementCommand());
             RegisterCommand(new SendAnnoucementCommand());
         }
 
@@ -35,17 +35,21 @@
                 return false;
             }
 
-            response = "Please specify a valid subcommand:";
+            response = ScpUtils.StaticInstance.commandTranslation.ParentCommands;
             foreach (ICommand command in AllCommands)
             {
                 response = string.Concat(new string[]
                 {
                     response,
+                    "\n\n",
+                    ScpUtils.StaticInstance.commandTranslation.CommandName+command.Command,
                     "\n",
-                    command.Command,
-                    " - ",
-                    command.Description
+                    ScpUtils.StaticInstance.commandTranslation.CommandDescription+command.Description,
                 });
+                if (command.Aliases != null && command.Aliases.Length != 0)
+                {
+                    response = response + "\n"+ ScpUtils.StaticInstance.commandTranslation.CommandAliases + string.Join(", ", command.Aliases);
+                }
             }
             return false;
         }

@@ -42,6 +42,12 @@
                 "scputils badge playtime", PlayerPermissions.SetGroup
             },
             {
+                "scputils ip", PlayerPermissions.PlayerSensitiveDataAccess
+            },
+            {
+                "scputils ip duplicate", PlayerPermissions.PlayerSensitiveDataAccess
+            },
+            {
                 "scputils playtime", PlayerPermissions.GameplayData
             },
             {

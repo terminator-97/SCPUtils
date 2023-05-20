@@ -7,9 +7,7 @@
     public class SendAnnoucementCommand : ICommand
     {
         public string Command { get; } = "send";
-
         public string[] Aliases { get; } = new[] { "s" };
-
         public string Description { get; } = "Allows to send custom broadcastes";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

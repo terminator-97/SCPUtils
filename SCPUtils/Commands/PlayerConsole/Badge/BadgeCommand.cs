@@ -20,7 +20,7 @@
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            /*response = "Please specify a valid subcommand:";
+            /*response = ScpUtils.StaticInstance.commandTranslation.ParentCommands;
             foreach (ICommand command in AllCommands)
             {
                 response = string.Concat(new string[]

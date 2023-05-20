@@ -47,7 +47,7 @@ namespace SCPUtils
             var handler = PluginHandler.Get(this);
 
             handler.SaveConfig(this, nameof(Configs));
-            //handler.SaveConfig(this, nameof(Permissions));
+            handler.SaveConfig(this, nameof(Permissions));
             handler.SaveConfig(this, nameof(CommandTranslation));
             handler.SaveConfig(this, nameof(DatabaseConfig));
 

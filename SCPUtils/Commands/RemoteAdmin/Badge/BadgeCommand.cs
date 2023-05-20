@@ -3,9 +3,9 @@
     using CommandSystem;
     using System;
 
-    public class Badge : ParentCommand
+    public class BadgeCommand : ParentCommand
     {
-        public Badge() => LoadGeneratedCommands();
+        public BadgeCommand() => LoadGeneratedCommands();
 
         public override string Command { get; } = "badge";
         public override string[] Aliases { get; } = new[]
@@ -35,17 +35,21 @@
                 return false;
             }
 
-            response = "Please specify a valid subcommand:";
+            response = ScpUtils.StaticInstance.commandTranslation.ParentCommands;
             foreach (ICommand command in AllCommands)
             {
                 response = string.Concat(new string[]
                 {
                     response,
+                    "\n\n",
+                    ScpUtils.StaticInstance.commandTranslation.CommandName+command.Command,
                     "\n",
-                    command.Command,
-                    " - ",
-                    command.Description
+                    ScpUtils.StaticInstance.commandTranslation.CommandDescription+command.Description,
                 });
+                if (command.Aliases != null && command.Aliases.Length != 0)
+                {
+                    response = response + "\n" + ScpUtils.StaticInstance.commandTranslation.CommandAliases + string.Join(", ", command.Aliases);
+                }
             }
             return false;
         }

@@ -31,9 +31,10 @@
             }
             else
             {
-                if (Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Find(broadcast => broadcast.Id == arguments.Array[3].ToString()).Any())
+                var databaseBroadcast = GetBroadcast.FindBroadcast(arguments.Array[3]);
+                if (databaseBroadcast != null)
                 {
-                    Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(arguments.Array[3].ToString());
+                    Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(broadcast => broadcast.Id == databaseBroadcast.Id);
                     response = ScpUtils.StaticInstance.commandTranslation.AnnounceSuccess;
                     return true;
                 }
