@@ -22,7 +22,7 @@ namespace SCPUtils
         public string DatabaseUser { get; private set; } = "user";
 
         [Description("Database password - If you are using it locally password might be empty")]
-        public string DatabasePassword { get; private set; } = "StrongPassword";
+        public string DatabasePassword { get; private set; } = "";
 
         [Description("Database auth mechanism")]
         public string DatabaseAuthType { get; private set; } = "SCRAM-SHA-256";

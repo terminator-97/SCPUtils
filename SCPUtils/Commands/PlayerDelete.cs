@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
+using MongoDB.Driver;
 using System;
 
 namespace SCPUtils.Commands
@@ -45,8 +46,8 @@ namespace SCPUtils.Commands
                     return false;
                 }
 
-                databasePlayer.Reset();
-                Database.MongoDatabase.GetCollection<Player>("players").DeleteOne(databasePlayer.Id);
+                databasePlayer.Reset();               
+                Database.MongoDatabase.GetCollection<Player>("players").DeleteOne(broadcast => broadcast.Id == databasePlayer.Id);
                 response = $"{target} has been deleted from the database!";
 
                 return true;
