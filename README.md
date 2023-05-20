@@ -29,7 +29,8 @@ With new PluginAPI system, our configs have been splitted in 3 new files: "Comma
 
 ## Commands: Client Console
 | Command | Arguments | Aliases |
-| | | |
+| --- | --- | --- |
 | scputils | [Command] | scpu, su |
-| | | |
+|  |  |  |
 | scputils playtime | No arguments | pt |
+|  |  |  |
