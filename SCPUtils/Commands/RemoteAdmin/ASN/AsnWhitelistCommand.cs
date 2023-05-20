@@ -5,13 +5,12 @@
 
     public class AsnWhitelistCommand : ICommand
     {
-        public string Command { get; } = "whitelist";
+        public string Command { get; } = "uwwhitelist";
         public string[] Aliases { get; } = new[]
         {
-            "add", "wl", "w"
+            "remove", "uwl", "uw"
         };
-
-        public string Description { get; } = "Whitelist a player, ie GFN member, to enter in this server.";
+        public string Description { get; } = "Unwhitelist a player, ie GFN member, to enter in this server.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -21,9 +20,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(PlayerPermissions.KickingAndShortTermBanning))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils asn whitelist"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils asn whitelist"]}");
                 return false;
             }
             else if (arguments.Count != 1)

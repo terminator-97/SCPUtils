@@ -2,17 +2,20 @@
 
 ## Command Base Permissions:
  - scputils base command: no permission required.
+ - scputils announce: Broadcasting
  - scputils asn: KickingAndShortTermBanning
  - scputils badge: PlayersManagement
  - scputils playtime: GameplayData
 
 ## Configuration:
-With new PluginAPI system, our configs have been splitted in 3 new files: "Command Translation", "Config" and "Database".
+With new PluginAPI system, our configs have been splitted in 3 new files: "Command Translation", "Config", "Database" and "Permissions".
 
 ## Commands: Remote Admin and Server Console
 | Command | Arguments | Remote Admin Permission | Aliases |
 | --- | --- | --- | --- |
 | scputils | [Command] | No permission | scpu, su |
+|  |  |  |  |
+| scputils announce | [Subcommand: create, delete, list or send] | Broadcasting | a |
 |  |  |  |  |
 | scputils asn | [Subcommand: whitelist or unwhitelist] | KickingAndShortTermBanning | No aliases. |
 | scputils asn whitelist | [PlayerID] | KickingAndShortTermBanning | w |
@@ -26,7 +29,7 @@ With new PluginAPI system, our configs have been splitted in 3 new files: "Comma
 
 ## Commands: Client Console
 | Command | Arguments | Aliases |
-| --- | --- | --- |
+| | | |
 | scputils | [Command] | scpu, su |
-| --- | --- | --- |
+| | | |
 | scputils playtime | No arguments | pt |

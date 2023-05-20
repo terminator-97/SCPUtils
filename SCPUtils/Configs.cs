@@ -11,6 +11,14 @@
 
         public bool IsDebugEnabled { get; set; } = false;
 
+        [Description("Set the maximum playtime show.")]
+        public int MaxPlaytime { get; private set; } = 120;
+
+        public List<string> BadgeVisibility { get; private set; } = new List<string>()
+        {
+            "SERVER OWNER"
+        };
+
         [Description("Should SCPs be warned for quitting or suicide?")]
         public bool EnableSCPSuicideAutoWarn { get; private set; } = true;
 

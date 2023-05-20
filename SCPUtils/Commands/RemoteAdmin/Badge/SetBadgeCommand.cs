@@ -7,7 +7,10 @@
     public class SetBadgeCommand : ICommand
     {
         public string Command { get; } = "set";
-        public string[] Aliases { get; } = new[] { "s" };
+        public string[] Aliases { get; } = new[]
+        {
+            "s"
+        };
         public string Description { get; } = "With this command you can set temporary badge, by their name for example: scpu_setb 2 owner 60";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -19,9 +22,9 @@
             }
             string target;
             string badge;
-            if (!sender.CheckPermission(PlayerPermissions.PlayersManagement))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils badge set"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils badge set"]}");
                 return false;
             }
 
@@ -81,7 +84,7 @@
                 databasePlayer.BadgeExpire = DateTime.Now.Add(duration);
                 databasePlayer.SaveData();
 
-                response = ScpUtils.StaticInstance.commandTranslation.BadgeSet.Replace("%player%", player.Nickname).Replace("%badgeName%", group.BadgeText).Replace("%badgeColor%", group.BadgeColor).Replace("%time%", duration.ToString());
+                response = ScpUtils.StaticInstance.commandTranslation.BadgeSet.Replace("%player%", $"{databasePlayer.Name}@{databasePlayer.Authentication}").Replace("%badgeName%", $"{group.BadgeText}").Replace("%badgeColor%", $"{group.BadgeColor}").Replace("%time%", $"{duration}");
             }
             else
             {

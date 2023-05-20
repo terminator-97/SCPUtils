@@ -25,9 +25,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(PlayerPermissions.KickingAndShortTermBanning))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils asn"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils asn"]}");
                 return false;
             }
 

@@ -7,8 +7,8 @@
 
     public class StaffPlayTimeCommand : ICommand
     {
-        public string Command { get; } = "playtime";
-        public string[] Aliases { get; } = new[] { "pt" };
+        public string Command { get; } = "user";
+        public string[] Aliases { get; } = new[] { "u", "member", "staff" };
         public string Description { get; } = "You can see detailed informations about playtime";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -22,9 +22,9 @@
             string target;
             int range;
             int playtime;
-            if (!sender.CheckPermission(PlayerPermissions.PlayersManagement))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime user"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", "PlayersManagement");
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime user"]}");
                 return false;
             }
 
@@ -42,6 +42,12 @@
                 if (!int.TryParse(arguments.Array[4], out range))
                 {
                     response = ScpUtils.StaticInstance.commandTranslation.DaysInteger;
+                    return false;
+                }
+
+                if (range >= ScpUtils.StaticInstance.configs.MaxPlaytime)
+                {
+                    response = ScpUtils.StaticInstance.commandTranslation.DaysMaximus.Replace("%maxDays%", $"{ScpUtils.StaticInstance.configs.MaxPlaytime}");
                     return false;
                 }
             }
@@ -84,7 +90,7 @@
                     message.Append($"{date.Date.ToShortDateString()} {ScpUtils.StaticInstance.commandTranslation.PlaytimeNoActivity}");
                 }
             }
-            message.AppendLine("\n" + ScpUtils.StaticInstance.commandTranslation.SpecifiedPlaytime.Replace("%totalPlaytime%", $"{new TimeSpan(0, 0, playtime)}"));
+            message.AppendLine("\n\n" + ScpUtils.StaticInstance.commandTranslation.SpecifiedPlaytime.Replace("%totalPlaytime%", $"{new TimeSpan(0, 0, playtime)}"));
             response = $"{message}";
     
             return true;

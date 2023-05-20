@@ -1,20 +1,24 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin.PlayTime
+﻿namespace SCPUtils.Commands.RemoteAdmin.Announce
 {
     using CommandSystem;
     using System;
 
-    public class PlayTime : ParentCommand
+    public class Announce : ParentCommand
     {
-        public PlayTime() => LoadGeneratedCommands();
+        public Announce() => LoadGeneratedCommands();
 
-        public override string Command { get; } = "playtime";
-        public override string[] Aliases { get; } = new[] { "pt", "play" };
-        public override string Description { get; } = "Playtime base command.";
+        public override string Command { get; } = "announce";
+        public override string[] Aliases { get; } = new[]
+        {
+            "a"
+        };
+        public override string Description { get; } = "Announce base command.";
 
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new StaffPlayTimeCommand());
-           // RegisterCommand(new PlayTimeBadgeCommand());
+            RegisterCommand(new CreateAnnouncementCommand());
+            //RegisterCommand(new DeleteBroadcastCommand());
+            RegisterCommand(new SendAnnoucementCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -25,9 +29,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime"]))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils announce"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime"]}");
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils announce"]}");
                 return false;
             }
 

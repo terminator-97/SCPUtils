@@ -77,17 +77,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\PlayerConsole\Badge\BadgeCommand.cs" />
+    <Compile Include="Commands\PlayerConsole\PlayTime\UserPlayTimeCommand.cs" />
     <Compile Include="Commands\PlayerConsole\SCPUtilsCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\ASN\ASN.cs" />
     <Compile Include="Commands\RemoteAdmin\ASN\AsnUnWhitelistCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\ASN\AsnWhitelistCommand.cs" />
-    <Compile Include="Commands\RemoteAdmin\ASN\Autonomous System Number.cs" />
     <Compile Include="Commands\RemoteAdmin\Badge\Badge.cs" />
-    <Compile Include="Commands\RemoteAdmin\PlayTime\BadgePlayTimeCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Badge\PlayTimeBadgeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Badge\RevokeBadgeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Badge\SetBadgeCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\Announce.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\CreateAnnouncementCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\DeleteAnnouncementCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\SendAnnouncementCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\PlayTime\BadgePlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\PlayTime.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\StaffPlayTimeCommand.cs" />
-    <Compile Include="Commands\PlayerConsole\PlayTime\UserPlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\SCPUtilsCommand.cs" />
     <Compile Include="CommandTranslation.cs" />
     <Compile Include="Configs.cs" />
@@ -100,6 +106,7 @@
     <Compile Include="Database\PlaySession.cs" />
     <Compile Include="Extensions\Broadcasts.cs" />
     <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Functions\BadgeRemovedEvent.cs" />
     <Compile Include="Functions\ScpUtilsEvents.cs" />
     <Compile Include="Functions\Webhook.cs" />
     <Compile Include="Database\DatabasePlayer.cs" />

@@ -9,19 +9,16 @@
     using System.Text.RegularExpressions;
     using PluginAPI.Core;
 
-    public class Functions : EventArgs
+    public class Function : EventArgs
     {
         public CoroutineHandle RS;
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
-
-        public Functions(ScpUtils pluginInstance)
+        public Function(ScpUtils pluginInstance)
         {
             this.pluginInstance = pluginInstance;
         }
-
-
 
         public void CoroutineRestart()
         {

@@ -25,21 +25,21 @@
 
             if (arguments.Count != 1)
             {
-                response = ScpUtils.StaticInstance.commandTranslation.UsageError.Replace("%command%", $"{arguments.Array[0]} {arguments.Array[1]} {arguments.Array[2]}").Replace("%arguments%", $"{ScpUtils.StaticInstance.commandTranslation.Days}");
+                response = ScpUtils.StaticInstance.commandTranslation.UsageError.Replace("%command%", $"{arguments.Array[0]} {arguments.Array[1]}").Replace("%arguments%", $"{ScpUtils.StaticInstance.commandTranslation.Days}");
                 return false;
             }
             else
             {
-                if (!int.TryParse(arguments.Array[3], out range))
+                if (!int.TryParse(arguments.Array[2], out range))
                 {
                     response = ScpUtils.StaticInstance.commandTranslation.DaysInteger;
                     return false;
                 }
             }
 
-            if (range > 120)
+            if (range >= ScpUtils.StaticInstance.configs.MaxPlaytime)
             {
-                response = ScpUtils.StaticInstance.commandTranslation.DaysMaximus;
+                response = ScpUtils.StaticInstance.commandTranslation.DaysMaximus.Replace("%maxDays%", $"{ScpUtils.StaticInstance.configs.MaxPlaytime}");
                 return false;
             }
 

@@ -8,13 +8,17 @@
         public Badge() => LoadGeneratedCommands();
 
         public override string Command { get; } = "badge";
-        public override string[] Aliases { get; } = new[] { "b", "group" };
+        public override string[] Aliases { get; } = new[]
+        {
+            "b", "group"
+        };
         public override string Description { get; } = "Badge base command.";
 
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new SetBadgeCommand());
             RegisterCommand(new RevokeBadgeCommand());
+            //RegisterCommand(new PlayTimeBadgeCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -25,9 +29,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(PlayerPermissions.PlayersManagement))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils badge"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError;
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils badge"]}");
                 return false;
             }
 

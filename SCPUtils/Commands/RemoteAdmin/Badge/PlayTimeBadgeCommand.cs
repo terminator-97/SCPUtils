@@ -1,4 +1,4 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin.PlayTime
+﻿namespace SCPUtils.Commands.RemoteAdmin.Badge
 {
     using CommandSystem;
     using System;
@@ -7,8 +7,8 @@
 
     public class PlayTimeBadgeCommand : ICommand
     {
-        public string Command { get; } = "badge";
-        public string[] Aliases { get; } = new[] { "b", "group", "g" };
+        public string Command { get; } = "playtime";
+        public string[] Aliases { get; } = new[] { "pt" };
         public string Description { get; } = "Short playtime with a specified range by using badge as input.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -17,7 +17,6 @@
             int count = 0;
             int playtime;
             int completedays;
-            // TimeSpan playtime;
 
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
@@ -25,9 +24,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime badge"]))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils badge playtime"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils playtime badge"]}");
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils badge playtime"]}");
                 return false;
             }
             if (arguments.Count < 2)
@@ -84,7 +83,6 @@
                 response = ScpUtils.StaticInstance.commandTranslation.NoPlayerBadge;
                 return false;
             }
-
 
             response = $"{message}";
 

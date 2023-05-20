@@ -23,6 +23,7 @@
 
         public override void LoadGeneratedCommands()
         {
+            RegisterCommand(new Announce.Announce());
             RegisterCommand(new ASN.ASN());
             RegisterCommand(new Badge.Badge());
             RegisterCommand(new PlayTime.PlayTime());

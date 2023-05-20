@@ -8,7 +8,7 @@ namespace SCPUtils
     public class ScpUtils
     {
         public EventHandlers EventHandlers { get; private set; }
-        public Functions Functions { get; private set; }
+        public Function Functions { get; private set; }
         public Player Player { get; private set; }
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
@@ -37,7 +37,7 @@ namespace SCPUtils
 
             StaticInstance = this;
 
-            Functions = new Functions(this);
+            Functions = new Function(this);
             EventHandlers = new EventHandlers();
             //DatabasePlayerData = new Database(this);
             Events = new Events.Events(this);
@@ -56,7 +56,7 @@ namespace SCPUtils
 
         [PluginConfig] public Configs configs;
 
-        //[PluginConfig("permissions.yml")] public Permissions perms;
+        [PluginConfig("permissions.yml")] public Permissions perms;
 
         [PluginConfig("commands.yml")] public CommandTranslation commandTranslation;
 

@@ -17,6 +17,7 @@
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new UserPlayTimeCommand());
+            RegisterCommand(new BadgeCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
