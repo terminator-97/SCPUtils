@@ -14,7 +14,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = new[] { "cb", "scputils_cbadge", "su_cb", "su_customb" };
 
-        public string Description { get; } = "You can set a custom badge name to any player";
+        public string Description { get; } = "You can set a custom badge name to any player if they already have a badge";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

@@ -77,8 +77,6 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_multiaccount_whitelist | <userid / id> | scputils.whitelistma | Whitelists / unwhitelist an account from multiaccount detector |
 | scputils_badge_playtime | <badge> <days> | scputils.playtime | Show playtime for a specific badge |
 | scputils_reports | use help paramenter | scputils.reports | See many stats |
-| scputils_custom_badge | <player id/name/userid> <custom badge name / none> | scputils.custombadge | Set a custom badge to a player, it required to have already a base badge |
-
 
 **Console commands**
 
