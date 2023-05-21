@@ -60,6 +60,7 @@ namespace SCPUtils.Commands
             $"Custom Color: [ {databasePlayer.ColorPreference} ]\n" +
             $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
             $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
+            $"Custom Badge: [ {databasePlayer.CustomBadgeName} ]\n" +
             $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
             //  $"Previous Badge: [ {databasePlayer.PreviousBadge} ]\n" +
             $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +

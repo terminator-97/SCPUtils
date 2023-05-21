@@ -28,6 +28,7 @@ namespace SCPUtils
         public DateTime BadgeExpire { get; set; }
         public DateTime NicknameCooldown { get; set; }
         public string PreviousBadge { get; set; }
+        public string CustomBadgeName { get; set; }
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<string, int> PlayTimeRecords { get; set; } = new Dictionary<string, int>();
         public bool ASNWhitelisted { get; set; }

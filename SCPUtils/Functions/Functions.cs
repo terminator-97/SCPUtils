@@ -217,7 +217,10 @@ namespace SCPUtils
                 {
                     if (player.CheckPermission("scputils.changecolor") || player.CheckPermission("scputils.playersetcolor") || databasePlayer.KeepPreferences || pluginInstance.Config.KeepColorWithoutPermission)
                     {
-                        player.RankColor = databasePlayer.ColorPreference;
+                        if (player.GlobalBadge == null)
+                        {
+                            player.RankColor = databasePlayer.ColorPreference;
+                        }
                     }
                     else
                     {
@@ -250,6 +253,19 @@ namespace SCPUtils
                     }
                 }
 
+                if(!string.IsNullOrEmpty(databasePlayer.CustomBadgeName))
+                {
+                    if (player.Group != null)
+                    {
+                        player.Group.BadgeText = databasePlayer.CustomBadgeName;
+                        player.BadgeHidden = player.BadgeHidden;
+                    }
+                    else
+                    {
+                        player.SendConsoleMessage($"You have a custom badge assigned but you don't have a base usergroup, your custom group won't be visible until you have one!", "red");
+                    }
+                }
+
                 if (pluginInstance.Config.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) && !player.CheckPermission("scputils.bypassnickrestriction"))
                 {
                     Timing.CallDelayed(2f, () =>
@@ -279,8 +295,7 @@ namespace SCPUtils
                 }
             }
 
-            SetCommandBan(player);
-
+            SetCommandBan(player);    
         }
 
         public bool CheckNickname(string name)

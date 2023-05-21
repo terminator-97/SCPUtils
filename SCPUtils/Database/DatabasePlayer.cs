@@ -92,7 +92,8 @@ namespace SCPUtils
                 Expire = new List<DateTime>(),
                 MultiAccountWhiteList = false,
                 NicknameCooldown = DateTime.Now,
-                OverwatchActive = false
+                OverwatchActive = false,
+                CustomBadgeName = ""
             };
             MongoDatabase.GetCollection<Player>("players").InsertOne(newPlayer);
         }

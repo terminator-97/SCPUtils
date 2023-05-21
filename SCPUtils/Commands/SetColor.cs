@@ -100,14 +100,23 @@ namespace SCPUtils.Commands
                 return true;
             }
 
-            databasePlayer.ColorPreference = color;
-            databasePlayer.SaveData();
-            response = "<color=green>Success, choice has been saved!</color>";
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
+
             if (player != null)
             {
+                if(player.GlobalBadge != null)
+                {
+                    response = "<color=red>You have a global badge, as VSR rules you cannot change global badge colors!";
+                    return false;
+                }
+
                 player.RankColor = color;
             }
+
+            databasePlayer.ColorPreference = color;
+            databasePlayer.SaveData();
+            response = "<color=green>Success, choice has been saved!</color>";    
+         
 
             return true;
         }
