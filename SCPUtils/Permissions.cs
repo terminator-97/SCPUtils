@@ -18,7 +18,13 @@
                 "scputils announce delete", PlayerPermissions.Broadcasting
             },
             {
+                "scputils announce list", PlayerPermissions.Broadcasting
+            },
+            {
                 "scputils announce send", PlayerPermissions.Broadcasting
+            },
+            {
+                "scputils announce private", PlayerPermissions.Broadcasting
             },
             {
                 "scputils asn", PlayerPermissions.KickingAndShortTermBanning
@@ -46,6 +52,48 @@
             },
             {
                 "scputils ip duplicate", PlayerPermissions.PlayerSensitiveDataAccess
+            },
+            {
+                "scputils list", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils list player", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils list staff", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player broadcast", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player delete", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player dnt", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player edit", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player info", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player list", PlayerPermissions.GameplayData
+            },
+            {
+                "scputils player reset", PlayerPermissions.PermissionsManagement
+            },
+            {
+                "scputils player resetpreference", PlayerPermissions.PermissionsManagement
+            },
+            {
+                "scputils player restriction", PlayerPermissions.PermissionsManagement
+            },
+            {
+                "scputils player unrestriction", PlayerPermissions.PermissionsManagement
             },
             {
                 "scputils playtime", PlayerPermissions.GameplayData

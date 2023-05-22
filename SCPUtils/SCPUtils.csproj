@@ -80,6 +80,8 @@
     <Compile Include="Commands\PlayerConsole\Badge\BadgeCommand.cs" />
     <Compile Include="Commands\PlayerConsole\PlayTime\UserPlayTimeCommand.cs" />
     <Compile Include="Commands\PlayerConsole\SCPUtilsCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\ListAnnouncementCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Announce\PrivateAnnouncementCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Asn\AsnCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Asn\AsnUnWhitelistCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Asn\AsnWhitelistCommand.cs" />
@@ -93,6 +95,19 @@
     <Compile Include="Commands\RemoteAdmin\Announce\SendAnnouncementCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Ip\DuplicateIpCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Ip\IpCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\List\ListCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\List\PlayerListCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\List\StaffListCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\BroadcastPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\DeletePlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\DntPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\EditPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\InfoPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\ListPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\PlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\ResetPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\RestrictionPlayerCommand.cs" />
+    <Compile Include="Commands\RemoteAdmin\Player\UnrestrictionPlayerCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\BadgePlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\PlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\StaffPlayTimeCommand.cs" />
@@ -155,6 +170,10 @@
     <PackageReference Include="Northwood.PluginAPI">
       <Version>12.0.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\RemoteAdmin\Sanction\" />
+    <Folder Include="Commands\RemoteAdmin\Swap\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

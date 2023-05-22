@@ -18,9 +18,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils broadcast delete"]))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils announce delete"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils broadcast delete"]}");
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils announce delete"]}");
                 return false;
             }
 

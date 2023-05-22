@@ -33,7 +33,7 @@
             else
             {
                 string target = arguments.Array[3];
-                Player databasePlayer = target.GetDatabasePlayer();
+                SCPUtils.Player databasePlayer = target.GetDatabasePlayer();
 
                 if (databasePlayer == null)
                 {

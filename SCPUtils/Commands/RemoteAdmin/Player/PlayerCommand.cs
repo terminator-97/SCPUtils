@@ -1,35 +1,30 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin
+﻿namespace SCPUtils.Commands.RemoteAdmin.Player
 {
     using CommandSystem;
     using System;
 
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class SCPUtilsCommand : ParentCommand, IUsageProvider
+    public class PlayerCommand : ParentCommand
     {
-        public SCPUtilsCommand() => LoadGeneratedCommands();
+        public PlayerCommand() => LoadGeneratedCommands();
 
-        public override string Command { get; } = "scputils";
+        public override string Command { get; } = "player";
         public override string[] Aliases { get; } = new[]
         {
-            "scpu", "su"
+            "p", "pl"
         };
-        public override string Description { get; } = "The most famous plugin that offers many additions to the servers.";
-
-        public string[] Usage { get; } = new[]
-        {
-            "command"
-        };
+        public override string Description { get; } = "Player base command.";
 
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new Announce.AnnounceCommand());
-            RegisterCommand(new ASN.AsnCommand());
-            RegisterCommand(new Badge.BadgeCommand());
-            RegisterCommand(new Ip.IpCommand());
-            RegisterCommand(new List.ListCommand());
-            RegisterCommand(new Player.PlayerCommand());
-            RegisterCommand(new PlayTime.PlayTimeCommand());
+            RegisterCommand(new BroadcastPlayerCommand());
+            RegisterCommand(new DeletePlayerCommand());
+            RegisterCommand(new DntPlayerCommand());
+            RegisterCommand(new EditPlayerCommand());
+            RegisterCommand(new InfoPlayerCommand());
+            RegisterCommand(new ListPlayerCommand());
+            RegisterCommand(new ResetPlayerCommand());
+            RegisterCommand(new RestrictionPlayerCommand());
+            RegisterCommand(new UnrestrictionPlayerCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

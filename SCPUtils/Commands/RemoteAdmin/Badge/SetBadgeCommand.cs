@@ -37,7 +37,7 @@
             target = arguments.Array[3].ToString();
             badge = arguments.Array[4].ToString();
             PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(target);
-            Player databasePlayer = target.GetDatabasePlayer();
+            SCPUtils.Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {

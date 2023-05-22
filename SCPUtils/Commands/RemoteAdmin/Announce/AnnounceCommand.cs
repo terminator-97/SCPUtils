@@ -18,7 +18,9 @@
         {
             RegisterCommand(new CreateAnnouncementCommand());
             RegisterCommand(new DeleteAnnouncementCommand());
+            RegisterCommand(new ListAnnoucementCommand());
             RegisterCommand(new SendAnnoucementCommand());
+            RegisterCommand(new PrivateAnnouncementCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

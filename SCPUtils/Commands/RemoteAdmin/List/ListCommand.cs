@@ -1,39 +1,39 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin
+﻿namespace SCPUtils.Commands.RemoteAdmin.List
 {
     using CommandSystem;
     using System;
 
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class SCPUtilsCommand : ParentCommand, IUsageProvider
+    public class ListCommand : ParentCommand
     {
-        public SCPUtilsCommand() => LoadGeneratedCommands();
+        public ListCommand() => LoadGeneratedCommands();
 
-        public override string Command { get; } = "scputils";
+        public override string Command { get; } = "list";
         public override string[] Aliases { get; } = new[]
         {
-            "scpu", "su"
+            "l"
         };
-        public override string Description { get; } = "The most famous plugin that offers many additions to the servers.";
-
-        public string[] Usage { get; } = new[]
-        {
-            "command"
-        };
+        public override string Description { get; } = "List base command.";
 
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new Announce.AnnounceCommand());
-            RegisterCommand(new ASN.AsnCommand());
-            RegisterCommand(new Badge.BadgeCommand());
-            RegisterCommand(new Ip.IpCommand());
-            RegisterCommand(new List.ListCommand());
-            RegisterCommand(new Player.PlayerCommand());
-            RegisterCommand(new PlayTime.PlayTimeCommand());
+            RegisterCommand(new StaffListCommand());
+            RegisterCommand(new PlayerListCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
+            {
+                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                return false;
+            }
+
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils list"]))
+            {
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils list"]}");
+                return false;
+            }
+
             response = ScpUtils.StaticInstance.commandTranslation.ParentCommands;
             foreach (ICommand command in AllCommands)
             {

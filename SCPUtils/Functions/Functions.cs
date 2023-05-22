@@ -647,7 +647,7 @@
 
         public bool CheckCommandCooldown(ICommandSender sender)
         {
-            if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE") /*&& sender.CheckPermission("scputils.bypass")*/)
+            if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE") && sender.CheckPermission(PlayerPermissions.AdminChat))
             {
                 return false;
             }

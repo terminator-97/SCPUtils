@@ -36,7 +36,7 @@
             }
 
             PluginAPI.Core.Player player = PluginAPI.Core.Player.Get(target);
-            Player databasePlayer = target.GetDatabasePlayer();
+            SCPUtils.Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {

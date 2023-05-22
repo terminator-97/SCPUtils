@@ -34,7 +34,7 @@
             else
             {
                 string target = arguments.Array[3];
-                Player databasePlayer = target.GetDatabasePlayer();
+                SCPUtils.Player databasePlayer = target.GetDatabasePlayer();
 
                 if (databasePlayer == null)
                 {
@@ -55,7 +55,6 @@
 
                     if (databasePlayer2 != null)
                     {
-
                         duplicateIp.AppendLine();
                         duplicateIp.AppendLine($"{ScpUtils.StaticInstance.commandTranslation.IpPlayer.Replace("%player%", $"{databasePlayer2.Name} ({databasePlayer2.Id}@{databasePlayer2.Authentication}")}");
                         duplicateIp.AppendLine($"\n{ScpUtils.StaticInstance.commandTranslation.IpFirstJoin.Replace("%firstJoin%", $"{databasePlayer2.FirstJoin}")}");

@@ -51,7 +51,7 @@
                     return false;
                 }
             }
-            Player databasePlayer = target.GetDatabasePlayer();
+            SCPUtils.Player databasePlayer = target.GetDatabasePlayer();
 
             if (databasePlayer == null)
             {
