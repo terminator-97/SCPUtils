@@ -12,6 +12,8 @@ namespace SCPUtils
     using Respawning;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerStatsSystem;
+    using PluginAPI.Core;
+
     public class EventHandlers
     {
         public DateTime lastTeslaEvent;
@@ -51,15 +53,15 @@ namespace SCPUtils
             else return;
             PluginAPI.Core.Log.Info("TEST 21");
             if (Cuffed.ContainsKey(player)) Cuffed.Remove(player);
-            /*if ((player.Team == Team.SCPs || (ScpUtils.StaticInstance.configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial)) && PluginAPI.Core.Round.IsRoundStarted && ScpUtils.StaticInstance.configs.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
+            /*if ((player.Team == Team.SCPs || (ScpUtils.StaticInstance.Configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial)) && PluginAPI.Core.Round.IsRoundStarted && ScpUtils.StaticInstance.Configs.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
                 PluginAPI.Core.Log.Info("TEST 22");
-                if (DatabasePlayer.GetDatabasePlayer(player).LastRespawn.AddSeconds(ScpUtils.StaticInstance.configs.WarnImmunityTeslaRespawn) <= DateTime.Now && DamageType.TranslationId == DeathTranslations.Tesla.Id)
+                if (DatabasePlayer.GetDatabasePlayer(player).LastRespawn.AddSeconds(ScpUtils.StaticInstance.Configs.WarnImmunityTeslaRespawn) <= DateTime.Now && DamageType.TranslationId == DeathTranslations.Tesla.Id)
                 {
                     return;
                 }
                 PluginAPI.Core.Log.Info("TEST 23");
-                if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.configs.Scp079TeslaEventWait)
+                if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.Configs.Scp079TeslaEventWait)
                 {
                     PluginAPI.Core.Log.Info("TEST 24");
                     //if (DamageType.TranslationId == DeathTranslations.Tesla.Id || DamageType.TranslationId == DeathTranslations.Crushed.Id || (DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage >= 50000) || (DamageType.TranslationId == DeathTranslations.Explosion.Id && player.UserId == attacker.UserId))
@@ -69,7 +71,7 @@ namespace SCPUtils
                         ScpUtils.StaticInstance.Functions.LogWarn(player, DamageType.TranslationId.ToString());
                         ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
                     }
-                    else if ((DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage == -1f) && ScpUtils.StaticInstance.configs.QuitEqualsSuicide)
+                    else if ((DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage == -1f) && ScpUtils.StaticInstance.Configs.QuitEqualsSuicide)
                     {
                         PluginAPI.Core.Log.Info("TEST 26");
                         ScpUtils.StaticInstance.Functions.LogWarn(player, "Disconnect");
@@ -78,7 +80,7 @@ namespace SCPUtils
                 }
                 PluginAPI.Core.Log.Info("TEST 27");
             }*/
-            //if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.configs.Scp079TeslaEventWait)
+            //if ((DateTime.Now - lastTeslaEvent).Seconds >= ScpUtils.StaticInstance.Configs.Scp079TeslaEventWait)
             //{
                 PluginAPI.Core.Log.Info("TEST 24");
                 if (DamageType.TranslationId == DeathTranslations.Tesla.Id || DamageType.TranslationId == DeathTranslations.Crushed.Id || (DamageType.TranslationId == DeathTranslations.Unknown.Id && DamageType.Damage >= 50000) || (DamageType.TranslationId == DeathTranslations.Explosion.Id && player.UserId == attacker.UserId))
@@ -88,7 +90,7 @@ namespace SCPUtils
                     ScpUtils.StaticInstance.Functions.LogWarn(player, DamageType.TranslationId.ToString());
                     ScpUtils.StaticInstance.Functions.OnQuitOrSuicide(player);
                 }
-                else if (DamageType.TranslationId == DeathTranslations.Unknown.Id && ScpUtils.StaticInstance.configs.QuitEqualsSuicide)
+                else if (DamageType.TranslationId == DeathTranslations.Unknown.Id && ScpUtils.StaticInstance.Configs.QuitEqualsSuicide)
                 {
                     PluginAPI.Core.Log.Info("TEST 26");
                     ScpUtils.StaticInstance.Functions.LogWarn(player, "Disconnect");
@@ -96,7 +98,7 @@ namespace SCPUtils
                 }
             //}
 
-            if (ScpUtils.StaticInstance.configs.NotifyLastPlayerAlive)
+            if (ScpUtils.StaticInstance.Configs.NotifyLastPlayerAlive)
             {           
 
                 List<PluginAPI.Core.Player> team = PluginAPI.Core.Player.GetPlayers().FindAll(x => x.Team == player.Team);
@@ -107,43 +109,43 @@ namespace SCPUtils
                 {
                     if (team[0] == player)
                     {
-                        team[1].ReceiveHint(ScpUtils.StaticInstance.configs.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.configs.LastPlayerAliveMessageDuration);
+                        team[1].ReceiveHint(ScpUtils.StaticInstance.Translation.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.Configs.LastPlayerAliveMessageDuration);
                     }
                     else
                     {
-                        team[0].ReceiveHint(ScpUtils.StaticInstance.configs.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.configs.LastPlayerAliveMessageDuration);
+                        team[0].ReceiveHint(ScpUtils.StaticInstance.Translation.LastPlayerAliveNotificationText, ScpUtils.StaticInstance.Configs.LastPlayerAliveMessageDuration);
                     }
                 }
             }
 
 
-            if (player.IsSCP || player.Role == PlayerRoles.RoleTypeId.Tutorial && ScpUtils.StaticInstance.configs.AreTutorialsSCP)
+            if (player.IsSCP || player.Role == PlayerRoles.RoleTypeId.Tutorial && ScpUtils.StaticInstance.Configs.AreTutorialsSCP)
             {
-                if (!ScpUtils.StaticInstance.configs.ShowDeathMessage0492 && player.Role == PlayerRoles.RoleTypeId.Scp0492) return;
+                if (!ScpUtils.StaticInstance.Configs.ShowDeathMessage0492 && player.Role == PlayerRoles.RoleTypeId.Scp0492) return;
                 if (player.UserId == attacker.UserId)
                 {
-                    var message = ScpUtils.StaticInstance.configs.ScpSuicideMessage.Content;
+                    var message = ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Content;
                     message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%reason%", DamageType.TranslationId.ToString());
-                    PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Type);
+                    PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Type);
                 }
 
                 else if (player.UserId != attacker.UserId)
                 {                  
-                        if (ScpUtils.StaticInstance.configs.ScpSuicideMessage.Show)
+                        if (ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Show)
                         {
-                            var message = ScpUtils.StaticInstance.configs.ScpSuicideMessage.Content;
+                            var message = ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Content;
                             message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%reason%", DamageType.TranslationId.ToString());
                           
-                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.configs.ScpSuicideMessage.Type);
+                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Duration, ScpUtils.StaticInstance.Translation.ScpSuicideMessage.Type);
                         }                    
                 }
                 else
                 {
-                    if (ScpUtils.StaticInstance.configs.ScpDeathMessage.Show)
+                    if (ScpUtils.StaticInstance.Translation.ScpDeathMessage.Show)
                     {
-                        var message = ScpUtils.StaticInstance.configs.ScpDeathMessage.Content;
+                        var message = ScpUtils.StaticInstance.Translation.ScpDeathMessage.Content;
                         message = message.Replace("%playername%", player.Nickname).Replace("%scpname%", player.Role.ToString()).Replace("%killername%", attacker.Nickname).Replace("%reason%", DamageType.TranslationId.ToString());
-                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.configs.ScpDeathMessage.Duration, ScpUtils.StaticInstance.configs.ScpDeathMessage.Type);
+                        PluginAPI.Core.Server.SendBroadcast(message, ScpUtils.StaticInstance.Translation.ScpDeathMessage.Duration, ScpUtils.StaticInstance.Translation.ScpDeathMessage.Type);
                     }
                 }
 
@@ -194,7 +196,7 @@ namespace SCPUtils
         [PluginEvent(ServerEvent.PlayerRemoveHandcuffs)]
         public void OnPlayerUnhandCuff(PluginAPI.Core.Player player, PluginAPI.Core.Player target)
         {
-            if (ScpUtils.StaticInstance.configs.HandCuffOwnership)
+            if (ScpUtils.StaticInstance.Configs.HandCuffOwnership)
             {
                 if (!Cuffed.ContainsKey(target)) return;
 
@@ -221,7 +223,7 @@ namespace SCPUtils
 
                 else
                 {
-                    if (ScpUtils.StaticInstance.configs.UnhandCuffDenied.Show) player.ReceiveHint(ScpUtils.StaticInstance.configs.UnhandCuffDenied.Content, ScpUtils.StaticInstance.configs.UnhandCuffDenied.Duration);
+                    if (ScpUtils.StaticInstance.Translation.UnhandCuffDenied.Show) player.ReceiveHint(ScpUtils.StaticInstance.Translation.UnhandCuffDenied.Content, ScpUtils.StaticInstance.Translation.UnhandCuffDenied.Duration);
                     // Let's try to disallow player cuffing 
                     return;
                 }
@@ -231,7 +233,7 @@ namespace SCPUtils
         [PluginEvent(ServerEvent.PlayerHandcuff)]
         public void OnPlayerHandcuff(PluginAPI.Core.Player player, PluginAPI.Core.Player target)
         {
-            if (ScpUtils.StaticInstance.configs.HandCuffOwnership)
+            if (ScpUtils.StaticInstance.Configs.HandCuffOwnership)
             {
                 if (Cuffed.ContainsKey(target)) Cuffed.Remove(target);
                 Cuffed.Add(target, player.UserId);
@@ -299,9 +301,9 @@ namespace SCPUtils
         [PluginEvent(ServerEvent.Scp096AddingTarget)]
         public void On096AddTarget(PluginAPI.Core.Player player, PluginAPI.Core.Player target, bool isForLook)
         {
-            if (ScpUtils.StaticInstance.configs.Scp096TargetNotifyEnabled)
+            if (ScpUtils.StaticInstance.Configs.Scp096TargetNotifyEnabled)
             {
-                target.ReceiveHint(ScpUtils.StaticInstance.configs.Scp096TargetNotifyText, ScpUtils.StaticInstance.configs.Scp096TargetMessageDuration);
+                target.ReceiveHint(ScpUtils.StaticInstance.Translation.Scp096TargetNotifyText, ScpUtils.StaticInstance.Configs.Scp096TargetMessageDuration);
             }
         }
 
@@ -325,7 +327,7 @@ namespace SCPUtils
         {
             if ( player == null || attacker == null) return true;
 
-            if (ScpUtils.StaticInstance.configs.CuffedImmunityPlayers?.ContainsKey(player.Role.GetTeam()) == true)
+            if (ScpUtils.StaticInstance.Configs.CuffedImmunityPlayers?.ContainsKey(player.Role.GetTeam()) == true)
             {            
                 return !(ScpUtils.StaticInstance.Functions.IsTeamImmune(player, attacker) && ScpUtils.StaticInstance.Functions.CuffedCheck(player) && ScpUtils.StaticInstance.Functions.CheckSafeZones(player));
             }
@@ -355,8 +357,8 @@ namespace SCPUtils
                 databasePlayer.LastSeen = PreauthTime[joinedPlayer.UserId];
                 PreauthTime.Remove(joinedPlayer.UserId);
             }
-
             else databasePlayer.LastSeen = DateTime.Now;
+
             databasePlayer.Name = joinedPlayer.Nickname;
             databasePlayer.Ip = joinedPlayer.IpAddress;
 
@@ -365,21 +367,23 @@ namespace SCPUtils
                 databasePlayer.FirstJoin = DateTime.Now;
             }
 
-            if (ScpUtils.StaticInstance.configs.WelcomeMessage.Show)
+            if (ScpUtils.StaticInstance.GetMotd.Motd.Show)
             {
-                var message = ScpUtils.StaticInstance.configs.WelcomeMessage.Content;
-                message = message.Replace("%player%", joinedPlayer.Nickname);
-                joinedPlayer.SendBroadcast(message, ScpUtils.StaticInstance.configs.WelcomeMessage.Duration, ScpUtils.StaticInstance.configs.WelcomeMessage.Type, false);
+                string message = ScpUtils.StaticInstance.GetMotd.Motd.Content
+                .Replace("$player", joinedPlayer.Nickname)
+                .Replace("$serverName", ServerConsole._serverName)
+                .Replace("$roundDurationMinutes", $"{Round.Duration.Minutes}")
+                .Replace("$roundDurationSeconds", $"{Round.Duration.Seconds}")
+                .Replace("%players%", $"{PluginAPI.Core.Player.GetPlayers().Count}");
+                
+                joinedPlayer.SendBroadcast(message, ScpUtils.StaticInstance.GetMotd.Motd.Duration, ScpUtils.StaticInstance.GetMotd.Motd.Type, ScpUtils.StaticInstance.GetMotd.Motd.ClearAll);
             }
 
-            if (ScpUtils.StaticInstance.Functions.CheckAsnPlayer(joinedPlayer))
+            if (ScpUtils.StaticInstance.Configs.ASNBlacklist.Contains(joinedPlayer.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
             {
-                joinedPlayer.Kick($"Auto-Kick: {ScpUtils.StaticInstance.configs.AsnKickMessage}");
+                joinedPlayer.Kick($"{ScpUtils.StaticInstance.commandTranslation.Kick} {ScpUtils.StaticInstance.Translation.AsnKickMessage}");
             }
-            else
-            {
-                ScpUtils.StaticInstance.Functions.PostLoadPlayer(joinedPlayer);
-            }
+            else ScpUtils.StaticInstance.Functions.PostLoadPlayer(joinedPlayer);
 
             ScpUtils.StaticInstance.Functions.IpCheck(joinedPlayer);
         }
@@ -388,31 +392,26 @@ namespace SCPUtils
         public void OnPlayerSpawn(PluginAPI.Core.Player player, RoleTypeId role)
         {
             if (player.IsServer || !player.IsSCP || player == null) return;
-            PluginAPI.Core.Log.Info("TEST 11");
 
             Player databasePlayer = player.GetDatabasePlayer();
-            if (player.Team == Team.SCPs || (ScpUtils.StaticInstance.configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial))
+            if (player.Team == Team.SCPs || (ScpUtils.StaticInstance.Configs.AreTutorialsSCP && player.Role == RoleTypeId.Tutorial))
             {
-                PluginAPI.Core.Log.Info("TEST 12");
 
                 if (databasePlayer.RoundBanLeft >= 1 && player.Role != RoleTypeId.Scp0492)
                 {
                     Timing.CallDelayed(1.5f, () => ScpUtils.StaticInstance.Functions.ReplacePlayer(player));
                 }
                 else player.GetDatabasePlayer().TotalScpGamesPlayed++;
-                PluginAPI.Core.Log.Info("TEST 13");
             }
-            if (player.IsSCP && ScpUtils.StaticInstance.configs.AllowSCPSwap)
+            if (player.IsSCP && ScpUtils.StaticInstance.Configs.AllowSCPSwap)
             {
-                PluginAPI.Core.Log.Info("TEST 14");
-                if (PluginAPI.Core.Round.Duration.TotalSeconds < ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequest)
+                if (Round.Duration.TotalSeconds < ScpUtils.StaticInstance.Configs.MaxAllowedTimeScpSwapRequest)
                 {
-                    PluginAPI.Core.Log.Info("TEST 15");
-                    var seconds = Math.Round(ScpUtils.StaticInstance.configs.MaxAllowedTimeScpSwapRequest - PluginAPI.Core.Round.Duration.TotalSeconds + 1);
-                    var message = ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Content;
-                    PluginAPI.Core.Log.Info("TEST 16");
+                    var seconds = Math.Round(ScpUtils.StaticInstance.Configs.MaxAllowedTimeScpSwapRequest - Round.Duration.TotalSeconds + 1);
+                    var message = ScpUtils.StaticInstance.Translation.SwapRequestInfoBroadcast.Content;
+
                     message = message.Replace("%seconds%", seconds.ToString());
-                    player.SendBroadcast(message, ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Duration, ScpUtils.StaticInstance.configs.SwapRequestInfoBroadcast.Type, false);
+                    player.SendBroadcast(message, ScpUtils.StaticInstance.Translation.SwapRequestInfoBroadcast.Duration, ScpUtils.StaticInstance.Translation.SwapRequestInfoBroadcast.Type, false);
                 }
             }
         }
@@ -424,6 +423,6 @@ namespace SCPUtils
         }
 
         [PluginEvent(ServerEvent.LczDecontaminationStart)]
-        public void OnDecontaminate() => PluginAPI.Core.Server.SendBroadcast(ScpUtils.StaticInstance.configs.DecontaminationMessage.Content, ScpUtils.StaticInstance.configs.DecontaminationMessage.Duration, ScpUtils.StaticInstance.configs.DecontaminationMessage.Type);
+        public void OnDecontaminate() => Server.SendBroadcast(ScpUtils.StaticInstance.Translation.DecontaminationMessage.Content, ScpUtils.StaticInstance.Translation.DecontaminationMessage.Duration, ScpUtils.StaticInstance.Translation.DecontaminationMessage.Type);
     }
 }

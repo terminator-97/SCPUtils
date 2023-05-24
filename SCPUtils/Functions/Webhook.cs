@@ -12,7 +12,7 @@
         {
             WebResponse response = null;
 
-            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.configs.WebhookUrl);
+            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.Configs.WebhookUrl);
 
             wr.ContentType = "application/json";
             wr.Method = "POST";
@@ -22,7 +22,7 @@
             {
                 string json = JsonConvert.SerializeObject(new
                 {
-                    username = ScpUtils.StaticInstance.configs.WebhookNickname,
+                    username = ScpUtils.StaticInstance.Configs.WebhookNickname,
                     embeds = new[]
                     {
                         new

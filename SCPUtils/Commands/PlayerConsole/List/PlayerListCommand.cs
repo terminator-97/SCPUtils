@@ -1,9 +1,8 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin.List
+﻿namespace SCPUtils.Commands.Console
 {
     using CommandSystem;
     using System;
     using System.Text;
-    using VoiceChat;
 
     public class PlayerListCommand : ICommand
     {
@@ -19,37 +18,13 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils list player"]))
-            {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils list player"]}");
-                return false;
-            }
-
             StringBuilder playerList = new StringBuilder(ScpUtils.StaticInstance.commandTranslation.PlayersOnline.Replace("%count%", PluginAPI.Core.Player.Count.ToString()));
             foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
             {
                 playerList.AppendLine();
-                playerList.Append(ScpUtils.StaticInstance.commandTranslation.PlayerList.Replace("%id%", player.PlayerId.ToString()).Replace("%player%", $"{player.DisplayNickname} [{player.UserId}] [{player.Role}]"));
+                playerList.Append(ScpUtils.StaticInstance.commandTranslation.PlayerList.Replace("%id%", player.PlayerId.ToString()).Replace("%player%", $"{player.DisplayNickname}"));
 
                 if (player.ReferenceHub.serverRoles.MyText != null) playerList.Append($" [<color={player.RoleColor}>{player.ReferenceHub.serverRoles.MyText}</color>]");
-
-                if (player.IsAlive)
-                {
-                    playerList.Append(ScpUtils.StaticInstance.commandTranslation.Hp.Replace("%hp%", $"{player.Health}"));
-                    
-                    if (player.ReferenceHub.playerStats.StatModules[1].CurValue >= 1) 
-                        playerList.Append(ScpUtils.StaticInstance.commandTranslation.Ahp.Replace("%ahp%", $"{player.ReferenceHub.playerStats.StatModules[1].NormalizedValue}"));
-
-                    //if (FpcNoclip.IsPermitted(player.ReferenceHub))
-                    if (player.IsNoclipEnabled)
-                        playerList.Append(ScpUtils.StaticInstance.commandTranslation.Noclip);
-
-                    if (player.IsUsingVoiceChat)
-                        playerList.Append(ScpUtils.StaticInstance.commandTranslation.IsSpeaking);
-                }
-
-                if (player.IsOverwatchEnabled)
-                    playerList.Append(ScpUtils.StaticInstance.commandTranslation.Overwatch);
 
                 if (player.IsGodModeEnabled)
                     playerList.Append(ScpUtils.StaticInstance.commandTranslation.God);
@@ -62,14 +37,8 @@
 
                 if (player.IsMuted)
                     playerList.Append(ScpUtils.StaticInstance.commandTranslation.VoiceChat);
-                
-                if (VoiceChatMutes.GetFlags(player.ReferenceHub) == VcMuteFlags.GlobalRegular)
-                    playerList.Append(ScpUtils.StaticInstance.commandTranslation.GlobalVoiceChat);
 
-                if (player.DoNotTrack) 
-                    playerList.Append(ScpUtils.StaticInstance.commandTranslation.Dnt);
-
-                if (player.RemoteAdminAccess)
+                if (player.RemoteAdminAccess && string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge))
                     playerList.Append(ScpUtils.StaticInstance.commandTranslation.Ra);
             }
 

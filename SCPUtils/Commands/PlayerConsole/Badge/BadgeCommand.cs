@@ -38,12 +38,12 @@
 
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Translation.CooldownMessage;
                 return false;
             }
-            if (!ScpUtils.StaticInstance.configs.BadgeVisibility.Contains(user.ReferenceHub.serverRoles.Group.BadgeText))
+            if (!ScpUtils.StaticInstance.Configs.BadgeVisibility.Contains(user.ReferenceHub.serverRoles.Group.BadgeText))
             {
-                response = ScpUtils.StaticInstance.configs.UnauthorizedBadgeChangeVisibility;
+                response = ScpUtils.StaticInstance.Translation.UnauthorizedBadgeChangeVisibility;
                 return false;
             }
             else if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))

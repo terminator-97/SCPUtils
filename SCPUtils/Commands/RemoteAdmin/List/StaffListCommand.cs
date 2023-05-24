@@ -15,7 +15,7 @@
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Translation.CooldownMessage;
                 return false;
             }
 
@@ -24,63 +24,55 @@
                 response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils list staff"]}");
                 return false;
             }
-            StringBuilder message = new StringBuilder(ScpUtils.StaticInstance.commandTranslation.StaffOnline.Replace("%online%", CountStaffMembers().ToString()));
 
+            StringBuilder staffList = new StringBuilder(ScpUtils.StaticInstance.commandTranslation.StaffOnline.Replace("%online%", CountStaffMembers().ToString()));
             foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
             {
-                if (player.IsNorthwoodStaff || player.IsGlobalModerator || player.ReferenceHub.serverRoles.RaEverywhere)
+                if (player.IsNorthwoodStaff || player.IsGlobalModerator)
                 {
-                    message.AppendLine();
-                    message.Append(ScpUtils.StaticInstance.commandTranslation.SlStaff.Replace("%staff%", $"{player.Nickname} ({player.UserId})").Replace("%role%", $"<color={player.RoleColor}>{player.RoleName}</color> ({player.ReferenceHub.serverRoles.GlobalBadgeType})").Replace("%class%", player.Role.ToString()));
+                    staffList.AppendLine();
+                    staffList.Append(ScpUtils.StaticInstance.commandTranslation.SlStaff.Replace("%staff%", $"{player.Nickname} ({player.UserId})").Replace("%role%", $"<color={player.RoleColor}>{player.RoleName}</color> ({player.ReferenceHub.serverRoles.GlobalBadgeType})").Replace("%class%", player.Role.ToString()));
                     
                     if (player.IsOverwatchEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.Overwatch);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.Overwatch);
 
                     if (player.IsNoclipEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.Noclip);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.Noclip);
 
                     if (player.IsGodModeEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.God);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.God);
                 }
                 else if (player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
-                    message.AppendLine();
-                    message.Append(ScpUtils.StaticInstance.commandTranslation.StaffList.Replace("%id%", player.PlayerId.ToString()).Replace("%staff%", $"{player.Nickname} ({player.UserId})").Replace("%role%", $"<color={player.RoleColor}>{player.ReferenceHub.serverRoles.MyText}</color>").Replace("%class%", player.Role.ToString()));
+                    staffList.AppendLine();
+                    staffList.Append(ScpUtils.StaticInstance.commandTranslation.StaffList.Replace("%id%", player.PlayerId.ToString()).Replace("%staff%", $"{player.Nickname} ({player.UserId})").Replace("%role%", $"<color={player.RoleColor}>{player.ReferenceHub.serverRoles.MyText}</color>").Replace("%class%", player.Role.ToString()));
 
                     if (player.IsOverwatchEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.Overwatch);
-                    }
-                    if (FpcNoclip.IsPermitted(player.ReferenceHub))
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.Noclip);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.Overwatch);
+                    
+                    //if (FpcNoclip.IsPermitted(player.ReferenceHub))
+                    if (player.IsNoclipEnabled)
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.Noclip);
+                    
                     if (player.IsGodModeEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.God);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.God);
+                    
                     if (player.IsBypassEnabled)
-                    {
-                        message.Append(ScpUtils.StaticInstance.commandTranslation.Bypass);
-                    }
+                        staffList.Append(ScpUtils.StaticInstance.commandTranslation.Bypass);
                 }
             }
+            
             if (CountStaffMembers() == 0)
             {
                 response = ScpUtils.StaticInstance.commandTranslation.NoStaff;
                 return true;
             }
-            response = $"{message}";
+
+            response = $"{staffList}";
             return true;
         }
 
-        private static int CountStaffMembers()
+        private int CountStaffMembers()
         {
             int value = 0;
             foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())

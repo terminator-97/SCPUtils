@@ -1,4 +1,4 @@
-﻿namespace SCPUtils
+﻿namespace SCPUtils.Config
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -69,25 +69,22 @@
                 "scputils player broadcast", PlayerPermissions.GameplayData
             },
             {
-                "scputils player delete", PlayerPermissions.GameplayData
+                "scputils player delete", PlayerPermissions.ServerConfigs
             },
             {
                 "scputils player dnt", PlayerPermissions.GameplayData
             },
             {
-                "scputils player edit", PlayerPermissions.GameplayData
+                "scputils player edit", PlayerPermissions.ServerConfigs
             },
             {
                 "scputils player info", PlayerPermissions.GameplayData
             },
             {
-                "scputils player list", PlayerPermissions.GameplayData
+                "scputils player list", PlayerPermissions.ServerConfigs
             },
             {
                 "scputils player reset", PlayerPermissions.PermissionsManagement
-            },
-            {
-                "scputils player resetpreference", PlayerPermissions.PermissionsManagement
             },
             {
                 "scputils player restriction", PlayerPermissions.PermissionsManagement

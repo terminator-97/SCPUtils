@@ -1,8 +1,8 @@
-﻿namespace SCPUtils.Commands
+﻿namespace SCPUtils.Config
 {
     using System.ComponentModel;
 
-    public class CommandTranslation
+    public class Command
     {
         public string SenderError { get; set; } = "<color=red>You need \"<b>%permission%</b>\" to use this command!</color>";
         public string PlayerDatabaseError { get; set; } = "Player not found on Database!";
@@ -156,6 +156,13 @@
         public string PlayerList { get; set; } = "[%id%] %player%";
         public string NoPlayers { get; set; } = "No players online!";
         public string NoStaff { get; set; } = "No staffers online!";
+
+        [Description("Sanction type\n# 8.3.4.\n # Every automated kick or ban (except ones issued by native game functions) must\n # be clearly described to the kicked/banned Player as an automated action not\n # related to native game function, unless it clearly does not look like an automated ction.")]
+        public string Warn { get; set; } = "[WARNING]";
+        public string Kick { get; set; } = "[AUTO-KICK]";
+        public string Ban { get; set; } = "[AUTO-BAN]";
+        public string SoftBan { get; set; } = "[AUTO-SOFTBAN]";
+
 
         [Description("\"%arguments%\" will get usage this definition ↑")]
         public string UsageError { get; set; } = $"<color=yellow>Usage: %command% %arguments%</color>";

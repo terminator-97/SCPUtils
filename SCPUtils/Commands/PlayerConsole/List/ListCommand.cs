@@ -1,26 +1,23 @@
-﻿namespace SCPUtils.Commands.RemoteAdmin.Announce
+﻿namespace SCPUtils.Commands.Console
 {
     using CommandSystem;
     using System;
 
-    public class AnnounceCommand : ParentCommand
+    public class ListCommand : ParentCommand
     {
-        public AnnounceCommand() => LoadGeneratedCommands();
+        public ListCommand() => LoadGeneratedCommands();
 
-        public override string Command { get; } = "announce";
+        public override string Command { get; } = "list";
         public override string[] Aliases { get; } = new[]
         {
-            "a", "broadcast", "bc"
+            "l"
         };
-        public override string Description { get; } = "Announce base command.";
+        public override string Description { get; } = "List base command.";
 
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new CreateAnnouncementCommand());
-            RegisterCommand(new DeleteAnnouncementCommand());
-            RegisterCommand(new ListAnnoucementCommand());
-            RegisterCommand(new SendAnnoucementCommand());
-            RegisterCommand(new PrivateAnnouncementCommand());
+            RegisterCommand(new StaffListCommand());
+            RegisterCommand(new PlayerListCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -31,9 +28,9 @@
                 return false;
             }
 
-            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils announce"]))
+            if (!sender.CheckPermission(ScpUtils.StaticInstance.perms.PermissionsList["scputils list"]))
             {
-                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils announce"]}");
+                response = ScpUtils.StaticInstance.commandTranslation.SenderError.Replace("%permission%", $"{ScpUtils.StaticInstance.perms.PermissionsList["scputils list"]}");
                 return false;
             }
 
@@ -50,7 +47,7 @@
                 });
                 if (command.Aliases != null && command.Aliases.Length != 0)
                 {
-                    response = response + "\n"+ ScpUtils.StaticInstance.commandTranslation.CommandAliases + string.Join(", ", command.Aliases);
+                    response = response + "\n" + ScpUtils.StaticInstance.commandTranslation.CommandAliases + string.Join(", ", command.Aliases);
                 }
             }
             return false;

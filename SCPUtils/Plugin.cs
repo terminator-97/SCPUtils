@@ -3,7 +3,6 @@ namespace SCPUtils
     using PluginAPI.Core;
     using PluginAPI.Core.Attributes;
     using PluginAPI.Events;
-    using SCPUtils.Commands;
 
     public class ScpUtils
     {
@@ -15,10 +14,10 @@ namespace SCPUtils
         public static ScpUtils StaticInstance;
 
         [PluginPriority(PluginAPI.Enums.LoadPriority.Medium)]
-        [PluginEntryPoint("SCPUtils", "0.4.6", "The most famous plugin that offers many additions to the servers.", "Terminator_97")]
+        [PluginEntryPoint("SCPUtils", "0.6.2", "The most famous plugin that offers many additions to the servers.", "Terminator_97, Bay")]
         public void LoadPlugin()
         {
-            if (configs.IsEnabled is false)
+            if (Configs.IsEnabled is false)
             {
                 StaticInstance = null;
 
@@ -30,7 +29,7 @@ namespace SCPUtils
 
                 Database.Close();
 
-                Log.Error("SCPUtils has been disabled by server administration. Check configs if is an error.");
+                Log.Error("SCPUtils has been disabled by server administration. Check Configs if is an error.");
 
                 return;
             }
@@ -46,20 +45,22 @@ namespace SCPUtils
 
             var handler = PluginHandler.Get(this);
 
-            handler.SaveConfig(this, nameof(Configs));
-            handler.SaveConfig(this, nameof(Permissions));
-            handler.SaveConfig(this, nameof(CommandTranslation));
-            handler.SaveConfig(this, nameof(DatabaseConfig));
+            handler.SaveConfig(this, nameof(Config.Configs));
+            handler.SaveConfig(this, nameof(Config.Permissions));
+            handler.SaveConfig(this, nameof(Config.Command));
+            handler.SaveConfig(this, nameof(Config.Database));
+            handler.SaveConfig(this, nameof(Config.MotdConfig));
 
             Database.OpenDatabase();
         }
 
-        [PluginConfig] public Configs configs;
+        [PluginConfig("configuration.yml")] public Config.Configs Configs;
+        [PluginConfig("Database/database.yml")] public Config.Database databaseConfig;
 
-        [PluginConfig("permissions.yml")] public Permissions perms;
+        [PluginConfig("Permissions/permissions.yml")] public Config.Permissions perms;
 
-        [PluginConfig("commands.yml")] public CommandTranslation commandTranslation;
-
-        [PluginConfig("database.yml")] public DatabaseConfig databaseConfig;
+        [PluginConfig("Translations/commands.yml")] public Config.Command commandTranslation;
+        [PluginConfig("Translations/motd.yml")] public Config.MotdConfig GetMotd;
+        [PluginConfig("Translations/translation.yml")] public Config.Translation Translation;
     }
 }

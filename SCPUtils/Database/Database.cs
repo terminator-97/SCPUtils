@@ -42,7 +42,6 @@
                     new CreateIndexModel<BroadcastDb>(Builders<BroadcastDb>.IndexKeys.Ascending(x => x.Id)),
                 };
 
-
                 MongoDatabase.GetCollection<Player>("players").Indexes.CreateMany(player);
                 MongoDatabase.GetCollection<DatabaseIp>("ipaddresses").Indexes.CreateMany(ips);
                 MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Indexes.CreateMany(broadcast);

@@ -20,7 +20,7 @@
 
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Translation.CooldownMessage;
                 return false;
             }
 
@@ -69,7 +69,7 @@
                         if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
                         {
                             playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
-                            if (databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()] >= ScpUtils.StaticInstance.configs.BptMinSeconds) completedays++;
+                            if (databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()] >= ScpUtils.StaticInstance.Configs.BptMinSeconds) completedays++;
                         }
                     }
                     if (playtime == 0) message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - {ScpUtils.StaticInstance.commandTranslation.PlaytimeNoActivity}");

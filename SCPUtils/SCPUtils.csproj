@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\PlayerConsole\Badge\BadgeCommand.cs" />
+    <Compile Include="Commands\PlayerConsole\List\ListCommand.cs" />
+    <Compile Include="Commands\PlayerConsole\List\PlayerListCommand.cs" />
+    <Compile Include="Commands\PlayerConsole\List\StaffListCommand.cs" />
     <Compile Include="Commands\PlayerConsole\PlayTime\UserPlayTimeCommand.cs" />
     <Compile Include="Commands\PlayerConsole\SCPUtilsCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\Announce\ListAnnouncementCommand.cs" />
@@ -112,9 +115,10 @@
     <Compile Include="Commands\RemoteAdmin\PlayTime\PlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\PlayTime\StaffPlayTimeCommand.cs" />
     <Compile Include="Commands\RemoteAdmin\SCPUtilsCommand.cs" />
-    <Compile Include="CommandTranslation.cs" />
-    <Compile Include="Configs.cs" />
-    <Compile Include="DatabaseConfig.cs" />
+    <Compile Include="Configuration\Translation\Command.cs" />
+    <Compile Include="Configuration\Configs.cs" />
+    <Compile Include="Configuration\Translation\Translation.cs" />
+    <Compile Include="Configuration\Database\Database.cs" />
     <Compile Include="Database\BroadcastDb.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\DatabaseIp.cs" />
@@ -130,7 +134,8 @@
     <Compile Include="Database\Player.cs" />
     <Compile Include="Functions\Functions.cs" />
     <Compile Include="Functions\EventHandlers.cs" />
-    <Compile Include="Permissions.cs" />
+    <Compile Include="MotdConfig.cs" />
+    <Compile Include="Configuration\Permissions\Permissions.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

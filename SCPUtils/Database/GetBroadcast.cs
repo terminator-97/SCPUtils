@@ -6,12 +6,9 @@
 
     public static class GetBroadcast
     {
-
         public static BroadcastDb FindBroadcast(string id)
         {
-
             if (id == null) return null;
-
             return MongoDatabase.GetCollection<BroadcastDb>("broadcasts").Find(x => x.Id.ToLower() == id.ToLower()).FirstOrDefault();
         }
 

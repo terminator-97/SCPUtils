@@ -15,7 +15,7 @@
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Translation.CooldownMessage;
                 return false;
             }
 
@@ -45,9 +45,9 @@
                     return false;
                 }
 
-                if (range >= ScpUtils.StaticInstance.configs.MaxPlaytime)
+                if (range >= ScpUtils.StaticInstance.Configs.MaxPlaytime)
                 {
-                    response = ScpUtils.StaticInstance.commandTranslation.DaysMaximus.Replace("%maxDays%", $"{ScpUtils.StaticInstance.configs.MaxPlaytime}");
+                    response = ScpUtils.StaticInstance.commandTranslation.DaysMaximus.Replace("%maxDays%", $"{ScpUtils.StaticInstance.Configs.MaxPlaytime}");
                     return false;
                 }
             }

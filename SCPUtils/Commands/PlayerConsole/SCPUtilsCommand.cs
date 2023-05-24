@@ -18,6 +18,7 @@
         {
             RegisterCommand(new UserPlayTimeCommand());
             RegisterCommand(new BadgeCommand());
+            RegisterCommand(new ListCommand());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

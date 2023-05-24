@@ -22,7 +22,7 @@ namespace SCPUtils
             }
             else
             {
-                Log.Error($"SCPUtils permissions error! Badge {badge} is not present in configs!");
+                Log.Error($"SCPUtils permissions error! Badge {badge} is not present in Configs!");
                 return false;
             }
         }
@@ -42,7 +42,7 @@ namespace SCPUtils
             }
             else
             {
-                Log.Error($"SCPUtils permissions error! Badge {badge} is not present in configs!");
+                Log.Error($"SCPUtils permissions error! Badge {badge} is not present in Configs!");
                 return false;
             }
         }

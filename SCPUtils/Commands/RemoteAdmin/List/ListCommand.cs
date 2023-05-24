@@ -24,7 +24,7 @@
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
             {
-                response = ScpUtils.StaticInstance.configs.CooldownMessage;
+                response = ScpUtils.StaticInstance.Translation.CooldownMessage;
                 return false;
             }
 
