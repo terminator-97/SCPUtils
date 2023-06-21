@@ -107,6 +107,9 @@ namespace SCPUtils
         [Description("Should SCP-049-2 deaths should be broadcasted?")]
         public bool Scp0492DeathBroadcast { get; private set; } = false;
 
+        [Description("Should respawn be granted only full health?")]
+        public bool RespawnOnlyFullHealth { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -212,6 +215,9 @@ namespace SCPUtils
 
         [Description("Command cooldown in seconds")]
         public double CommandCooldownSeconds { get; private set; } = 5;
+
+        [Description("Max allowed respawn command time")]
+        public int RespawnCommandTime { get; private set; } = 45;
 
         [Description("List of session variables for custom SCPs, putting the id there will deny the swap")]
         public List<string> DeniedSwapCustomInfo { get; private set; } = new List<string>() { "<color=#960018>SCP-20743</color>", "SCP-20743", "SCP-20743-1", "<color=#960018>SCP-20743-1</color>" };
@@ -406,8 +412,13 @@ namespace SCPUtils
         [Description("The aliases for the swap request deny command")]
         public string[] SwapRequestDenyCommandAliases { get; set; } = new[] { "deny", "su_srd", "swaprd", "scpu_srd", "swap_request_deny" };
 
-        [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
+        [Description("The command name for the respawn command")]
+        public string RespawnCommand { get; set; } = "scputils_respawn";
 
+        [Description("The aliases for the respawn command")]
+        public string[] RespawnCommandAliases { get; set; } = new[] { "respawn", "su_resp", "resp" };
+
+        [Description("Broadcast to send to all online staff when player enter with more than 1 account")]
         public Exiled.API.Features.Broadcast AlertStaffBroadcastMultiAccount { get; private set; } = new Exiled.API.Features.Broadcast(
             "<size=40><color=red>Alert</color></size>\n<size=35>Player <color=yellow>{player}</color> has entered with <color=yellow>{accountNumber}</color> accounts</size>\n<size=30>Check console pressing <color=yellow>ò</color></size>",
             10);

@@ -31,12 +31,15 @@ namespace SCPUtils
         public string CustomBadgeName { get; set; }
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<string, int> PlayTimeRecords { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> OwPlayTimeRecords { get; set; } = new Dictionary<string, int>();
         public bool ASNWhitelisted { get; set; }
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
         public bool KeepPreferences { get; set; }
         [BsonIgnore]
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
+        [BsonIgnore]
+        public DateTime OwTime { get; set; }
         public bool IgnoreDNT { get; set; }
         public bool OverwatchActive { get; set; }
         //Suicide logs
@@ -67,6 +70,23 @@ namespace SCPUtils
 
             LastSeen = DateTime.Now;
 
+        }
+
+        public void SetCurrentDayOwPlayTime()
+        {
+            if (OwTime == DateTime.MinValue) return;
+            if (OwPlayTimeRecords == null)
+            {
+                OwPlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
+            }
+            if (!OwPlayTimeRecords.ContainsKey(DateTime.Now.Date.ToShortDateString()))
+            {
+                OwPlayTimeRecords.Add(DateTime.Now.Date.ToShortDateString(), 0);
+            }
+
+            OwPlayTimeRecords[DateTime.Now.Date.ToShortDateString()] += (int)(DateTime.Now - OwTime).TotalSeconds;
+
+            OwTime = DateTime.MinValue;
         }
 
         public void Reset()

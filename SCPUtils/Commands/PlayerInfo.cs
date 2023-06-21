@@ -69,6 +69,7 @@ namespace SCPUtils.Commands
             $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
             $"MultiAccount Whitelist: [ {databasePlayer.MultiAccountWhiteList} ]\n" +
             $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n" +
+            $"Total Overwatch time: [ { new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString() } ]\n" +
             $"Nickname cooldown: [ { databasePlayer.NicknameCooldown } ]\n" +
             $"Overwatch active: [ { databasePlayer.OverwatchActive } ]</color>";
 

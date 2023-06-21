@@ -63,6 +63,8 @@ namespace SCPUtils.Commands
                 playtime = 0;
                 completedays = 0;
                 int days = range + 1;
+                var owpt = 0;
+                var owdays = 0;
                 if (player.Value.ToString() == badge)
                 {
                     var databasePlayer = player.Key.GetDatabasePlayer();
@@ -78,13 +80,29 @@ namespace SCPUtils.Commands
                         DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
                         if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
                         {
+
+                            if (databasePlayer.OwPlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
+                            {
+                                owpt += databasePlayer.OwPlayTimeRecords[date.Date.ToShortDateString()];
+                                owdays++;
+                            }
+
                             playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
                             if (databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()] >= ScpUtils.StaticInstance.Config.BptMinSeconds) completedays++;
                         }
                     }
-                    if (playtime == 0) message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ No activity ]");
-                    else message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ { new TimeSpan(0, 0, playtime).ToString() } ] - Days joined: [ {completedays}/{days} ]");
+                    if (playtime == 0)
+                    {
+
+                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ No activity ]");
+                    }
+
+                    else
+                    {                      
+                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ { new TimeSpan(0, 0, playtime).ToString() } ] - Days joined: [ {completedays}/{days} ] - Overwatch time: [ { new TimeSpan(0, 0, owpt).ToString() } ] - Overwatch days: [ {owdays}/{days} ]");
+                    }
                     count++;
+
                 }
             }
 

@@ -84,6 +84,7 @@ namespace SCPUtils
                 PreviousBadge = "",
                 HideBadge = false,
                 PlayTimeRecords = new Dictionary<string, int>(),
+                OwPlayTimeRecords = new Dictionary<string, int>(),
                 ASNWhitelisted = false,
                 Restricted = new Dictionary<DateTime, string>(),
                 KeepPreferences = false,

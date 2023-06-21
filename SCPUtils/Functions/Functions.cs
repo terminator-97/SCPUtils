@@ -348,8 +348,7 @@ namespace SCPUtils
                         pluginInstance.Functions.OnQuitOrSuicide(player);
                     }
                 }
-                Player databasePlayer = player.GetDatabasePlayer();
-
+                Player databasePlayer = player.GetDatabasePlayer();              
 
                 if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT)
                 {
@@ -362,10 +361,12 @@ namespace SCPUtils
                 else if (!player.DoNotTrack)
                 {
                     databasePlayer.SetCurrentDayPlayTime();
+                    databasePlayer.SetCurrentDayOwPlayTime();
                 }
                 else
                 {
                     databasePlayer.SetCurrentDayPlayTime();
+                    databasePlayer.SetCurrentDayOwPlayTime();
                 }
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))

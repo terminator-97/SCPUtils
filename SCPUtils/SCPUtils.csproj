@@ -337,6 +337,7 @@
     <Compile Include="Commands\PlayerResetPreferences.cs" />
     <Compile Include="Commands\PlayTime.cs" />
     <Compile Include="Commands\Reports.cs" />
+    <Compile Include="Commands\Respawn.cs" />
     <Compile Include="Commands\RevokeBadge.cs" />
     <Compile Include="Commands\RoundInfo.cs" />
     <Compile Include="Commands\ScpList.cs" />

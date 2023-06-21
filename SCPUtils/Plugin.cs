@@ -13,8 +13,8 @@ namespace SCPUtils
     {
         public override string Author { get; } = "Terminator_97#0507";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(6, 1, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
+        public override Version Version { get; } = new Version(6, 2, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(7, 0, 0);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
         public Player Player { get; private set; }
@@ -48,9 +48,8 @@ namespace SCPUtils
             PlayerEvents.RemovingHandcuffs += EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning += EventHandlers.OnBanned;
             PlayerEvents.Kicking += EventHandlers.OnKicking;
-
-
-            //  PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
+            PlayerEvents.TogglingOverwatch += EventHandlers.OnOverwatchToggle;
+            PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
             //  ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;
             //PlayerEvents.TogglingOverwatch += EventHandlers.OnOverwatchToggle;                
         }
@@ -91,8 +90,8 @@ namespace SCPUtils
             PlayerEvents.RemovingHandcuffs -= EventHandlers.OnPlayerUnhandCuff;
             PlayerEvents.Banning -= EventHandlers.OnBanned;
             PlayerEvents.Kicking -= EventHandlers.OnKicking;
-            // PlayerEvents.TogglingOverwatch -= EventHandlers.OnOverwatchToggle;
-            // PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
+            PlayerEvents.TogglingOverwatch -= EventHandlers.OnOverwatchToggle;
+            PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
             //  ServerEvents.RoundStarted -= EventHandlers.OnRoundStarted;
             EventHandlers = null;
             Functions = null;

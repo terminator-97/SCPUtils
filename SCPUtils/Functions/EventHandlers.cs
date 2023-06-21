@@ -121,6 +121,20 @@ namespace SCPUtils
             }
         }
 
+        internal void OnOverwatchToggle(TogglingOverwatchEventArgs ev)
+        {
+            var databasePlayer = ev.Player.GetDatabasePlayer();            
+            if (!ev.IsEnabled)
+            {                           
+                databasePlayer.OwTime = DateTime.Now;
+            }
+            else
+            {       
+                databasePlayer.SetCurrentDayOwPlayTime();
+            }
+            
+        }
+
         internal void OnRoundStarted()
         {
             Timing.CallDelayed(6f, () =>
@@ -135,23 +149,27 @@ namespace SCPUtils
         internal void OnChangingRole(ChangingRoleEventArgs ev)
         {
             //    Log.Info($"{ev.Player.Nickname} - {ev.Reason}");
-            if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
-            {
+           /* if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
+            {                
                 if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.SCPs)
                 {
                     pluginInstance.Functions.RandomScp(ev.Player, ev.NewRole);
-                }
+                }                
                 ev.IsAllowed = false;
                 return;
-            }
+            } */
             if (ev.Player.Role == PlayerRoles.RoleTypeId.Overwatch || ev.NewRole == PlayerRoles.RoleTypeId.Overwatch)
             {
-                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
+               /* if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
                 {
                     ev.IsAllowed = false;
-                }
+                }*/
+                
                 Player databasePlayer = ev.Player.GetDatabasePlayer();
+                if(databasePlayer.OverwatchActive && ev.NewRole == PlayerRoles.RoleTypeId.Overwatch) databasePlayer.SetCurrentDayOwPlayTime();
                 databasePlayer.OverwatchActive = ev.NewRole == PlayerRoles.RoleTypeId.Overwatch;
+                if (databasePlayer.OverwatchActive) databasePlayer.OwTime = DateTime.Now;
+                else databasePlayer.SetCurrentDayOwPlayTime();
             }
         }
 
@@ -335,7 +353,8 @@ namespace SCPUtils
             }
 
             pluginInstance.Functions.IpCheck(ev.Player);
-
+            databasePlayer.OwTime = DateTime.MinValue;
+            databasePlayer.OverwatchActive = false;
             //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 

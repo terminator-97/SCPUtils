@@ -102,11 +102,12 @@ namespace SCPUtils.Commands
             }
             StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]");
             message.AppendLine();
-            message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]");
+            message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ] - Total Overwatch time: [ { new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString() } ]");
 
 
 
             playtime = 0;
+            var owpt = string.Empty;
             for (int i = 0; i <= range; i++)
             {
                 databasePlayer.PlayTimeRecords.Count();
@@ -114,7 +115,13 @@ namespace SCPUtils.Commands
                 DateTime.TryParse((DateTime.Now.Date.AddDays(-i)).ToString(), out DateTime date);
                 if (databasePlayer.PlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
                 {
-                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ]");
+                    if (databasePlayer.OwPlayTimeRecords.ContainsKey(date.Date.ToShortDateString()))
+                    {
+                        owpt = new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords[date.Date.ToShortDateString()]).ToString();
+                    }
+                    else owpt = "00:00:00";
+                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ] - Overwatch time: [ { owpt } ]");
+                   
                     playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
                 }
                 else
