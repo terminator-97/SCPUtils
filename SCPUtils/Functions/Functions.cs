@@ -253,7 +253,7 @@ namespace SCPUtils
                     }
                 }
 
-                if(!string.IsNullOrEmpty(databasePlayer.CustomBadgeName))
+                if (!string.IsNullOrEmpty(databasePlayer.CustomBadgeName))
                 {
                     if (player.Group != null)
                     {
@@ -295,7 +295,7 @@ namespace SCPUtils
                 }
             }
 
-            SetCommandBan(player);    
+            SetCommandBan(player);
         }
 
         public bool CheckNickname(string name)
@@ -348,7 +348,7 @@ namespace SCPUtils
                         pluginInstance.Functions.OnQuitOrSuicide(player);
                     }
                 }
-                Player databasePlayer = player.GetDatabasePlayer();              
+                Player databasePlayer = player.GetDatabasePlayer();
 
                 if (player.DoNotTrack && !pluginInstance.Config.IgnoreDntRequests && !pluginInstance.Config.DntIgnoreList.Contains(player.GroupName) && !databasePlayer.IgnoreDNT)
                 {

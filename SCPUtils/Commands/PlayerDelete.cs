@@ -46,7 +46,7 @@ namespace SCPUtils.Commands
                     return false;
                 }
 
-                databasePlayer.Reset();               
+                databasePlayer.Reset();
                 Database.MongoDatabase.GetCollection<Player>("players").DeleteOne(broadcast => broadcast.Id == databasePlayer.Id);
                 response = $"{target} has been deleted from the database!";
 

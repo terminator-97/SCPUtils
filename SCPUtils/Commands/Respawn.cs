@@ -1,14 +1,12 @@
 ﻿using CommandSystem;
 using System;
-using System.Linq;
-using Eplayer = Exiled.API.Features.Player;
 
 namespace SCPUtils.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class Respawn : ICommand
-    {        
+    {
         public string Command { get; } = ScpUtils.StaticInstance.Config.RespawnCommand;
 
         public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.RespawnCommandAliases;
@@ -26,9 +24,9 @@ namespace SCPUtils.Commands
 
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
 
-            if (Exiled.API.Features.Round.ElapsedTime.TotalSeconds >= ScpUtils.StaticInstance.Config.RespawnCommandTime)
+            if (!player.IsAlive)
             {
-                response = $"<color=yellow>The respawn time window has ended!!</color>";
+                response = $"<color=red>You are not alive!</color>";
                 return false;
             }
 
@@ -38,22 +36,26 @@ namespace SCPUtils.Commands
                 return false;
             }
 
+            if (DateTime.Now > EventHandlers.LastRespawn[player])
+            {
+                response = $"<color=yellow>The respawn time window has ended!</color>";
+                return false;
+            }
+
+
             if (ScpUtils.StaticInstance.Config.RespawnOnlyFullHealth && player.Health < player.MaxHealth)
             {
                 response = $"<color=red>You have taken damage therefore respawn is not available.</color>";
                 return false;
             }
 
-            if(!player.IsAlive)
-            {
-                response = $"<color=red>You are not alive!</color>";
-                return false;
-            }
             else
             {
-
-                player.Role.Set(player.Role);
+                var respawndate = EventHandlers.LastRespawn[player];
+                Exiled.API.Features.Log.Info(EventHandlers.LastRespawn[player]);
+                player.Role.Set(player.Role, Exiled.API.Enums.SpawnReason.Respawn);
                 response = $"<color=green>Respawn granted</color>";
+                EventHandlers.LastRespawn[player] = respawndate;
                 return false;
 
             }

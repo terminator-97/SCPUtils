@@ -216,7 +216,7 @@ namespace SCPUtils
         [Description("Command cooldown in seconds")]
         public double CommandCooldownSeconds { get; private set; } = 5;
 
-        [Description("Max allowed respawn command time")]
+        [Description("Max allowed respawn command time, set to 0 to disable")]
         public int RespawnCommandTime { get; private set; } = 45;
 
         [Description("List of session variables for custom SCPs, putting the id there will deny the swap")]
@@ -269,6 +269,9 @@ namespace SCPUtils
 
         [Description("SCP swap request informative broadcast")]
         public Exiled.API.Features.Broadcast SwapRequestInfoBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>You are an SCP, for %seconds% seconds you can exchange your role with other SCP player using swap command on ò, you can use .scplist to see who is scp</color>", 15, true, Broadcast.BroadcastFlags.Normal);
+
+        [Description("Respawn command info")]
+        public Exiled.API.Features.Broadcast RespawnBroadcast { get; private set; } = new Exiled.API.Features.Broadcast("<color=blue>If your spawn is bugged for some seconds you can use .respawn command in the console in order to respawn.</color>", 10, true, Broadcast.BroadcastFlags.Normal);
 
         [Description("Which time of the day the server should perform autorestart task?")]
         public string AutoRestartTimeTask { get; private set; } = "1:35:0";

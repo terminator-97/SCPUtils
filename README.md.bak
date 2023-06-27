@@ -13,7 +13,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Nickname Blacklist:** You can prevent players joining with blacklisted nicknames and preventing them to change nicknames to restricted ones, users with bypassnickname permission bypass this limit!
 - **Badge colors:** Admins can assign a color to every person, users with permissions can assign any color to themselves if it's not in restricted list!
 - **Permanently show/hide badges:** Users with permission can permanently show or hide badge using a simple command (in user console)
-- **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command!
+- **Playtime statistics:** You can see each user playtime day per day or total playtime using a simple command, you can also see overwatch time!
 - **ASNs Bans:** You can ban specific ASNs to avoid ban evaders and cheaters, you can whitelist legit users to bypass the ASNs bans using a simple command, to add an ASN to blacklist add it inside server config setting.
 - **Team protection:** Editing configs you can set protection to the teams you want against the teams you want on specific zones or entire map.
 - **SCP-096 Target:** Players gets notified via hint when they become a SCP-096 Target.
@@ -25,7 +25,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 
 **To use this plugin you will have to install MongoDB and MongoDB Compass (the last one only if you want to manage your database).**<br /><br />
 **LiteDb SCP-Utils version is still avaible but with limited support, check releases tab. It's advisable to use this version, for more info check pinned message in SCPUtils channel on Exiled.**<br /><br />
-**Minimum requirements: Exiled version: 7.0.0-rc2-1 and MongoDB (depedencies are already included by base)**
+**Minimum requirements: Exiled version: 7.0.5 and MongoDB (depedencies are already included by base)**
 
 
 ### Configs:
@@ -77,6 +77,8 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_multiaccount_whitelist | <userid / id> | scputils.whitelistma | Whitelists / unwhitelist an account from multiaccount detector |
 | scputils_badge_playtime | <badge> <days> | scputils.playtime | Show playtime for a specific badge |
 | scputils_reports | use help paramenter | scputils.reports | See many stats |
+| scputils_custom_badge | <player id/name/userid> <custom badge name / none> | scputils.custombadge | Set a custom badge to a player, it required to have already a base badge |
+
 
 **Console commands**
 
@@ -96,6 +98,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_swap_request_deny (configurable) | none | none | Deny a SCP swap request
 | scputils_swap_request_cancel (configurable) | none | none | Cancel a SCP swap request
 | scputils_scp_list  | none | Requires to be scp and swap module enabled | Show SCP list
+| scputils_respawn  | none | Requires the timer to be configured | Show SCP list
 
 **Generic permissions**
 

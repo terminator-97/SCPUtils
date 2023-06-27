@@ -104,7 +104,7 @@ namespace SCPUtils.Commands
 
             if (player != null)
             {
-                if(player.GlobalBadge != null)
+                if (player.GlobalBadge != null)
                 {
                     response = "<color=red>You have a global badge, as VSR rules you cannot change global badge colors!";
                     return false;
@@ -115,8 +115,8 @@ namespace SCPUtils.Commands
 
             databasePlayer.ColorPreference = color;
             databasePlayer.SaveData();
-            response = "<color=green>Success, choice has been saved!</color>";    
-         
+            response = "<color=green>Success, choice has been saved!</color>";
+
 
             return true;
         }

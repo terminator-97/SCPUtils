@@ -38,7 +38,7 @@ namespace SCPUtils.Commands
             {
                 var databaseBroadcast = GetBroadcast.FindBroadcast(arguments.Array[1]);
 
-                if(databaseBroadcast != null)
+                if (databaseBroadcast != null)
                 {
                     Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(broadcast => broadcast.Id == databaseBroadcast.Id);
                     response = "Success!";

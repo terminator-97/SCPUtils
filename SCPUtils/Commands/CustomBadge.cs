@@ -60,14 +60,14 @@ namespace SCPUtils.Commands
             {
                 databasePlayer.CustomBadgeName = "";
                 databasePlayer.SaveData();
-                var plr = Exiled.API.Features.Player.Get(target);              
+                var plr = Exiled.API.Features.Player.Get(target);
                 response = "<color=green>Custom badge removed, changes will take effect next round!</color>";
                 return true;
-            }     
+            }
 
 
-            databasePlayer.CustomBadgeName = badge;           
-            databasePlayer.SaveData();        
+            databasePlayer.CustomBadgeName = badge;
+            databasePlayer.SaveData();
             var player = Exiled.API.Features.Player.Get(target);
 
             if (player != null)
@@ -75,7 +75,7 @@ namespace SCPUtils.Commands
                 if (player.Group != null)
                 {
                     player.Group.BadgeText = badge;
-                    player.BadgeHidden = player.BadgeHidden;                    
+                    player.BadgeHidden = player.BadgeHidden;
                 }
                 else
                 {

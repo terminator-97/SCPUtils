@@ -98,7 +98,7 @@ namespace SCPUtils.Commands
                     }
 
                     else
-                    {                      
+                    {
                         message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ { new TimeSpan(0, 0, playtime).ToString() } ] - Days joined: [ {completedays}/{days} ] - Overwatch time: [ { new TimeSpan(0, 0, owpt).ToString() } ] - Overwatch days: [ {owdays}/{days} ]");
                     }
                     count++;

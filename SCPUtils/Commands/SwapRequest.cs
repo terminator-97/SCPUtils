@@ -40,7 +40,7 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            if(!Exiled.API.Features.Round.IsStarted)
+            if (!Exiled.API.Features.Round.IsStarted)
             {
                 response = $"<color=red>Round is not started!</color>";
                 return false;

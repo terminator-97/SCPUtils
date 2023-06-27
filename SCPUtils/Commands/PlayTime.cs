@@ -121,7 +121,7 @@ namespace SCPUtils.Commands
                     }
                     else owpt = "00:00:00";
                     message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ] - Overwatch time: [ { owpt } ]");
-                   
+
                     playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
                 }
                 else

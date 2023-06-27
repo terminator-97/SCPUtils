@@ -32,6 +32,8 @@ namespace SCPUtils
         public Dictionary<Features.Player, int> SwapCount { get; set; } = new Dictionary<Features.Player, int>();
         public List<Features.Player> KickedList { get; set; } = new List<Features.Player>();
         public Dictionary<Features.Player, Features.Player> SwapRequest { get; set; } = new Dictionary<Features.Player, Features.Player>();
+        public static Dictionary<Features.Player, DateTime> LastRespawn { get; set; } = new Dictionary<Features.Player, DateTime>();
+
         public int ChaosRespawnCount { get; set; }
 
         public int MtfRespawnCount { get; set; }
@@ -123,16 +125,16 @@ namespace SCPUtils
 
         internal void OnOverwatchToggle(TogglingOverwatchEventArgs ev)
         {
-            var databasePlayer = ev.Player.GetDatabasePlayer();            
+            var databasePlayer = ev.Player.GetDatabasePlayer();
             if (!ev.IsEnabled)
-            {                           
+            {
                 databasePlayer.OwTime = DateTime.Now;
             }
             else
-            {       
+            {
                 databasePlayer.SetCurrentDayOwPlayTime();
             }
-            
+
         }
 
         internal void OnRoundStarted()
@@ -149,24 +151,24 @@ namespace SCPUtils
         internal void OnChangingRole(ChangingRoleEventArgs ev)
         {
             //    Log.Info($"{ev.Player.Nickname} - {ev.Reason}");
-           /* if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
-            {                
-                if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.SCPs)
-                {
-                    pluginInstance.Functions.RandomScp(ev.Player, ev.NewRole);
-                }                
-                ev.IsAllowed = false;
-                return;
-            } */
+            /* if (ev.Player.IsOverwatchEnabled && ev.Reason != Exiled.API.Enums.SpawnReason.ForceClass)
+             {                
+                 if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.SCPs)
+                 {
+                     pluginInstance.Functions.RandomScp(ev.Player, ev.NewRole);
+                 }                
+                 ev.IsAllowed = false;
+                 return;
+             } */
             if (ev.Player.Role == PlayerRoles.RoleTypeId.Overwatch || ev.NewRole == PlayerRoles.RoleTypeId.Overwatch)
             {
-               /* if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
-                {
-                    ev.IsAllowed = false;
-                }*/
-                
+                /* if ((PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.FoundationForces || (PlayerRoles.Team)ev.NewRole == PlayerRoles.Team.ChaosInsurgency && Respawn.IsSpawning)
+                 {
+                     ev.IsAllowed = false;
+                 }*/
+
                 Player databasePlayer = ev.Player.GetDatabasePlayer();
-                if(databasePlayer.OverwatchActive && ev.NewRole == PlayerRoles.RoleTypeId.Overwatch) databasePlayer.SetCurrentDayOwPlayTime();
+                if (databasePlayer.OverwatchActive && ev.NewRole == PlayerRoles.RoleTypeId.Overwatch) databasePlayer.SetCurrentDayOwPlayTime();
                 databasePlayer.OverwatchActive = ev.NewRole == PlayerRoles.RoleTypeId.Overwatch;
                 if (databasePlayer.OverwatchActive) databasePlayer.OwTime = DateTime.Now;
                 else databasePlayer.SetCurrentDayOwPlayTime();
@@ -246,6 +248,7 @@ namespace SCPUtils
             TemporarilyDisabledWarns = true;
 
             Cuffed.Clear();
+            LastRespawn.Clear();
         }
 
         internal void OnTeamRespawn(RespawningTeamEventArgs ev)
@@ -355,6 +358,7 @@ namespace SCPUtils
             pluginInstance.Functions.IpCheck(ev.Player);
             databasePlayer.OwTime = DateTime.MinValue;
             databasePlayer.OverwatchActive = false;
+
             //  if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
         }
 
@@ -376,13 +380,31 @@ namespace SCPUtils
             {
                 if (Round.ElapsedTime.TotalSeconds < ScpUtils.StaticInstance.Config.MaxAllowedTimeScpSwapRequest)
                 {
-                    var seconds = Math.Round(pluginInstance.Config.MaxAllowedTimeScpSwapRequest - Round.ElapsedTime.TotalSeconds + 1);
-                    var message = pluginInstance.Config.SwapRequestInfoBroadcast.Content;
-                    message = message.Replace("%seconds%", seconds.ToString());
-                    ev.Player.Broadcast(pluginInstance.Config.SwapRequestInfoBroadcast.Duration, message, pluginInstance.Config.SwapRequestInfoBroadcast.Type, false);
-
+                    if (pluginInstance.Config.SwapRequestBroadcast.Show)
+                    {
+                        var seconds = Math.Round(pluginInstance.Config.MaxAllowedTimeScpSwapRequest - Round.ElapsedTime.TotalSeconds + 1);
+                        var message = pluginInstance.Config.SwapRequestInfoBroadcast.Content;
+                        message = message.Replace("%seconds%", seconds.ToString());
+                        ev.Player.Broadcast(pluginInstance.Config.SwapRequestInfoBroadcast.Duration, message, pluginInstance.Config.SwapRequestInfoBroadcast.Type, false);
+                    }
                 }
             }
+
+            if (!ev.Player.IsAlive) return;
+
+            if (pluginInstance.Config.RespawnCommandTime >= 1)
+            {
+                if (pluginInstance.Config.RespawnBroadcast.Show)
+                {
+                    ev.Player.Broadcast(pluginInstance.Config.RespawnBroadcast.Duration, pluginInstance.Config.RespawnBroadcast.Content, pluginInstance.Config.RespawnBroadcast.Type, false);
+                }
+            }
+
+            if (!LastRespawn.ContainsKey(ev.Player))
+            {
+                LastRespawn.Add(ev.Player, DateTime.Now.AddSeconds(pluginInstance.Config.RespawnCommandTime));
+            }
+            else LastRespawn[ev.Player] = DateTime.Now.AddSeconds(pluginInstance.Config.RespawnCommandTime);
         }
 
 
