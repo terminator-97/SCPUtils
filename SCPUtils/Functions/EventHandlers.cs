@@ -123,6 +123,20 @@ namespace SCPUtils
             }
         }
 
+        internal void OnItemDropped(DroppingItemEventArgs ev)
+        {
+            if (pluginInstance.Config.RespawnWindowDestroyItem)
+            {
+                if (LastRespawn.ContainsKey(ev.Player))
+                {
+                    if(DateTime.Now < LastRespawn[ev.Player])
+                    {
+                        ev.Item.Destroy();
+                    }
+                }
+            }        
+        }
+
         internal void OnOverwatchToggle(TogglingOverwatchEventArgs ev)
         {
             var databasePlayer = ev.Player.GetDatabasePlayer();
@@ -396,7 +410,14 @@ namespace SCPUtils
             {
                 if (pluginInstance.Config.RespawnBroadcast.Show)
                 {
-                    ev.Player.Broadcast(pluginInstance.Config.RespawnBroadcast.Duration, pluginInstance.Config.RespawnBroadcast.Content, pluginInstance.Config.RespawnBroadcast.Type, false);
+                    if (!pluginInstance.Config.RespawnInformativeHint)
+                    {
+                        ev.Player.Broadcast(pluginInstance.Config.RespawnBroadcast.Duration, pluginInstance.Config.RespawnBroadcast.Content, pluginInstance.Config.RespawnBroadcast.Type, false);
+                    }
+                    else
+                    {
+                        ev.Player.ShowHint(pluginInstance.Config.RespawnBroadcast.Content, pluginInstance.Config.RespawnBroadcast.Duration);
+                    }
                 }
             }
 

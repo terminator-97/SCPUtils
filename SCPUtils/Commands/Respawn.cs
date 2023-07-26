@@ -1,5 +1,7 @@
 ﻿using CommandSystem;
+using MEC;
 using System;
+using System.Linq;
 
 namespace SCPUtils.Commands
 {
@@ -52,8 +54,18 @@ namespace SCPUtils.Commands
             else
             {
                 var respawndate = EventHandlers.LastRespawn[player];
-                Exiled.API.Features.Log.Info(EventHandlers.LastRespawn[player]);
-                player.Role.Set(player.Role, Exiled.API.Enums.SpawnReason.Respawn);
+                var inv = player.Items.ToList();
+                var ammo = player.Ammo;
+                player.Role.Set(player.Role, PlayerRoles.RoleSpawnFlags.UseSpawnpoint);
+                player.ClearInventory(true);
+                Timing.CallDelayed(1.1f, () =>
+                {
+                    player.ClearInventory(true);
+                    foreach (var a in inv)
+                    {
+                        player.AddItem(a.Type);
+                    }
+                });
                 response = $"<color=green>Respawn granted</color>";
                 EventHandlers.LastRespawn[player] = respawndate;
                 return false;

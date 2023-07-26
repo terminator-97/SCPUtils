@@ -110,6 +110,12 @@ namespace SCPUtils
         [Description("Should respawn be granted only full health?")]
         public bool RespawnOnlyFullHealth { get; private set; } = true;
 
+        [Description("Destroy dropped items during respawn time window")]
+        public bool RespawnWindowDestroyItem { get; private set; } = true;
+
+        [Description("Respawn hint informative message should be an Hint instead broadcast?")]
+        public bool RespawnInformativeHint { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 

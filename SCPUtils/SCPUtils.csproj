@@ -350,6 +350,7 @@
     <Compile Include="Commands\ShowWarn.cs" />
     <Compile Include="Commands\ShowWarns.cs" />
     <Compile Include="Commands\StaffList.cs" />
+    <Compile Include="Commands\StreamerMode.cs" />
     <Compile Include="Commands\SwapRequest.cs" />
     <Compile Include="Commands\SwapRequestAccept.cs" />
     <Compile Include="Commands\SwapRequestCancel.cs" />

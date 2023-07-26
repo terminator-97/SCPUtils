@@ -36,6 +36,7 @@ namespace SCPUtils
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<DateTime, string> Restricted { get; set; } = new Dictionary<DateTime, string>();
         public bool KeepPreferences { get; set; }
+        public bool StreamerMode { get; set; }
         [BsonIgnore]
         public float SuicidePercentage => (float)ScpSuicideCount == 0 ? 0 : (ScpSuicideCount / (float)TotalScpGamesPlayed) * 100;
         [BsonIgnore]
