@@ -2,12 +2,12 @@
 {
     using CommandSystem;
     using MEC;
+    using PluginAPI.Core;
     using SCPUtils.Events;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using PluginAPI.Core;
 
     public class Function : EventArgs
     {
@@ -36,7 +36,7 @@
         private IEnumerator<float> Restarter(float second)
         {
             yield return Timing.WaitForSeconds(second);
-            Log.Info("Warning: Server is auto-restarting");
+            Log.Info(pluginInstance.GetFunctions.Function[FunctionEnums.Restarter]);
             Server.Restart();
         }
 
@@ -59,8 +59,8 @@
             }
             if (pluginInstance.Configs.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
-                if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has suicided while having an active ban!</color>");
+                BroadcastSuicideQuitAction(pluginInstance.GetFunctions.Function[FunctionEnums.ScpBanned].Replace("$playerNickname$", player.Nickname).Replace("$playerRole$", player.RoleName).Replace("$rounds$", rounds.ToString()));
+                if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction(pluginInstance.GetFunctions.Function[FunctionEnums.IssuesBan].Replace("$playerNickname$", player.Nickname));
             }
             databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count() - 1] = rounds;
             databasePlayer.RoundBanLeft += rounds;
@@ -81,28 +81,20 @@
             databasePlayer.TotalScpSuicideBans++;
             databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Ban";
 
-            if (pluginInstance.Configs.MultiplyBanDurationEachBan == true)
-            {
-                duration = databasePlayer.TotalScpSuicideBans * pluginInstance.Configs.AutoBanDuration * 60;
-            }
-            else
-            {
-                duration = pluginInstance.Configs.AutoBanDuration * 60;
-            }
+            if (pluginInstance.Configs.MultiplyBanDurationEachBan == true) duration = databasePlayer.TotalScpSuicideBans * pluginInstance.Configs.AutoBanDuration * 60;
+            else duration = pluginInstance.Configs.AutoBanDuration * 60;
 
             if (pluginInstance.Configs.BroadcastSanctions) BroadcastSuicideQuitAction(pluginInstance.Translation.AutoBanPlayerMessage.Content.Replace("%player.Nickname%", player.Nickname).Replace("%player.Role%", player.Role.ToString()).Replace("%duration%", (duration / 60).ToString()));
 
             if (pluginInstance.Configs.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration / 60) * databasePlayer.TotalScpSuicideBans);
-            else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);           
+            else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);
+            
             player.Ban($"Auto-Ban: {string.Format(pluginInstance.Translation.AutoBanMessage)}", duration);
         }
 
         public void AutoKickPlayer(PluginAPI.Core.Player player)
         {
-            if (pluginInstance.Configs.BroadcastSanctions)
-            {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
-            }
+            if (pluginInstance.Configs.BroadcastSanctions) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
 
             Player databasePlayer = player.GetDatabasePlayer();
             databasePlayer.TotalScpSuicideKicks++;
@@ -112,10 +104,7 @@
 
         public void AutoWarnPlayer(PluginAPI.Core.Player player)
         {
-            if (pluginInstance.Configs.BroadcastWarns)
-            {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
-            }
+            if (pluginInstance.Configs.BroadcastWarns) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
 
             player.GetDatabasePlayer().ScpSuicideCount++;
             player.ClearBroadcasts();
@@ -125,33 +114,22 @@
         public void OnQuitOrSuicide(PluginAPI.Core.Player player)
         {
             if (!pluginInstance.Configs.EnableSCPSuicideAutoWarn || pluginInstance.EventHandlers.KickedList.Contains(player) || EventHandlers.TemporarilyDisabledWarns)
-            {
                 return;
-            }
-            if (!LastWarn.ContainsKey(player.UserId))
-            {
-                LastWarn.Add(player.UserId, DateTime.MinValue);
-            }
-            else if (LastWarn[player.UserId] >= DateTime.Now)
-            {
-                return;
-            }
+            
+            if (!LastWarn.ContainsKey(player.UserId)) LastWarn.Add(player.UserId, DateTime.MinValue);
+            else if (LastWarn[player.UserId] >= DateTime.Now) return;
+            
             Player databasePlayer = player.GetDatabasePlayer();
             float suicidePercentage = databasePlayer.SuicidePercentage;
             databasePlayer.SuicidePunishment[databasePlayer.SuicidePunishment.Count() - 1] = "Warn";
+            
             AutoWarnPlayer(player);
             if (pluginInstance.Configs.EnableSCPSuicideAutoBan && suicidePercentage >= pluginInstance.Configs.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Configs.ScpSuicideTollerance)
-            {
                 AutoBanPlayer(player);
-            }
             else if (pluginInstance.Configs.EnableSCPSuicideSoftBan && suicidePercentage >= pluginInstance.Configs.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Configs.ScpSuicideTollerance)
-            {
                 AutoRoundBanPlayer(player);
-            }
             else if (pluginInstance.Configs.AutoKickOnSCPSuicide && suicidePercentage >= pluginInstance.Configs.AutoKickThreshold && suicidePercentage < pluginInstance.Configs.AutoBanThreshold && player.GetDatabasePlayer().TotalScpGamesPlayed > pluginInstance.Configs.ScpSuicideTollerance)
-            {
                 AutoKickPlayer(player);
-            }
 
             LastWarn[player.UserId] = DateTime.Now.AddSeconds(5);
         }
@@ -169,10 +147,7 @@
                 if (databasePlayer.BadgeExpire >= DateTime.Now)
                 {
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
-                    {
-                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
-                    }
+                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId)) ServerStatic.PermissionsHandler._members.Remove(player.UserId);
 
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
                     BadgeSetEvent args = new BadgeSetEvent
@@ -181,61 +156,51 @@
                         NewBadgeName = databasePlayer.BadgeName
                     };
                     pluginInstance.Events.OnBadgeSet(args);
-
                 }
                 else
                 {
 
-                    BadgeRemovedEvent args = new BadgeRemovedEvent();
-                    args.Player = player;
-                    args.BadgeName = databasePlayer.BadgeName;
+                    BadgeRemovedEvent args = new BadgeRemovedEvent
+                    {
+                        Player = player,
+                        BadgeName = databasePlayer.BadgeName
+                    };
+
                     databasePlayer.BadgeName = "";
 
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                     }
-                    if (ServerStatic.RolesConfig.GetStringDictionary("Members").ContainsKey(player.UserId))                        
-                    {                        
+                    
+                    if (ServerStatic.RolesConfig.GetStringDictionary("Members").ContainsKey(player.UserId))
+                    {
                         UserGroup previous = ServerStatic.GetPermissionsHandler()._groups[ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]];
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]);
                         player.ReferenceHub.serverRoles.SetGroup(previous, false, true, true);
                     }
+
                     pluginInstance.Events.OnBadgeRemoved(args);
                 }
             }
 
             Timing.CallDelayed(1.5f, () =>
             {
-
                 if (!string.IsNullOrEmpty(databasePlayer.ColorPreference) && databasePlayer.ColorPreference != "None")
                 {
-                    if (/*player.CheckPermission("scputils.changecolor") || player.CheckPermission("scputils.playersetcolor") ||*/ databasePlayer.KeepPreferences || pluginInstance.Configs.KeepColorWithoutPermission)
-                    {
-                        player.ReferenceHub.serverRoles.SetColor(databasePlayer.ColorPreference);
-                    }
-                    else
-                    {
-                        databasePlayer.ColorPreference = "";
-                    }
+                    if (databasePlayer.KeepPreferences || pluginInstance.Configs.KeepColorWithoutPermission) player.ReferenceHub.serverRoles.SetColor(databasePlayer.ColorPreference);
+                    else databasePlayer.ColorPreference = "";
                 }
 
                 if (databasePlayer.HideBadge == true)
                 {
-                    if (/*player.CheckPermission("scputils.badgevisibility") ||*/ databasePlayer.KeepPreferences || pluginInstance.Configs.KeepBadgeVisibilityWithoutPermission)
-                    {
-                        player.ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
-                    }
-                    else
-                    {
-                        databasePlayer.HideBadge = false;
-                    }
+                    if (databasePlayer.KeepPreferences || pluginInstance.Configs.KeepBadgeVisibilityWithoutPermission) player.ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
+                    else databasePlayer.HideBadge = false;
                 }
-
 
                 if (!string.IsNullOrEmpty(databasePlayer.CustomNickName) && databasePlayer.CustomNickName != "None")
                 {
-                    if (/*player.CheckPermission("scputils.changenickname") || player.CheckPermission("scputils.playersetname") ||*/ databasePlayer.KeepPreferences || pluginInstance.Configs.KeepNameWithoutPermission)
+                    if (databasePlayer.KeepPreferences || pluginInstance.Configs.KeepNameWithoutPermission)
                     {
                         player.DisplayNickname = databasePlayer.CustomNickName;
                     }
@@ -245,27 +210,14 @@
                     }
                 }
 
-                if (pluginInstance.Configs.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname) /*&& !player.CheckPermission("scputils.bypassnickrestriction")*/)
-                {
-                    Timing.CallDelayed(2f, () =>
-                    {
-                        player.Kick("Auto-Kick: " + pluginInstance.Translation.AutoKickBannedNameMessage);
-                    });
-                }
-
+                if (pluginInstance.Configs.AutoKickBannedNames && pluginInstance.Functions.CheckNickname(player.Nickname)) Timing.CallDelayed(2f, () => player.Kick("Auto-Kick: " + pluginInstance.Translation.AutoKickBannedNameMessage));
             });
 
-            if (databasePlayer.UserNotified.Count() <= 0)
-            {
-                return;
-            }
+            if (databasePlayer.UserNotified.Count() <= 0) return;
 
             if (databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] == false)
             {
-                if (databasePlayer.SuicidePunishment[databasePlayer.UserNotified.Count() - 1] == "None")
-                {
-                    databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
-                }
+                if (databasePlayer.SuicidePunishment[databasePlayer.UserNotified.Count() - 1] == "None") databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
                 else
                 {
                     player.ClearBroadcasts();
@@ -273,32 +225,29 @@
                     databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
                 }
             }
-
             SetCommandBan(player);
-
         }
 
         public bool CheckNickname(string name)
         {
             if (pluginInstance.Configs.BannedNickNames == null)
-            {
                 return false;
-            }
 
             foreach (string nickname in pluginInstance.Configs.BannedNickNames)
             {
                 if (Regex.Match(name.ToLower(), nickname.ToLower()).Success)
-                {
                     return true;
-                }
             }
             return false;
         }
+
         public void LogWarn(PluginAPI.Core.Player player, string suicidetype)
         {
             if (!Round.IsRoundStarted) return;
+
             Player databasePlayer = player.GetDatabasePlayer();
             FixBanTime(databasePlayer);
+
             databasePlayer.SuicideDate.Add(DateTime.Now);
             databasePlayer.SuicideType.Add(suicidetype);
             databasePlayer.SuicideScp.Add(player.Role.ToString());
@@ -306,26 +255,20 @@
             databasePlayer.RoundsBan.Add(0);
             databasePlayer.SuicidePunishment.Add("None");
             databasePlayer.LogStaffer.Add("SCPUtils");
-            if (suicidetype == "Disconnect")
-            {
-                databasePlayer.UserNotified.Add(false);
-            }
-            else
-            {
-                databasePlayer.UserNotified.Add(true);
-            }
+
+            if (suicidetype == "Disconnect") databasePlayer.UserNotified.Add(false);
+            else databasePlayer.UserNotified.Add(true);
 
         }
+
         public void SaveData(PluginAPI.Core.Player player)
         {
             if (player.Nickname != "Dedicated Server" && player != null && Database.PlayerData.ContainsKey(player))
             {
-                if ((player.Team == PlayerRoles.Team.SCPs || (pluginInstance.Configs.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Configs.QuitEqualsSuicide && PluginAPI.Core.Round.IsRoundStarted)
+                if ((player.Team == PlayerRoles.Team.SCPs || (pluginInstance.Configs.AreTutorialsSCP && player.Role == PlayerRoles.RoleTypeId.Tutorial)) && pluginInstance.Configs.QuitEqualsSuicide && Round.IsRoundStarted)
                 {
                     if (pluginInstance.Configs.EnableSCPSuicideAutoWarn && pluginInstance.Configs.QuitEqualsSuicide && !pluginInstance.EventHandlers.KickedList.Contains(player))
-                    {
                         pluginInstance.Functions.OnQuitOrSuicide(player);
-                    }
                 }
                 Player databasePlayer = player.GetDatabasePlayer();
 
@@ -333,27 +276,17 @@
                 if (player.DoNotTrack && !pluginInstance.Configs.IgnoreDntRequests && !pluginInstance.Configs.DntIgnoreList.Contains(player.GetGroupName()) && !databasePlayer.IgnoreDNT)
                 {
                     databasePlayer.PlayTimeRecords.Clear();
-                    //   databasePlayer.PlaytimeSessionsLog.Clear();
+                    //databasePlayer.PlaytimeSessionsLog.Clear();
                     databasePlayer.ResetPreferences();
                     databasePlayer.FirstJoin = DateTime.MinValue;
                     databasePlayer.LastSeen = DateTime.MinValue;
                 }
-                else if (!player.DoNotTrack)
-                {
-                    databasePlayer.SetCurrentDayPlayTime();
-                }
-                else
-                {
-                    databasePlayer.SetCurrentDayPlayTime();
-                }
+                else if (!player.DoNotTrack) databasePlayer.SetCurrentDayPlayTime();
+                else databasePlayer.SetCurrentDayPlayTime();
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
-                {
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
-                    {
+                if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
-                    }
-                }
 
                 databasePlayer.Ip = player.IpAddress;
                 databasePlayer.SaveData();
@@ -373,32 +306,23 @@
             }
         }
 
-
         private void BroadcastSuicideQuitAction(string text)
         {
-            foreach (PluginAPI.Core.Player admin in PluginAPI.Core.Player.GetPlayers())
+            foreach (PluginAPI.Core.Player user in PluginAPI.Core.Player.GetPlayers())
             {
                 if (pluginInstance.Configs.BroadcastSanctions)
                 {
-                    if (admin.ReferenceHub.serverRoles.RemoteAdmin)
-                        if (admin.RemoteAdminAccess)
-                        {
-                            admin.SendBroadcast(text, 12, Broadcast.BroadcastFlags.AdminChat, false);
-                        }
+                    if (user.RemoteAdminAccess || user.ReferenceHub.serverRoles.RemoteAdmin)
+                        user.SendBroadcast(text, 12, Broadcast.BroadcastFlags.AdminChat, false);
                 }
             }
         }
 
         public void AdminMessage(string text)
         {
-            foreach (PluginAPI.Core.Player admin in PluginAPI.Core.Player.GetPlayers())
-            {
-                if (admin.ReferenceHub.serverRoles.RemoteAdmin)
-                    if (admin.RemoteAdminAccess)
-                    {
-                        admin.SendBroadcast(text, 15, Broadcast.BroadcastFlags.AdminChat, false);
-                    }
-            }
+            foreach (PluginAPI.Core.Player user in PluginAPI.Core.Player.GetPlayers()) 
+                if (user.RemoteAdminAccess || user.ReferenceHub.serverRoles.RemoteAdmin) 
+                    user.SendBroadcast(text, 15, Broadcast.BroadcastFlags.AdminChat, false);
         }
 
         public bool IsTeamImmune(PluginAPI.Core.Player player, PluginAPI.Core.Player attacker)
@@ -406,14 +330,8 @@
             if (pluginInstance.Configs.CuffedImmunityPlayers[player.Team]?.Any() == true)
             {
 
-                if (pluginInstance.Configs.CuffedImmunityPlayers[player.Team].Contains(attacker.Team))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (pluginInstance.Configs.CuffedImmunityPlayers[player.Team].Contains(attacker.Team)) return true;
+                else return false;
             }
             else
             {
@@ -427,23 +345,11 @@
         {
             if (pluginInstance.Configs.CuffedProtectedTeams?.Any() == true)
             {
-                if (pluginInstance.Configs.CuffedProtectedTeams.Contains(player.Team) && player.IsDisarmed)
-                {
-                    return true;
-                }
-                else if (!pluginInstance.Configs.CuffedProtectedTeams.Contains(player.Team))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (pluginInstance.Configs.CuffedProtectedTeams.Contains(player.Team) && player.IsDisarmed) return true;
+                else if (!pluginInstance.Configs.CuffedProtectedTeams.Contains(player.Team)) return true;
+                else return false;
             }
-            else
-            {
-                return true;
-            }
+            else return true;
         }
 
 
@@ -457,14 +363,8 @@
 
             else if (pluginInstance.Configs.CuffedSafeZones[player.Team]?.Any() == true)
             {
-                if (pluginInstance.Configs.CuffedSafeZones[player.Team].Contains(player.Room.Zone))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (pluginInstance.Configs.CuffedSafeZones[player.Team].Contains(player.Room.Zone)) return true;
+                else return false;
             }
 
             else
@@ -484,7 +384,6 @@
             else return false;
         }
 
-
         public void FixBanTime(Player databasePlayer)
         {
             if (databasePlayer.SuicideDate.Count() != databasePlayer.Expire.Count())
@@ -498,9 +397,8 @@
             }
         }
 
-        public void FixBanRounds(SCPUtils.Player databasePlayer)
+        public void FixBanRounds(Player databasePlayer)
         {
-
             if (databasePlayer.SuicideDate.Count() != databasePlayer.SuicideDate.Count())
             {
                 databasePlayer.RoundsBan.Clear();
@@ -516,27 +414,31 @@
         {
             Player databasePlayer = player.GetDatabasePlayer();
 
-
             var list = PluginAPI.Core.Player.GetPlayers();
             list.Remove(player);
             list.RemoveAll(x => x.IsSCP);
             list.RemoveAll(x => x.Role == PlayerRoles.RoleTypeId.Tutorial);
+
             if (list.Count() == 0)
             {
                 Log.Info("[SCPUtils] Couldnt find a player to replace the banned one!");
                 return;
             }
+
             var id = UnityEngine.Random.Range(0, list.Count - 1);
             var role = player.Role;
-            ReplacePlayerEvent args = new ReplacePlayerEvent();
-            args.BannedPlayer = player;
-            args.ReplacedPlayer = list[id];
-            args.ScpRole = player.Role;
-            args.NormalRole = list[id].Role;
-            player.SetRole(list[id].Role);            
-            list[id].SetRole(role);
-            pluginInstance.Events.OnReplacePlayerEvent(args);
+            ReplacePlayerEvent args = new ReplacePlayerEvent
+            {
+                BannedPlayer = player,
+                ReplacedPlayer = list[id],
+                ScpRole = player.Role,
+                NormalRole = list[id].Role
+            };
 
+            player.SetRole(list[id].Role);
+            list[id].SetRole(role);
+
+            pluginInstance.Events.OnReplacePlayerEvent(args);
 
             databasePlayer.RoundBanLeft--;
             if (pluginInstance.Translation.RoundBanNotification.Show)
@@ -546,7 +448,6 @@
                 message = message.Replace("%roundnumber%", databasePlayer.RoundBanLeft.ToString());
                 player.SendBroadcast(message, pluginInstance.Translation.RoundBanSpawnNotification.Duration, pluginInstance.Translation.RoundBanSpawnNotification.Type, false);
             }
-
         }
 
         public void RandomScp(PluginAPI.Core.Player player, PlayerRoles.RoleTypeId role)
@@ -583,11 +484,7 @@
             if (list.Count == 0) return;
             var id = UnityEngine.Random.Range(0, list.Count - 1);
 
-            if (list[id] != null)
-            {
-                list[id].SetRole(role);
-            }
-
+            list[id]?.SetRole(role);
         }
 
         public void IpCheck(PluginAPI.Core.Player player)
@@ -614,45 +511,42 @@
             if (!pluginInstance.Configs.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
-
         public void CheckIp(PluginAPI.Core.Player player)
         {
             var databaseIp = GetIp.GetIpAddress(player.IpAddress);
             if (databaseIp.UserIds.Count() > 1)
             {
-                MultiAccountEvent args = new MultiAccountEvent();
-                args.Player = player;
-                args.UserIds = databaseIp.UserIds;
-                pluginInstance.Events.OnMultiAccountEvent(args);
+                MultiAccountEvent args = new MultiAccountEvent
+                {
+                    Player = player,
+                    UserIds = databaseIp.UserIds
+                };
 
+                pluginInstance.Events.OnMultiAccountEvent(args);
 
                 if (pluginInstance.Configs.MultiAccountBroadcast)
                 {
-
                     AdminMessage($"Multi-Account detected on {player.Nickname} - ID: {player.PlayerId} Number of accounts: {databaseIp.UserIds.Count()}");
                 }
-
 
                 foreach (var userId in databaseIp.UserIds)
                 {
                     if (player.IsMuted) return;
                     if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
-                        //if (!string.Equals(ScpUtils.StaticInstance.Configs.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
+                        DiscordWebHook.Message(userId, player);
                         AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.PlayerId} Userid of muted user: {userId}</size></color>");
                         if (pluginInstance.Configs.AutoMute) player.Mute(false);
                     }
-
                 }
             }
         }
 
         public bool CheckCommandCooldown(ICommandSender sender)
         {
-            if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE") && sender.CheckPermission(PlayerPermissions.AdminChat))
-            {
+            if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE") || sender.CheckPermission(PlayerPermissions.AdminChat))
                 return false;
-            }
+
             var player = PluginAPI.Core.Player.Get(((CommandSender)sender).SenderId);
             if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
             {
@@ -678,83 +572,29 @@
         {
             var databasePlayer = player.GetDatabasePlayer();
 
-            foreach (KeyValuePair<DateTime, string> a in databasePlayer.Restricted)
+            foreach (KeyValuePair<DateTime, string> time in databasePlayer.Restricted)
             {
-                if (a.Key >= DateTime.Now)
+                if (time.Key >= DateTime.Now)
                 {
-                    player.SendConsoleMessage($"You are banned from using commands until {a.Key} for the following reason {a.Value}", "red");
-                    if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
-                    {
-                        pluginInstance.EventHandlers.LastCommand.Add(player, a.Key);
-                        return;
-                    }
-                    else
-                    {
-                        pluginInstance.EventHandlers.LastCommand[player] = a.Key;
-                        return;
-                    }
+                    player.SendConsoleMessage($"You are banned from using commands until {time.Key}!\nReason: {time.Value}", "red");
+                    
+                    if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player)) pluginInstance.EventHandlers.LastCommand.Add(player, time.Key);
+                    else pluginInstance.EventHandlers.LastCommand[player] = time.Key;
+                    
+                    return;
                 }
             }
         }
 
         public bool IsSuicide(PluginAPI.Core.Player player, PluginAPI.Core.Player attacker)
         {
-            return (player.UserId == attacker.UserId);
+            return player.UserId == attacker.UserId;
         }
-
-        /*public bool IsAuthorized(string badge, string permission)
-        {
-            if (pluginInstance.perms.PermissionsList[badge]?.Any() == true)
-            {
-                if (pluginInstance.perms.PermissionsList[badge].Contains(permission) || pluginInstance.perms.PermissionsList[badge].Contains("scputils.*") || badge == "SERVER CONSOLE")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                Log.Error($"SCPUtils permissions error! Badge {badge} is not present in Configs!");
-                return false;
-            }
-        }*/
 
         public string GetGroupName(PluginAPI.Core.Player player)
         {
-            if (ServerStatic.PermissionsHandler._members.TryGetValue(player.UserId, out string name))
-            {
-                return name;
-            }
-            else
-            {
-                return "none";
-            }
-
+            if (ServerStatic.PermissionsHandler._members.TryGetValue(player.UserId, out string name)) return name;
+            else return "none";
         }
-
-        /*     public void CheckPtStatus()
-             {
-                 if ((Features.Player.Dictionary.Count >= pluginInstance.Configs.MinPlayersPtCount) && (!pluginInstance.EventHandlers.ptEnabled))
-                 {
-                     foreach (var player in Features.Player.List)
-                     {
-                         var databasePlayer = player.GetDatabasePlayer();
-                         databasePlayer.LastSeen = DateTime.Now;
-                     }
-                     pluginInstance.EventHandlers.ptEnabled = true;
-                 }
-                 else if ((Features.Player.Dictionary.Count >= pluginInstance.Configs.MinPlayersPtCount) && (pluginInstance.EventHandlers.ptEnabled))
-                 {
-                     foreach (var player in Features.Player.List)
-                     {
-                         pluginInstance.Functions.SavePlaytime(player);
-                     }
-                     pluginInstance.EventHandlers.ptEnabled = false;
-                 }
-             } */
-
     }
 }

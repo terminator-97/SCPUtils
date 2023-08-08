@@ -38,7 +38,6 @@ namespace SCPUtils
 
             Functions = new Function(this);
             EventHandlers = new EventHandlers();
-            //DatabasePlayerData = new Database(this);
             Events = new Events.Events(this);
 
             EventManager.RegisterEvents<EventHandlers>(this);
@@ -49,9 +48,16 @@ namespace SCPUtils
             handler.SaveConfig(this, nameof(Config.Permissions));
             handler.SaveConfig(this, nameof(Config.Command));
             handler.SaveConfig(this, nameof(Config.Database));
-            handler.SaveConfig(this, nameof(Config.MotdConfig));
+            handler.SaveConfig(this, nameof(Config.MOTD));
+            handler.SaveConfig(this, nameof(Config.Webhook));
 
             Database.OpenDatabase();
+
+            if (GetWebhookConfig.Url is "None")
+            {
+                Log.Error("Webhook configuration is null, plugin cannot load!");
+                return;
+            }
         }
 
         [PluginConfig("configuration.yml")] public Config.Configs Configs;
@@ -60,7 +66,9 @@ namespace SCPUtils
         [PluginConfig("Permissions/permissions.yml")] public Config.Permissions perms;
 
         [PluginConfig("Translations/commands.yml")] public Config.Command commandTranslation;
-        [PluginConfig("Translations/motd.yml")] public Config.MotdConfig GetMotd;
+        [PluginConfig("Translations/functions.yml")] public Config.Functions GetFunctions;
+        [PluginConfig("Translations/motd.yml")] public Config.MOTD GetMotd;
         [PluginConfig("Translations/translation.yml")] public Config.Translation Translation;
+        [PluginConfig("Translations/webhook.yml")] public Config.Webhook GetWebhookConfig;
     }
 }

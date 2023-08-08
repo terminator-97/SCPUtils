@@ -4,7 +4,6 @@
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-    using PluginAPI.Core;
 
     public static class DiscordWebHook
     {
@@ -12,7 +11,7 @@
         {
             WebResponse response = null;
 
-            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.Configs.WebhookUrl);
+            WebRequest wr = (HttpWebRequest)WebRequest.Create(ScpUtils.StaticInstance.GetWebhookConfig.Url);
 
             wr.ContentType = "application/json";
             wr.Method = "POST";
@@ -22,19 +21,14 @@
             {
                 string json = JsonConvert.SerializeObject(new
                 {
-                    username = ScpUtils.StaticInstance.Configs.WebhookNickname,
+                    username = ScpUtils.StaticInstance.GetWebhookConfig.Nickname,
                     embeds = new[]
                     {
                         new
                         {
-
-                            title = "Mute evasion report!",
-                            description = $"Mute evasion detected! Userid of muted user: {userid}\n" +
-                            $"Player info:\n" +
-                            $"Username: {player.Nickname}\n" +
-                            $"User-ID: {player.UserId}\n" +
-                            $"Temporary ID: {player.PlayerId}",
-                            color = "25233"
+                            title = ScpUtils.StaticInstance.GetWebhookConfig.EmbedTitle,
+                            description = ScpUtils.StaticInstance.GetWebhookConfig.EmbedContent.Replace("$muted", userid).Replace("$username", player.Nickname).Replace("$steamid", $"{player.PlayerId}").Replace("$playerid", $"{player.PlayerId}"),
+                            color = ScpUtils.StaticInstance.GetWebhookConfig.EmbedColor
                         }
                     }
                 });

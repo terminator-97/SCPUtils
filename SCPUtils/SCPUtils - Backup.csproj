@@ -4,7 +4,6 @@
     <TargetFramework>net48</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<LangVersion>9</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,6 +31,7 @@
     <Reference Include="Pooling">
       <HintPath>..\..\..\..\SCPSL Reference\Pooling.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\SCPSL Reference\UnityEngine.dll</HintPath>
     </Reference>

@@ -95,12 +95,6 @@
         [Description("Show death message for SCP-049-2?")]
         public bool ShowDeathMessage0492 { get; private set; } = false;
 
-        [Description("Discord webhook url for mute evasion reports")]
-        public string WebhookUrl { get; private set; } = "None";
-
-        [Description("Discord webhook bot nickname")]
-        public string WebhookNickname { get; private set; } = "The Frontman";
-
         [Description("Auto-restart time if there is only one player in server (if enabled)")]
         public ushort AutoRestartTime { get; private set; } = 15;
 
