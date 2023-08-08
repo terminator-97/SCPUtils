@@ -31,3 +31,12 @@ body:
       placeholder: ie. scputils_info
     validations:
       required: true
+  - type: dropdown
+    id: plugintype
+    attributes:
+      label: What kind of version is the plugin?
+      options:
+      - EXILED 
+      - PluginAPI
+  validations:
+    required: true
