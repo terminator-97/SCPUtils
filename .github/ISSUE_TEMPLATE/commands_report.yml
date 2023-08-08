@@ -38,5 +38,5 @@ body:
     options:
     - EXILED 
     - PluginAPI
-validations:
-  required: true
+  validations:
+    required: true
