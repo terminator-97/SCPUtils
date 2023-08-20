@@ -25,7 +25,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 
 **To use this plugin you will have to install MongoDB and MongoDB Compass (the last one only if you want to manage your database).**<br /><br />
 **LiteDb SCP-Utils version is still avaible but with limited support, check releases tab. It's advisable to use this version, for more info check pinned message in SCPUtils channel on Exiled.**<br /><br />
-**Minimum requirements: Exiled version: 7.1.0 and MongoDB (depedencies are already included by base)**
+**Minimum requirements: Exiled version: 7.2.0 and MongoDB (depedencies are already included by base)**
 
 
 ### Configs:
@@ -78,7 +78,7 @@ You can see settings and edit them inside Exiled/port-config.yml file(example Ex
 | scputils_badge_playtime | <badge> <days> | scputils.playtime | Show playtime for a specific badge |
 | scputils_reports | use help paramenter | scputils.reports | See many stats |
 | scputils_custom_badge | <player id/name/userid> <custom badge name / none> | scputils.custombadge | Set a custom badge to a player, it required to have already a base badge |
-
+| scputils_searchip | < id / userid > | scputils.dupeip | Finds all users that played on a specific IP |
 
 **Console commands**
 

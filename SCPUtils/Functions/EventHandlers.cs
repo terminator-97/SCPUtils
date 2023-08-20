@@ -129,12 +129,12 @@ namespace SCPUtils
             {
                 if (LastRespawn.ContainsKey(ev.Player))
                 {
-                    if(DateTime.Now < LastRespawn[ev.Player])
+                    if (DateTime.Now < LastRespawn[ev.Player])
                     {
                         ev.Item.Destroy();
                     }
                 }
-            }        
+            }
         }
 
         internal void OnOverwatchToggle(TogglingOverwatchEventArgs ev)

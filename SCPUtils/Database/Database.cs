@@ -55,7 +55,7 @@
             }
             catch (Exception e)
             {
-                Log.Error($"Failed to connect Database! Error: {e}");
+                Log.Error($"Failed to connect Database! \n Please make sure that you correctly installed mongodb server and check if you correctly configured this plugin / mongodb server itself. \n If you have not installed mongodb server download it there: https://www.mongodb.com/try/download/community \n \n Error: {e}");
             }
         }
 

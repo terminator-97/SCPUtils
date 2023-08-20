@@ -257,12 +257,11 @@ namespace SCPUtils
                 {
                     if (player.Group != null)
                     {
-                        player.Group.BadgeText = databasePlayer.CustomBadgeName;
-                        player.BadgeHidden = player.BadgeHidden;
+                        player.RankName = databasePlayer.CustomBadgeName;                       
                     }
                     else
                     {
-                        player.SendConsoleMessage($"You have a custom badge assigned but you don't have a base usergroup, your custom group won't be visible until you have one!", "red");
+                        player.SendConsoleMessage($"You have a custom badge assigned but you don't have a base usergroup, your custom group won't be visible until you have one, contact server staff for more info!", "red");
                     }
                 }
 
@@ -294,6 +293,18 @@ namespace SCPUtils
                     databasePlayer.UserNotified[databasePlayer.UserNotified.Count() - 1] = true;
                 }
             }
+
+        /*    if (databasePlayer.StreamerMode)
+            {
+                player.ReferenceHub.serverRoles.SetGroup(new UserGroup()
+                {
+                    BadgeColor = "default",
+                    BadgeText = "",
+                    HiddenByDefault = true
+                }, false, true, false);
+                player.SendConsoleMessage($"You have a badge but you have choosen to do not use it, if you wish to get your badge back run the .scputils_streamer_mode command again", "yellow");
+            } */
+
 
             SetCommandBan(player);
         }
@@ -553,6 +564,7 @@ namespace SCPUtils
             list.Remove(player);
             list.RemoveAll(x => x.IsScp);
             list.RemoveAll(x => x.Role == PlayerRoles.RoleTypeId.Tutorial);
+            list.RemoveAll(x => x.IsOverwatchEnabled);
             if (list.Count() == 0)
             {
                 Log.Info("[SCPUtils] Couldnt find a player to replace the banned one!");
@@ -729,6 +741,7 @@ namespace SCPUtils
                 }
             }
         }
+
 
         /*     public void CheckPtStatus()
              {
