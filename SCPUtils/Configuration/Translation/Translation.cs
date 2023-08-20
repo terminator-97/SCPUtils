@@ -1,9 +1,25 @@
 ﻿namespace SCPUtils.Config
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
 
     public class Translation
     {
+        public Dictionary<int, string> ExtensionTranslations = new()
+        {
+            { 0, "[ADMIN HINT]" },
+            { 1, "" },
+            { 2, "" },
+            { 3, "" },
+            { 4, "" },
+            { 5, "" },
+            { 6, "" },
+            { 7, "" },
+            { 8, "" },
+            { 9, "" },
+            { 10, "" },
+        };
+
         [Description("Autowarn message for suiciding as SCP")]
         public Extensions.Broadcast SuicideWarnMessage { get; private set; } = new Extensions.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 

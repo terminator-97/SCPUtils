@@ -74,4 +74,8 @@
     <Compile Remove="CommandConfiguration.cs" />
     <Compile Remove="API\ScpUtilsEvents.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\RemoteAdmin\Sanction\" />
+    <Folder Include="Commands\RemoteAdmin\Swap\" />
+  </ItemGroup>
 </Project>

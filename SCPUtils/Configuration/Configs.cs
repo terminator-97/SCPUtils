@@ -1,8 +1,11 @@
 ﻿namespace SCPUtils.Config
 {
     using PluginAPI.Core;
+    using SCPUtils.Extensions;
     using System.Collections.Generic;
     using System.ComponentModel;
+
+    using FunctionEnums = Enums.FunctionsType;
     using ZoneType = MapGeneration.FacilityZone;
 
     public class Configs

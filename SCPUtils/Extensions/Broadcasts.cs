@@ -4,8 +4,7 @@
 
     public class Broadcast
     {
-        public Broadcast()
-            : this(string.Empty)
+        public Broadcast() : this(string.Empty)
         {
         }
 
