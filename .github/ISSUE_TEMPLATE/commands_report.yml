@@ -4,30 +4,39 @@ title: "[Commands]: Insert command name here"
 labels: "Commands"
 assignees: Bay62
 body:
-  - type: markdown
-    attributes:
-      value: "# Thanks for taking the time to fill out this bug-report!"
-  - type: textarea
-    id: description
-    attributes:
-      label: Describe your bug
-      description: Write clearly and simply what happens.
-      placeholder: Write here.
-    validations:
-      required: true
-  - type: input
-    id: version
-    attributes:
-      label: SCPUtils Version
-      description: SCPUtils version
-      placeholder: ie. 6.0.0
-    validations:
-      required: true
-  - type: input
-    id: command
-    attributes:
-      label: Command
-      description: SCPUtils command
-      placeholder: ie. scputils_info
-    validations:
-      required: true
+- type: markdown
+  attributes:
+    value: "# Thanks for taking the time to fill out this bug-report!"
+- type: textarea
+  id: description
+  attributes:
+    label: Describe your bug
+    description: Write clearly and simply what happens.
+    placeholder: Write here.
+  validations:
+    required: true
+- type: input
+  id: version
+  attributes:
+    label: SCPUtils Version
+    description: SCPUtils version
+    placeholder: ie. 6.0.0
+  validations:
+    required: true
+- type: input
+  id: command
+  attributes:
+    label: Command
+    description: SCPUtils command
+    placeholder: ie. scputils_info
+  validations:
+    required: true
+- type: dropdown
+  id: plugintype
+  attributes:
+    label: What kind of version is the plugin?
+    options:
+    - EXILED 
+    - PluginAPI
+  validations:
+    required: true
