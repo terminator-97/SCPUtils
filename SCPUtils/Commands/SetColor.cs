@@ -10,7 +10,7 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class SetColor : ICommand
     {
-        private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin" };
+        private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin", "rainbow" };
         public string Command { get; } = "scputils_set_color";
 
         public string[] Aliases { get; } = new[] { "scl", "scputils_change_color", "su_sc", "su_cc", "su_setc", "sc_scolor", "scpu_sc", "scpu_cc", "scpu_setc", "scpu_scolor" };
@@ -31,7 +31,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <Color / None> </color>";
+                    response = $"<color=yellow>Usage: {Command} <player name/id> <Color / Rainbow / None> </color>";
                     return false;
                 }
                 else
@@ -49,7 +49,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <Color / None></color>";
+                    response = $"<color=yellow>Usage: {Command} <Color / Rainbow / None></color>";
                     return false;
                 }
                 else
@@ -102,15 +102,21 @@ namespace SCPUtils.Commands
 
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
 
-            if (player != null)
+            if (color == "rainbow" && !ScpUtils.StaticInstance.Config.AllowRainbowTags)
             {
+                response = "<color=red>Random/Rainbow roles are disabled by server owner!</color>";
+                return true;
+            }
+
+                if (player != null)
+                {
                 if (player.GlobalBadge != null)
                 {
-                    response = "<color=red>You have a global badge, as VSR rules you cannot change global badge colors!";
+                    response = "<color=red>This user has a global badge, as VSR rules you cannot change global badge colors, if you have a local badge please set it and try using this command again.";
                     return false;
-                }
+                } 
 
-                player.RankColor = color;
+             if(color != "rainbow") player.RankColor = color;
             }
 
             databasePlayer.ColorPreference = color;

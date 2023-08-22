@@ -79,7 +79,7 @@ namespace SCPUtils.Commands
                 }
                 else
                 {
-                    response = "<color=green>Badge set, it won't be visible until a player has an assigned usergroup!</color>";
+                    response = "<color=green>Badge set, it won't be visible until this player has an assigned usergroup!</color>";
                     return true;
                 }
             }

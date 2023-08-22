@@ -116,6 +116,9 @@ namespace SCPUtils
         [Description("Respawn hint informative message should be an Hint instead broadcast?")]
         public bool RespawnInformativeHint { get; private set; } = true;
 
+        [Description("Should rainbow tags be allowed? Player must have change color permission or an admin must set him the color using \"pp\" command.")]
+        public bool AllowRainbowTags { get; private set; } = true;
+
         [Description("Autowarn message for suiciding as SCP")]
         public Exiled.API.Features.Broadcast SuicideWarnMessage { get; private set; } = new Exiled.API.Features.Broadcast("<color=red>WARN:\nAs per server rules SCP's suicide is an offence, doing it too much will result in a ban!</color>", 30, true, Broadcast.BroadcastFlags.Normal);
 
@@ -234,6 +237,9 @@ namespace SCPUtils
         [Description("Which quit / suicide percentage as SCP a player require before getting kicked? (You can add tollerence in settings)")]
         public float AutoKickThreshold { get; private set; } = 15.5f;
 
+        [Description("After how many seconds rainbow tag must change?")]
+        public float RainbowTagSeconds { get; private set; } = 1.7f;
+
         [Description("Which colors are restricted on .scputils_change_color command? Use command colors in game console to see them")]
         public List<string> RestrictedRoleColors { get; private set; } = new List<string>() { "Color1", "Color2" };
 
@@ -297,6 +303,10 @@ namespace SCPUtils
 
         [Description("Allowed classes to see Chaos info and Next respawn info")]
         public List<PlayerRoles.Team> AllowedChaosInfoTeam { get; private set; } = new List<PlayerRoles.Team>() { PlayerRoles.Team.ClassD, PlayerRoles.Team.ChaosInsurgency, PlayerRoles.Team.Dead };
+
+        [Description("Allowed rainbowtag colors list")]
+        public List<string> AllowedRainbowtagColors { get; private set; } = new List<string>() { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin" };
+
 
         /*
 

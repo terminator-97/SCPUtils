@@ -39,7 +39,7 @@ namespace SCPUtils.Commands
             var databaseIp = GetIp.GetIpAddress(ip);
             if (databaseIp == null)
             {
-                response = "<color=yellow>Invalid IP!</color>";
+                response = "<color=red>IP not found in database!</color>";
                 return false;
             }         
 

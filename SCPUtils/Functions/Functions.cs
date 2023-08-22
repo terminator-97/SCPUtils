@@ -13,6 +13,7 @@ namespace SCPUtils
     public class Functions : EventArgs
     {
         public CoroutineHandle RS;
+        public CoroutineHandle RainbowRoleCoroutine;
         public int i = 0;
         private readonly ScpUtils pluginInstance;
 
@@ -23,6 +24,34 @@ namespace SCPUtils
         }
 
 
+        public void CoroutineRainbow()
+        {            
+            RainbowRoleCoroutine = Timing.RunCoroutine(RainbowRole(pluginInstance.Config.RainbowTagSeconds), Segment.FixedUpdate);            
+        }
+
+        private IEnumerator<float> RainbowRole(float seconds)
+        {
+            while(true)
+            {
+                yield return Timing.WaitForSeconds(seconds);
+                
+                if (pluginInstance.Config.AllowRainbowTags)
+                {
+                    foreach (var player in Exiled.API.Features.Player.List)
+                    {
+                        var databasePlayer = player.GetDatabasePlayer();
+                        if (databasePlayer.ColorPreference == "rainbow")                       
+                        {
+                            if (player.GlobalBadge == null)
+                            {                              
+                                int id = UnityEngine.Random.Range(0, pluginInstance.Config.AllowedRainbowtagColors.Count() - 1);
+                                player.RankColor = pluginInstance.Config.AllowedRainbowtagColors[id];
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public void CoroutineRestart()
         {
@@ -219,8 +248,15 @@ namespace SCPUtils
                     {
                         if (player.GlobalBadge == null)
                         {
-                            player.RankColor = databasePlayer.ColorPreference;
+                            if (databasePlayer.ColorPreference != "rainbow")
+                            {
+                                player.RankColor = databasePlayer.ColorPreference;
+                            }
                         }
+                        else
+                        {
+                            player.SendConsoleMessage($"You have a custom color assigned but you have a global badge, as per VSR rules your custom color won't be usable!", "red");                           
+;                       }
                     }
                     else
                     {

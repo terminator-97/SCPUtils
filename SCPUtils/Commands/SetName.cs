@@ -105,7 +105,15 @@ namespace SCPUtils.Commands
             {
                 databasePlayer.CustomNickName = "";
                 databasePlayer.SaveData();
-                response = "<color=green>Success, changes will take effect next round!</color>";
+
+                Exiled.API.Features.Player plr = Exiled.API.Features.Player.Get(target);
+
+                if (plr != null)
+                {
+                    plr.DisplayNickname = plr.Nickname;
+                }
+
+                response = "<color=green>Success, nickname has been reset!</color>";
                 return true;
             }
 
