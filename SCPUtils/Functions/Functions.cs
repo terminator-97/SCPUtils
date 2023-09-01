@@ -536,6 +536,7 @@ namespace SCPUtils
             list.Remove(player);
             list.RemoveAll(x => x.IsScp);
             list.RemoveAll(x => x.Role == PlayerRoles.RoleTypeId.Tutorial);
+            list.RemoveAll(x => x.IsOverwatchEnabled);
             if (list.Count() == 0)
             {
                 Log.Info("[SCPUtils] Couldnt find a player to replace the banned one!");
@@ -606,49 +607,49 @@ namespace SCPUtils
         }
 
         public void IpCheck(Exiled.API.Features.Player player)
-        {            
-            var databaseIp = GetIp.GetIpAddress(player.IPAddress);            
+        {
+            var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (!databaseIp.UserIds.Contains(player.UserId))
-            {               
-                databaseIp.UserIds.Add(player.UserId);               
-                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);                
+            {
+                databaseIp.UserIds.Add(player.UserId);
+                Database.LiteDatabase.GetCollection<DatabaseIp>().Update(databaseIp);
             }
-            if(pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
-            {               
-                if (player.GetDatabasePlayer().MultiAccountWhiteList) return;                
-                CheckIp(player);                
+            if (pluginInstance.Config.ASNWhiteslistMultiAccount?.Any() ?? true)
+            {
+                if (player.GetDatabasePlayer().MultiAccountWhiteList) return;
+                CheckIp(player);
                 return;
-            }            
-           if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
+            }
+            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
 
         public void CheckIp(Exiled.API.Features.Player player)
-        {       
+        {
             var databaseIp = GetIp.GetIpAddress(player.IPAddress);
             if (databaseIp.UserIds.Count() > 1)
-            {               
+            {
                 MultiAccountEvent args = new MultiAccountEvent();
                 args.Player = player;
                 args.UserIds = databaseIp.UserIds;
-                pluginInstance.Events.OnMultiAccountEvent(args);                
+                pluginInstance.Events.OnMultiAccountEvent(args);
 
                 if (pluginInstance.Config.MultiAccountBroadcast)
                 {
 
                     AdminMessage($"Multi-Account detected on {player.Nickname} - ID: {player.Id} Number of accounts: {databaseIp.UserIds.Count()}");
-                }             
+                }
 
                 foreach (var userId in databaseIp.UserIds)
                 {
-                    if (player.IsMuted) return;                    
+                    if (player.IsMuted) return;
                     if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
                         AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
                     }
-                }                
+                }
             }
         }
 
@@ -657,9 +658,9 @@ namespace SCPUtils
             if (((CommandSender)sender).Nickname.Equals("SERVER CONSOLE"))
             {
                 return false;
-            }            
-            var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);    
-            if(player.CheckPermission("scputils.bypasscooldown"))
+            }
+            var player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
+            if (player.CheckPermission("scputils.bypasscooldown"))
             {
                 return false;
             }

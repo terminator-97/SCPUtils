@@ -87,44 +87,44 @@ namespace SCPUtils.Commands
                         Database.LiteDatabase.GetCollection<Player>().Update(a);
                     }
 
-                        if (a.SuicideDate.Count() != a.SuicidePunishment.Count())
+                    if (a.SuicideDate.Count() != a.SuicidePunishment.Count())
+                    {
+                        a.SuicidePunishment.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicidePunishment.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicidePunishment.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
+                            a.SuicidePunishment.Add("Unknown");
                         }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
-                        if (a.SuicideDate.Count() != a.SuicideScp.Count())
+                    if (a.SuicideDate.Count() != a.SuicideScp.Count())
+                    {
+                        a.SuicideDate.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicideDate.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicideScp.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
+                            a.SuicideScp.Add("Unknown");
                         }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
-                        if (a.SuicideDate.Count() != a.SuicideType.Count())
+                    if (a.SuicideDate.Count() != a.SuicideType.Count())
+                    {
+                        a.SuicideType.Clear();
+                        for (var i = 0; i < a.SuicideDate.Count(); i++)
                         {
-                            a.SuicideType.Clear();
-                            for (var i = 0; i < a.SuicideDate.Count(); i++)
-                            {
-                                a.SuicideType.Add("Unknown");
-                            }
-                            Database.LiteDatabase.GetCollection<Player>().Update(a);
-                        }                        
+                            a.SuicideType.Add("Unknown");
+                        }
+                        Database.LiteDatabase.GetCollection<Player>().Update(a);
+                    }
 
 
-                        valid++;
+                    valid++;
                 }
                 catch (Exception e)
                 {
                     invalid++;
                     Exiled.API.Features.Log.Info($"Invalid player: {a.Id} - {a.Name}");
-                }            
+                }
             }
 
             response = $"Invalid: {invalid}, Valid: {valid}";
