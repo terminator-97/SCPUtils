@@ -10,9 +10,9 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class SearchIp : ICommand
     {
-        public string Command { get; } = "scputils_searchip";
+        public string Command { get; } = "scputils_search_ip";
 
-        public string[] Aliases { get; } = new[] { "searchip", "su_searchip", "scpu_searchip", "sip" };
+        public string[] Aliases { get; } = new[] { "searchip", "su_searchip", "scpu_searchip", "sip", "scputils_searchip" };
 
         public string Description { get; } = "Check if there is a player linked with a specific ip address";
 
