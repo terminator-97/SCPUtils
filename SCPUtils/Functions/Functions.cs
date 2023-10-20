@@ -714,12 +714,13 @@ namespace SCPUtils
                 foreach (var userId in databaseIp.UserIds)
                 {
                     if (player.IsMuted) return;
+                    if (!pluginInstance.Config.ReportMuteEvasions) return;
                     if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
                         AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
-                    }
+                    } 
                 }
             }
         }
