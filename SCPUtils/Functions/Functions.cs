@@ -175,7 +175,7 @@ namespace SCPUtils
 
                 if (databasePlayer.BadgeExpire >= DateTime.Now)
                 {
-                    player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
+                    player.ReferenceHub.serverRoles.SetGroup(group, false, true);
                     if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
                     {
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
@@ -204,7 +204,7 @@ namespace SCPUtils
                     {
                         UserGroup previous = ServerStatic.GetPermissionsHandler()._groups[ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]];
                         ServerStatic.PermissionsHandler._members.Add(player.UserId, ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]);
-                        player.ReferenceHub.serverRoles.SetGroup(previous, false, true, true);
+                        player.ReferenceHub.serverRoles.SetGroup(previous, false, true);
                     }
                     pluginInstance.Events.OnBadgeRemoved(args);
                 }
@@ -489,10 +489,10 @@ namespace SCPUtils
                 return false;
             }
 
-            if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
+         /*   if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
             {
                 return true;
-            }
+            } */
             else
             {
                 return false;
@@ -620,7 +620,8 @@ namespace SCPUtils
                 CheckIp(player);
                 return;
             }
-            if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
+            // if (!pluginInstance.Config.ASNWhiteslistMultiAccount.Contains(player.ReferenceHub.characterClassManager.Asn) && !player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
+            if (!player.GetDatabasePlayer().MultiAccountWhiteList) CheckIp(player);
         }
 
 

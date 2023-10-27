@@ -75,7 +75,7 @@ namespace SCPUtils.Commands
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                     }
 
-                    player.ReferenceHub.serverRoles.SetGroup(group, false, true, true);
+                    player.ReferenceHub.serverRoles.SetGroup(group, false, true);
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, badge);
 
                     ScpUtils.StaticInstance.Events.OnBadgeSet(args);
