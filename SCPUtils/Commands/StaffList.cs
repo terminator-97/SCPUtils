@@ -106,7 +106,7 @@ namespace SCPUtils.Commands
             int value = 0;
             foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
             {
-                if (player.ReferenceHub.serverRoles.RaEverywhere || player.ReferenceHub.serverRoles.Staff || player.RemoteAdminAccess)
+                if (player.IsGlobalModerator || player.IsNorthwoodStaff || player.RemoteAdminAccess)
                 {
                     value++;
                 }

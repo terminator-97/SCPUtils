@@ -44,10 +44,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
@@ -59,7 +55,8 @@
       <HintPath>..\packages\AWSSDK.SecurityToken.3.7.100.14\lib\net45\AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\CommandSystem.Core.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="Costura, Version=5.8.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.5.8.0-alpha0098\lib\netstandard1.0\Costura.dll</HintPath>
@@ -67,26 +64,28 @@
     <Reference Include="DnsClient, Version=1.6.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.6.1\lib\net471\DnsClient.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API">
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\Exiled\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CreditTags, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomItems, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.CustomItems.dll</HintPath>
+    <Reference Include="Exiled.CustomItems">
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.CustomItems.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CustomRoles, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.CustomRoles.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.CustomRoles.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events">
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Loader, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.Loader.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Permissions, Version=8.2.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.Permissions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Updater, Version=3.1.2.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\EXILED.8.2.1\lib\net48\Exiled.Updater.dll</HintPath>
