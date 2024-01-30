@@ -17,8 +17,7 @@ namespace SCPUtils
         public override Version RequiredExiledVersion { get; } = new Version(8, 7, 1);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
-        public Player Player { get; private set; }
-        //  public Database DatabasePlayerData { get; private set; }
+        public Player Player { get; private set; }     
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
 
