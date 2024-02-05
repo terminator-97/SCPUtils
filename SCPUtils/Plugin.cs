@@ -104,6 +104,5 @@ namespace SCPUtils
             Database.Close();
         }
 
-
     }
 }
