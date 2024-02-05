@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class ShowCommandBans : ICommand
     {
 
-        public string Command { get; } = "scputils_show_command_bans";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.ShowcommandbansCommand;
 
-        public string[] Aliases { get; } = new[] { "scb", "su_show_cb", "su_scb", "scpu_show_cb", "scpu_scb" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.ShowcommandbansAliases;
 
-        public string Description { get; } = "You can see detailed informations about restriction";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.ShowbadgeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,14 +27,14 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.moderatecommands"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                     return false;
                 }
                 else
@@ -46,17 +46,12 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
-            if (databasePlayer == null)
-            {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
-                return false;
-            }
             string message = $"\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
-  $"Total Command restrictions: [ { databasePlayer.Restricted.Count } ]\n";
+  $"Total Command restrictions: [ {databasePlayer.Restricted.Count} ]\n";
 
 
             if (databasePlayer.IsRestricted())

@@ -27,12 +27,12 @@ namespace SCPUtils
                         new
                         {
 
-                            title = "Mute evasion report!",
-                            description = $"Mute evasion detected! Userid of muted user: {userid}\n" +
-                            $"Player info:\n" +
-                            $"Username: {player.Nickname}\n" +
-                            $"User-ID: {player.UserId}\n" +
-                            $"Temporary ID: {player.Id}",
+                            title = $"{ScpUtils.StaticInstance.Translation.Report}",
+                            description = $"{ScpUtils.StaticInstance.Translation.Description} {userid}\n" +
+                            $"{ScpUtils.StaticInstance.Translation.PlayerInfo}\n" +
+                            $"{ScpUtils.StaticInstance.Translation.Username}: {player.Nickname}\n" +
+                            $"{ScpUtils.StaticInstance.Translation.UserId}: {player.UserId}\n" +
+                            $"{ScpUtils.StaticInstance.Translation.TemporaryId}: {player.Id}",
                             color = "25233"
                         }
                     }

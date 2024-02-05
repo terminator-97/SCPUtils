@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class SearchIp : ICommand
     {
-        public string Command { get; } = "scputils_search_ip";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.SearchipCommand;
 
-        public string[] Aliases { get; } = new[] { "searchip", "su_searchip", "scpu_searchip", "sip", "scputils_searchip" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.SearchipAliases;
 
-        public string Description { get; } = "Check if there is a player linked with a specific ip address";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.SearchipDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,12 +26,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.dupeip"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id> [Command may cause lag]</color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
 
@@ -39,9 +39,9 @@ namespace SCPUtils.Commands
             var databaseIp = GetIp.GetIpAddress(ip);
             if (databaseIp == null)
             {
-                response = "<color=red>IP not found in database!</color>";
+                response = ScpUtils.StaticInstance.Translation.InvalidIp;
                 return false;
-            }         
+            }
 
             StringBuilder message = new StringBuilder($"<color=green>[Accounts associated with the same IP: {ip}]</color>").AppendLine();
             foreach (var userId in databaseIp.UserIds)

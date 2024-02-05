@@ -22,6 +22,7 @@ This is the list of SCPUtils features with a brief description, i recomend to re
 - **Multi account detector:** Auto-detects multi accounts and based on plugin settings it informs the administrators, you can also set a webhook for reports about mute evaders (you can also remute them automatically by changing configs), you can also exclude specific asns or players from the detector
 - **Handcuff ownership:** By simply updating a config only who cuff the player will be able to uncuff it.
 - **SCP-Swap:** By setting a config you can decide the max allowed time for SCP-Swap requests and if the SCP has to be full health for swap to be allowed, you can configure swap even for scps that are not spawned.
+- **Translations:** You can translate the majority of parts of the plugin (with some exceptions on some staff commands), to use a translation head over to Localization folders on github and if it's present copy and paste the content inside Configs/port-translations.yml, if you wish you can contribute by sending your translation here so other users can use it (read at bottom to see how to do it)
 
 **To use this plugin you will have to install MongoDB and MongoDB Compass (the last one only if you want to manage your database).**<br /><br />
 **LiteDb SCP-Utils version is still avaible but with limited support, check releases tab. It's advisable to use this version, for more info check pinned message in SCPUtils channel on Exiled.**<br /><br />
@@ -209,7 +210,15 @@ In the following example we will protect Class-D against MTF team and Scientist,
 <br />Using scputils.* grants every permission that starts with prefix scputils
 Using '*' grants every possible permission on the server<br />
 To verify if you yml file is valid paste it into this website: http://www.yamllint.com/<br />
-Note: you must add every group in permissionsm don't forget default one<br /><br />
+Note: you must add every group in permissions don't forget default one<br /><br />
+
+**Translations**
+
+To submit a translation head over to the <b>Localizations</b> folder, take the english one and translate it, after finishing review it and check if the yaml check passes on this website: https://www.yamllint.com/ <br/>
+
+If everything is fine open a pull requst for adding that file, the file name should be Language.yml
+
+Thank you if you wish to help, don't forget to add yourself to TranslationCredits.
 
 Data stored on database is intended only for internal use, sharing it is a violation of SCP:SL EULA and will cause your server delist.<br /><br />
 

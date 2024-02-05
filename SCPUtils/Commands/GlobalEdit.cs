@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class GlobalEdit : ICommand
     {
 
-        public string Command { get; } = "scputils_global_edit";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.GlobaleditCommand;
 
-        public string[] Aliases { get; } = new[] { "gedit", "su_gedit", "su_globaledit", "su_ge", "scpu_gedit", "scpu_globaledit", "scpu_ge" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.GlobaleditAliases;
 
-        public string Description { get; } = "Remove specified amount of scp games / warns / kick / bans from each player present in DB!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.GlobaleditDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,14 +26,14 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.globaledit"))
             {
-                response = "<color=red>You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 4)
                 {
-                    response = $"<color=yellow>Usage: {Command} <SCPGames to remove> <Suicides to remove> <Kicks to remove> <Bans to remove></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} <SCPGames to remove> <Suicides to remove> <Kicks to remove> <Bans to remove></color>";
                     return false;
                 }
             }
@@ -84,7 +84,7 @@ namespace SCPUtils.Commands
 
             else
             {
-                response = $"One or more arguments are not an integer, Command usage example: {Command} 4 2 1 3";
+                response = $"{ScpUtils.StaticInstance.Translation.InvalidArgInt}";
                 return false;
             }
 

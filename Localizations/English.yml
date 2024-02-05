@@ -1,0 +1,623 @@
+s_c_p_utils:
+# Translation credits:
+  translation_credits: 'English translation made by Terminator97'
+  # --- Generic translations --- 
+  #  
+  #  Insufficient permission:
+  no_permissions: '<color=red>You need a higher administration level to use this command!</color>'
+  # Player not found on database:
+  no_db_player: '<color=yellow>Player not found on Database!</color>'
+  # Invalid player:
+  invalid_player: '<color=red>Player not found</color>'
+  # Invalid Usergroup:
+  invalid_usergroup: '<color=red>Invalid usergroup!</color>'
+  # Invalid Usergroup:
+  invalid_id: '<color=red>Invalid ID!</color>'
+  # Data not found:
+  invalid_data: '<color=red>Data not found!</color>'
+  # Data not found:
+  invalid_timespan: '<color=red>Invalid, Timespan must be DD:HH:MM:SS or DAYSNUMBER</color>'
+  # Already disabled:
+  already_disabled: '<color=red>Already disabled!</color>'
+  # Already Enabled:
+  already_enabled: '<color=red>Already enabled!</color>'
+  # Round not started:
+  round_not_started: '<color=red>Round is not started!</color>'
+  # Not Alive:
+  not_alive: '<color=red>You are not alive!</color>'
+  # Out of time
+  outof_time: '<color=yellow>The time window to execute this command is over, try to be faster next time!</color>'
+  # Taken damage:
+  damaged: '<color=red>You have taken damage therefore this command is not available, next time be more careful and play better.</color>'
+  # Target Taken damage:
+  target_damaged: '<color=red>Error: Target has taken damage</color>'
+  # Usage:
+  usage: 'Usage'
+  # Player:
+  arg_player: '<player/id>'
+  # Text:
+  arg_text: '<text>'
+  # Id:
+  arg_id: '<id>'
+  # Ip:
+  arg_ip: '<ip>'
+  # Timespan:
+  arg_timespan: '<DD:HH:MM:SS or DAYSNUMBER>'
+  # Usergroup:
+  arg_usergroup: '<user group>'
+  # Minutes:
+  arg_minutes: '<minutes>'
+  # Seconds:
+  arg_seconds: '<seconds>'
+  # Days:
+  arg_days: '<days range>'
+  # Broadcast:
+  arg_broadcast: '<hint(h)/broadcast(bc)>'
+  # Number:
+  arg_number: '<number>'
+  # Optional:
+  optional: '(optional)'
+  # Success:
+  success: '<color=green>Success</color>'
+  # Invalid argument:
+  invalid_arg: '<color=red>Invalid argument, check command usage!</color>'
+  # Invalid argument int:
+  invalid_arg_int: '<color=red>Argument must be an integer!</color>'
+  # None argument:
+  none: none
+  # No players online:
+  no_players: 'No online players'
+  # Enabled:
+  enabled: 'Successfully enabled!'
+  # No players online:
+  disabled: 'Successfully disabled!'
+  # Success nextround:
+  success_next_round: '<color=green>Success, changes will take effect next round!</color>'
+  # Invalid IP
+  invalid_ip: '<color=yellow>Invalid IP!</color>'
+  # SCP-RoundBan staff BC
+  scp_round_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for %rounds% rounds.</color>'
+  # Suicide broadcast while active ban
+  scp_suicide_broadcast_active_ban: '<color=blue><SCPUtils>%user% has suicided while having an active ban!</color>'
+  # SCP-Ban staff BC
+  scp_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) has been <color=red>BANNED</color> for exceeding Quits / Suicides (as SCP) limit for %duration% minutes.</color>'
+  # SCP-Kick staff BC
+  scp_kick_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) has been <color=red>KICKED</color> for exceeding Quits / Suicides (as SCP) limit</color>'
+  # SCP-Warn staff BC
+  scp_warn_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>'
+  # Global badge error
+  global_badge_console_error: 'You have a custom color assigned but you have a global badge, as per VSR rules your custom color won''t be usable!'
+  # NoUsergroup error
+  no_usergroup_error: 'You have a custom badge assigned but you don''t have a base usergroup, your custom group won''t be visible until you have one, contact server staff for more info!'
+  # NoUsergroup error
+  multi_account_bc: 'Multi-Account detected on %user% - ID: %userid$ Number of accounts: %count%'
+  # NoUsergroup error
+  mute_evasion_bc: '<color=red><size=25>Mute evasion detected on %user% ID: %useid% Userid of muted user: %userid2%</size></color>'
+  # By server configs
+  by_server_configs: 'by server configs'
+  command_ban_string: 'You are banned from using commands until'
+  command_ban_string_reason: 'for the following reason:'
+  # --- Commands name and aliases translations --- 
+  #  
+  #  Alias command:
+  alias_command: 'scputils_alias'
+  alias_aliases:
+  - 'alias'
+  - 'su_alias'
+  - 'scpu_alias'
+  - 'alt'
+  alias_description: 'Check player aliases with some basic info, for complete info use dupeip'
+  # Unwhitelist command:
+  unwhitelist_command: 'scputils_unwhitelist_asn'
+  unwhitelist_aliases:
+  - 'asunw'
+  - 'su_uwl_asn'
+  - 'scpu_uwl_asn'
+  unwhitelist_description: 'Un-Whitelist a player to disallow him access the server if ASN is blacklisted!'
+  # AsnWhitelist command:
+  asnwhitelist_command: 'scputils_whitelist_asn'
+  asnwhitelist_aliases:
+  - 'asnw'
+  - 'su_wl_asn'
+  - 'scpu_wl_asn'
+  asnwhitelist_description: 'Whitelist a player to make him access the server even if ASN is blacklisted!'
+  # Badgeplaytime command:
+  badgeplaytime_command: 'scputils_badge_play_time'
+  badgeplaytime_aliases:
+  - 'bpt'
+  - 'tpt'
+  - 'su_tpt'
+  - 'scpu_badgeplaytime'
+  - 'scpu_bpt'
+  badgeplaytime_description: 'Shows the playing time of all players who have that badge.'
+  badgeplaytime_checking: 'Checking playtime of badge'
+  badgeplaytime_nullplayer: 'Null player detected, this usually happens if you have a player in remoteadmin file while he has not joined the server yet.'
+  badgeplaytime_no_activity: 'Playtime: [ No activity ]'
+  badgeplaytime_playtime: 'Playtime:'
+  badgeplaytime_daysjoined: 'Days joined:'
+  badgeplaytime_overwatchtime: 'Overwatch time:'
+  badgeplaytime_overwatchdays: 'Overwatch days:'
+  # Broadcast command:
+  broadcast_command: 'scputils_broadcast'
+  broadcast_aliases:
+  - 'sbc'
+  - 'su_bc'
+  - 'scpu_bc'
+  broadcast_description: 'Allows to send custom broadcastes'
+  # Broadcastlist command:
+  broadcastlist_command: 'scputils_broadcast_list'
+  broadcastlist_aliases:
+  - 'sbcl'
+  - 'bcl'
+  - 'su_bcl'
+  - 'scpu_bcl'
+  broadcastlist_description: 'List of all registred broadcast'
+  # Broadcastcreate command:
+  broadcastcreate_command: 'scputils_broadcast_create'
+  broadcastcreate_aliases:
+  - 'cbc'
+  - 'su_cbc'
+  - 'scpu_cbc'
+  broadcastcreate_description: 'Allows to create custom broadcasts'
+  # CustomBadge command:
+  custom_badge_command: 'scputils_custom_badge'
+  custom_badge_aliases:
+  - 'cb'
+  - 'scputils_cbadge'
+  - 'su_cb'
+  - 'su_customb'
+  custom_badge_description: 'Set a custom badge name to any player if they already have a badge'
+  # Deletebroadcast command:
+  deletebroadcast_command: 'scputils_broadcast_delete'
+  deletebroadcast_aliases:
+  - 'dbc'
+  - 'su_dbc'
+  - 'scpu_dbc'
+  deletebroadcast_description: 'Delete a custom broadcast from database'
+  # Disablesuicidewarn command:
+  disablesuicidewarn_command: 'scputils_disable_suicide_warns'
+  disablesuicidewarn_aliases:
+  - 'dsw'
+  - 'disable_suicide_warns'
+  - 'su_dsw'
+  - 'scpu_dsw'
+  disablesuicidewarn_description: 'Temporarily disable SCP suicide/quit detector for the duration of the round'
+  # Dupeip command:
+  dupeip_command: 'scputils_dupeip'
+  dupeip_aliases:
+  - 'dupeip'
+  - 'su_dupeip'
+  - 'scpu_dupeip'
+  dupeip_description: 'Check if player has another account on same IP'
+  # Enablesuicidewarn command:
+  enablesuicidewarn_command: 'scputils_enable_suicide_warns'
+  enablesuicidewarn_aliases:
+  - 'esw'
+  - 'enable_suicide_warns'
+  - 'su_esw'
+  - 'scpu_esw'
+  enablesuicidewarn_description: 'Enables again SCP suicide/quit detector'
+  # Globaledit command:
+  globaledit_command: 'scputils_global_edit'
+  globaledit_aliases:
+  - 'gedit'
+  - 'su_gedit'
+  - 'su_globaledit'
+  - 'su_ge'
+  - 'scpu_gedit'
+  - 'scpu_globaledit'
+  - 'scpu_ge'
+  globaledit_description: 'Remove specified amount of scp games / warns / kick / bans from each player present in DB!'
+  # Help command:
+  help_command: 'scputils_help'
+  help_aliases:
+  - 'su_help'
+  - 'su_h'
+  - 'scpu_help'
+  - 'scpu_h'
+  help_description: 'Plugin help command'
+  help_content: |-
+    <color=#1BBC9B>User commands:</color> 
+     <color=#1BBC9B>.scputils_info, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge, .scputils_my_info, .scputils_play_time, scputils_round_info, scputils_permissions_view</color>
+  help_content_admin: |-
+    n<color=#FFD700>Administration commands (Remote Admin): </color>
+    <color=#FFD700>scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name, scputils_set_badge, scputils_revoke_badge, scputils_play_time, scputils_whitelist_asn, scputils_unwhitelist_asn, scputils_enable_suicide_warns, scputils_disable_suicide_warns, scputils_global_edit, scputils_player_edit, scputils_player_delete, scputils_player_restrict, scputils_player_unrestrict, scputils_show_command_bans, scputils_preference_persist, scputils_remove_previous_badge, scputils_player_dnt, scputils_round_info, scputils_player_last_warning, scputils_player_warnings, scputils_player_unwarn, scputils_play_sessions, scputils_badge_playtime, scputils_multiaccount_whitelist, scputils_dupeip, scputils_alias, scputils_custom_badge, scputils_searchip</color>
+  # Hidebadge command:
+  hidebadge_command: 'scputils_hide_badge'
+  hidebadge_aliases:
+  - 'hb'
+  - 'su_hb'
+  - 'su_hbadge'
+  - 'su_hideb'
+  - 'scpu_hb'
+  - 'scpu_hbadge'
+  - 'scpu_hideb'
+  hidebadge_description: 'Hides your badge permanently until you execute scputils_show_badge or their aliases.'
+  # Info command:
+  info_command: 'scputils_info'
+  info_aliases:
+  - 'su_info'
+  - 'su_i'
+  - 'scpu_info'
+  - 'scpu_i'
+  info_description: 'Show plugin informations'
+  # Multiaccountwhitelist command:
+  multiaccountwhitelist_command: 'scputils_multiaccount_whitelist'
+  multiaccountwhitelist_aliases:
+  - 'mawl'
+  multiaccountwhitelist_description: 'Whitelist/Unwhitelist a player to make him being ignored/detected by multiaccount system!'
+  # Onlinelist command:
+  onlinelist_command: 'scputils_online_list'
+  onlinelist_aliases:
+  - 'ol'
+  - 'onlinelist'
+  - 'su_ol'
+  - 'su_onlinelist'
+  - 'scpu_ol'
+  - 'scpu_onlinelist'
+  onlinelist_description: 'Show online player list'
+  # Playerbroadcast command:
+  playerbroadcast_command: 'scputils_player_broadcast'
+  playerbroadcast_aliases:
+  - 'spbc'
+  - 'su_pbc'
+  - 'su_player_bc'
+  - 'su_p_bc'
+  - 'su_p_broadcast'
+  - 'scpu_pbc'
+  - 'scpu_player_bc'
+  - 'scpu_p_bc'
+  - 'scpu_p_broadcast'
+  playerbroadcast_description: 'Allows to send custom broadcast'
+  # Playerdelete command:
+  playerdelete_command: 'scputils_player_delete'
+  playerdelete_aliases:
+  - 'pdelete'
+  - 'su_pdelete'
+  - 'su_playerdelete'
+  - 'scpu_pdelete'
+  - 'scpu_playerdelete'
+  playerdelete_description: 'Delete a player (and all the player data) from the database, action is irreversible!'
+  playerdelete_success: '%user% has been deleted from the database!'
+  # Playerdnt command:
+  playerdnt_command: 'scputils_player_dnt'
+  playerdnt_aliases:
+  - 'pdnt'
+  - 'dnt'
+  - 'su_pdnt'
+  - 'su_playerdnt'
+  - 'scpu_pdnt'
+  - 'scpu_playerdnt'
+  playerdnt_description: 'Allows you to ignore a user''s DNT requests'
+  # Playeredit command:
+  playeredit_command: 'scputils_player_edit'
+  playeredit_aliases:
+  - 'pedit'
+  - 'su_pedit'
+  - 'su_playeredit'
+  - 'scpu_pedit'
+  - 'scpu_playeredit'
+  playeredit_description: 'Edit some player data in the database'
+  # Playerinfo command:
+  playerinfo_command: 'scputils_player_info'
+  playerinfo_aliases:
+  - 'upi'
+  - 'scputils_my_info'
+  - 'su_pi'
+  - 'su_player_info'
+  - 'su_playerinfo'
+  - 'scpu_pi'
+  - 'scpu_player_info'
+  - 'scpu_playerinfo'
+  playerinfo_description: 'Show player info, in case you are not admin you can see only your info'
+  playerinfo_total_suicides: 'Total SCP Suicides/Quits:'
+  playerinfo_kicks: 'Total SCP Suicides/Quits Kicks:'
+  playerinfo_bans: 'Total SCP Suicides/Quits Bans:'
+  playerinfo_games_played: 'Total Games played as SCP:'
+  playerinfo_percentage: 'Total Suicides/Quits Percentage:'
+  playerinfo_firstjoin: 'First Join:'
+  playerinfo_lastseen: 'Last Seen:'
+  playerinfo_customcolor: 'Custom Color:'
+  playerinfo_customname: 'Custom Name:'
+  playerinfo_tempbadge: 'Temporarily Badge:'
+  playerinfo_custombadge: 'Custom Badge:'
+  playerinfo_badgexpire: 'Badge Expire:'
+  playerinfo_hidebadge: 'Hide Badge:'
+  playerinfo_asnwhitelist: 'Asn Whitelisted:'
+  playerinfo_keepflag: 'Keep Flag:'
+  playerinfo_dnt: 'Ignore DNT:'
+  playerinfo_whitelist: 'MultiAccount Whitelist:'
+  playerinfo_playtime: 'Total Playtime:'
+  playerinfo_overwatchtime: 'Total Overwatch time:'
+  playerinfo_cooldown: 'Nickname cooldown:'
+  playerinfo_overwatch: 'Overwatch active:'
+  playerinfo_restricted: '<color=red>User account is currently restricted</color>'
+  playerinfo_reason: 'Reason:'
+  playerinfo_expire: 'Expire:'
+  playerinfo_roundsleft: 'Round(s) left:'
+  playerinfo_scpbanned: '<color=red>User account is currently SCP-Banned:</color>'
+  # Playerlist command:
+  playerlist_command: 'scputils_player_list'
+  playerlist_aliases:
+  - 'pli'
+  - 'su_pl'
+  - 'su_playerlist'
+  - 'scpu_pl'
+  - 'scpu_playerlist'
+  playerlist_description: 'Show player list in scputils database with some basic informations, don''t use values like 0 otherwise the list may get huge'
+  # Reset command:
+  reset_command: 'scputils_player_reset'
+  reset_aliases:
+  - 'pr'
+  - 'su_pr'
+  - 'su_playerreset'
+  - 'su_playereset'
+  - 'scpu_pr'
+  - 'scpu_playerreset'
+  - 'scpu_playereset'
+  reset_description: 'Reset player data (Quits,Ban,Kicks,Nickname,Badge etc, everything)!'
+  # Resetpreferences command:
+  resetpreferences_command: 'scputils_player_reset_preferences'
+  resetpreferences_aliases:
+  - 'prp'
+  - 'su_prp'
+  - 'su_playerpreferences'
+  - 'su_player_preferences'
+  - 'su_player_reset_preferences'
+  - 'scpu_prp'
+  - 'scpu_playerpreferences'
+  - 'scpu_player_preferences'
+  - 'scpu_player_reset_preferences'
+  resetpreferences_description: 'Reset player preferences (Nickname, badges etc)!'
+  # Restrict command:
+  restrict_command: 'scputils_player_restrict'
+  restrict_aliases:
+  - 'restrict'
+  - 'susp'
+  - 'su_playerrestrict'
+  - 'su_playerestrict'
+  - 'su_player_r'
+  - 'scpu_playerestrict'
+  - 'scpu_playerrestrict'
+  - 'scpu_player_r'
+  restrict_description: 'This command restricts a player from using the: scputils_change_nickname and scputils_change_color.'
+  # Unrestrict command:
+  unrestrict_command: 'scputils_player_unrestrict'
+  unrestrict_aliases:
+  - 'unrestrict'
+  - 'unsusp'
+  - 'su_playerunrestrict'
+  - 'su_player_unr'
+  - 'scpu_playerunrestrict'
+  - 'scpu_player_unr'
+  unrestrict_description: 'This command removes the restriction to use scputils_change_nickname or scputils_change_color from a player!'
+  # Playtime command:
+  playtime_command: 'scputils_play_time'
+  playtime_aliases:
+  - 'pt'
+  - 'su_playtime'
+  - 'su_pt'
+  - 'scpu_playtime'
+  - 'scpu_pt'
+  playtime_description: 'Show detailed informations about playtime'
+  playtime_zero: '<color=red>You have to specify a number higher than 0!</color>'
+  playtime_max_range: '<color=red>You can specify a range of max 120 days!</color>'
+  playtime_total: 'Total Playtime:'
+  playtime_overwatch: 'Overwatch time:'
+  playtime_noactivity: 'Playtime: [ No activity ]'
+  playtime_specified: 'Specified Period PlayTime:'
+  playtime_playtime: 'Playtime:'
+  # Preferencepersist command:
+  preferencepersist_command: 'scputils_preference_persist'
+  preferencepersist_aliases:
+  - 'pp'
+  - 'su_pp'
+  - 'su_preference_p'
+  - 'scpu_pp'
+  - 'scpu_preference_p'
+  preferencepersist_description: 'Use this command to keep player nickname and color even if he doesn''t have access to that permission!'
+  # Reports command:
+  reports_command: 'scputils_reports'
+  reports_aliases:
+  - 'scpu_reports'
+  - 'rep'
+  - 'sreports'
+  - 'reports'
+  reports_description: 'Show useful stats about users inside SCPUtils database.'
+  # Respawn command (check main config for more customization):
+  respawn_description: 'Allows you to respawn in case you are bugged'
+  # RevokeBadge command:
+  revoke_badge_command: 'scputils_revoke_badge'
+  revoke_badge_aliases:
+  - 'rb'
+  - 'su_rb'
+  - 'su_remove_badge'
+  - 'su_revoke_b'
+  - 'scpu_rb'
+  - 'scpu_remove_badge'
+  - 'scpu_revoke_b'
+  revoke_badge_description: 'Remove a temporarily badge that has been given to a player!'
+  # Roundinfo command:
+  roundinfo_command: 'scputils_round_info'
+  roundinfo_aliases:
+  - 'ri'
+  - roundinfo
+  - 'round_info'
+  - 'su_ri'
+  - 'su_roundinfo'
+  - 'su_round_info'
+  - 'scpu_ri'
+  - 'scpu_roundinfo'
+  - 'scpu_round_info'
+  roundinfo_description: 'Show round info'
+  roundinfo: 'Round Info:'
+  roundinfort: 'Round Time:'
+  roundinfochaostickets: 'Number of Chaos Tickets:'
+  roundinfomtftickets: 'Number of MTF Tickets:'
+  roundinforespawnteam: 'Next known Respawn Team:'
+  roundinforespawntime: 'Time until respawn:'
+  roundinfonumberchaosrespawn: 'Number of Chaos Respawn Waves:'
+  roundinfonumbermtfrespawn: 'Number of Mtf Respawn Waves:'
+  roundinfolastchaoswave: 'Last Chaos wave respawn elapsed time:'
+  roundinfolastmtfwave: 'Last MTF wave respawn elapsed time:'
+  # Scplist command:
+  scplist_command: 'scputils_scp_list'
+  scplist_aliases:
+  - 'scpl'
+  - 'scplist'
+  - 'su_scpl'
+  - 'su_scplist'
+  - 'scpu_scplist'
+  scplist_description: 'Show scp list'
+  scplist_no_scp: 'You are not SCP or Swap module is disabled by the server admin!'
+  # Searchip command:
+  searchip_command: 'scputils_search_ip'
+  searchip_aliases:
+  - 'searchip'
+  - 'su_searchip'
+  - 'scpu_searchip'
+  - 'sip'
+  - 'scputils_searchip'
+  searchip_description: 'Check if there is a player linked with a specific ip address'
+  # Setbadge command:
+  setbadge_command: 'scputils_set_badge'
+  setbadge_aliases:
+  - 'setb'
+  - 'issue_badge'
+  - 'su_setb'
+  - 'su_setbadge'
+  - 'scpu_setb'
+  - 'scpu_setbadge'
+  setbadge_description: 'Set a temporarily badge to a player'
+  setbadge_success: 'Successfully set %group% badge for %duration%'
+  setbadge_kickpower: 'The group you are trying to set has more kick power than yours. (Your kick power:'
+  setbadge_required: 'Required:'
+  # Setcolor command:
+  setcolor_command: 'scputils_set_color'
+  setcolor_aliases:
+  - 'scl'
+  - 'scputils_change_color'
+  - 'su_sc'
+  - 'su_cc'
+  - 'su_setc'
+  - 'sc_scolor'
+  - 'scpu_sc'
+  - 'scpu_cc'
+  - 'scpu_setc'
+  - 'scpu_scolor'
+  setcolor_description: 'Change everyone''s color or only your one based on the permissions you have'
+  setcolor_arg_color: '<color, none, rainbow>'
+  setcolor_invalidcolor: '<color=red> Invalid color, type color in console to see valid SCP colors<color>'
+  setcolor_rainbowdisabled: '<color=red>Random/Rainbow roles are disabled by server owner!</color>'
+  setcolor_globalbadge: '<color=red>This user has a global badge, as VSR rules you cannot change global badge colors, if you have a local badge please set it and try using this command again</color>'
+  setcolor_restrictedcolor: '<color=red>This color has been restricted by server owner, please use another color!</color>'
+  setcolor_rainbow: 'rainbow'
+  # Setname command:
+  setname_command: 'scputils_set_name'
+  setname_aliases:
+  - 'un'
+  - 'scputils_change_nickname'
+  - 'su_setn'
+  - 'su_sname'
+  - 'su_cn'
+  - 'scpu_setn'
+  - 'scpu_sname'
+  - 'scpu_cn'
+  setname_description: 'Change everyone name or only your name based on the permissions you have'
+  setname_argnickname: '<Nickname / None>'
+  setname_taken: '<color=red>This nickname is already used by another player, please choose another name!</color>'
+  setname_toolong: '<color=red>Nickname is too long!</color>'
+  # Roundban command:
+  roundban_command: 'scputils_set_round_ban'
+  roundban_aliases:
+  - 'srb'
+  - 'roundban'
+  - 'su_srb'
+  - 'su_roundban'
+  roundban_description: 'Sets the number of round ban to one player'
+  # Showbadge command:
+  showbadge_command: 'scputils_show_badge'
+  showbadge_aliases:
+  - 'sb'
+  - 'su_showb'
+  - 'su_sbadge'
+  - 'scpu_showb'
+  - 'scpu_sbadge'
+  showbadge_description: 'Shows your permanently hidden badge again.'
+  # Showcommandbans command:
+  showcommandbans_command: 'scputils_show_command_bans'
+  showcommandbans_aliases:
+  - 'scb'
+  - 'su_show_cb'
+  - 'su_scb'
+  - 'scpu_show_cb'
+  - 'scpu_scb'
+  showcommandbans_description: 'Show detailed information about a restriction'
+  # Showwarn command:
+  showwarn_command: 'scputils_player_last_warning'
+  showwarn_aliases:
+  - 'lwarn'
+  - 'su_lwarn'
+  - 'su_last_warn'
+  - 'su_lastw'
+  - 'scpu_lwarn'
+  - 'scpu_last_warn'
+  - 'scpu_lastw'
+  showwarn_description: 'Show last SCPUtils warning of a specific player!'
+  # Showwarns command:
+  showwarns_command: 'scputils_player_warnings'
+  showwarns_aliases:
+  - 'warns'
+  - 'swarns'
+  - 'su_warns'
+  - 'scpu_warns'
+  showwarns_description: 'Show all SCPUtils warnings of a specific player!'
+  # Stafflist command:
+  stafflist_command: 'scputils_staff_list'
+  stafflist_aliases:
+  - 'sl'
+  - 'stafflist'
+  - 'su_sl'
+  - 'su_staffl'
+  - 'su_staff_l'
+  - 'su_slist'
+  - 'scpu_sl'
+  - 'scpu_staffl'
+  - 'scpu_staff_l'
+  - 'scpu_slist'
+  stafflist_description: 'Show list of online staffer.'
+  # Swaprequest command (check main configs for more customization):
+  swaprequest_description: 'Send a SCP swap request to a player'
+  swaprequest_disabled: '<color=yellow>SCP swap module is disabled on this server!</color>'
+  swaprequest_notscp: '<color=yellow>Only SCPs are allowed to use this command!</color>'
+  swaprequest_usage: '<color=yellow>Usage: %command% <player id/nickname or SCP-NUMBER (example: swap SCP-939)></color>'
+  swaprequest_roledisabled: '<color=red>You cannot swap with an unspawned SCP using this SCP</color>'
+  swaprequest_limit: '<color=red>You have reached swaps requests limit for this round!</color>'
+  swaprequest_noautoswap: '<color=red>This SCP is not allowed to auto-swap and no player is currently playing this SCP, please choose another SCP.</color>'
+  swaprequest_invalidplayer: '<color=red>Invalid player nickname/id or invalid SCP name!</color>'
+  swaprequest_pendingtargeterror: '<color=red>Target already sent a request or has a pending request</color>'
+  swaprequest_pendingerror: '<color=red>You already sent or received a swap request, cancel or deny it before sending a new one</color>'
+  swaprequest_selferror: '<color=red>You can''t send swap request to yourself!</color>'
+  swaprequest_targetnoscp: '<color=red>Target is not an SCP!</color>'
+  swaprequest_sameroleerror: '<color=red>You have the same role of the other player!</color'
+  swaprequest_targetcustomscperror: '<color=red>Error: Target is using a custom SCP!</color>'
+  swaprequest_customscperror: '<color=red>Error: You are using a custom SCP</color>'
+  swaprequest_success: '<color=green>Request has been sent successfully to %target%, player has %seconds% seconds to accept the request. Use %cancelcommand% to cancel the request</color>'
+  # Swaprequestqccept (check main configs for more customization):
+  swaprequestaccept_description: 'Accept an SCP swap request'
+  swaprequestaccept_noswaprequest: '<color=red>You haven''t swap requests!</color>'
+  # Swaprequestcancel command (check main configs for more customization):
+  swaprequestcancel_description: 'Cancel a swap request sent by you'
+  # Swaprequestdeny command (check main configs for more customization):
+  swaprequestdeny_description: 'Deny a swap request'
+  # Unwarn command (check main configs for more customization):
+  unwarn_description: 'Removes a specific warning from a player!'
+  # --- Webhook translation --- 
+  #  
+  #  Mute evasion:
+  report: 'Mute evasion report!'
+  description: 'Mute evasion detected! Userid of muted user:'
+  player_info: 'Player Info:'
+  username: 'Username:'
+  user_id: 'User-ID:'
+  temporary_id: 'Temporary ID:'

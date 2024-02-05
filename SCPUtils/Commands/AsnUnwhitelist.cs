@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class AsnUnWhitelist : ICommand
     {
-        public string Command { get; } = "scputils_unwhitelist_asn";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.UnwhitelistCommand;
 
-        public string[] Aliases { get; } = new[] { "asnuw", "su_uwl_asn", "scpu_uwl_asn" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.UnwhitelistAliases;
 
-        public string Description { get; } = "Un-Whitelist a player to disallow him access the server even if ASN is blacklisted!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.UnwhitelistDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,12 +24,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.whitelist"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (arguments.Count < 1)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
 
@@ -40,13 +40,13 @@ namespace SCPUtils.Commands
 
                 if (databasePlayer == null)
                 {
-                    response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                    response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                     return false;
                 }
 
                 databasePlayer.ASNWhitelisted = false;
                 databasePlayer.SaveData();
-                response = "Player has been removed from whitelist!";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
         }

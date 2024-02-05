@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Dupeip : ICommand
     {
-        public string Command { get; } = "scputils_dupeip";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.DupeipCommand;
 
-        public string[] Aliases { get; } = new[] { "dupeip", "su_dupeip", "scpu_dupeip" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.DupeipAliases;
 
-        public string Description { get; } = "Check if player has another account on same IP";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.DupeipDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,12 +26,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.dupeip"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id> [Command may cause lag]</color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
             string targetName = arguments.Array[1];
@@ -39,13 +39,13 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
             var databaseIp = GetIp.GetIpAddress(databasePlayer.Ip);
             if (databaseIp == null)
             {
-                response = "<color=yellow>Invalid IP!</color>";
+                response = $"{ScpUtils.StaticInstance.Translation.InvalidIp}";
                 return false;
             }
 

@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     public class PlayerDelete : ICommand
     {
 
-        public string Command { get; } = "scputils_player_delete";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlayerdeleteCommand;
 
-        public string[] Aliases { get; } = new[] { "pdelete", "su_pdelete", "su_playerdelete", "scpu_pdelete", "scpu_playerdelete" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlayerdeleteAliases;
 
-        public string Description { get; } = "Delete a player (and all the player data) from the database, action is irreversible!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlayerdeleteDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,12 +26,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playerdelete"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (arguments.Count < 1)
             {
-                response = $"<color=red>Usage: {Command} <player name/id> (You will delete the player from the database)</color>";
+                response = $"<color=red>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
             else
@@ -42,13 +42,14 @@ namespace SCPUtils.Commands
 
                 if (databasePlayer == null)
                 {
-                    response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                    response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                     return false;
                 }
 
                 databasePlayer.Reset();
                 Database.MongoDatabase.GetCollection<Player>("players").DeleteOne(broadcast => broadcast.Id == databasePlayer.Id);
-                response = $"{target} has been deleted from the database!";
+                var message = ScpUtils.StaticInstance.Translation.PlayerdeleteSuccess.Replace("%user%", target);
+                response = message;
 
                 return true;
             }

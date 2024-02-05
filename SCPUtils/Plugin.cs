@@ -9,15 +9,15 @@ using ServerEvents = Exiled.Events.Handlers.Server;
 namespace SCPUtils
 {
 
-    public class ScpUtils : Features.Plugin<Configs>
+    public class ScpUtils : Features.Plugin<Configs, Translations>
     {
-        public override string Author { get; } = "Terminator_97#0507";
+        public override string Author { get; } = "terminator97";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(6, 4, 1);
+        public override Version Version { get; } = new Version(6, 5, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 7, 1);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
-        public Player Player { get; private set; }     
+        public Player Player { get; private set; }
         public Events.Events Events { get; private set; }
         public int PatchesCounter { get; private set; }
 
@@ -68,7 +68,7 @@ namespace SCPUtils
                 Functions.CoroutineRestart();
             }
 
-            if(Config.AllowRainbowTags)
+            if (Config.AllowRainbowTags)
             {
                 Functions.CoroutineRainbow();
             }

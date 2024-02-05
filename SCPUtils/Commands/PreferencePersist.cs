@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class PreferencePersist : ICommand
     {
 
-        public string Command { get; } = "scputils_preference_persist";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PreferencepersistCommand;
 
-        public string[] Aliases { get; } = new[] { "pp", "su_pp", "su_preference_p", "scpu_pp", "scpu_preference_p" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PreferencepersistAliases;
 
-        public string Description { get; } = "Use this command to keep player badge and color even if he doesn't have access to that permission!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PreferencepersistDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,14 +27,14 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.keep"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                     return false;
                 }
                 else
@@ -46,7 +46,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
@@ -54,13 +54,13 @@ namespace SCPUtils.Commands
             {
                 databasePlayer.KeepPreferences = true;
                 databasePlayer.SaveData();
-                response = "Success, keep mode has been enabled!";
+                response = ScpUtils.StaticInstance.Translation.Enabled;
             }
             else
             {
                 databasePlayer.KeepPreferences = false;
                 databasePlayer.SaveData();
-                response = "Success, keep mode has been disabled!";
+                response = ScpUtils.StaticInstance.Translation.Disabled;
             }
 
 

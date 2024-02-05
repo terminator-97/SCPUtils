@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class CustomBadge : ICommand
     {
 
-        public string Command { get; } = "scputils_custom_badge";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.CustomBadgeCommand;
 
-        public string[] Aliases { get; } = new[] { "cb", "scputils_cbadge", "su_cb", "su_customb" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.CustomBadgeAliases;
 
-        public string Description { get; } = "You can set a custom badge name to any player if they already have a badge";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.CustomBadgeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -30,7 +30,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <Custom badge name / None> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgText}</color>";
                     return false;
                 }
                 else
@@ -42,7 +42,7 @@ namespace SCPUtils.Commands
 
             else
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
@@ -52,17 +52,17 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
-            if (badge.ToLower() == "none")
+            if (badge.ToLower() == "none" || badge.ToLower() == ScpUtils.StaticInstance.Translation.None)
             {
                 databasePlayer.CustomBadgeName = "";
                 databasePlayer.SaveData();
                 var plr = Exiled.API.Features.Player.Get(target);
                 plr.BadgeHidden = plr.BadgeHidden;
-                response = "<color=green>Custom badge removed!</color>";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
 
@@ -75,16 +75,16 @@ namespace SCPUtils.Commands
             {
                 if (player.Group != null)
                 {
-                    player.RankName = badge;                   
+                    player.RankName = badge;
                 }
                 else
                 {
-                    response = "<color=green>Badge set, it won't be visible until this player has an assigned usergroup!</color>";
+                    response = ScpUtils.StaticInstance.Translation.Success;
                     return true;
                 }
             }
 
-            response = "<color=green>Success, custom badge updated!</color>";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
         }
     }

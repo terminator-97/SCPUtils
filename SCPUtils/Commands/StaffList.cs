@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class StaffList : ICommand
     {
-        public string Command { get; } = "scputils_staff_list";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.StafflistCommand;
 
-        public string[] Aliases { get; } = new[] { "sl", "stafflist", "su_sl", "su_staffl", "su_staff_l", "su_slist", "scpu_sl", "scpu_staffl", "scpu_staff_l", "scpu_slist" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.StafflistAliases;
 
-        public string Description { get; } = "Show list of online staffer.";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.StafflistDescription;
 
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -27,7 +27,7 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.stafflist"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             StringBuilder message = new StringBuilder($"Online Staffers ({CountStaffMembers()})");

@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class SetName : ICommand
     {
 
-        public string Command { get; } = "scputils_set_name";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.SetnameCommand;
 
-        public string[] Aliases { get; } = new[] { "un", "scputils_change_nickname", "su_setn", "su_sname", "su_cn", "scpu_setn", "scpu_sname", "scpu_cn" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.SetnameAliases;
 
-        public string Description { get; } = "You can change everyone name or only your name based on the permissions you have";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.SetnameDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -30,7 +30,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <Nickname / None> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.SetnameArgnickname}</color>";
                     return false;
                 }
                 else
@@ -43,7 +43,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <Nickname / None> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.SetnameArgnickname}</color>";
                     return false;
                 }
                 else
@@ -73,7 +73,7 @@ namespace SCPUtils.Commands
                     if (!allowChange)
                     {
 
-                        response = "<color=red>This nickname is already used by another player, please choose another name!</color>";
+                        response = ScpUtils.StaticInstance.Translation.SetnameTaken;
                         return false;
                     }
                     else if (ScpUtils.StaticInstance.Functions.CheckNickname(nickname) && !sender.CheckPermission("scputils.bypassnickrestriction"))
@@ -97,11 +97,11 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
-            if (nickname.ToLower() == "none")
+            if (nickname.ToLower() == "none" || nickname.ToLower() == ScpUtils.StaticInstance.Translation.None.ToLower())
             {
                 databasePlayer.CustomNickName = "";
                 databasePlayer.SaveData();
@@ -113,13 +113,13 @@ namespace SCPUtils.Commands
                     plr.DisplayNickname = plr.Nickname;
                 }
 
-                response = "<color=green>Success, nickname has been reset!</color>";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
 
             if (nickname.Length > ScpUtils.StaticInstance.Config.NicknameMaxLength)
             {
-                response = "<color=red>Nickname is too long!</color>";
+                response = ScpUtils.StaticInstance.Translation.SetnameToolong;
                 return false;
             }
 
@@ -127,7 +127,7 @@ namespace SCPUtils.Commands
             databasePlayer.CustomNickName = nickname;
             databasePlayer.NicknameCooldown = DateTime.Now.AddSeconds(ScpUtils.StaticInstance.Config.ChangeNicknameCooldown);
             databasePlayer.SaveData();
-            response = "<color=green>Success, choice has been saved!</color>";
+            response = ScpUtils.StaticInstance.Translation.Success;
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
 
             if (player != null)

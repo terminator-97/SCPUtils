@@ -12,11 +12,11 @@ namespace SCPUtils.Commands
     internal class ShowWarns : ICommand
     {
 
-        public string Command { get; } = "scputils_player_warnings";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.ShowwarnsCommand;
 
-        public string[] Aliases { get; } = new[] { "warns", "swarns", "su_warns", "scpu_warns" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.ShowwarnsAliases;
 
-        public string Description { get; } = "Show all SCPUtils warnings of a specific player!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.ShowwarnsDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -35,7 +35,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                     return false;
                 }
                 else
@@ -47,13 +47,13 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
             if (databasePlayer.SuicideDate.Count == 0)
             {
-                response = "Player has no warnings";
+                response = ScpUtils.StaticInstance.Translation.InvalidData;
                 return true;
             }
             ScpUtils.StaticInstance.Functions.FixBanTime(databasePlayer);

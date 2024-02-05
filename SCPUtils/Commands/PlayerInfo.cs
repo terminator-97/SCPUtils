@@ -11,11 +11,11 @@ namespace SCPUtils.Commands
     internal class PlayerInfo : ICommand
     {
 
-        public string Command { get; } = "scputils_player_info";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlayerinfoCommand;
 
-        public string[] Aliases { get; } = new[] { "upi", "scputils_my_info", "su_pi", "su_player_info", "su_playerinfo", "scpu_pi", "scpu_player_info", "scpu_playerinfo" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlayerinfoAliases;
 
-        public string Description { get; } = "Show player info, in case you are not admin you can see only your info";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlayerinfoDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -34,7 +34,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                     return false;
                 }
                 else
@@ -45,42 +45,42 @@ namespace SCPUtils.Commands
             Player databasePlayer = target.GetDatabasePlayer();
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
             string text = $"<color=green>\n[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]\n\n" +
-            $"Total SCP Suicides/Quits: [ {databasePlayer.ScpSuicideCount} ]\n" +
-            $"Total SCP Suicides/Quits Kicks: [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
-            $"Total SCP Suicides/Quits Bans: [ {databasePlayer.TotalScpSuicideBans} ]\n" +
-            $"Total Games played as SCP: [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
-            $"Total Suicides/Quits Percentage: [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
-            $"First Join: [ {databasePlayer.FirstJoin} ]\n" +
-            $"Last Seen: [ {databasePlayer.LastSeen} ]\n" +
-            $"Custom Color: [ {databasePlayer.ColorPreference} ]\n" +
-            $"Custom Name: [ {databasePlayer.CustomNickName} ]\n" +
-            $"Temporarily Badge: [ {databasePlayer.BadgeName} ]\n" +
-            $"Custom Badge: [ {databasePlayer.CustomBadgeName} ]\n" +
-            $"Badge Expire: [ {databasePlayer.BadgeExpire} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoTotalSuicides} [ {databasePlayer.ScpSuicideCount} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoKicks} [ {databasePlayer.TotalScpSuicideKicks} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoBans} [ {databasePlayer.TotalScpSuicideBans} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoGamesPlayed} [ {databasePlayer.TotalScpGamesPlayed} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoPercentage} [ {Math.Round(databasePlayer.SuicidePercentage, 2)}% ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoFirstjoin} [ {databasePlayer.FirstJoin} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoLastseen} [ {databasePlayer.LastSeen} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoCustomcolor} [ {databasePlayer.ColorPreference} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoCustomname} [ {databasePlayer.CustomNickName} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoTempbadge} [ {databasePlayer.BadgeName} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoCustombadge} [ {databasePlayer.CustomBadgeName} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoBadgexpire} [ {databasePlayer.BadgeExpire} ]\n" +
             //  $"Previous Badge: [ {databasePlayer.PreviousBadge} ]\n" +
-            $"Hide Badge: [ {databasePlayer.HideBadge} ]\n" +
-            $"Asn Whitelisted: [ {databasePlayer.ASNWhitelisted} ]\n" +
-            $"Keep Flag: [ {databasePlayer.KeepPreferences} ]\n" +
-            $"Ignore DNT: [ {databasePlayer.IgnoreDNT} ]\n" +
-            $"MultiAccount Whitelist: [ {databasePlayer.MultiAccountWhiteList} ]\n" +
-            $"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ]\n" +
-            $"Total Overwatch time: [ { new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString() } ]\n" +
-            $"Nickname cooldown: [ { databasePlayer.NicknameCooldown } ]\n" +
-            $"Overwatch active: [ { databasePlayer.OverwatchActive } ]</color>";
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoHidebadge} [ {databasePlayer.HideBadge} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoAsnwhitelist} [ {databasePlayer.ASNWhitelisted} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoKeepflag} [ {databasePlayer.KeepPreferences} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoDnt} [ {databasePlayer.IgnoreDNT} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoWhitelist} [ {databasePlayer.MultiAccountWhiteList} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoPlaytime} [ {new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString()} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoOverwatchtime} [ {new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString()} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoCooldown} [ {databasePlayer.NicknameCooldown} ]\n" +
+            $"{ScpUtils.StaticInstance.Translation.PlayerinfoOverwatch} [ {databasePlayer.OverwatchActive} ]</color>";
 
             if (databasePlayer.IsRestricted())
             {
-                text += $"\n<color=red>User account is currently restricted</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\nExpire: [ {databasePlayer.Restricted.Keys.Last()} ]";
+                text += $"\n<color=red>{ScpUtils.StaticInstance.Translation.PlayerinfoRestricted}</color>\nReason: [ {databasePlayer.Restricted.Values.Last()} ]\n{ScpUtils.StaticInstance.Translation.PlayerinfoExpire} [ {databasePlayer.Restricted.Keys.Last()} ]";
             }
 
             if (databasePlayer.RoundBanLeft >= 1)
             {
-                text += $"\n<color=red>User account is currently SCP-Banned:</color>\nRound(s) left: [ {databasePlayer.RoundBanLeft} ]";
+                text += $"\n<color=red>{ScpUtils.StaticInstance.Translation.PlayerinfoScpbanned}:</color>\n{ScpUtils.StaticInstance.Translation.PlayerinfoRoundsleft} [ {databasePlayer.RoundBanLeft} ]";
             }
             response = text;
 

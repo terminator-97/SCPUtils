@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class DeleteBroadcast : ICommand
     {
-        public string Command { get; } = "scputils_broadcast_delete";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.DeletebroadcastCommand;
 
-        public string[] Aliases { get; } = new[] { "dbc", "su_dbc", "scpu_dbc" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.DeletebroadcastAliases;
 
-        public string Description { get; } = "Allows to delete custom broadcastes";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.DeletebroadcastDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,13 +25,13 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.broadcastdelete"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 1)
             {
-                response = $"<color=yellow>Usage: {Command} <id>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgId}";
                 return false;
             }
             else
@@ -41,12 +41,12 @@ namespace SCPUtils.Commands
                 if (databaseBroadcast != null)
                 {
                     Database.MongoDatabase.GetCollection<BroadcastDb>("broadcasts").DeleteOne(broadcast => broadcast.Id == databaseBroadcast.Id);
-                    response = "Success!";
+                    response = ScpUtils.StaticInstance.Translation.Success;
                     return true;
                 }
                 else
                 {
-                    response = "Id does not exist!";
+                    response = ScpUtils.StaticInstance.Translation.InvalidId;
                     return false;
                 }
             }

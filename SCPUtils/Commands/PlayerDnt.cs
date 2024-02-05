@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     internal class PlayerDnt : ICommand
     {
 
-        public string Command { get; } = "scputils_player_dnt";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlayerdntCommand;
 
-        public string[] Aliases { get; } = new[] { "pdnt", "dnt", "su_pdnt", "su_playerdnt", "scpu_pdnt", "scpu_playerdnt" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlayerdntAliases;
 
-        public string Description { get; } = "Use this command to forcefully refuse dnt requests!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlayerdntDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,14 +26,14 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.dnt"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                     return false;
                 }
                 else
@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
@@ -53,13 +53,13 @@ namespace SCPUtils.Commands
             {
                 databasePlayer.IgnoreDNT = true;
                 databasePlayer.SaveData();
-                response = "Success, ignore DNT has been enabled!";
+                response = ScpUtils.StaticInstance.Translation.Enabled;
             }
             else
             {
                 databasePlayer.IgnoreDNT = false;
                 databasePlayer.SaveData();
-                response = "Success, ignore DNT has been disabled!";
+                response = ScpUtils.StaticInstance.Translation.Disabled;
             }
 
 

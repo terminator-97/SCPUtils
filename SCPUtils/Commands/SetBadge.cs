@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     internal class SetBadge : ICommand
     {
 
-        public string Command { get; } = "scputils_set_badge";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.SetbadgeCommand;
 
-        public string[] Aliases { get; } = new[] { "setb", "issue_badge", "su_setb", "su_setbadge", "scpu_setb", "scpu_setbadge" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.SetbadgeAliases;
 
-        public string Description { get; } = "With this command you can set temporary badge, by their name for example: scpu_setb 2 owner 60";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.SetbadgeDescription;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (ScpUtils.StaticInstance.Functions.CheckCommandCooldown(sender) == true)
@@ -26,13 +26,13 @@ namespace SCPUtils.Commands
             string badge;
             if (!sender.CheckPermission("scputils.handlebadges"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 3)
             {
-                response = $"Usage: {Command} <player name / id> <Badge Name> <Minutes>";
+                response = $"{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgUsergroup} {ScpUtils.StaticInstance.Translation.ArgTimespan}";
                 return false;
             }
 
@@ -43,23 +43,23 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
             else if (!ServerStatic.GetPermissionsHandler().GetAllGroups().ContainsKey(badge))
             {
-                response = "Invalid role name!";
+                response = ScpUtils.StaticInstance.Translation.InvalidUsergroup;
                 return false;
             }
 
-            else if (int.TryParse(arguments.Array[3], out int duration))
+            else if (TimeSpan.TryParse(arguments.Array[3], out TimeSpan duration))
             {
                 UserGroup group = ServerStatic.GetPermissionsHandler()._groups[badge];
 
                 if (group.KickPower > ((CommandSender)sender).KickPower && !((CommandSender)sender).FullPermissions)
                 {
-                    response = $"You need a higher administration level to use this command: The group you are trying to set has more kick power than yours. (Your kick power: {((CommandSender)sender).KickPower}, Required: {group.KickPower})";
+                    response = $"{ScpUtils.StaticInstance.Translation.NoPermissions}: {ScpUtils.StaticInstance.Translation.SetbadgeKickpower} {((CommandSender)sender).KickPower}, {ScpUtils.StaticInstance.Translation.SetbadgeRequired} {group.KickPower})";
                     return false;
                 }
 
@@ -75,24 +75,25 @@ namespace SCPUtils.Commands
                         ServerStatic.PermissionsHandler._members.Remove(player.UserId);
                     }
 
-                    player.ReferenceHub.serverRoles.SetGroup(group, false, true);             
+                    player.ReferenceHub.serverRoles.SetGroup(group, false, true);
                     ServerStatic.PermissionsHandler._members.Add(player.UserId, badge);
 
                     ScpUtils.StaticInstance.Events.OnBadgeSet(args);
                 }
 
                 databasePlayer.BadgeName = badge;
-                databasePlayer.BadgeExpire = DateTime.Now.AddMinutes(duration);
+                databasePlayer.BadgeExpire = DateTime.Now.Add(duration);
 
 
                 databasePlayer.SaveData();
-                response = $"Successfully set {group.BadgeText} badge! Duration: {duration} minute(s)!";
+                var message = ScpUtils.StaticInstance.Translation.SetbadgeSuccess.Replace("%group%", group.BadgeText).Replace("%duration%", duration.ToString());
+                response = message;
 
 
             }
             else
-            {
-                response = "Arg3 must be integer!";
+            {                
+                response = ScpUtils.StaticInstance.Translation.InvalidTimespan;
             }
 
             return true;

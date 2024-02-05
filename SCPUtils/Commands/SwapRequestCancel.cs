@@ -11,7 +11,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases => ScpUtils.StaticInstance.Config.SwapRequestCancelCommandAliases;
 
-        public string Description => "Cancel a swap request sent by you";
+        public string Description => ScpUtils.StaticInstance.Translation.SwaprequestcancelDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,14 +24,14 @@ namespace SCPUtils.Commands
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
             if (!ScpUtils.StaticInstance.EventHandlers.SwapRequest.ContainsKey(player))
             {
-                response = $"<color=red>You haven't sent any swap request!</color>";
+                response = ScpUtils.StaticInstance.Translation.SwaprequestacceptNoswaprequest;
                 return false;
             }
             var target = ScpUtils.StaticInstance.EventHandlers.SwapRequest[player];
             target.ClearBroadcasts();
             target.Broadcast(ScpUtils.StaticInstance.Config.SwapRequestCanceledBroadcast);
             ScpUtils.StaticInstance.EventHandlers.SwapRequest.Remove(player);
-            response = $"<color=green>Swap request has been canceled</color>";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
         }
     }

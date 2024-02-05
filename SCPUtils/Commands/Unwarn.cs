@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.UnwarnCommandAliases;
 
-        public string Description { get; } = "Removes a specific warning from a player!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.UnwarnDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,14 +26,14 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.unwarn"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <WarnID></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgId}</color>";
                     return false;
                 }
                 else
@@ -46,22 +46,22 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = $"<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
             bool success = int.TryParse(arguments.Array[2], out int id);
             if (!success)
             {
-                response = $"Parameter is not an integer!";
+                response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                 return false;
             }
 
             if ((databasePlayer.SuicideScp.Count - 1) < id || id < 0)
             {
-                response = $"Warning with index {id} not found!";
+                response = ScpUtils.StaticInstance.Translation.InvalidData;
                 return true;
             }
-            string message = "Success!";
+            string message = ScpUtils.StaticInstance.Translation.Success;
             switch (databasePlayer.SuicidePunishment[id])
             {
                 case "Warn":
@@ -107,7 +107,7 @@ namespace SCPUtils.Commands
 
                     break;
                 case "REMOVED":
-                    message = "This sanction has already been removed!";
+                    message = ScpUtils.StaticInstance.Translation.Success;
                     break;
                 default:
                     break;

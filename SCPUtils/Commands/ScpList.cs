@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class ScpList : ICommand
     {
-        public string Command { get; } = "scputils_scp_list";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.ScplistCommand;
 
-        public string[] Aliases { get; } = new[] { "scpl", "scplist", "su_scpl", "su_scplist", "scpu_scplist" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.ScplistAliases;
 
-        public string Description { get; } = "Show scp list";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.ScplistDescription;
 
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -34,7 +34,7 @@ namespace SCPUtils.Commands
             Exiled.API.Features.Player csender = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
             if (!csender.IsScp || !ScpUtils.StaticInstance.Config.AllowSCPSwap)
             {
-                response = "You are not SCP or Swap module is disabled by the server admin!";
+                response = ScpUtils.StaticInstance.Translation.ScplistNoScp;
                 return false;
             }
 

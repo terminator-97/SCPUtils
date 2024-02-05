@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     public class ShowBadge : ICommand
     {
 
-        public string Command { get; } = "scputils_show_badge";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.ShowbadgeCommand;
 
-        public string[] Aliases { get; } = new[] { "sb", "su_showb", "su_sbadge", "scpu_showb", "scpu_sbadge" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.ShowbadgeAliases;
 
-        public string Description { get; } = "Shows your badge permanently until you execute scputils_hide_badge or their aliases.";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.ShowbadgeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -38,7 +38,7 @@ namespace SCPUtils.Commands
                 Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
                 player.BadgeHidden = false;
                 player.GetDatabasePlayer().HideBadge = false;
-                response = "<color=green>Your badge has been shown!</color>";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
         }

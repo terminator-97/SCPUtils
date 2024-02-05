@@ -11,11 +11,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class OnlineList : ICommand
     {
-        public string Command { get; } = "scputils_online_list";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.OnlinelistCommand;
 
-        public string[] Aliases { get; } = new[] { "ol", "onlinelist", "su_ol", "su_onlinelist", "scpu_ol", "scpu_onlinelist" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.OnlinelistAliases;
 
-        public string Description { get; } = "Show online player list";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.OnlinelistDescription;
 
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -28,7 +28,7 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.onlinelist.basic"))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             StringBuilder message = new StringBuilder($"Online Players ({Exiled.API.Features.Player.Dictionary.Count})");
@@ -110,7 +110,7 @@ namespace SCPUtils.Commands
             }
             if (Exiled.API.Features.Player.Dictionary.Count == 0)
             {
-                response = "No players online!";
+                response = ScpUtils.StaticInstance.Translation.NoPlayers;
                 return true;
             }
             response = message.ToString();

@@ -12,11 +12,11 @@ namespace SCPUtils.Commands
     internal class PlayTime : ICommand
     {
 
-        public string Command { get; } = "scputils_play_time";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlaytimeCommand;
 
-        public string[] Aliases { get; } = new[] { "pt", "su_playtime", "su_pt", "scpu_playtime", "scpu_pt" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlaytimeAliases;
 
-        public string Description { get; } = "You can see detailed informations about playtime";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlaytimeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -31,7 +31,7 @@ namespace SCPUtils.Commands
             int playtime;
             if (!sender.CheckPermission("scputils.ownplaytime") && !sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
-                response = "<color=red>You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
@@ -41,7 +41,7 @@ namespace SCPUtils.Commands
 
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <days range> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgDays}</color>";
                     return false;
                 }
 
@@ -49,7 +49,7 @@ namespace SCPUtils.Commands
                 {
                     if (!int.TryParse(arguments.Array[1], out range))
                     {
-                        response = "<color=red>Number is not an integer</color>";
+                        response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                         return false;
                     }
 
@@ -57,7 +57,7 @@ namespace SCPUtils.Commands
 
                 if (range > 120)
                 {
-                    response = "<color=red>You can specify a range of max 120 days!</color>";
+                    response = ScpUtils.StaticInstance.Translation.PlaytimeMaxRange;
                     return false;
                 }
             }
@@ -65,7 +65,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <days range> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgDays}</color>";
                     return false;
                 }
                 else
@@ -75,7 +75,7 @@ namespace SCPUtils.Commands
 
                 if (!int.TryParse(arguments.Array[2], out range))
                 {
-                    response = "<color=red>Number is not an integer</color>";
+                    response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                     return false;
                 }
 
@@ -84,25 +84,25 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
 
             if (range <= 0)
             {
-                response = "<color=red>You have to specify a number higher than 0!</color>";
+                response = ScpUtils.StaticInstance.Translation.PlaytimeZero;
                 return false;
             }
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
             StringBuilder message = new StringBuilder($"[{databasePlayer.Name} ({databasePlayer.Id}@{databasePlayer.Authentication})]");
             message.AppendLine();
-            message.Append($"Total Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString() } ] - Total Overwatch time: [ { new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString() } ]");
+            message.Append($"{ScpUtils.StaticInstance.Translation.PlaytimeTotal} [ {new TimeSpan(0, 0, databasePlayer.PlayTimeRecords.Values.Sum()).ToString()} ] - {ScpUtils.StaticInstance.Translation.PlaytimeOverwatch} [ {new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords.Values.Sum()).ToString()} ]");
 
 
 
@@ -120,16 +120,16 @@ namespace SCPUtils.Commands
                         owpt = new TimeSpan(0, 0, databasePlayer.OwPlayTimeRecords[date.Date.ToShortDateString()]).ToString();
                     }
                     else owpt = "00:00:00";
-                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ { new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString() } ] - Overwatch time: [ { owpt } ]");
+                    message.Append($"{date.Date.ToShortDateString()} {ScpUtils.StaticInstance.Translation.PlaytimePlaytime} [ {new TimeSpan(0, 0, databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()]).ToString()} ] - {ScpUtils.StaticInstance.Translation.PlaytimeOverwatch} [ {owpt} ]");
 
                     playtime += databasePlayer.PlayTimeRecords[date.Date.ToShortDateString()];
                 }
                 else
                 {
-                    message.Append($"{date.Date.ToShortDateString()} Playtime: [ No activity ]");
+                    message.Append($"{date.Date.ToShortDateString()} {ScpUtils.StaticInstance.Translation.PlaytimeNoactivity}");
                 }
             }
-            message.AppendLine($"\nSpecified Period PlayTime: [ { new TimeSpan(0, 0, playtime).ToString() } ]");
+            message.AppendLine($"\n{ScpUtils.StaticInstance.Translation.PlaytimeSpecified} [ {new TimeSpan(0, 0, playtime).ToString()} ]");
             response = $"{message}";
 
             return true;

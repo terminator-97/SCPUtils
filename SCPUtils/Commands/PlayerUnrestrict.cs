@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class PlayerUnrestrict : ICommand
     {
-        public string Command { get; } = "scputils_player_unrestrict";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.UnrestrictCommand;
 
-        public string[] Aliases { get; } = new[] { "unrestrict", "unsusp", "su_playerunrestrict", "su_player_unr", "scpu_playerunrestrict", "scpu_player_unr" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.UnrestrictAliases;
 
-        public string Description { get; } = "This command removes the restriction to use scputils_change_nickname or scputils_change_color from a player!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.UnrestrictDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,13 +26,13 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.moderatecommands"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 1)
             {
-                response = $"Usage: {Command} <player name/id>";
+                response = $"{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}";
                 return false;
             }
 
@@ -47,13 +47,13 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
             else if (!databasePlayer.IsRestricted())
             {
-                response = "Player is not suspended!";
+                response = ScpUtils.StaticInstance.Translation.InvalidData;
                 return false;
             }
 
@@ -68,7 +68,7 @@ namespace SCPUtils.Commands
                 }
             }
 
-            response = "Player unsuspended!";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
 
         }

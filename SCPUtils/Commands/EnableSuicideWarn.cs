@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class EnableSuicideWarn : ICommand
     {
-        public string Command { get; } = "scputils_enable_suicide_warns";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.EnablesuicidewarnCommand;
 
-        public string[] Aliases { get; } = new[] { "esw", "enable_suicide_warns", "su_esw", "scpu_esw" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.EnablesuicidewarnAliases;
 
-        public string Description { get; } = "Enables again SCP suicide/quit detector";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.EnablesuicidewarnDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,21 +24,21 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.warnmanagement"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (!SCPUtils.EventHandlers.TemporarilyDisabledWarns)
             {
-                response = "Warns are already enabled";
+                response = $"{ScpUtils.StaticInstance.Translation.AlreadyEnabled}";
                 return false;
             }
             else if (!ScpUtils.StaticInstance.Config.EnableSCPSuicideAutoWarn)
             {
-                response = "Suicide / Quit warns are disabled by server config, contact server owner if this is an error!";
+                response = $"{ScpUtils.StaticInstance.Translation.Disabled} {ScpUtils.StaticInstance.Translation.ByServerConfigs}";
                 return false;
             }
             EventHandlers.TemporarilyDisabledWarns = false;
-            response = "Suicide and Quit warns have been re-enabled!";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
         }
     }

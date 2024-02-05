@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class SetRoundBan : ICommand
     {
-        public string Command { get; } = "scputils_set_round_ban";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.RoundbanCommand;
 
-        public string[] Aliases { get; } = new[] { "srb", "roundban", "su_srb", "su_roundban" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.RoundbanAliases;
 
-        public string Description { get; } = "Sets the number of round ban to one player";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.RoundbanDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.roundban"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
 
 
@@ -34,7 +34,7 @@ namespace SCPUtils.Commands
 
             if (arguments.Count < 2)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id> <Round bans to set> </color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgNumber}</color>";
                 return false;
             }
             else target = arguments.Array[1].ToString();
@@ -44,7 +44,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "Player not found on Database or Player is loading data!";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
@@ -52,13 +52,13 @@ namespace SCPUtils.Commands
             {
                 databasePlayer.RoundBanLeft = rounds;
                 databasePlayer.SaveData();
-                response = "Success!";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
 
             else
             {
-                response = "Number of rounds must be an integer!";
+                response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                 return false;
             }
         }

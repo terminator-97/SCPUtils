@@ -10,10 +10,10 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class RoundInfo : ICommand
     {
-        public string Command { get; } = "scputils_round_info";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.RoundinfoCommand;
 
-        public string[] Aliases { get; } = new[] { "ri", "roundinfo", "round_info", "su_ri", "su_roundinfo", "su_round_info", "scpu_ri", "scpu_roundinfo", "scpu_round_info" };
-        public string Description { get; } = "Show round info";
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.RoundinfoAliases;
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.RoundinfoDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -30,52 +30,52 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.roundinfo.execute") && !ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team) && !ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
             {
-                response = "You need a higher administration level to use this command!";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             if (!Exiled.API.Features.Round.IsStarted)
             {
-                response = "Round is not started yet!";
+                response = ScpUtils.StaticInstance.Translation.RoundNotStarted;
                 return true;
             }
             else
             {
-                StringBuilder message = new StringBuilder($"Round Info:");
+                StringBuilder message = new StringBuilder($"{ScpUtils.StaticInstance.Translation.Roundinfo}");
                 if (sender.CheckPermission("scputils.roundinfo.roundtime"))
                 {
                     message.AppendLine();
-                    message.AppendLine($"Round time: {Exiled.API.Features.Round.ElapsedTime.ToString(@"hh\:mm\:ss")}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfo} {Exiled.API.Features.Round.ElapsedTime.ToString(@"hh\:mm\:ss")}");
                 }
                 if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
-                    message.AppendLine($"Number of Chaos Tickets: {Exiled.API.Features.Respawn.ChaosTickets}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfochaostickets} {Exiled.API.Features.Respawn.ChaosTickets}");
                 }
                 if (sender.CheckPermission("scputils.roundinfo.tickets") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
-                    message.AppendLine($"Number of MTF Tickets: {Exiled.API.Features.Respawn.NtfTickets}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfomtftickets} {Exiled.API.Features.Respawn.NtfTickets}");
                 }
 
                 if (sender.CheckPermission("scputils.roundinfo.nextrespawnteam") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team) || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
-                    message.AppendLine($"Next known Respawn Team: {Exiled.API.Features.Respawn.NextKnownTeam}");
-                    message.AppendLine($"Time until respawn: {TimeSpan.FromSeconds(Exiled.API.Features.Respawn.TimeUntilSpawnWave.TotalSeconds).ToString(@"hh\:mm\:ss")}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinforespawnteam} {Exiled.API.Features.Respawn.NextKnownTeam}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinforespawntime} {TimeSpan.FromSeconds(Exiled.API.Features.Respawn.TimeUntilSpawnWave.TotalSeconds).ToString(@"hh\:mm\:ss")}");
                 }
 
                 if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
-                    message.AppendLine($"Number of Chaos Respawn Waves: {ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfonumberchaosrespawn} {ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount}");
                 }
                 if (sender.CheckPermission("scputils.roundinfo.respawncount") || ScpUtils.StaticInstance.Config.AllowedMtfInfoTeam.Contains(player.Role.Team))
                 {
-                    message.AppendLine($"Number of Mtf Respawn Waves: {ScpUtils.StaticInstance.EventHandlers.MtfRespawnCount}");
+                    message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfonumbermtfrespawn} {ScpUtils.StaticInstance.EventHandlers.MtfRespawnCount}");
                 }
                 if (sender.CheckPermission("scputils.roundinfo.lastrespawn") || ScpUtils.StaticInstance.Config.AllowedChaosInfoTeam.Contains(player.Role.Team))
                 {
                     if (ScpUtils.StaticInstance.EventHandlers.ChaosRespawnCount >= 1)
                     {
                         TimeSpan timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastChaosRespawn);
-                        message.AppendLine($"Last Chaos wave respawn elapsed time: { timespan.ToString(@"hh\:mm\:ss")} ").AppendLine();
+                        message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfolastchaoswave} {timespan.ToString(@"hh\:mm\:ss")} ").AppendLine();
 
                     }
                 }
@@ -85,7 +85,7 @@ namespace SCPUtils.Commands
                     {
                         TimeSpan timespan = (DateTime.Now - ScpUtils.StaticInstance.EventHandlers.LastMtfRespawn);
 
-                        message.AppendLine($"Last MTF wave respawn elapsed time: { timespan.ToString(@"hh\:mm\:ss")}");
+                        message.AppendLine($"{ScpUtils.StaticInstance.Translation.Roundinfolastmtfwave} {timespan.ToString(@"hh\:mm\:ss")}");
                     }
                 }
                 response = $"{message}";

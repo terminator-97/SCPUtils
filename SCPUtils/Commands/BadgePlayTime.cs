@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace SCPUtils.Commands
     internal class BadgePlayTime : ICommand
     {
 
-        public string Command { get; } = "scputils_badge_play_time";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.BadgeplaytimeCommand;
 
-        public string[] Aliases { get; } = new[] { "bpt", "tpt", "su_tpt", "scpu_badgeplaytime", "scpu_bpt" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.BadgeplaytimeAliases;
 
-        public string Description { get; } = "Short playtime with a specified range by using badge as input.";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.BadgeplaytimeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -36,12 +37,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playtime") && !((CommandSender)sender).FullPermissions)
             {
-                response = "<color=red>You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             if (arguments.Count < 2)
             {
-                response = $"<color=yellow>Usage: {Command} <badgeName> <days range> </color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgUsergroup} {ScpUtils.StaticInstance.Translation.ArgDays} </color>";
                 return false;
             }
             else
@@ -53,24 +54,26 @@ namespace SCPUtils.Commands
 
             if (!ServerStatic.GetPermissionsHandler().GetAllGroups().ContainsKey(badge))
             {
-                response = "Invalid role name!";
+                response = ScpUtils.StaticInstance.Translation.InvalidUsergroup;
                 return false;
             }
 
-            StringBuilder message = new StringBuilder($"Checking playtime of badge {badge}").AppendLine();
+            StringBuilder message = new StringBuilder($"{ScpUtils.StaticInstance.Translation.BadgeplaytimeChecking} {badge}").AppendLine();
+         
+                
             foreach (var player in ServerStatic.RolesConfig.GetStringDictionary("Members"))
             {
                 playtime = 0;
                 completedays = 0;
                 int days = range + 1;
                 var owpt = 0;
-                var owdays = 0;
+                var owdays = 0;                
                 if (player.Value.ToString() == badge)
                 {
                     var databasePlayer = player.Key.GetDatabasePlayer();
                     if (databasePlayer == null)
                     {
-                        response = $"Null player detected! {player.Key}";
+                        response = $"{ScpUtils.StaticInstance.Translation.BadgeplaytimeNullplayer} {player.Key}";
                         return false;
                     }
 
@@ -94,12 +97,12 @@ namespace SCPUtils.Commands
                     if (playtime == 0)
                     {
 
-                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ No activity ]");
+                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - {ScpUtils.StaticInstance.Translation.PlaytimeNoactivity}");
                     }
 
                     else
                     {
-                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - Playtime: [ { new TimeSpan(0, 0, playtime).ToString() } ] - Days joined: [ {completedays}/{days} ] - Overwatch time: [ { new TimeSpan(0, 0, owpt).ToString() } ] - Overwatch days: [ {owdays}/{days} ]");
+                        message.AppendLine($"[{databasePlayer.Name} - {databasePlayer.Id}@{databasePlayer.Authentication}] - {ScpUtils.StaticInstance.Translation.BadgeplaytimePlaytime} [ {new TimeSpan(0, 0, playtime).ToString()} ] - {ScpUtils.StaticInstance.Translation.BadgeplaytimeDaysjoined} [ {completedays}/{days} ] - {ScpUtils.StaticInstance.Translation.BadgeplaytimeOverwatchtime} [ {new TimeSpan(0, 0, owpt).ToString()} ] - {ScpUtils.StaticInstance.Translation.BadgeplaytimeOverwatchdays} [ {owdays}/{days} ]");
                     }
                     count++;
 
@@ -108,7 +111,7 @@ namespace SCPUtils.Commands
 
             if (count == 0)
             {
-                response = "No players found on specified badge!";
+                response = ScpUtils.StaticInstance.Translation.InvalidPlayer;
                 return false;
             }
 

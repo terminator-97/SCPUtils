@@ -25,25 +25,25 @@ namespace SCPUtils
 
 
         public void CoroutineRainbow()
-        {            
-            RainbowRoleCoroutine = Timing.RunCoroutine(RainbowRole(pluginInstance.Config.RainbowTagSeconds), Segment.FixedUpdate);            
+        {
+            RainbowRoleCoroutine = Timing.RunCoroutine(RainbowRole(pluginInstance.Config.RainbowTagSeconds), Segment.FixedUpdate);
         }
 
         private IEnumerator<float> RainbowRole(float seconds)
         {
-            while(true)
+            while (true)
             {
                 yield return Timing.WaitForSeconds(seconds);
-                
+
                 if (pluginInstance.Config.AllowRainbowTags)
                 {
                     foreach (var player in Exiled.API.Features.Player.List)
                     {
                         var databasePlayer = player.GetDatabasePlayer();
-                        if (databasePlayer.ColorPreference == "rainbow")                       
+                        if (databasePlayer.ColorPreference == "rainbow")
                         {
                             if (player.GlobalBadge == null)
-                            {                              
+                            {
                                 int id = UnityEngine.Random.Range(0, pluginInstance.Config.AllowedRainbowtagColors.Count() - 1);
                                 player.RankColor = pluginInstance.Config.AllowedRainbowtagColors[id];
                             }
@@ -92,8 +92,10 @@ namespace SCPUtils
             }
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>BANNED</color> from playing SCP for exceeding Quits / Suicides (as SCP) limit for {rounds} rounds.</color>");
-                if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} has suicided while having an active ban!</color>");
+                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%user", player.Nickname).Replace("%role", player.Role.Type.ToString()).Replace("%rounds$", rounds.ToString());
+                var messageSuicideAgain = ScpUtils.StaticInstance.Translation.ScpSuicideBroadcastActiveBan.Replace("%user", player.Nickname);
+                BroadcastSuicideQuitAction(message);
+                if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction(messageSuicideAgain);
             }
             databasePlayer.RoundsBan[databasePlayer.RoundsBan.Count() - 1] = rounds;
             databasePlayer.RoundBanLeft += rounds;
@@ -125,7 +127,9 @@ namespace SCPUtils
 
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>BANNED</color> from the server for exceeding Quits / Suicides (as SCP) limit. Duration: {duration / 60} mitutes</color>");
+                var durationBroadcast = duration / 60;
+                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%user", player.Nickname).Replace("%role", player.Role.Type.ToString()).Replace("%duration$", durationBroadcast.ToString());
+                BroadcastSuicideQuitAction(message);
             }
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration / 60) * databasePlayer.TotalScpSuicideBans);
             else databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes(duration / 60);
@@ -136,7 +140,8 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>KICKED</color> from the server for exceeding Quits / Suicides (as SCP) limit</color>");
+                var message = ScpUtils.StaticInstance.Translation.ScpKickStaffBc.Replace("%user", player.Nickname).Replace("%role", player.Role.Type.ToString());
+                BroadcastSuicideQuitAction(message);
             }
 
             Player databasePlayer = player.GetDatabasePlayer();
@@ -149,7 +154,8 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastWarns)
             {
-                BroadcastSuicideQuitAction($"<color=blue><SCPUtils> {player.Nickname} ({player.Role.Type}) has been <color=red>WARNED</color> for Quitting or Suiciding as SCP</color>");
+                var message = ScpUtils.StaticInstance.Translation.ScpWarnStaffBc.Replace("%user", player.Nickname).Replace("%role", player.Role.Type.ToString());
+                BroadcastSuicideQuitAction(message);
             }
 
             player.GetDatabasePlayer().ScpSuicideCount++;
@@ -255,8 +261,8 @@ namespace SCPUtils
                         }
                         else
                         {
-                            player.SendConsoleMessage($"You have a custom color assigned but you have a global badge, as per VSR rules your custom color won't be usable!", "red");                           
-;                       }
+                            player.SendConsoleMessage(ScpUtils.StaticInstance.Translation.GlobalBadgeConsoleError, "red");
+                        }
                     }
                     else
                     {
@@ -293,11 +299,11 @@ namespace SCPUtils
                 {
                     if (player.Group != null)
                     {
-                        player.RankName = databasePlayer.CustomBadgeName;                       
+                        player.RankName = databasePlayer.CustomBadgeName;
                     }
                     else
                     {
-                        player.SendConsoleMessage($"You have a custom badge assigned but you don't have a base usergroup, your custom group won't be visible until you have one, contact server staff for more info!", "red");
+                        player.SendConsoleMessage(ScpUtils.StaticInstance.Translation.NoUsergroupError, "red");
                     }
                 }
 
@@ -330,16 +336,16 @@ namespace SCPUtils
                 }
             }
 
-        /*    if (databasePlayer.StreamerMode)
-            {
-                player.ReferenceHub.serverRoles.SetGroup(new UserGroup()
+            /*    if (databasePlayer.StreamerMode)
                 {
-                    BadgeColor = "default",
-                    BadgeText = "",
-                    HiddenByDefault = true
-                }, false, true, false);
-                player.SendConsoleMessage($"You have a badge but you have choosen to do not use it, if you wish to get your badge back run the .scputils_streamer_mode command again", "yellow");
-            } */
+                    player.ReferenceHub.serverRoles.SetGroup(new UserGroup()
+                    {
+                        BadgeColor = "default",
+                        BadgeText = "",
+                        HiddenByDefault = true
+                    }, false, true, false);
+                    player.SendConsoleMessage($"You have a badge but you have choosen to do not use it, if you wish to get your badge back run the .scputils_streamer_mode command again", "yellow");
+                } */
 
 
             SetCommandBan(player);
@@ -552,10 +558,10 @@ namespace SCPUtils
                 return false;
             }
 
-          /*if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
-            {
-                return true;
-            } */
+            /*if (pluginInstance.Config.ASNBlacklist.Contains(player.ReferenceHub.characterClassManager.Asn) && !databasePlayer.ASNWhitelisted)
+              {
+                  return true;
+              } */
             else
             {
                 return false;
@@ -708,8 +714,8 @@ namespace SCPUtils
 
                 if (pluginInstance.Config.MultiAccountBroadcast)
                 {
-
-                    AdminMessage($"Multi-Account detected on {player.Nickname} - ID: {player.Id} Number of accounts: {databaseIp.UserIds.Count()}");
+                    var message = ScpUtils.StaticInstance.Translation.MultiAccountBc.Replace("%user%", player.Nickname).Replace("%userid%", player.Id.ToString()).Replace("%count%", databaseIp.UserIds.Count().ToString());
+                    AdminMessage(message);
                 }
 
                 foreach (var userId in databaseIp.UserIds)
@@ -719,9 +725,10 @@ namespace SCPUtils
                     if (VoiceChat.VoiceChatMutes.QueryLocalMute(userId))
                     {
                         if (!string.Equals(ScpUtils.StaticInstance.Config.WebhookUrl, "None")) DiscordWebHook.Message(userId, player);
-                        AdminMessage($"<color=red><size=25>Mute evasion detected on {player.Nickname} ID: {player.Id} Userid of muted user: {userId}</size></color>");
+                        var message = ScpUtils.StaticInstance.Translation.MuteEvasionBc.Replace("%user%", player.Nickname).Replace("%useid%", player.Id.ToString()).Replace("%userid2%", userId);
+                        AdminMessage(message);
                         if (pluginInstance.Config.AutoMute) player.IsMuted = true;
-                    } 
+                    }
                 }
             }
         }
@@ -765,7 +772,7 @@ namespace SCPUtils
             {
                 if (a.Key >= DateTime.Now)
                 {
-                    player.SendConsoleMessage($"You are banned from using commands until {a.Key} for the following reason {a.Value}", "red");
+                    player.SendConsoleMessage($"{pluginInstance.Translation.CommandBanString} {a.Key} {pluginInstance.Translation.CommandBanStringReason} {a.Value}", "red");
                     if (!pluginInstance.EventHandlers.LastCommand.ContainsKey(player))
                     {
                         pluginInstance.EventHandlers.LastCommand.Add(player, a.Key);

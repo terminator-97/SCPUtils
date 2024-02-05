@@ -8,10 +8,10 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class DisableSuicideWarn : ICommand
     {
-        public string Command { get; } = "scputils_disable_suicide_warns";
-        public string[] Aliases { get; } = new[] { "dsw", "disable_suicide_warns", "su_dsw", "scpu_dsw" };
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.DisablesuicidewarnCommand;
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.DisablesuicidewarnAliases;
 
-        public string Description { get; } = "Temporarily disable SCP suicide/quit detector for the duration of the round";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.DisablesuicidewarnDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -23,21 +23,21 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.warnmanagement"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (SCPUtils.EventHandlers.TemporarilyDisabledWarns)
             {
-                response = "Warns are already disabled";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return false;
             }
             else if (!ScpUtils.StaticInstance.Config.EnableSCPSuicideAutoWarn)
             {
-                response = "Suicides / Quits warns are already disabled by server config!";
+                response = $"{ScpUtils.StaticInstance.Translation.AlreadyDisabled} {ScpUtils.StaticInstance.Translation.ByServerConfigs}";
                 return false;
             }
             EventHandlers.TemporarilyDisabledWarns = true;
-            response = "Suicide and Quit warns have been disabled for this round!";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
         }
     }

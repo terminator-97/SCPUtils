@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     internal class PlayerRestrict : ICommand
     {
 
-        public string Command { get; } = "scputils_player_restrict";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.RestrictCommand;
 
-        public string[] Aliases { get; } = new[] { "restrict", "susp", "su_playerrestrict", "su_playerestrict", "su_player_r", "scpu_playerestrict", "scpu_playerrestrict", "scpu_player_r" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.RestrictAliases;
 
-        public string Description { get; } = "This command restricts a player from using the: scputils_change_nickname and scputils_change_color.";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.RestrictDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,13 +27,13 @@ namespace SCPUtils.Commands
             string reason;
             if (!sender.CheckPermission("scputils.moderatecommands"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 3)
             {
-                response = $"Usage: {Command} <player name / id> <Minutes, 0 = permanent> <Reason>";
+                response = $"{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.ArgMinutes}(0 = permanent) <Reason>";
                 return false;
             }
             target = arguments.Array[1].ToString();
@@ -43,7 +43,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
@@ -89,12 +89,12 @@ namespace SCPUtils.Commands
                 }
 
                 databasePlayer.SaveData();
-                response = $"Player suspended!";
+                response = $"{ScpUtils.StaticInstance.Translation.Success}";
 
             }
             else
             {
-                response = "Duration must be integer!";
+                response = ScpUtils.StaticInstance.Translation.Success;
             }
 
             return true;

@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class CreateBroadcast : ICommand
     {
-        public string Command { get; } = "scputils_broadcast_create";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.BroadcastcreateCommand;
 
-        public string[] Aliases { get; } = new[] { "cbc", "su_cbc", "scpu_cbc" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.BroadcastcreateAliases;
 
-        public string Description { get; } = "Allows to create custom broadcasts";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.BroadcastcreateDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -24,13 +24,13 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.broadcastcreate"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 3)
             {
-                response = $"<color=yellow>Usage: {Command} <id> <duration> <text>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgId} {ScpUtils.StaticInstance.Translation.ArgSeconds} {ScpUtils.StaticInstance.Translation.ArgText}";
                 return false;
             }
             else
@@ -39,20 +39,20 @@ namespace SCPUtils.Commands
                 {
                     if (GetBroadcast.FindBroadcast(arguments.Array[1].ToString()) != null)
                     {
-                        response = "Id already exist!";
+                        response = ScpUtils.StaticInstance.Translation.InvalidId;
                         return false;
                     }
                     else
                     {
                         var broadcast = string.Join(" ", arguments.Array, 3, arguments.Array.Length - 3);
                         GetBroadcast.AddBroadcast(arguments.Array[1].ToString(), duration, broadcast.ToString(), sender.LogName);
-                        response = "Success!";
+                        response = ScpUtils.StaticInstance.Translation.Success;
                         return true;
                     }
                 }
                 else
                 {
-                    response = "Broadcast duration must be an integer";
+                    response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                     return false;
                 }
             }

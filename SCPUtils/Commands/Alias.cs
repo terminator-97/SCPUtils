@@ -11,11 +11,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Alias : ICommand
     {
-        public string Command { get; } = "scputils_alias";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.AliasCommand;
 
-        public string[] Aliases { get; } = new[] { "alias", "su_alias", "scpu_alias", "alt" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.AliasAliases;
 
-        public string Description { get; } = "Check player aliases with some basic info, for complete info use dupeip";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.AliasDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,12 +27,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.alias"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = $"<color=yellow>Usage: {Command} <player name/id></color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
             string targetName = arguments.Array[1];
@@ -40,13 +40,13 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
             var databaseIp = GetIp.GetIpAddress(databasePlayer.Ip);
             if (databaseIp == null)
             {
-                response = "<color=yellow>Invalid IP!</color>";
+                response = ScpUtils.StaticInstance.Translation.InvalidIp;
                 return false;
             }
 

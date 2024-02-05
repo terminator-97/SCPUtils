@@ -10,11 +10,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class BroadcastList : ICommand
     {
-        public string Command { get; } = "scputils_broadcast_list";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.BroadcastlistCommand;
 
-        public string[] Aliases { get; } = new[] { "sbcl", "bcl", "su_bcl", "scpu_bcl" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.BroadcastlistAliases;
 
-        public string Description { get; } = "List of all registred broadcast";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.BroadcastlistDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,7 +26,7 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.broadcastlist"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             StringBuilder broadcastList = new StringBuilder("[Broadcast List]");

@@ -12,7 +12,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases => ScpUtils.StaticInstance.Config.SwapRequestDenyCommandAliases;
 
-        public string Description => "Deny a swap request";
+        public string Description => ScpUtils.StaticInstance.Translation.SwaprequestdenyDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,12 +25,12 @@ namespace SCPUtils.Commands
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
             if (!player.IsScp)
             {
-                response = "<color=red>You are not SCP</color>";
+                response = ScpUtils.StaticInstance.Translation.SwaprequestNotscp;
                 return false;
             }
             if (!ScpUtils.StaticInstance.EventHandlers.SwapRequest.ContainsValue(player))
             {
-                response = $"<color=red>You haven't any swap request!</color>";
+                response = ScpUtils.StaticInstance.Translation.SwaprequestacceptNoswaprequest;
                 return false;
             }
 
@@ -39,7 +39,7 @@ namespace SCPUtils.Commands
             ScpUtils.StaticInstance.EventHandlers.SwapRequest.Remove(target);
             target.ClearBroadcasts();
             target.Broadcast(ScpUtils.StaticInstance.Config.SwapRequestDeniedBroadcast);
-            response = $"<color=green>Swap request has been denied</color>";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
         }
     }

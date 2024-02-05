@@ -11,11 +11,11 @@ namespace SCPUtils.Commands
     internal class PlayerList : ICommand
     {
 
-        public string Command { get; } = "scputils_player_list";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlayerlistCommand;
 
-        public string[] Aliases { get; } = new[] { "pli", "su_pl", "su_playerlist", "scpu_pl", "scpu_playerlist" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlayerlistAliases;
 
-        public string Description { get; } = "Show player list in scputils database with some basic informations, don't use values like 0 otherwise the list may get huge";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlayerlistDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,14 +27,14 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playerlist"))
             {
-                response = "<color=red>You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <Minimun SCP quit percentage></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} <Minimun SCP quit percentage></color>";
                     return false;
                 }
             }
@@ -52,7 +52,7 @@ namespace SCPUtils.Commands
 
             else
             {
-                response = "Arg1 is not an integer, Comand usage example: scputils_player_list 50";
+                response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                 return false;
             }
 

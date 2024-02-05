@@ -10,12 +10,12 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     internal class SetColor : ICommand
     {
-        private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin", "rainbow" };
-        public string Command { get; } = "scputils_set_color";
+        private readonly List<string> validColors = new List<string> { "pink", "red", "default", "brown", "silver", "light_green", "crismon", "cyan", "aqua", "deep_pink", "tomato", "yellow", "magenta", "blue_green", "orange", "lime", "green", "emerald", "carmine", "nickel", "mint", "army_green", "pumpkin", "rainbow", "random" };
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.SetcolorCommand;
 
-        public string[] Aliases { get; } = new[] { "scl", "scputils_change_color", "su_sc", "su_cc", "su_setc", "sc_scolor", "scpu_sc", "scpu_cc", "scpu_setc", "scpu_scolor" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.SetcolorAliases;
 
-        public string Description { get; } = "You can change everyone's color or only your one based on the permissions you have";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.SetcolorDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -31,16 +31,16 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 2)
                 {
-                    response = $"<color=yellow>Usage: {Command} <player name/id> <Color / Rainbow / None> </color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} {ScpUtils.StaticInstance.Translation.SetcolorArgColor}</color>";
                     return false;
                 }
                 else
                 {
                     target = arguments.Array[1].ToString();
                     color = arguments.Array[2].ToString().ToLower();
-                    if (!validColors.Contains(color) && !color.Equals("none"))
+                    if (!validColors.Contains(color) && !color.Equals("none") && color != ScpUtils.StaticInstance.Translation.SetcolorRainbow.ToLower())
                     {
-                        response = "<color=red>Invalid color, type color in console to see valid SCP colors<color>";
+                        response = ScpUtils.StaticInstance.Translation.SetcolorInvalidcolor;
                         return false;
                     }
                 }
@@ -49,7 +49,7 @@ namespace SCPUtils.Commands
             {
                 if (arguments.Count < 1)
                 {
-                    response = $"<color=yellow>Usage: {Command} <Color / Rainbow / None></color>";
+                    response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.SetcolorArgColor}</color>";
                     return false;
                 }
                 else
@@ -63,16 +63,16 @@ namespace SCPUtils.Commands
                         return false;
                     }
 
-                    else if (!validColors.Contains(color) && !color.Equals("none"))
-                    {
-                        response = "<color=red>Invalid color, type color in console to see valid SCP colors</color>";
+                    else if (!validColors.Contains(color) && !color.Equals("none") && color != ScpUtils.StaticInstance.Translation.SetcolorRainbow.ToLower())
+                    {                     
+                        response = ScpUtils.StaticInstance.Translation.SetcolorInvalidcolor;
                         return false;
                     }
 
                     else if (ScpUtils.StaticInstance.Config.RestrictedRoleColors.Contains(color))
                     {
 
-                        response = "<color=red>This color has been restricted by server owner, please use another color!</color>";
+                        response = ScpUtils.StaticInstance.Translation.SetcolorRestrictedcolor;
                         return false;
                     }
 
@@ -88,40 +88,43 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
-            if (color == "none")
+            if (color == "none" || color == ScpUtils.StaticInstance.Translation.None)
             {
                 databasePlayer.ColorPreference = "";
                 databasePlayer.SaveData();
-                response = "<color=green>Success, changes will take effect next round!</color>";
+                response = ScpUtils.StaticInstance.Translation.SuccessNextRound;
                 return true;
             }
 
             Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(target);
 
-            if (color == "rainbow" && !ScpUtils.StaticInstance.Config.AllowRainbowTags)
+            if (color == "rainbow" || color == "random" || color == ScpUtils.StaticInstance.Translation.SetcolorRainbow.ToLower())
             {
-                response = "<color=red>Random/Rainbow roles are disabled by server owner!</color>";
-                return true;
+                if (!ScpUtils.StaticInstance.Config.AllowRainbowTags)
+                {
+                    response = ScpUtils.StaticInstance.Translation.SetcolorRainbowdisabled;
+                    return false;
+                }
             }
 
-                if (player != null)
-                {
+            if (player != null)
+            {
                 if (player.GlobalBadge != null)
                 {
-                    response = "<color=red>This user has a global badge, as VSR rules you cannot change global badge colors, if you have a local badge please set it and try using this command again.";
+                    response = ScpUtils.StaticInstance.Translation.SetcolorGlobalbadge;
                     return false;
-                } 
+                }
 
-             if(color != "rainbow") player.RankColor = color;
+                if (color != "rainbow"  || color != "random" || color != ScpUtils.StaticInstance.Translation.SetcolorRainbow.ToLower()) player.RankColor = color;
             }
 
             databasePlayer.ColorPreference = color;
             databasePlayer.SaveData();
-            response = "<color=green>Success, choice has been saved!</color>";
+            response = ScpUtils.StaticInstance.Translation.Success;
 
 
             return true;

@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     public class PlayerEdit : ICommand
     {
 
-        public string Command { get; } = "scputils_player_edit";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.PlayereditCommand;
 
-        public string[] Aliases { get; } = new[] { "pedit", "su_pedit", "su_playeredit", "scpu_pedit", "scpu_playeredit" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.PlayereditAliases;
 
-        public string Description { get; } = "Edits the specified player data!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.PlayereditDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,12 +25,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playeredit"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (arguments.Count < 5)
             {
-                response = $"<color=red>Usage: {Command} <player name/id> <Total SCPGames played> <Total suicides/quits as SCP> <Total kicks> <Total bans></color>";
+                response = $"<color=red>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer} <Total SCPGames played> <Total suicides/quits as SCP> <Total kicks> <Total bans></color>";
                 return false;
             }
             else
@@ -41,7 +41,7 @@ namespace SCPUtils.Commands
 
                 if (databasePlayer == null)
                 {
-                    response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                    response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                     return false;
                 }
 

@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class HideBadge : ICommand
     {
-        public string Command { get; } = "scputils_hide_badge";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.HidebadgeCommand;
 
-        public string[] Aliases { get; } = new[] { "hb", "su_hb", "su_hbadge", "su_hideb", "scpu_hb", "scpu_hbadge", "scpu_hideb" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.HidebadgeAliases;
 
-        public string Description { get; } = "Hides your badge permanently until you execute scputils_show_badge or their aliases.";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.HidebadgeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -37,7 +37,7 @@ namespace SCPUtils.Commands
                 Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(((CommandSender)sender).SenderId);
                 player.BadgeHidden = true;
                 player.GetDatabasePlayer().HideBadge = true;
-                response = "<color=green>Your badge has been hidden!</color>";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 return true;
             }
         }

@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     public class PlayerResetReset : ICommand
     {
 
-        public string Command { get; } = "scputils_player_reset_preferences";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.ResetpreferencesCommand;
 
-        public string[] Aliases { get; } = new[] { "prp", "su_prp", "su_playerpreferences", "su_player_preferences", "su_player_reset_preferences", "scpu_prp", "scpu_playerpreferences", "scpu_player_preferences", "scpu_player_reset_preferences" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.ResetpreferencesAliases;
 
-        public string Description { get; } = "Reset player preferences (Nickname, badges etc)!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.ResetpreferencesDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,12 +25,12 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.playerresetpreferences"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
             else if (arguments.Count < 1)
             {
-                response = $"<color=red>Usage: {Command} <player name/id></color>";
+                response = $"<color=red>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}</color>";
                 return false;
             }
             else
@@ -40,13 +40,13 @@ namespace SCPUtils.Commands
 
                 if (databasePlayer == null)
                 {
-                    response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                    response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                     return false;
                 }
 
                 databasePlayer.ResetPreferences();
                 databasePlayer.SaveData();
-                response = "Player preferences have been resetted!";
+                response = ScpUtils.StaticInstance.Translation.Success;
 
                 return true;
             }

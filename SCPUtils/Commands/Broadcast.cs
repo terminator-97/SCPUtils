@@ -9,11 +9,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     internal class Broadcast : ICommand
     {
-        public string Command { get; } = "scputils_broadcast";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.BroadcastCommand;
 
-        public string[] Aliases { get; } = new[] { "sbc", "su_bc", "scpu_bc" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.BroadcastAliases;
 
-        public string Description { get; } = "Allows to send custom broadcastes";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.BroadcastDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,13 +25,13 @@ namespace SCPUtils.Commands
 
             if (!sender.CheckPermission("scputils.broadcast"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 2)
             {
-                response = $"<color=yellow>Usage: {Command} <hint(h)/broadcast(bc)> <id> <duration (optional, if empty will be used the default one set for this broadcast)></color>";
+                response = $"<color=yellow>{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgBroadcast} {ScpUtils.StaticInstance.Translation.ArgId} {ScpUtils.StaticInstance.Translation.ArgSeconds}{ScpUtils.StaticInstance.Translation.Optional}</color>";
                 return false;
             }
             else
@@ -40,7 +40,7 @@ namespace SCPUtils.Commands
 
                 if (databaseBroadcast == null)
                 {
-                    response = "Invalid broadcast ID!";
+                    response = ScpUtils.StaticInstance.Translation.InvalidId;
                     return false;
                 }
                 int duration = databaseBroadcast.Seconds;
@@ -49,7 +49,7 @@ namespace SCPUtils.Commands
                     if (int.TryParse(arguments.Array[3].ToString(), out duration)) { }
                     else
                     {
-                        response = "Broadcast duration must be an integer";
+                        response = ScpUtils.StaticInstance.Translation.InvalidArgInt;
                         return false;
                     }
                 }
@@ -59,15 +59,15 @@ namespace SCPUtils.Commands
                     case "broadcast":
                     case "bc":
                         Map.Broadcast((ushort)duration, databaseBroadcast.Text);
-                        response = "Sending broadcast to all the players!";
+                        response = ScpUtils.StaticInstance.Translation.Success;
                         break;
                     case "hint":
                     case "h":
                         Map.ShowHint(databaseBroadcast.Text, duration);
-                        response = "Sending hint to all the players!";
+                        response = ScpUtils.StaticInstance.Translation.Success;
                         break;
                     default:
-                        response = "Invalid argument, you should use broadcast/bc or hint/h.";
+                        response = $"{ScpUtils.StaticInstance.Translation.InvalidArg}, {ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgBroadcast} {ScpUtils.StaticInstance.Translation.ArgId} {ScpUtils.StaticInstance.Translation.ArgSeconds}{ScpUtils.StaticInstance.Translation.Optional}";
                         break;
                 }
             }

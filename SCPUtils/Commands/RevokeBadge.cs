@@ -8,11 +8,11 @@ namespace SCPUtils.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class RevokeBadge : ICommand
     {
-        public string Command { get; } = "scputils_revoke_badge";
+        public string Command { get; } = ScpUtils.StaticInstance.Translation.RevokeBadgeCommand;
 
-        public string[] Aliases { get; } = new[] { "rb", "su_rb", "su_remove_badge", "su_revoke_b", "scpu_rb", "scpu_remove_badge", "scpu_revoke_b" };
+        public string[] Aliases { get; } = ScpUtils.StaticInstance.Translation.RevokeBadgeAliases;
 
-        public string Description { get; } = "Remove a temporarily badge that has been given to a player!";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.RevokeBadgeDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,13 +25,13 @@ namespace SCPUtils.Commands
             string target;
             if (!sender.CheckPermission("scputils.handlebadges"))
             {
-                response = "<color=red> You need a higher administration level to use this command!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoPermissions;
                 return false;
             }
 
             else if (arguments.Count < 1)
             {
-                response = $"Usage: {Command} <player name/id>";
+                response = $"{ScpUtils.StaticInstance.Translation.Usage} {Command} {ScpUtils.StaticInstance.Translation.ArgPlayer}";
                 return false;
             }
 
@@ -45,7 +45,7 @@ namespace SCPUtils.Commands
 
             if (databasePlayer == null)
             {
-                response = "<color=yellow>Player not found on Database or Player is loading data!</color>";
+                response = ScpUtils.StaticInstance.Translation.NoDbPlayer;
                 return false;
             }
 
@@ -56,7 +56,7 @@ namespace SCPUtils.Commands
                 player.BadgeHidden = false;
             }
 
-            response = "Badge revoked!";
+            response = ScpUtils.StaticInstance.Translation.Success;
             return true;
 
         }

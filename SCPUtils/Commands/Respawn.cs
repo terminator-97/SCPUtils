@@ -13,7 +13,7 @@ namespace SCPUtils.Commands
 
         public string[] Aliases { get; } = ScpUtils.StaticInstance.Config.RespawnCommandAliases;
 
-        public string Description { get; } = "Send a SCP swap request to a player";
+        public string Description { get; } = ScpUtils.StaticInstance.Translation.RespawnDescription;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -28,26 +28,26 @@ namespace SCPUtils.Commands
 
             if (!player.IsAlive)
             {
-                response = $"<color=red>You are not alive!</color>";
+                response = ScpUtils.StaticInstance.Translation.NotAlive;
                 return false;
             }
 
             if (!Exiled.API.Features.Round.IsStarted)
             {
-                response = $"<color=red>Round is not started!</color>";
+                response = ScpUtils.StaticInstance.Translation.RoundNotStarted;
                 return false;
             }
 
             if (DateTime.Now > EventHandlers.LastRespawn[player])
             {
-                response = $"<color=yellow>The respawn time window has ended!</color>";
+                response = ScpUtils.StaticInstance.Translation.OutofTime;
                 return false;
             }
 
 
             if (ScpUtils.StaticInstance.Config.RespawnOnlyFullHealth && player.Health < player.MaxHealth)
             {
-                response = $"<color=red>You have taken damage therefore respawn is not available.</color>";
+                response = ScpUtils.StaticInstance.Translation.Damaged;
                 return false;
             }
 
@@ -66,7 +66,7 @@ namespace SCPUtils.Commands
                         player.AddItem(a.Type);
                     }
                 });
-                response = $"<color=green>Respawn granted</color>";
+                response = ScpUtils.StaticInstance.Translation.Success;
                 EventHandlers.LastRespawn[player] = respawndate;
                 return false;
 
