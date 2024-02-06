@@ -1,0 +1,623 @@
+s_c_p_utils:
+# Translation credits:
+  translation_credits: '中文翻译由殷凛星空制作插件作者：Terminator97'
+  # --- Generic translations --- 
+  #  
+  #  Insufficient permission:
+  no_permissions: '<color=red>您需要更高的管理级别才能使用此命令!</color>'
+  # Player not found on database:
+  no_db_player: '<color=yellow>在数据库中找不到玩家!</color>'
+  # Invalid player:
+  invalid_player: '<color=red>未找到此玩家</color>'
+  # Invalid Usergroup:
+  invalid_usergroup: '<color=red>无效的用户群体!</color>'
+  # Invalid Usergroup:
+  invalid_id: '<color=red>无效的ID!</color>'
+  # Data not found:
+  invalid_data: '<color=red>无效的数据</color>'
+  # Data not found:
+  invalid_timespan: '<color=red>无效，时间跨度必须为 天DD:小时HH:分钟MM:秒SS或 天数编号DAYSNUMBER</color>'
+  # Already disabled:
+  already_disabled: '<color=red>已经禁用!</color>'
+  # Already Enabled:
+  already_enabled: '<color=red>已经启用了!</color>'
+  # Round not started:
+  round_not_started: '<color=red>回合还没开始!</color>'
+  # Not Alive:
+  not_alive: '<color=red>你并非存活的!</color>'
+  # Out of time
+  outof_time: '<color=yellow>执行此命令的时间窗口已经结束，下次尽量快一点!</color>'
+  # Taken damage:
+  damaged: '<color=red>你已经受到了伤害，所以这个命令是不可用的，下次要更小心，写得更好。</color>'
+  # Target Taken damage:
+  target_damaged: '<color=red>错误:目标受到伤害</color>'
+  # Usage:
+  usage: '使用'
+  # Player:
+  arg_player: '<玩家/ID>'
+  # Text:
+  arg_text: '<文本>'
+  # Id:
+  arg_id: '<ID>'
+  # Ip:
+  arg_ip: '<IP地址>'
+  # Timespan:
+  arg_timespan: '<天DD:小时HH:分钟MM:秒SS or 天数编号DAYSNUMBER>'
+  # Usergroup:
+  arg_usergroup: '<用户组>'
+  # Minutes:
+  arg_minutes: '<分钟>'
+  # Seconds:
+  arg_seconds: '<秒>'
+  # Days:
+  arg_days: '<天数范围>'
+  # Broadcast:
+  arg_broadcast: '<提示hint(h) /广播broadcast(bc)>'
+  # Number:
+  arg_number: '<数字>'
+  # Optional:
+  optional: '(可选)'
+  # Success:
+  success: '<color=green>成功</color>'
+  # Invalid argument:
+  invalid_arg: '<color=red>无效参数，请检查命令使用情况!</color>'
+  # Invalid argument int:
+  invalid_arg_int: '<color=red>参数必须为整数!</color>'
+  # None argument:
+  none: 没有
+  # No players online:
+  no_players: 没有在线玩家'
+  # Enabled:
+  enabled: '成功启用!'
+  # No players online:
+  disabled: '成功禁用!'
+  # Success nextround:
+  success_next_round: '<color=green>成功，变化将在下一轮生效!</color>'
+  # Invalid IP
+  invalid_ip: '<color=yellow>无效IP!</color>'
+  # SCP-RoundBan staff BC
+  scp_round_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) 已经启用 <color=red>禁止</color>玩SCP退出/自杀(作为SCP)限制 %rounds% 回合.</color>'
+  # Suicide broadcast while active ban
+  scp_suicide_broadcast_active_ban: '<color=blue><SCPUtils>%user%在启用封禁时自杀了!</color>'
+  # SCP-Ban staff BC
+  scp_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) 已经启用 <color=red>禁止</color> 退出/自杀 (作为SCP)限制 %duration% 分钟.</color>'
+  # SCP-Kick staff BC
+  scp_kick_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) 已经启用 <color=red>踢出</color> 退出/自杀 (作为SCP) 限制</color>'
+  # SCP-Warn staff BC
+  scp_warn_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) 已经启用 <color=red>警告</color>退出或自杀的SCP</color>'
+  # Global badge error
+  global_badge_console_error: '你有一个自定义颜色分配，但你有一个全球徽章，根据VSR规则，你的自定义颜色将无法使用!'
+  # NoUsergroup error
+  no_usergroup_error: '你有一个自定义徽章分配，但你没有一个基本用户组，你的自定义组将不会是可见的，直到你有一个，联系服务器人员了解更多信息!'
+  # NoUsergroup error
+  multi_account_bc: '检测到多个账户%user% - ID: %userid$ 账号：%count%'
+  # NoUsergroup error
+  mute_evasion_bc: '<color=red><size=25>在%user% ID: %useid%静音用户ID上检测到静音逃避:%userid2%</size></color>'
+  # By server configs
+  by_server_configs: '按服务器配置'
+  command_ban_string: '你被禁止使用命令，直到'
+  command_ban_string_reason: '原因如下：'
+  # --- Commands name and aliases translations --- 
+  #  
+  #  Alias command:
+  alias_command: 'scputils_alias'
+  alias_aliases:
+  - 'alias'
+  - 'su_alias'
+  - 'scpu_alias'
+  - 'alt'
+  alias_description: '检查玩家的别名与一些基本信息，完整的信息使用dupeip'
+  # Unwhitelist command:
+  unwhitelist_command: 'scputils_unwhitelist_asn'
+  unwhitelist_aliases:
+  - 'asunw'
+  - 'su_uwl_asn'
+  - 'scpu_uwl_asn'
+  unwhitelist_description: '取消白名单的球员，禁止他访问服务器，如果ASN是黑名单!'
+  # AsnWhitelist command:
+  asnwhitelist_command: 'scputils_whitelist_asn'
+  asnwhitelist_aliases:
+  - 'asnw'
+  - 'su_wl_asn'
+  - 'scpu_wl_asn'
+  asnwhitelist_description: '白名单玩家，使他访问服务器，即使ASN被列入黑名单!'
+  # Badgeplaytime command:
+  badgeplaytime_command: 'scputils_badge_play_time'
+  badgeplaytime_aliases:
+  - 'bpt'
+  - 'tpt'
+  - 'su_tpt'
+  - 'scpu_badgeplaytime'
+  - 'scpu_bpt'
+  badgeplaytime_description: '显示所有拥有该徽章的球员的出场时间。'
+  badgeplaytime_checking: '查看徽章的游戏时间'
+  badgeplaytime_nullplayer: '没有检测到玩家，这通常发生如果你有一个玩家在remoteadmin文件，而他还没有加入服务器。'
+  badgeplaytime_no_activity: '游玩时间: [ 没有活动 ]'
+  badgeplaytime_playtime: '游玩时间:'
+  badgeplaytime_daysjoined: '天加入:'
+  badgeplaytime_overwatchtime: '结束观察 时间:'
+  badgeplaytime_overwatchdays: '结束观察 天数:'
+  # Broadcast command:
+  broadcast_command: 'scputils_broadcast'
+  broadcast_aliases:
+  - 'sbc'
+  - 'su_bc'
+  - 'scpu_bc'
+  broadcast_description: '允许发送自定义广播'
+  # Broadcastlist command:
+  broadcastlist_command: 'scputils_broadcast_list'
+  broadcastlist_aliases:
+  - 'sbcl'
+  - 'bcl'
+  - 'su_bcl'
+  - 'scpu_bcl'
+  broadcastlist_description: '所有已注册的广播列表'
+  # Broadcastcreate command:
+  broadcastcreate_command: 'scputils_broadcast_create'
+  broadcastcreate_aliases:
+  - 'cbc'
+  - 'su_cbc'
+  - 'scpu_cbc'
+  broadcastcreate_description: '允许创建自定义广播'
+  # CustomBadge command:
+  custom_badge_command: 'scputils_custom_badge'
+  custom_badge_aliases:
+  - 'cb'
+  - 'scputils_cbadge'
+  - 'su_cb'
+  - 'su_customb'
+  custom_badge_description: '为任何已经拥有徽章的玩家设置自定义徽章名称'
+  # Deletebroadcast command:
+  deletebroadcast_command: 'scputils_broadcast_delete'
+  deletebroadcast_aliases:
+  - 'dbc'
+  - 'su_dbc'
+  - 'scpu_dbc'
+  deletebroadcast_description: '从数据库中删除自定义广播'
+  # Disablesuicidewarn command:
+  disablesuicidewarn_command: 'scputils_disable_suicide_warns'
+  disablesuicidewarn_aliases:
+  - 'dsw'
+  - 'disable_suicide_warns'
+  - 'su_dsw'
+  - 'scpu_dsw'
+  disablesuicidewarn_description: '在回合期间暂时禁用SCP自杀/退出检测'
+  # Dupeip command:
+  dupeip_command: 'scputils_dupeip'
+  dupeip_aliases:
+  - 'dupeip'
+  - 'su_dupeip'
+  - 'scpu_dupeip'
+  dupeip_description: '检查玩家是否在同一IP上有另一个账户'
+  # Enablesuicidewarn command:
+  enablesuicidewarn_command: 'scputils_enable_suicide_warns'
+  enablesuicidewarn_aliases:
+  - 'esw'
+  - 'enable_suicide_warns'
+  - 'su_esw'
+  - 'scpu_esw'
+  enablesuicidewarn_description: '重新启用SCP自杀/退出检测'
+  # Globaledit command:
+  globaledit_command: 'scputils_global_edit'
+  globaledit_aliases:
+  - 'gedit'
+  - 'su_gedit'
+  - 'su_globaledit'
+  - 'su_ge'
+  - 'scpu_gedit'
+  - 'scpu_globaledit'
+  - 'scpu_ge'
+  globaledit_description: '删除指定数量的scp游戏/警告/踢出/禁止 每个玩家存在于DB!'
+  # Help command:
+  help_command: 'scputils_help'
+  help_aliases:
+  - 'su_help'
+  - 'su_h'
+  - 'scpu_help'
+  - 'scpu_h'
+  help_description: '插件帮助命令'
+  help_content: |-
+    <color=#1BBC9B>用户指令:</color> 
+     <color=#1BBC9B>.scputils_info, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge, .scputils_my_info, .scputils_play_time, scputils_round_info, scputils_permissions_view</color>
+  help_content_admin: |-
+    n<color=#FFD700>管理员指令 (远程管理): </color>
+    <color=#FFD700>scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name, scputils_set_badge, scputils_revoke_badge, scputils_play_time, scputils_whitelist_asn, scputils_unwhitelist_asn, scputils_enable_suicide_warns, scputils_disable_suicide_warns, scputils_global_edit, scputils_player_edit, scputils_player_delete, scputils_player_restrict, scputils_player_unrestrict, scputils_show_command_bans, scputils_preference_persist, scputils_remove_previous_badge, scputils_player_dnt, scputils_round_info, scputils_player_last_warning, scputils_player_warnings, scputils_player_unwarn, scputils_play_sessions, scputils_badge_playtime, scputils_multiaccount_whitelist, scputils_dupeip, scputils_alias, scputils_custom_badge, scputils_searchip</color>
+  # Hidebadge command:
+  hidebadge_command: 'scputils_hide_badge'
+  hidebadge_aliases:
+  - 'hb'
+  - 'su_hb'
+  - 'su_hbadge'
+  - 'su_hideb'
+  - 'scpu_hb'
+  - 'scpu_hbadge'
+  - 'scpu_hideb'
+  hidebadge_description: '永久隐藏您的徽章，直到执行scputils_show_badge或它们的别名。'
+  # Info command:
+  info_command: 'scputils_info'
+  info_aliases:
+  - 'su_info'
+  - 'su_i'
+  - 'scpu_info'
+  - 'scpu_i'
+  info_description: '显示插件信息'
+  # Multiaccountwhitelist command:
+  multiaccountwhitelist_command: 'scputils_multiaccount_whitelist'
+  multiaccountwhitelist_aliases:
+  - 'mawl'
+  multiaccountwhitelist_description: '将玩家加入白名单/取消白名单，使其被多账号系统忽略/检测!'
+  # Onlinelist command:
+  onlinelist_command: 'scputils_online_list'
+  onlinelist_aliases:
+  - 'ol'
+  - 'onlinelist'
+  - 'su_ol'
+  - 'su_onlinelist'
+  - 'scpu_ol'
+  - 'scpu_onlinelist'
+  onlinelist_description: '显示在线玩家列表'
+  # Playerbroadcast command:
+  playerbroadcast_command: 'scputils_player_broadcast'
+  playerbroadcast_aliases:
+  - 'spbc'
+  - 'su_pbc'
+  - 'su_player_bc'
+  - 'su_p_bc'
+  - 'su_p_broadcast'
+  - 'scpu_pbc'
+  - 'scpu_player_bc'
+  - 'scpu_p_bc'
+  - 'scpu_p_broadcast'
+  playerbroadcast_description: '允许发送自定义广播'
+  # Playerdelete command:
+  playerdelete_command: 'scputils_player_delete'
+  playerdelete_aliases:
+  - 'pdelete'
+  - 'su_pdelete'
+  - 'su_playerdelete'
+  - 'scpu_pdelete'
+  - 'scpu_playerdelete'
+  playerdelete_description: '从数据库中删除一个球员(和所有球员数据)，该行为是不可逆的!'
+  playerdelete_success: '%user% 已从数据库中删除!'
+  # Playerdnt command:
+  playerdnt_command: 'scputils_player_dnt'
+  playerdnt_aliases:
+  - 'pdnt'
+  - 'dnt'
+  - 'su_pdnt'
+  - 'su_playerdnt'
+  - 'scpu_pdnt'
+  - 'scpu_playerdnt'
+  playerdnt_description: '允许您忽略用户的DNT请求'
+  # Playeredit command:
+  playeredit_command: 'scputils_player_edit'
+  playeredit_aliases:
+  - 'pedit'
+  - 'su_pedit'
+  - 'su_playeredit'
+  - 'scpu_pedit'
+  - 'scpu_playeredit'
+  playeredit_description: '在数据库中编辑一些球员数据'
+  # Playerinfo command:
+  playerinfo_command: 'scputils_player_info'
+  playerinfo_aliases:
+  - 'upi'
+  - 'scputils_my_info'
+  - 'su_pi'
+  - 'su_player_info'
+  - 'su_playerinfo'
+  - 'scpu_pi'
+  - 'scpu_player_info'
+  - 'scpu_playerinfo'
+  playerinfo_description: '显示玩家信息，如果你不是管理员，你只能看到你的信息'
+  playerinfo_total_suicides: 'SCP自杀/退出总数:'
+  playerinfo_kicks: '总SCP自杀/退出踢出:'
+  playerinfo_bans: '所有SCP自杀/退出封禁:'
+  playerinfo_games_played: '在总游戏中扮演SCP:'
+  playerinfo_percentage: '总自杀/退出百分比:'
+  playerinfo_firstjoin: '首次加入:'
+  playerinfo_lastseen: '最后出现:'
+  playerinfo_customcolor: '定制颜色:'
+  playerinfo_customname: '定制名称:'
+  playerinfo_tempbadge: '暂时的徽章:'
+  playerinfo_custombadge: '定制徽章:'
+  playerinfo_badgexpire: '徽章到期时间:'
+  playerinfo_hidebadge: '隐藏的徽章:'
+  playerinfo_asnwhitelist: 'Asn白名单:'
+  playerinfo_keepflag: '继承名称颜色重置:'
+  playerinfo_dnt: '忽略DNT:'
+  playerinfo_whitelist: '多帐号白名单:'
+  playerinfo_playtime: '总游戏时间:'
+  playerinfo_overwatchtime: '总观察者时间:'
+  playerinfo_cooldown: '昵称冷却时间:'
+  playerinfo_overwatch: '观察者活跃:'
+  playerinfo_restricted: '<color=red>用户帐号目前受到限制</color>'
+  playerinfo_reason: '原因:'
+  playerinfo_expire: '到期时间:'
+  playerinfo_roundsleft: '回合离开:'
+  playerinfo_scpbanned: '<color=red>用户帐号目前被scp禁止:</color>'
+  # Playerlist command:
+  playerlist_command: 'scputils_player_list'
+  playerlist_aliases:
+  - 'pli'
+  - 'su_pl'
+  - 'su_playerlist'
+  - 'scpu_pl'
+  - 'scpu_playerlist'
+  playerlist_description: '在scputils数据库中显示一些基本信息的球员名单，不要使用像0这样的值，否则名单可能会变得很大'
+  # Reset command:
+  reset_command: 'scputils_player_reset'
+  reset_aliases:
+  - 'pr'
+  - 'su_pr'
+  - 'su_playerreset'
+  - 'su_playereset'
+  - 'scpu_pr'
+  - 'scpu_playerreset'
+  - 'scpu_playereset'
+  reset_description: '重置球员数据(退出，禁赛，踢，昵称，徽章等，一切)!'
+  # Resetpreferences command:
+  resetpreferences_command: 'scputils_player_reset_preferences'
+  resetpreferences_aliases:
+  - 'prp'
+  - 'su_prp'
+  - 'su_playerpreferences'
+  - 'su_player_preferences'
+  - 'su_player_reset_preferences'
+  - 'scpu_prp'
+  - 'scpu_playerpreferences'
+  - 'scpu_player_preferences'
+  - 'scpu_player_reset_preferences'
+  resetpreferences_description: '重置玩家偏好(昵称，徽章等)!'
+  # Restrict command:
+  restrict_command: 'scputils_player_restrict'
+  restrict_aliases:
+  - 'restrict'
+  - 'susp'
+  - 'su_playerrestrict'
+  - 'su_playerestrict'
+  - 'su_player_r'
+  - 'scpu_playerestrict'
+  - 'scpu_playerrestrict'
+  - 'scpu_player_r'
+  restrict_description: '该命令限制玩家使用:scputils_change_nickname和scputils_change_color。'
+  # Unrestrict command:
+  unrestrict_command: 'scputils_player_unrestrict'
+  unrestrict_aliases:
+  - 'unrestrict'
+  - 'unsusp'
+  - 'su_playerunrestrict'
+  - 'su_player_unr'
+  - 'scpu_playerunrestrict'
+  - 'scpu_player_unr'
+  unrestrict_description: '该命令取消了对玩家使用scputils_change_nickname或scputils_change_color的限制!'
+  # Playtime command:
+  playtime_command: 'scputils_play_time'
+  playtime_aliases:
+  - 'pt'
+  - 'su_playtime'
+  - 'su_pt'
+  - 'scpu_playtime'
+  - 'scpu_pt'
+  playtime_description: '显示有关游戏时间的详细信息'
+  playtime_zero: '<color=red>你必须指定一个大于0的数字!</color>'
+  playtime_max_range: '<color=red>您可以指定最大120天的范围!</color>'
+  playtime_total: '总游戏时间:'
+  playtime_overwatch: '观察者时间:'
+  playtime_noactivity: '游玩时间: [ 无活动 ]'
+  playtime_specified: '指定时段游戏时间:'
+  playtime_playtime: '游玩时间:'
+  # Preferencepersist command:
+  preferencepersist_command: 'scputils_preference_persist'
+  preferencepersist_aliases:
+  - 'pp'
+  - 'su_pp'
+  - 'su_preference_p'
+  - 'scpu_pp'
+  - 'scpu_preference_p'
+  preferencepersist_description: '使用这个命令来保留玩家的昵称和颜色，即使他没有访问权限!'
+  # Reports command:
+  reports_command: 'scputils_reports'
+  reports_aliases:
+  - 'scpu_reports'
+  - 'rep'
+  - 'sreports'
+  - 'reports'
+  reports_description: '显示SCPUtils数据库中有关用户的有用统计信息.'
+  # Respawn command (check main config for more customization):
+  respawn_description: '允许你重生，如果你被打扰'
+  # RevokeBadge command:
+  revoke_badge_command: 'scputils_revoke_badge'
+  revoke_badge_aliases:
+  - 'rb'
+  - 'su_rb'
+  - 'su_remove_badge'
+  - 'su_revoke_b'
+  - 'scpu_rb'
+  - 'scpu_remove_badge'
+  - 'scpu_revoke_b'
+  revoke_badge_description: '移除玩家临时获得的徽章!'
+  # Roundinfo command:
+  roundinfo_command: 'scputils_round_info'
+  roundinfo_aliases:
+  - 'ri'
+  - roundinfo
+  - 'round_info'
+  - 'su_ri'
+  - 'su_roundinfo'
+  - 'su_round_info'
+  - 'scpu_ri'
+  - 'scpu_roundinfo'
+  - 'scpu_round_info'
+  roundinfo_description: '展示信息'
+  roundinfo: '回合信息:'
+  roundinfort: '回合时间:'
+  roundinfochaostickets: '混沌分裂者票数量:'
+  roundinfomtftickets: '特遣队票数:'
+  roundinforespawnteam: '下一个重生团队:'
+  roundinforespawntime: '重生时间:'
+  roundinfonumberchaosrespawn: '混沌重生波的数量:'
+  roundinfonumbermtfrespawn: '特遣队重生波的数量:'
+  roundinfolastchaoswave: '最后一次混沌波重生时间:'
+  roundinfolastmtfwave: '最后一次特遣队波重生时间:'
+  # Scplist command:
+  scplist_command: 'scputils_scp_list'
+  scplist_aliases:
+  - 'scpl'
+  - 'scplist'
+  - 'su_scpl'
+  - 'su_scplist'
+  - 'scpu_scplist'
+  scplist_description: 'Show scp list'
+  scplist_no_scp: '您不是SCP或者交换模块被服务器管理员禁用了!'
+  # Searchip command:
+  searchip_command: 'scputils_search_ip'
+  searchip_aliases:
+  - 'searchip'
+  - 'su_searchip'
+  - 'scpu_searchip'
+  - 'sip'
+  - 'scputils_searchip'
+  searchip_description: '检查是否有玩家链接到一个特定的ip地址'
+  # Setbadge command:
+  setbadge_command: 'scputils_set_badge'
+  setbadge_aliases:
+  - 'setb'
+  - 'issue_badge'
+  - 'su_setb'
+  - 'su_setbadge'
+  - 'scpu_setb'
+  - 'scpu_setbadge'
+  setbadge_description: '设置玩家的临时徽章'
+  setbadge_success: '成功设置%group%徽章于%duration%时间'
+  setbadge_kickpower: '你试图设置的组比你的组有更大的踢出权力。你的踢出权力:'
+  setbadge_required: '需要:'
+  # Setcolor command:
+  setcolor_command: 'scputils_set_color'
+  setcolor_aliases:
+  - 'scl'
+  - 'scputils_change_color'
+  - 'su_sc'
+  - 'su_cc'
+  - 'su_setc'
+  - 'sc_scolor'
+  - 'scpu_sc'
+  - 'scpu_cc'
+  - 'scpu_setc'
+  - 'scpu_scolor'
+  setcolor_description: '根据您拥有的权限更改每个人的颜色或仅更改您的颜色'
+  setcolor_arg_color: '<颜色color, 无none, 彩色rainbow>'
+  setcolor_invalidcolor: '<color=red>无效的颜色，请在控制台中输入color以查看有效的SCP颜色<color>'
+  setcolor_rainbowdisabled: '<color=red>随机/彩虹角色被服务器所有者禁用!</color>'
+  setcolor_globalbadge: '<color=red>该用户有一个全局徽章，根据VSR规则，您不能更改全局徽章的颜色，如果您有一个本地徽章，请设置它并再次使用该命令</color>'
+  setcolor_restrictedcolor: '<color=red>此颜色已被服务器所有者限制，请使用其他颜色!</color>'
+  setcolor_rainbow: '彩色'
+  # Setname command:
+  setname_command: 'scputils_set_name'
+  setname_aliases:
+  - 'un'
+  - 'scputils_change_nickname'
+  - 'su_setn'
+  - 'su_sname'
+  - 'su_cn'
+  - 'scpu_setn'
+  - 'scpu_sname'
+  - 'scpu_cn'
+  setname_description: '根据您拥有的权限更改每个人的名称或仅更改您的名称'
+  setname_argnickname: '<昵称Nickname / 无None>'
+  setname_taken: '<color=red>此昵称已被其他玩家使用，请选择其他名称!</color>'
+  setname_toolong: '<color=red>昵称太长!</color>'
+  # Roundban command:
+  roundban_command: 'scputils_set_round_ban'
+  roundban_aliases:
+  - 'srb'
+  - 'roundban'
+  - 'su_srb'
+  - 'su_roundban'
+  roundban_description: '将回合限制的数量设置为一个玩家'
+  # Showbadge command:
+  showbadge_command: 'scputils_show_badge'
+  showbadge_aliases:
+  - 'sb'
+  - 'su_showb'
+  - 'su_sbadge'
+  - 'scpu_showb'
+  - 'scpu_sbadge'
+  showbadge_description: '再次显示永久隐藏的徽章.'
+  # Showcommandbans command:
+  showcommandbans_command: 'scputils_show_command_bans'
+  showcommandbans_aliases:
+  - 'scb'
+  - 'su_show_cb'
+  - 'su_scb'
+  - 'scpu_show_cb'
+  - 'scpu_scb'
+  showcommandbans_description: '显示有关限制的详细信息'
+  # Showwarn command:
+  showwarn_command: 'scputils_player_last_warning'
+  showwarn_aliases:
+  - 'lwarn'
+  - 'su_lwarn'
+  - 'su_last_warn'
+  - 'su_lastw'
+  - 'scpu_lwarn'
+  - 'scpu_last_warn'
+  - 'scpu_lastw'
+  showwarn_description: '显示特定玩家的最后一次SCPUtils警告!'
+  # Showwarns command:
+  showwarns_command: 'scputils_player_warnings'
+  showwarns_aliases:
+  - 'warns'
+  - 'swarns'
+  - 'su_warns'
+  - 'scpu_warns'
+  showwarns_description: '显示特定玩家的所有SCPUtils警告!'
+  # Stafflist command:
+  stafflist_command: 'scputils_staff_list'
+  stafflist_aliases:
+  - 'sl'
+  - 'stafflist'
+  - 'su_sl'
+  - 'su_staffl'
+  - 'su_staff_l'
+  - 'su_slist'
+  - 'scpu_sl'
+  - 'scpu_staffl'
+  - 'scpu_staff_l'
+  - 'scpu_slist'
+  stafflist_description: '显示在线员工列表.'
+  # Swaprequest command (check main configs for more customization):
+  swaprequest_description: '向玩家发送SCP交换请求'
+  swaprequest_disabled: '<color=yellow>SCP交换模块未启用!</color>'
+  swaprequest_notscp: '<color=yellow>只有SCP被允许使用该命令!</color>'
+  swaprequest_usage: '<color=yellow>用法: %command% <玩家ID/昵称或SCP-编号(例如:swap SCP-939))></color>'
+  swaprequest_roledisabled: '<color=red>您不能使用此SCP与未生成的SCP交换</color>'
+  swaprequest_limit: '<color=red>您已达到此轮的交换请求限制!</color>'
+  swaprequest_noautoswap: '<color=red>此SCP不允许自动交换且当前没有玩家在玩此SCP，请选择另一个SCP.</color>'
+  swaprequest_invalidplayer: '<color=red>无效的玩家昵称/id或无效的SCP名称!</color>'
+  swaprequest_pendingtargeterror: '<color=red>目标已发送请求或有待处理请求</color>'
+  swaprequest_pendingerror: '<color=red>您已经发送或接收了交换请求，请在发送新请求之前取消或拒绝它</color>'
+  swaprequest_selferror: '<color=red>您不能向自己发送交换请求!</color>'
+  swaprequest_targetnoscp: '<color=red>目标不是SCP!</color>'
+  swaprequest_sameroleerror: '<color=red>你和其他玩家的角色是一样的!</color'
+  swaprequest_targetcustomscperror: '<color=red>错误:目标正在使用自定义SCP!</color>'
+  swaprequest_customscperror: '<color=red>错误:您正在使用自定义SCP</color>'
+  swaprequest_success: '<color=green>请求已成功发送到 %target%, 玩家有 %seconds% 接受请求. 使用 %cancelcommand% 取消请求</color>'
+  # Swaprequestqccept (check main configs for more customization):
+  swaprequestaccept_description: '接受SCP交换请求'
+  swaprequestaccept_noswaprequest: '<color=red>你没有交换请求!</color>'
+  # Swaprequestcancel command (check main configs for more customization):
+  swaprequestcancel_description: '取消您发送的交换请求'
+  # Swaprequestdeny command (check main configs for more customization):
+  swaprequestdeny_description: '拒绝交换请求'
+  # Unwarn command (check main configs for more customization):
+  unwarn_description: '从玩家身上移除一个特定的警告!'
+  # --- Webhook translation --- 
+  #  
+  #  Mute evasion:
+  report: '静音回避报告!'
+  description: '发现了无声的逃避!已静音用户的用户id:'
+  player_info: '玩家信息:'
+  username: '用户名称:'
+  user_id: '用户-ID:'
+  temporary_id: '临时ID:'
