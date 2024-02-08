@@ -13,7 +13,7 @@ namespace SCPUtils
     {
         public override string Author { get; } = "terminator97";
         public override string Name { get; } = "SCPUtils";
-        public override Version Version { get; } = new Version(6, 5, 0);
+        public override Version Version { get; } = new Version(6, 5, 1);
         public override Version RequiredExiledVersion { get; } = new Version(8, 7, 1);
         public EventHandlers EventHandlers { get; private set; }
         public Functions Functions { get; private set; }
