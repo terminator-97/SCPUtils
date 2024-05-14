@@ -1,0 +1,623 @@
+s_c_p_utils:
+# Translation credits:
+  translation_credits: 'Tradução brasileira feita por Firething'
+  # --- Generic translations --- 
+  #  
+  #  Insufficient permission:
+  no_permissions: '<color=red>Você precisa de um nível maior de administração para usar esse comando!</color>'
+  # Player not found on database:
+  no_db_player: '<color=yellow>Jogador não encontrado no Banco de Dados!</color>'
+  # Invalid player:
+  invalid_player: '<color=red>Jogador não encontrado</color>'
+  # Invalid Usergroup:
+  invalid_usergroup: '<color=red>Grupo de usuário inválido!</color>'
+  # Invalid Usergroup:
+  invalid_id: '<color=red>ID inválido!</color>'
+  # Data not found:
+  invalid_data: '<color=red>Dados não encontrados!</color>'
+  # Data not found:
+  invalid_timespan: '<color=red>Inválido, o Intervalo de Tempo deve ser DD:HH:MM:SS ou DAYSNUMBER</color>'
+  # Already disabled:
+  already_disabled: '<color=red>Já desativado!</color>'
+  # Already Enabled:
+  already_enabled: '<color=red>Já ativado!</color>'
+  # Round not started:
+  round_not_started: '<color=red>A partida não começou!</color>'
+  # Not Alive:
+  not_alive: '<color=red>Você não está vivo!</color>'
+  # Out of time
+  outof_time: '<color=yellow>A janela de tempo para executar esse comando acabou, tente ser mais rápido da próxima vez!</color>'
+  # Taken damage:
+  damaged: '<color=red>Você recebeu dano, portanto esse comando não está mais disponível. Da próxima vez, seja mais cuidadoso e jogue melhor.</color>'
+  # Target Taken damage:
+  target_damaged: '<color=red>Erro: O alvo recebeu dano</color>'
+  # Usage:
+  usage: 'Uso'
+  # Player:
+  arg_player: '<jogador/id>'
+  # Text:
+  arg_text: '<texto>'
+  # Id:
+  arg_id: '<id>'
+  # Ip:
+  arg_ip: '<ip>'
+  # Timespan:
+  arg_timespan: '<DD:HH:MM:SS ou DAYSNUMBER>'
+  # Usergroup:
+  arg_usergroup: '<grupo de usuário>'
+  # Minutes:
+  arg_minutes: '<minutos>'
+  # Seconds:
+  arg_seconds: '<segundos>'
+  # Days:
+  arg_days: '<intervalo de dias>'
+  # Broadcast:
+  arg_broadcast: '<hint(h)/broadcast(bc)>'
+  # Number:
+  arg_number: '<número>'
+  # Optional:
+  optional: '(opcional)'
+  # Success:
+  success: '<color=green>Sucesso</color>'
+  # Invalid argument:
+  invalid_arg: '<color=red>Argumento inválido, verifique o uso do comando!</color>'
+  # Invalid argument int:
+  invalid_arg_int: '<color=red>O argumento deve ser uma integral!</color>'
+  # None argument:
+  none: nenhum
+  # No players online:
+  no_players: 'Sem jogadores ativos'
+  # Enabled:
+  enabled: 'Ativado com sucesso!'
+  # No players online:
+  disabled: 'Desativado com sucesso!'
+  # Success nextround:
+  success_next_round: '<color=green>Sucesso, as mudanças terão efeito na próxima partida!</color>'
+  # Invalid IP
+  invalid_ip: '<color=yellow>IP inválido!</color>'
+  # SCP-RoundBan staff BC
+  scp_round_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) foi <color=red>BANIDO</color> de jogar SCP por exceder o limite de Saídas / Suicídios (como SCP) por %rounds% partidas.</color>'
+  # Suicide broadcast while active ban
+  scp_suicide_broadcast_active_ban: '<color=blue><SCPUtils>%user% cometeu suicídio enquanto tinha um banimento ativo!</color>'
+  # SCP-Ban staff BC
+  scp_ban_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) foi <color=red>BANIDO</color> por exceder o limite de Saídas / Suicídios (como SCP) por %duration% minutos.</color>'
+  # SCP-Kick staff BC
+  scp_kick_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) foi <color=red>EXPULSO</color> por exceder o limite de Saídas / Suicídios (como SCP)</color>'
+  # SCP-Warn staff BC
+  scp_warn_staff_bc: '<color=blue><SCPUtils> %nick%(%scp%) recebeu um <color=red>AVISO</color> por Sair ou Suicidar-se como SCP</color>'
+  # Global badge error
+  global_badge_console_error: 'Você tem uma cor personalizada atribuída mas possui um cargo global. Pelas regras do VSR, sua cor personalizada não será utilizável!'
+  # NoUsergroup error
+  no_usergroup_error: 'Você tem um cargo personalizado atribuído mas não possui um grupo de usuário base. Seu grupo personalizado não será visível caso você tenha um, contate a equipe do servidor para mais informações!'
+  # NoUsergroup error
+  multi_account_bc: 'Contas Múltiplas detectadas em %user% - ID: %userid$ Número de contas: %count%'
+  # NoUsergroup error
+  mute_evasion_bc: '<color=red><size=25>Evasão de silenciamento detectada em %user% ID: %useid% ID do usuário silenciado: %userid2%</size></color>'
+  # By server configs
+  by_server_configs: 'pelas configurações do servidor'
+  command_ban_string: 'Você foi banido de usar comandos até'
+  command_ban_string_reason: 'pelo seguinte motivo:'
+  # --- Commands name and aliases translations --- 
+  #  
+  #  Alias command:
+  alias_command: 'scputils_alias'
+  alias_aliases:
+  - 'alias'
+  - 'su_alias'
+  - 'scpu_alias'
+  - 'alt'
+  alias_description: 'Verifica apelidos do jogador junto de algumas informações básicas. Para informações completas, use dupeip'
+  # Unwhitelist command:
+  unwhitelist_command: 'scputils_unwhitelist_asn'
+  unwhitelist_aliases:
+  - 'asunw'
+  - 'su_uwl_asn'
+  - 'scpu_uwl_asn'
+  unwhitelist_description: 'Retira um jogador da Whitelist para impossibilitá-lo de entrar no servidor se a ASN estiver na lista negra!'
+  # AsnWhitelist command:
+  asnwhitelist_command: 'scputils_whitelist_asn'
+  asnwhitelist_aliases:
+  - 'asnw'
+  - 'su_wl_asn'
+  - 'scpu_wl_asn'
+  asnwhitelist_description: 'Coloca um jogador na Whitelist para fazer com que ele possa entrar no servidor se a ASN estiver na lista negra!'
+  # Badgeplaytime command:
+  badgeplaytime_command: 'scputils_badge_play_time'
+  badgeplaytime_aliases:
+  - 'bpt'
+  - 'tpt'
+  - 'su_tpt'
+  - 'scpu_badgeplaytime'
+  - 'scpu_bpt'
+  badgeplaytime_description: 'Exibe o tempo de jogo de todos jogadores que têm esse cargo.'
+  badgeplaytime_checking: 'Verificando tempo de jogo do cargo'
+  badgeplaytime_nullplayer: 'Nenhum jogador detectado, isso geralmente ocorre quando você tem um jogador na pasta remoteadmin enquanto ele ainda não entrou no servidor.'
+  badgeplaytime_no_activity: 'Tempo de Jogo: [ Nenhuma atividade ]'
+  badgeplaytime_playtime: 'Tempo de Jogo:'
+  badgeplaytime_daysjoined: 'Dias entrados:'
+  badgeplaytime_overwatchtime: 'Tempo como Supervisor:'
+  badgeplaytime_overwatchdays: 'Dias como Supervisor:'
+  # Broadcast command:
+  broadcast_command: 'scputils_broadcast'
+  broadcast_aliases:
+  - 'sbc'
+  - 'su_bc'
+  - 'scpu_bc'
+  broadcast_description: 'Permite enviar avisos personalizados'
+  # Broadcastlist command:
+  broadcastlist_command: 'scputils_broadcast_list'
+  broadcastlist_aliases:
+  - 'sbcl'
+  - 'bcl'
+  - 'su_bcl'
+  - 'scpu_bcl'
+  broadcastlist_description: 'Lista de todos avisos registrados'
+  # Broadcastcreate command:
+  broadcastcreate_command: 'scputils_broadcast_create'
+  broadcastcreate_aliases:
+  - 'cbc'
+  - 'su_cbc'
+  - 'scpu_cbc'
+  broadcastcreate_description: 'Permite criar avisos personalizados'
+  # CustomBadge command:
+  custom_badge_command: 'scputils_custom_badge'
+  custom_badge_aliases:
+  - 'cb'
+  - 'scputils_cbadge'
+  - 'su_cb'
+  - 'su_customb'
+  custom_badge_description: 'Concede um nome de cargo personalizado para qualquer jogador se eles já tiverem um cargo'
+  # Deletebroadcast command:
+  deletebroadcast_command: 'scputils_broadcast_delete'
+  deletebroadcast_aliases:
+  - 'dbc'
+  - 'su_dbc'
+  - 'scpu_dbc'
+  deletebroadcast_description: 'Deleta um aviso personalizado do banco de dados'
+  # Disablesuicidewarn command:
+  disablesuicidewarn_command: 'scputils_disable_suicide_warns'
+  disablesuicidewarn_aliases:
+  - 'dsw'
+  - 'disable_suicide_warns'
+  - 'su_dsw'
+  - 'scpu_dsw'
+  disablesuicidewarn_description: 'Desativa temporariamente o detector de suicídio/saída de SCPs pela duração da partida'
+  # Dupeip command:
+  dupeip_command: 'scputils_dupeip'
+  dupeip_aliases:
+  - 'dupeip'
+  - 'su_dupeip'
+  - 'scpu_dupeip'
+  dupeip_description: 'Verifica se um jogador tem outra conta com o mesmo IP'
+  # Enablesuicidewarn command:
+  enablesuicidewarn_command: 'scputils_enable_suicide_warns'
+  enablesuicidewarn_aliases:
+  - 'esw'
+  - 'enable_suicide_warns'
+  - 'su_esw'
+  - 'scpu_esw'
+  enablesuicidewarn_description: 'Ativa novamente o detector de suicídio/saída de SCPs'
+  # Globaledit command:
+  globaledit_command: 'scputils_global_edit'
+  globaledit_aliases:
+  - 'gedit'
+  - 'su_gedit'
+  - 'su_globaledit'
+  - 'su_ge'
+  - 'scpu_gedit'
+  - 'scpu_globaledit'
+  - 'scpu_ge'
+  globaledit_description: 'Exclui uma quantidade específica de jogos / avisos / expulsões / banimentos como SCP de cada jogador presente na DB'
+  # Help command:
+  help_command: 'scputils_help'
+  help_aliases:
+  - 'su_help'
+  - 'su_h'
+  - 'scpu_help'
+  - 'scpu_h'
+  help_description: 'Comando de ajuda do Plug-in'
+  help_content: |-
+    <color=#1BBC9B>Comandos do usuário:</color> 
+     <color=#1BBC9B>.scputils_info, .scputils_change_nickname, .scputils_change_color, .scputils_show_badge, .scputils_hide_badge, .scputils_my_info, .scputils_play_time, scputils_round_info, scputils_permissions_view</color>
+  help_content_admin: |-
+    n<color=#FFD700>Comandos Administrativos (Administração Remota): </color>
+    <color=#FFD700>scputils_player_info, scputils_player_list, scputils_player_reset_preferences, scputils_player_reset, scputils_set_color, scputils_set_name, scputils_set_badge, scputils_revoke_badge, scputils_play_time, scputils_whitelist_asn, scputils_unwhitelist_asn, scputils_enable_suicide_warns, scputils_disable_suicide_warns, scputils_global_edit, scputils_player_edit, scputils_player_delete, scputils_player_restrict, scputils_player_unrestrict, scputils_show_command_bans, scputils_preference_persist, scputils_remove_previous_badge, scputils_player_dnt, scputils_round_info, scputils_player_last_warning, scputils_player_warnings, scputils_player_unwarn, scputils_play_sessions, scputils_badge_playtime, scputils_multiaccount_whitelist, scputils_dupeip, scputils_alias, scputils_custom_badge, scputils_searchip</color>
+  # Hidebadge command:
+  hidebadge_command: 'scputils_hide_badge'
+  hidebadge_aliases:
+  - 'hb'
+  - 'su_hb'
+  - 'su_hbadge'
+  - 'su_hideb'
+  - 'scpu_hb'
+  - 'scpu_hbadge'
+  - 'scpu_hideb'
+  hidebadge_description: 'Esconde seu cargo permanentemente até que você execute o scputils_show_badge ou suas aliases'
+  # Info command:
+  info_command: 'scputils_info'
+  info_aliases:
+  - 'su_info'
+  - 'su_i'
+  - 'scpu_info'
+  - 'scpu_i'
+  info_description: 'Mostra informações do plug-in'
+  # Multiaccountwhitelist command:
+  multiaccountwhitelist_command: 'scputils_multiaccount_whitelist'
+  multiaccountwhitelist_aliases:
+  - 'mawl'
+  multiaccountwhitelist_description: 'Põe/retira um jogador da Whitelist para fazer com que ele seja ignorado/detectado pelo sistema de contas múltiplas!'
+  # Onlinelist command:
+  onlinelist_command: 'scputils_online_list'
+  onlinelist_aliases:
+  - 'ol'
+  - 'onlinelist'
+  - 'su_ol'
+  - 'su_onlinelist'
+  - 'scpu_ol'
+  - 'scpu_onlinelist'
+  onlinelist_description: 'Exibe a lista de jogadores ativos'
+  # Playerbroadcast command:
+  playerbroadcast_command: 'scputils_player_broadcast'
+  playerbroadcast_aliases:
+  - 'spbc'
+  - 'su_pbc'
+  - 'su_player_bc'
+  - 'su_p_bc'
+  - 'su_p_broadcast'
+  - 'scpu_pbc'
+  - 'scpu_player_bc'
+  - 'scpu_p_bc'
+  - 'scpu_p_broadcast'
+  playerbroadcast_description: 'Permite enviar avisos personalizados'
+  # Playerdelete command:
+  playerdelete_command: 'scputils_player_delete'
+  playerdelete_aliases:
+  - 'pdelete'
+  - 'su_pdelete'
+  - 'su_playerdelete'
+  - 'scpu_pdelete'
+  - 'scpu_playerdelete'
+  playerdelete_description: 'Remove um jogador (e todos dados dele) do banco de dados. Essa ação é irreversível!'
+  playerdelete_success: '%user% foi deletado do banco de dados!'
+  # Playerdnt command:
+  playerdnt_command: 'scputils_player_dnt'
+  playerdnt_aliases:
+  - 'pdnt'
+  - 'dnt'
+  - 'su_pdnt'
+  - 'su_playerdnt'
+  - 'scpu_pdnt'
+  - 'scpu_playerdnt'
+  playerdnt_description: 'Permite que você ignore os pedidos DNT de um usuário'
+  # Playeredit command:
+  playeredit_command: 'scputils_player_edit'
+  playeredit_aliases:
+  - 'pedit'
+  - 'su_pedit'
+  - 'su_playeredit'
+  - 'scpu_pedit'
+  - 'scpu_playeredit'
+  playeredit_description: 'Modifica alguns dados de jogador no banco de dados'
+  # Playerinfo command:
+  playerinfo_command: 'scputils_player_info'
+  playerinfo_aliases:
+  - 'upi'
+  - 'scputils_my_info'
+  - 'su_pi'
+  - 'su_player_info'
+  - 'su_playerinfo'
+  - 'scpu_pi'
+  - 'scpu_player_info'
+  - 'scpu_playerinfo'
+  playerinfo_description: 'Exibe informações sobre o jogador. Caso você não seja um administrador, você só poderá ver suas informações.'
+  playerinfo_total_suicides: 'Total de Suicídios/Saídas como SCP:'
+  playerinfo_kicks: 'Total de Expulsões causadas por Suicídios/Saídas como SCP:'
+  playerinfo_bans: 'Total de Banimentos causados por Suicídios/Saídas como SCP:'
+  playerinfo_games_played: 'Total de Partidas como SCP:'
+  playerinfo_percentage: 'Porcentagem Total de Suicídios/Saídas:'
+  playerinfo_firstjoin: 'Primeira Entrada:'
+  playerinfo_lastseen: 'Visto por Último:'
+  playerinfo_customcolor: 'Cor Personalizada:'
+  playerinfo_customname: 'Nome Personalizado:'
+  playerinfo_tempbadge: 'Cargo Temporário:'
+  playerinfo_custombadge: 'Cargo Personalizado:'
+  playerinfo_badgexpire: 'Expiração do Cargo:'
+  playerinfo_hidebadge: 'Esconder Cargo:'
+  playerinfo_asnwhitelist: 'Whitelisted da ASN:'
+  playerinfo_keepflag: 'Preservar Cor:'
+  playerinfo_dnt: 'Ignorar DNT:'
+  playerinfo_whitelist: 'Whitelist de Múltiplas Contas:'
+  playerinfo_playtime: 'Tempo de Jogo Total:'
+  playerinfo_overwatchtime: 'Tempo como Supervisor Total:'
+  playerinfo_cooldown: 'Recarga de apelido:'
+  playerinfo_overwatch: 'Supervisor ativo:'
+  playerinfo_restricted: '<color=red>Conta do usuário está atualmente restrita</color>'
+  playerinfo_reason: 'Motivo:'
+  playerinfo_expire: 'Expira:'
+  playerinfo_roundsleft: 'Partida(s) faltando:'
+  playerinfo_scpbanned: '<color=red>Conta do usuário está atualmente banida:</color>'
+  # Playerlist command:
+  playerlist_command: 'scputils_player_list'
+  playerlist_aliases:
+  - 'pli'
+  - 'su_pl'
+  - 'su_playerlist'
+  - 'scpu_pl'
+  - 'scpu_playerlist'
+  playerlist_description: 'Exibe a lista de jogadores no banco de dados do SCPUtils com algumas informações básicas. Não use valores como 0, senão a lista pode ficar gigantesca'
+  # Reset command:
+  reset_command: 'scputils_player_reset'
+  reset_aliases:
+  - 'pr'
+  - 'su_pr'
+  - 'su_playerreset'
+  - 'su_playereset'
+  - 'scpu_pr'
+  - 'scpu_playerreset'
+  - 'scpu_playereset'
+  reset_description: 'Redefine os dados do jogador (Saídas,Banimentos,Expulsões,Apelidos,Cargos, etc., tudo)!'
+  # Resetpreferences command:
+  resetpreferences_command: 'scputils_player_reset_preferences'
+  resetpreferences_aliases:
+  - 'prp'
+  - 'su_prp'
+  - 'su_playerpreferences'
+  - 'su_player_preferences'
+  - 'su_player_reset_preferences'
+  - 'scpu_prp'
+  - 'scpu_playerpreferences'
+  - 'scpu_player_preferences'
+  - 'scpu_player_reset_preferences'
+  resetpreferences_description: 'Redefine as preferências do jogador (Apelido, cargos, etc.)!'
+  # Restrict command:
+  restrict_command: 'scputils_player_restrict'
+  restrict_aliases:
+  - 'restrict'
+  - 'susp'
+  - 'su_playerrestrict'
+  - 'su_playerestrict'
+  - 'su_player_r'
+  - 'scpu_playerestrict'
+  - 'scpu_playerrestrict'
+  - 'scpu_player_r'
+  restrict_description: 'Esse comando restringe um jogador de utilizar o scputils_change_nickname e scputils_change_color.'
+  # Unrestrict command:
+  unrestrict_command: 'scputils_player_unrestrict'
+  unrestrict_aliases:
+  - 'unrestrict'
+  - 'unsusp'
+  - 'su_playerunrestrict'
+  - 'su_player_unr'
+  - 'scpu_playerunrestrict'
+  - 'scpu_player_unr'
+  unrestrict_description: 'Esse comando remove a restrição de um jogador de usar o scputils_change_nickname ou scputils_change_color!'
+  # Playtime command:
+  playtime_command: 'scputils_play_time'
+  playtime_aliases:
+  - 'pt'
+  - 'su_playtime'
+  - 'su_pt'
+  - 'scpu_playtime'
+  - 'scpu_pt'
+  playtime_description: 'Exibe informações detalhadas sobre o tempo de jogo'
+  playtime_zero: '<color=red>Você tem que especificar um número maior que 0!</color>'
+  playtime_max_range: '<color=red>Você pode especificar um intervalo de no máximo 120 dias!</color>'
+  playtime_total: 'Tempo de Jogo Total:'
+  playtime_overwatch: 'Tempo como Supervisor:'
+  playtime_noactivity: 'Tempo de Jogo: [ Sem Atividade ]'
+  playtime_specified: 'Período Especificado de Tempo de Jogo:'
+  playtime_playtime: 'Tempo de Jogo:'
+  # Preferencepersist command:
+  preferencepersist_command: 'scputils_preference_persist'
+  preferencepersist_aliases:
+  - 'pp'
+  - 'su_pp'
+  - 'su_preference_p'
+  - 'scpu_pp'
+  - 'scpu_preference_p'
+  preferencepersist_description: 'Utilize esse comando para manter o apelido e cor de um jogador mesmo que ele não tenha acesso a essa permissão!'
+  # Reports command:
+  reports_command: 'scputils_reports'
+  reports_aliases:
+  - 'scpu_reports'
+  - 'rep'
+  - 'sreports'
+  - 'reports'
+  reports_description: 'Exibe status úteis sobre usuários dentro do banco de dados do SCPUtils.'
+  # Respawn command (check main config for more customization):
+  respawn_description: 'Permite que você renasça caso esteja bugado'
+  # RevokeBadge command:
+  revoke_badge_command: 'scputils_revoke_badge'
+  revoke_badge_aliases:
+  - 'rb'
+  - 'su_rb'
+  - 'su_remove_badge'
+  - 'su_revoke_b'
+  - 'scpu_rb'
+  - 'scpu_remove_badge'
+  - 'scpu_revoke_b'
+  revoke_badge_description: 'Remove um cargo temporário que foi concedido a um jogador!'
+  # Roundinfo command:
+  roundinfo_command: 'scputils_round_info'
+  roundinfo_aliases:
+  - 'ri'
+  - roundinfo
+  - 'round_info'
+  - 'su_ri'
+  - 'su_roundinfo'
+  - 'su_round_info'
+  - 'scpu_ri'
+  - 'scpu_roundinfo'
+  - 'scpu_round_info'
+  roundinfo_description: 'Exibe informações da partida'
+  roundinfo: 'Informações da Partida:'
+  roundinfort: 'Tempo de Partida:'
+  roundinfochaostickets: 'Número de Tickets do Caos:'
+  roundinfomtftickets: 'Número de Tickets da FTM:'
+  roundinforespawnteam: 'Próxima Equipe a Renascer:'
+  roundinforespawntime: 'Tempo até Renascimento:'
+  roundinfonumberchaosrespawn: 'Número de Ondas de Renascimento do Caos:'
+  roundinfonumbermtfrespawn: 'Número de Ondas de Renascimento da FTM:'
+  roundinfolastchaoswave: 'Tempo decorrido do renascimento da última onda do Caos:'
+  roundinfolastmtfwave: 'Tempo decorrido do renascimento da última onda da FTM:'
+  # Scplist command:
+  scplist_command: 'scputils_scp_list'
+  scplist_aliases:
+  - 'scpl'
+  - 'scplist'
+  - 'su_scpl'
+  - 'su_scplist'
+  - 'scpu_scplist'
+  scplist_description: 'Exibe a lista de SCPs'
+  scplist_no_scp: 'Você não é um SCP ou o módulo de Troca foi desativado pelo administrador do servidor!'
+  # Searchip command:
+  searchip_command: 'scputils_search_ip'
+  searchip_aliases:
+  - 'searchip'
+  - 'su_searchip'
+  - 'scpu_searchip'
+  - 'sip'
+  - 'scputils_searchip'
+  searchip_description: 'Verifica se tem um jogador vinculado a um endereço de IP específico'
+  # Setbadge command:
+  setbadge_command: 'scputils_set_badge'
+  setbadge_aliases:
+  - 'setb'
+  - 'issue_badge'
+  - 'su_setb'
+  - 'su_setbadge'
+  - 'scpu_setb'
+  - 'scpu_setbadge'
+  setbadge_description: 'Define um cargo temporário para um jogador'
+  setbadge_success: 'Definiu com sucesso o cargo %group% por $%duration%'
+  setbadge_kickpower: 'O grupo que está tentando definir tem mais poder de expulsão que você. (Seu poder de expulsão:'
+  setbadge_required: 'Requerido:'
+  # Setcolor command:
+  setcolor_command: 'scputils_set_color'
+  setcolor_aliases:
+  - 'scl'
+  - 'scputils_change_color'
+  - 'su_sc'
+  - 'su_cc'
+  - 'su_setc'
+  - 'sc_scolor'
+  - 'scpu_sc'
+  - 'scpu_cc'
+  - 'scpu_setc'
+  - 'scpu_scolor'
+  setcolor_description: 'Muda a cor de todos ou apenas a sua baseado nas permissões que você tem'
+  setcolor_arg_color: '<color, none, rainbow>'
+  setcolor_invalidcolor: '<color=red> Cor inválida, escreva color no console para ver cores válidas no SCP<color>'
+  setcolor_rainbowdisabled: '<color=red>Cargos aleatórios/arco-íris foram desativados pelo dono do servidor!</color>'
+  setcolor_globalbadge: '<color=red>Esse usuário tem um cargo global, pelas regras do VSR você não pode mudar as cores de cargos globais. Se você possui um cargo local, por favor defina-o e tente utilizar esse comando novamente.</color>'
+  setcolor_restrictedcolor: '<color=red>Essa cor foi restringida pelo dono do servidor. Por favor, use outra cor!</color>'
+  setcolor_rainbow: 'arco-íris'
+  # Setname command:
+  setname_command: 'scputils_set_name'
+  setname_aliases:
+  - 'un'
+  - 'scputils_change_nickname'
+  - 'su_setn'
+  - 'su_sname'
+  - 'su_cn'
+  - 'scpu_setn'
+  - 'scpu_sname'
+  - 'scpu_cn'
+  setname_description: 'Muda o nome de todos ou apenas seu baseado nas permissões que você tem'
+  setname_argnickname: '<Nickname / None>'
+  setname_taken: '<color=red>Esse apelido já é usado por outro jogador. Por favor, escolha outro nome!</color>'
+  setname_toolong: '<color=red>O apelido é muito longo!</color>'
+  # Roundban command:
+  roundban_command: 'scputils_set_round_ban'
+  roundban_aliases:
+  - 'srb'
+  - 'roundban'
+  - 'su_srb'
+  - 'su_roundban'
+  roundban_description: 'Define o número de banimentos de partida para um jogador'
+  # Showbadge command:
+  showbadge_command: 'scputils_show_badge'
+  showbadge_aliases:
+  - 'sb'
+  - 'su_showb'
+  - 'su_sbadge'
+  - 'scpu_showb'
+  - 'scpu_sbadge'
+  showbadge_description: 'Exibe seu cargo permanentemente escondido novamente.'
+  # Showcommandbans command:
+  showcommandbans_command: 'scputils_show_command_bans'
+  showcommandbans_aliases:
+  - 'scb'
+  - 'su_show_cb'
+  - 'su_scb'
+  - 'scpu_show_cb'
+  - 'scpu_scb'
+  showcommandbans_description: 'Exibe informações detalhadas sobre uma restrição'
+  # Showwarn command:
+  showwarn_command: 'scputils_player_last_warning'
+  showwarn_aliases:
+  - 'lwarn'
+  - 'su_lwarn'
+  - 'su_last_warn'
+  - 'su_lastw'
+  - 'scpu_lwarn'
+  - 'scpu_last_warn'
+  - 'scpu_lastw'
+  showwarn_description: 'Exibe o último aviso no SCPUtils de um jogador específico!'
+  # Showwarns command:
+  showwarns_command: 'scputils_player_warnings'
+  showwarns_aliases:
+  - 'warns'
+  - 'swarns'
+  - 'su_warns'
+  - 'scpu_warns'
+  showwarns_description: 'Exibe todos avisos no SCPUtils de um jogador específico!'
+  # Stafflist command:
+  stafflist_command: 'scputils_staff_list'
+  stafflist_aliases:
+  - 'sl'
+  - 'stafflist'
+  - 'su_sl'
+  - 'su_staffl'
+  - 'su_staff_l'
+  - 'su_slist'
+  - 'scpu_sl'
+  - 'scpu_staffl'
+  - 'scpu_staff_l'
+  - 'scpu_slist'
+  stafflist_description: 'Exibe uma lista de membros da sua equipe ativos.'
+  # Swaprequest command (check main configs for more customization):
+  swaprequest_description: 'Envia um pedido de troca de SCP para um jogador'
+  swaprequest_disabled: '<color=yellow>O módulo de SCP swap está desativado nesse servidor!</color>'
+  swaprequest_notscp: '<color=yellow>Apenas SCPs podem utilizar esse comando!</color>'
+  swaprequest_usage: '<color=yellow>Uso: %command% <ID do jogador/apelido ou SCP-NÚMERO (exemplo: swap SCP-939)></color>'
+  swaprequest_roledisabled: '<color=red>Você não pode trocar com um SCP não nascido utilizando esse SCP</color>'
+  swaprequest_limit: '<color=red>Você alcançou o limite de pedidos de troca nessa partida!</color>'
+  swaprequest_noautoswap: '<color=red>Esse SCP não pode ser trocado automaticamente e nenhum jogador está jogando como ele nesse momento. Por favor, escolha outro SCP.</color>'
+  swaprequest_invalidplayer: '<color=red>Apelido/ID de jogador inválido ou nome de SCP inválido!</color>'
+  swaprequest_pendingtargeterror: '<color=red>Usuário já enviou um pedido ou tem um pedido pendente</color>'
+  swaprequest_pendingerror: '<color=red>Você já enviou ou recebeu um pedido de troca, cancele ou negue ele para enviar um novo</color>'
+  swaprequest_selferror: '<color=red>Você não pode enviar um pedido de troca para si mesmo!</color>'
+  swaprequest_targetnoscp: '<color=red>O usuário não é um SCP!</color>'
+  swaprequest_sameroleerror: '<color=red>Você tem a mesma classe que outro jogador!</color'
+  swaprequest_targetcustomscperror: '<color=red>Erro: O usuário está utilizando um SCP personalizado!</color>'
+  swaprequest_customscperror: '<color=red>Erro: Você está utilizando um SCP personalizado</color>'
+  swaprequest_success: '<color=green>O pedido foi enviado com sucesso para %target%, o jogador tem %seconds% para aceitar o pedido. Use %cancelcommand% para cancelar o pedido</color>'
+  # Swaprequestqccept (check main configs for more customization):
+  swaprequestaccept_description: 'Aceita um pedido de troca de SCP'
+  swaprequestaccept_noswaprequest: '<color=red>Você não tem pedidos de troca!</color>'
+  # Swaprequestcancel command (check main configs for more customization):
+  swaprequestcancel_description: 'Cancela um pedido de troca enviado por você'
+  # Swaprequestdeny command (check main configs for more customization):
+  swaprequestdeny_description: 'Nega um pedido de troca'
+  # Unwarn command (check main configs for more customization):
+  unwarn_description: 'Remove um aviso específico de um jogador!'
+  # --- Webhook translation --- 
+  #  
+  #  Mute evasion:
+  report: 'Denúncia de Evasão de Silenciamento!'
+  description: 'Evasão de Silenciamento detectada! ID do usuário silenciado:'
+  player_info: 'Informações do Jogador:'
+  username: 'Apelido:'
+  user_id: 'ID do Usuário:'
+  temporary_id: 'ID Temporário:'
