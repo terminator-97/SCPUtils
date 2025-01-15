@@ -19,12 +19,17 @@
         {
             try
             {
-
-
-                var connectionString = string.IsNullOrEmpty(StaticInstance.Config.DatabasePassword)
-                  ? $"mongodb://{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}"
-                  : $"mongodb://{StaticInstance.Config.DatabaseUser}:{StaticInstance.Config.DatabasePassword}@{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}/?authMechanism={StaticInstance.Config.DatabaseAuthType}";
-
+                string connectionString;
+                if (StaticInstance.Config.CustomConnectionString == "none")
+                {
+                    connectionString = string.IsNullOrEmpty(StaticInstance.Config.DatabasePassword)
+                      ? $"mongodb://{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}"
+                      : $"mongodb://{StaticInstance.Config.DatabaseUser}:{StaticInstance.Config.DatabasePassword}@{StaticInstance.Config.DatabaseIp}:{StaticInstance.Config.DatabasePort}/?authMechanism={StaticInstance.Config.DatabaseAuthType}";
+                }
+                else
+                {
+                    connectionString = StaticInstance.Config.CustomConnectionString;                    
+                }
 
                 MongoClient = new MongoClient(connectionString);
                 MongoDatabase = MongoClient.GetDatabase(StaticInstance.Config.DatabaseName.ToSnakeCase());

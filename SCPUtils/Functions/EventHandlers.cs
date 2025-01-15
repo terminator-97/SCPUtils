@@ -49,7 +49,9 @@ namespace SCPUtils
 
         internal void OnPlayerDeath(DyingEventArgs ev)
         {
+
             if (ev.Player == null) return;
+            if (ev.Player.IsNPC) return;
             if (Cuffed.ContainsKey(ev.Player)) Cuffed.Remove(ev.Player);
             if ((ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial)) && Round.IsStarted && pluginInstance.Config.EnableSCPSuicideAutoWarn && !TemporarilyDisabledWarns)
             {
@@ -284,6 +286,7 @@ namespace SCPUtils
 
         internal void OnPlayerDestroy(DestroyingEventArgs ev)
         {
+            if (ev.Player.IsNPC) return;
             pluginInstance.Functions.SaveData(ev.Player);
             if (!Cuffed.ContainsKey(ev.Player)) Cuffed.Remove(ev.Player);
         }
@@ -378,6 +381,7 @@ namespace SCPUtils
 
         internal void OnPlayerSpawn(SpawningEventArgs ev)
         {
+            if (ev.Player.IsNPC) return;
             Player databasePlayer = ev.Player.GetDatabasePlayer();
             //   if (databasePlayer.OverwatchActive) ev.Player.IsOverwatchEnabled = true;
             if (ev.Player.Role.Team == PlayerRoles.Team.SCPs || (pluginInstance.Config.AreTutorialsSCP && ev.Player.Role == PlayerRoles.RoleTypeId.Tutorial))

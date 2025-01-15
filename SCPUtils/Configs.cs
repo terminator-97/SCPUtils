@@ -27,6 +27,9 @@ namespace SCPUtils
         [Description("Database auth mechanism")]
         public string DatabaseAuthType { get; private set; } = "SCRAM-SHA-256";
 
+        [Description("Custom connection string - If modified it will ignore all other parameters, advanced users only")]
+        public string CustomConnectionString { get; private set; } = "none";
+
         [Description("PLUGIN CONFIGS")]
         public bool IsEnabled { get; set; } = true;
 
