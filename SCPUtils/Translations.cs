@@ -1,6 +1,5 @@
 ﻿using Amazon.Runtime.Internal;
 using Exiled.API.Interfaces;
-using PluginAPI.Roles;
 using System.ComponentModel;
 
 namespace SCPUtils

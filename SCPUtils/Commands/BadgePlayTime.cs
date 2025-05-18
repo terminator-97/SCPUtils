@@ -52,7 +52,7 @@ namespace SCPUtils.Commands
 
             int.TryParse(arguments.Array[2], out range);
 
-            if (!ServerStatic.GetPermissionsHandler().GetAllGroups().ContainsKey(badge))
+            if (!ServerStatic.PermissionsHandler.GetAllGroups().ContainsKey(badge))
             {
                 response = ScpUtils.StaticInstance.Translation.InvalidUsergroup;
                 return false;

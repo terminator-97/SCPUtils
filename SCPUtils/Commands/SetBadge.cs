@@ -47,7 +47,7 @@ namespace SCPUtils.Commands
                 return false;
             }
 
-            else if (!ServerStatic.GetPermissionsHandler().GetAllGroups().ContainsKey(badge))
+            else if (!ServerStatic.PermissionsHandler.GetAllGroups().ContainsKey(badge))
             {
                 response = ScpUtils.StaticInstance.Translation.InvalidUsergroup;
                 return false;
@@ -55,7 +55,7 @@ namespace SCPUtils.Commands
 
             else if (TimeSpan.TryParse(arguments.Array[3], out TimeSpan duration))
             {
-                UserGroup group = ServerStatic.GetPermissionsHandler()._groups[badge];
+                UserGroup group = ServerStatic.PermissionsHandler.Groups[badge];
 
                 if (group.KickPower > ((CommandSender)sender).KickPower && !((CommandSender)sender).FullPermissions)
                 {
@@ -70,13 +70,13 @@ namespace SCPUtils.Commands
                     args.NewBadgeName = badge;
 
 
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    if (ServerStatic.PermissionsHandler.Members.ContainsKey(player.UserId))
                     {
-                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                        ServerStatic.PermissionsHandler.Members.Remove(player.UserId);
                     }
 
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true);
-                    ServerStatic.PermissionsHandler._members.Add(player.UserId, badge);
+                    ServerStatic.PermissionsHandler.Members.Add(player.UserId, badge);
 
                     ScpUtils.StaticInstance.Events.OnBadgeSet(args);
                 }
