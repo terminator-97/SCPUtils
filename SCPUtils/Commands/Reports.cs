@@ -135,7 +135,7 @@ namespace SCPUtils.Commands
 
                 if (int.TryParse(arguments.Array[2], out int num))
                 {
-                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).Count() >= 1)
+                    if (Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).CountDocuments() >= 1)
                     {
                         StringBuilder message = new StringBuilder($"There are currenly {Database.MongoDatabase.GetCollection<Player>("players").Find(x => x.TotalScpSuicideKicks >= num).CountDocuments()} users Kicked due suicide/disconnect, use argument show after {report} to see the banned users (i advise to do not do it if you don't know what you are doing, large database may freeze the server).").AppendLine();
                         if (showarg)

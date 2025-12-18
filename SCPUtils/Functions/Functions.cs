@@ -92,7 +92,7 @@ namespace SCPUtils
             }
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%user%", player.Nickname).Replace("%role%", player.Role.Type.ToString()).Replace("%rounds%", rounds.ToString());
+                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%nick%", player.Nickname).Replace("%scp%", player.Role.Type.ToString()).Replace("%rounds%", rounds.ToString());
                 var messageSuicideAgain = ScpUtils.StaticInstance.Translation.ScpSuicideBroadcastActiveBan.Replace("%user%", player.Nickname);
                 BroadcastSuicideQuitAction(message);
                 if (databasePlayer.RoundBanLeft >= 1) BroadcastSuicideQuitAction(messageSuicideAgain);
@@ -128,7 +128,7 @@ namespace SCPUtils
             if (pluginInstance.Config.BroadcastSanctions)
             {
                 var durationBroadcast = duration / 60;
-                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%user%", player.Nickname).Replace("%role%", player.Role.Type.ToString()).Replace("%duration%", durationBroadcast.ToString());
+                var message = ScpUtils.StaticInstance.Translation.ScpRoundBanStaffBc.Replace("%nick%", player.Nickname).Replace("%scp%", player.Role.Type.ToString()).Replace("%duration%", durationBroadcast.ToString());
                 BroadcastSuicideQuitAction(message);
             }
             if (pluginInstance.Config.MultiplyBanDurationEachBan == true) databasePlayer.Expire[databasePlayer.Expire.Count() - 1] = DateTime.Now.AddMinutes((duration / 60) * databasePlayer.TotalScpSuicideBans);
@@ -140,7 +140,7 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastSanctions)
             {
-                var message = ScpUtils.StaticInstance.Translation.ScpKickStaffBc.Replace("%user%", player.Nickname).Replace("%role%", player.Role.Type.ToString());
+                var message = ScpUtils.StaticInstance.Translation.ScpKickStaffBc.Replace("%nick%", player.Nickname).Replace("%scp%", player.Role.Type.ToString());
                 BroadcastSuicideQuitAction(message);
             }
 
@@ -154,7 +154,7 @@ namespace SCPUtils
         {
             if (pluginInstance.Config.BroadcastWarns)
             {
-                var message = ScpUtils.StaticInstance.Translation.ScpWarnStaffBc.Replace("%user%", player.Nickname).Replace("%role%", player.Role.Type.ToString());
+                var message = ScpUtils.StaticInstance.Translation.ScpWarnStaffBc.Replace("%nick%", player.Nickname).Replace("%scp%", player.Role.Type.ToString());
                 BroadcastSuicideQuitAction(message);
             }
 

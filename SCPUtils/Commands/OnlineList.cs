@@ -65,12 +65,9 @@ namespace SCPUtils.Commands
                         message.Append(" [OVERWATCH]");
                     }
 
-                    if (player.Role.Is(out FpcRole role))
-                    {
-                        if (role.IsNoclipEnabled)
-                        {
-                            message.Append(" [NOCLIP]");
-                        }
+                    if (player.IsNoclipEnabled)
+                    {                      
+                            message.Append(" [NOCLIP]");                        
                     }
                     else
                     {
