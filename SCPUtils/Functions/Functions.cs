@@ -170,18 +170,18 @@ namespace SCPUtils
 
             if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
             {
-                UserGroup group = ServerStatic.GetPermissionsHandler()._groups[databasePlayer.BadgeName];
+                UserGroup group = ServerStatic.PermissionsHandler.Groups[databasePlayer.BadgeName];
 
 
                 if (databasePlayer.BadgeExpire >= DateTime.Now)
                 {
                     player.ReferenceHub.serverRoles.SetGroup(group, false, true);
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    if (ServerStatic.PermissionsHandler.Members.ContainsKey(player.UserId))
                     {
-                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                        ServerStatic.PermissionsHandler.Members.Remove(player.UserId);
                     }
 
-                    ServerStatic.PermissionsHandler._members.Add(player.UserId, databasePlayer.BadgeName);
+                    ServerStatic.PermissionsHandler.Members.Add(player.UserId, databasePlayer.BadgeName);
                     BadgeSetEvent args = new BadgeSetEvent();
                     args.Player = player;
                     args.NewBadgeName = databasePlayer.BadgeName;
@@ -196,14 +196,14 @@ namespace SCPUtils
                     args.BadgeName = databasePlayer.BadgeName;
                     databasePlayer.BadgeName = "";
 
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    if (ServerStatic.PermissionsHandler.Members.ContainsKey(player.UserId))
                     {
-                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                        ServerStatic.PermissionsHandler.Members.Remove(player.UserId);
                     }
                     if (ServerStatic.RolesConfig.GetStringDictionary("Members").ContainsKey(player.UserId))
                     {
-                        UserGroup previous = ServerStatic.GetPermissionsHandler()._groups[ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]];
-                        ServerStatic.PermissionsHandler._members.Add(player.UserId, ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]);
+                        UserGroup previous = ServerStatic.PermissionsHandler.Groups[ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]];
+                        ServerStatic.PermissionsHandler.Members.Add(player.UserId, ServerStatic.RolesConfig.GetStringDictionary("Members")[player.UserId]);
                         player.ReferenceHub.serverRoles.SetGroup(previous, false, true);
                     }
                     pluginInstance.Events.OnBadgeRemoved(args);
@@ -355,9 +355,9 @@ namespace SCPUtils
 
                 if (!string.IsNullOrEmpty(databasePlayer.BadgeName))
                 {
-                    if (ServerStatic.PermissionsHandler._members.ContainsKey(player.UserId))
+                    if (ServerStatic.PermissionsHandler.Members.ContainsKey(player.UserId))
                     {
-                        ServerStatic.PermissionsHandler._members.Remove(player.UserId);
+                        ServerStatic.PermissionsHandler.Members.Remove(player.UserId);
                     }
                 }
 
