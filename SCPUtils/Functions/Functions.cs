@@ -430,7 +430,7 @@ namespace SCPUtils
                     }
                 }
 
-                databasePlayer.Ip = player.IPAddress;
+                databasePlayer.Ip = EventHandlers.IPAddressDict[player];
                 databasePlayer.SaveData();
                 Database.PlayerData.Remove(player);
             }

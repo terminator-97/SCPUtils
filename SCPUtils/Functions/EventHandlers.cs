@@ -34,6 +34,8 @@ namespace SCPUtils
         public Dictionary<Features.Player, Features.Player> SwapRequest { get; set; } = new Dictionary<Features.Player, Features.Player>();
         public static Dictionary<Features.Player, DateTime> LastRespawn { get; set; } = new Dictionary<Features.Player, DateTime>();
 
+        public static Dictionary<Features.Player, string> IPAddressDict { get; set; } = new Dictionary<Features.Player, string>();
+
         public int ChaosRespawnCount { get; set; }
 
         public int MtfRespawnCount { get; set; }
@@ -251,11 +253,11 @@ namespace SCPUtils
 
         internal void OnPlayerPreauth(PreAuthenticatingEventArgs ev)
         {
-            if (PreauthTime.ContainsKey(ev.UserId))
+            /* if (PreauthTime.ContainsKey(ev.UserId))
             {
                 PreauthTime.Remove(ev.UserId);
-            }
-            PreauthTime.Add(ev.UserId, DateTime.Now);
+            } 
+            PreauthTime.Add(ev.UserId, DateTime.Now); */
         }
 
 
@@ -326,6 +328,23 @@ namespace SCPUtils
 
         internal void OnPlayerVerify(VerifiedEventArgs ev)
         {
+
+            // TEMP FIX (not really a fix i'm lazy)
+
+            if (PreauthTime.ContainsKey(ev.Player.UserId))
+            {
+                PreauthTime.Remove(ev.Player.UserId);
+            }
+            PreauthTime.Add(ev.Player.UserId, DateTime.Now);
+
+            // MIRROR FIX
+
+            if (IPAddressDict.ContainsKey(ev.Player))
+            {
+                IPAddressDict.Remove(ev.Player);
+            }
+            IPAddressDict.Add(ev.Player, ev.Player.IPAddress);
+
             var databasePlayer = ev.Player.GetDatabasePlayer();
             if (databasePlayer == null)
             {
